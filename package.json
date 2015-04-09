@@ -1,0 +1,19 @@
+{
+  "main": "main.js",
+  "name": "TC",
+  "version": "0.0.1",
+  "window": {
+    "toolbar": false,
+    "frame": false,
+    "width": 800,
+    "height": 500,
+    "min_width": 800,
+    "min_height": 500
+  },
+  "dependencies": {
+    "twitch-irc": "^1.2.5"
+  },
+  "devDependencies": {
+    "atom-shell": "^0.22.3"
+  }
+}
