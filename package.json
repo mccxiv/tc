@@ -1,5 +1,5 @@
 {
-  "main": "main.js",
+  "main": "app-node/main.js",
   "name": "TC",
   "version": "0.0.1",
   "window": {

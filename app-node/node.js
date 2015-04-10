@@ -40,7 +40,7 @@ function createWindow() {
 		'use-content-size': true
 	};
 	mainWindow = new BrowserWindow(config);
-	mainWindow.loadUrl('file://' + __dirname + '/ui/app.html');
+	mainWindow.loadUrl('file://' + __dirname + '/../app-ui/app.html');
 	mainWindow.openDevTools();
 }
 

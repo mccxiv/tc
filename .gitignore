@@ -1,4 +1,4 @@
-nw
 .idea
-tc.iml
 node_modules
+app-ui/components
+tc.iml
