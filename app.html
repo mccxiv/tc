@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html ng-app="tc">
+	<head lang="en">
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="styles/main.css">
+		<link rel="stylesheet" href="styles/chat.css">
+		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+	</head>
+	<body layout="column" ng-controller="main as main">
+		
+		<section layout="row" flex>
+
+			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2">
+				<h2>Users</h2>
+			</md-sidenav>
+
+			<section layout="column" flex>
+				<md-tabs flex md-selected="0" md-border-bottom>
+					<md-tab ng-repeat="channel in main.channels" label="{{channel | stripHash}}">
+						<chat channel="channel"></chat>
+					</md-tab>
+				</md-tabs>
+			</section>
+			
+		</section>
+	
+
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/angular-aria/angular-aria.js"></script>
+		<script src="bower_components/angular-animate/angular-animate.js"></script>
+		<script src="bower_components/angular-material/angular-material.js"></script>
+
+		<script src="scripts/app.js"></script>
+		<script src="scripts/directives/chat.js"></script>
+		<script src="scripts/controllers/main.js"></script>
+		<script src="scripts/providers/settings.js"></script>
+		<script src="scripts/providers/irc.js"></script>
+		<script src="scripts/filters/strip-hash.js"></script>
+	</body>
+</html>

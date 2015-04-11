@@ -1,4 +1,4 @@
 .idea
 node_modules
-app-ui/components
+bower_components
 tc.iml

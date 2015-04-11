@@ -1,9 +1,9 @@
 {
-  "main": "app-node/main.js",
+  "main": "app.html",
   "name": "TC",
   "version": "0.0.1",
   "window": {
-    "toolbar": false,
+    "toolbar": true,
     "frame": false,
     "width": 800,
     "height": 500,
@@ -13,7 +13,5 @@
   "dependencies": {
     "twitch-irc": "^1.2.5"
   },
-  "devDependencies": {
-    "atom-shell": "^0.22.3"
-  }
+  "devDependencies": {}
 }
