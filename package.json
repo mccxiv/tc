@@ -3,8 +3,8 @@
   "name": "TC",
   "version": "0.0.1",
   "window": {
-    "toolbar": true,
-    "frame": false,
+    "toolbar": false,
+    "frame": true,
     "width": 800,
     "height": 500,
     "min_width": 800,
