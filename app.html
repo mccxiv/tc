@@ -3,20 +3,26 @@
 	<head lang="en">
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="styles/main.css">
-		<link rel="stylesheet" href="styles/chat.css">
+		<link rel="stylesheet" href="resources/application/app.css">
+		<link rel="stylesheet" href="resources/chat/chat.css">
+		<link rel="stylesheet" href="resources/chatters/chatters.css">
 		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 	</head>
 	<body layout="column" ng-controller="main as main">
 		
 		<section layout="row" flex>
 
-			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2">
-				<h2>Users</h2>
+			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2" layout="column">
+				<md-tabs class="chatter-tabs" md-selected="main.selectedChannelIndex" md-no-bar md-no-pagination>
+					<md-tab ng-repeat="channel in main.channels" label="...">
+						<chatters channel="channel"></chatters>
+					</md-tab>
+					<!--<chatters ng-repeat="channel in main.channels" channel="channel"></chatters>-->
+				</md-tabs>
 			</md-sidenav>
 
 			<section layout="column" flex>
-				<md-tabs flex md-selected="0" md-border-bottom>
+				<md-tabs class="chat-tabs" flex md-selected="main.selectedChannelIndex" md-border-bottom>
 					<md-tab ng-repeat="channel in main.channels" label="{{channel | stripHash}}">
 						<chat channel="channel"></chat>
 					</md-tab>
@@ -31,11 +37,18 @@
 		<script src="bower_components/angular-animate/angular-animate.js"></script>
 		<script src="bower_components/angular-material/angular-material.js"></script>
 
-		<script src="scripts/app.js"></script>
-		<script src="scripts/directives/chat.js"></script>
-		<script src="scripts/controllers/main.js"></script>
-		<script src="scripts/providers/settings.js"></script>
-		<script src="scripts/providers/irc.js"></script>
-		<script src="scripts/filters/strip-hash.js"></script>
+		<script src="resources/application/app.js"></script>
+
+		<script src="resources/chat/chat.js"></script>
+		<script src="resources/chatters/chatters.js"></script>
+		
+		<script src="resources/application/main-controller.js"></script>
+		
+		<script src="resources/providers/settings.js"></script>
+		<script src="resources/providers/irc.js"></script>
+		
+		<script src="resources/filters/strip-hash.js"></script>
+		<script src="resources/filters/capitalize.js"></script>
+		<script src="resources/filters/pretty-chatter-type.js"></script>
 	</body>
 </html>

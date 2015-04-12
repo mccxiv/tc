@@ -1,0 +1,32 @@
+chat {
+	
+}
+
+chat .wrapper {
+	height: 100%;
+}
+
+chat .chat-lines {
+	padding-left: 15px;
+}
+
+chat .chat-line {
+	padding: 4px 0;
+}
+
+chat .chat-line .username {
+	font-weight: bold;
+}
+
+chat .input {
+	padding-bottom: 0;
+}
+
+chat .input label {
+	padding-left: 20px !important;
+}
+
+chat .input .md-input {
+	border-color: transparent;
+	padding-left: 15px;
+}

@@ -1,0 +1,13 @@
+<div layout="column" class="wrapper">
+	<md-content class="chat-lines" layout-padding flex>
+		<div class="chat-line" ng-repeat="message in messages">
+			<span class="username" style="color: {{message.user.color}}">{{message.user.username | capitalize}}</span>:
+			<span class="message">{{message.message}}</span>
+		</div>
+	</md-content>
+	
+	<md-input-container class="input">
+		<label>Send a message</label>
+		<input ng-model="message">
+	</md-input-container>
+</div>

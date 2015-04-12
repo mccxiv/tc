@@ -3,7 +3,8 @@
   "dependencies": {
     "angular": "1.4",
     "angular-material": "master",
-    "angular-animate": "1.4"
+    "angular-animate": "1.4",
+    "material-design-icons": "~1.0.1"
   },
   "devDependencies": {}
 }
