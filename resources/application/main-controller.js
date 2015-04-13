@@ -1,4 +1,4 @@
-angular.module('tc').controller('main', ['settings', 'irc', function(settings, irc) {
+angular.module('tc').controller('main', ['settings', function(settings) {
 	this.channels = settings.channels;
-	this.selectedChannelIndex = 0;
+	this.tabIndex = 0;
 }]);

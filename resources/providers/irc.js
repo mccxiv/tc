@@ -5,7 +5,6 @@ angular.module('tc').factory('irc', ['settings', function(settings) {
 	var irc = require('twitch-irc');
 
 	clientOptions.options = {debug: true};
-	clientOptions.channels = settings.channels;
 	
 	client = new irc.client(clientOptions);
 	client.connect(); // TODO needs to make sure we have credentials
@@ -15,6 +14,8 @@ angular.module('tc').factory('irc', ['settings', function(settings) {
 	client.addListener('chat', function (channel, user, message) {
 		console.log('['+channel+'] '+user.username+': '+message);
 	});
+	
+	window.client = client;
 	
 	return client;
 }]);

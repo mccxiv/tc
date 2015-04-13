@@ -1,5 +1,5 @@
-angular.module('tc').directive('chatters', ['$http', '$filter', 'irc', function($http, $filter, irc) {
-
+angular.module('tc').directive('chatters', ['$http', '$filter', function($http, $filter) {
+	
 	function makeListUrl(broadcaster) {
 		return 'https://tmi.twitch.tv/group/user/'+broadcaster+'/chatters?callback=JSON_CALLBACK';
 	}
@@ -22,7 +22,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'irc', function(
 				scope.api = result.data;
 				console.log('Got user list for channel '+scope.channel, result.data);
 			}
-			else onListError(data, status);
+			else onListError(result, status);
 		}	
 		
 		function onListError(result, status) {

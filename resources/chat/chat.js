@@ -5,7 +5,9 @@ angular.module('tc').directive('chat', ['irc', function(irc) {
 		scope.messages = [];
 		scope.message = '';
 
-		// TODO get channel from another place, not parent scope
+		if (irc.connected) join();
+		else irc.addListener('connected', join);
+		
 		addChannelListener(irc, 'chat', scope.channel, addMessage);
 		addChannelListener(irc, 'chat', scope.channel, autoScroll);
 		
@@ -16,6 +18,12 @@ angular.module('tc').directive('chat', ['irc', function(irc) {
 		
 		function autoScroll() {
 			chatLines.scrollTop = chatLines.scrollHeight;
+		}
+
+		function join() {
+			irc.join(scope.channel).catch(function() {
+				console.warn('Error NYI'); // TODO handle error
+			});
 		}
 	}
 
