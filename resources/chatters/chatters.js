@@ -4,7 +4,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', function($http, 
 		return 'https://tmi.twitch.tv/group/user/'+broadcaster+'/chatters?callback=JSON_CALLBACK';
 	}
 	
-	function link(scope, element) {
+	function link(scope) {
 		scope.api = {};
 		
 		fetchList();
