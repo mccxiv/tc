@@ -30,32 +30,6 @@ angular.module('tc').directive('chatters', ['$http', '$filter', function($http, 
 		}
 	}
 
-	/**
-	 * When you only care about responding to events from a particular channel.
-	 *
-	 * Adds event listener to `irc` that only calls `handler` if the first
-	 * parameter of the listener matches `channel`.
-	 *
-	 * The `handler` will not receive `channel` as first argument, as it's
-	 * already implied.
-	 *
-	 * @param {{addListener: function}} irc
-	 * @param {string} event
-	 * @param {string} channel
-	 * @param {function} handler
-	 */
-	function addChannelListener(irc, event, channel, handler) {
-		irc.addListener(event, function() {
-			if (arguments[0] === channel) {
-				// Convert `arguments` to a real array and
-				// get rid of `channel` because it's implied
-				var args = Array.prototype.slice.call(arguments);
-				args.shift();
-				handler.apply(this, args);
-			}
-		});
-	}
-
 	return {
 		restrict: 'E',
 		templateUrl: 'resources/chatters/chatters.html',

@@ -1,0 +1,9 @@
+<md-tabs class="chatter-tabs" md-selected="settings.selectedTabIndex" md-no-bar md-no-pagination>
+	<md-tab ng-repeat="channel in settings.channels" label="...">
+		<chatters channel="channel"></chatters>
+	</md-tab>
+	<md-tab label="...">
+		<!-- md-tab need label and must not be empty -->
+		&nbsp;
+	</md-tab>
+</md-tabs>

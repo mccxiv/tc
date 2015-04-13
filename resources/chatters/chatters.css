@@ -5,3 +5,7 @@ chatters {
 chatters h3 {
 	margin-bottom: 0;
 }
+
+chatters .usernames {
+	padding-left: 10px;
+}
