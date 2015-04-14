@@ -1,0 +1,16 @@
+chat-box {
+	display: block;
+}
+
+chat-box .input {
+	padding-bottom: 0;
+}
+
+chat-box .input label {
+	padding-left: 20px !important;
+}
+
+chat-box .input .md-input {
+	border-color: transparent;
+	padding-left: 15px;
+}

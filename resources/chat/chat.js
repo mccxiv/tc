@@ -1,9 +1,7 @@
 angular.module('tc').directive('chat', ['irc', function(irc) {
 	
 	function link(scope, element) {
-		var chatLines = element.find('md-content')[0]; // TODO too fragile
 		scope.messages = [];
-		scope.message = '';
 
 		if (irc.connected) join();
 		else irc.addListener('connected', join);
@@ -17,7 +15,7 @@ angular.module('tc').directive('chat', ['irc', function(irc) {
 		}
 		
 		function autoScroll() {
-			chatLines.scrollTop = chatLines.scrollHeight;
+			element[0].scrollTop = element[0].scrollHeight;
 		}
 
 		function join() {

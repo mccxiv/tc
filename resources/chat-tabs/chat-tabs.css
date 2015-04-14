@@ -1,0 +1,7 @@
+chat-tabs {
+	display: block;
+}
+
+chat-tabs .chat-tabs {
+	height: 100%;
+}

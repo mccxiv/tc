@@ -5,8 +5,10 @@
 		<title></title>
 		<link rel="stylesheet" href="resources/application/app.css">
 		<link rel="stylesheet" href="resources/chat/chat.css">
+		<link rel="stylesheet" href="resources/chat-tabs/chat-tabs.css">
 		<link rel="stylesheet" href="resources/chatters/chatters.css">
 		<link rel="stylesheet" href="resources/chatters-tabs/chatters-tabs.css">
+		<link rel="stylesheet" href="resources/chat-box/chat-box.css">
 		<link rel="stylesheet" href="resources/add-channel/add-channel.css">
 		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 	</head>
@@ -14,22 +16,13 @@
 		
 		<section layout="row" flex>
 
-			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2" layout="column">
-				<md-content layout-padding>
-					<chatters-tabs></chatters-tabs>				
-				</md-content>
+			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2" layout="column" layout-padding>
+				<chatters-tabs></chatters-tabs>
 			</md-sidenav>
 
 			<section layout="column" flex>
-				<chat-tabs channels="main.channels"></chat-tabs>
-				<md-tabs class="chat-tabs" flex md-selected="main.tabIndex">
-					<md-tab ng-repeat="channel in main.channels" label="{{channel | stripHash}}">
-						<chat channel="channel"></chat>
-					</md-tab>
-					<md-tab label="+">
-						<add-channel></add-channel>
-					</md-tab>
-				</md-tabs>
+				<chat-tabs flex></chat-tabs>
+				<chat-box></chat-box>
 			</section>
 			
 		</section>
@@ -43,9 +36,12 @@
 		<script src="resources/application/app.js"></script>
 
 		<script src="resources/chat/chat.js"></script>
+		<script src="resources/chat-tabs/chat-tabs.js"></script>
 
 		<script src="resources/chatters/chatters.js"></script>
 		<script src="resources/chatters-tabs/chatters-tabs.js"></script>
+		
+		<script src="resources/chat-box/chat-box.js"></script>
 		
 		<script src="resources/add-channel/add-channel.js"></script>
 		
