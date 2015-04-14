@@ -20,3 +20,7 @@ chat {
 	height: 100%;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+chatters-tabs {
+	overflow-y: auto;
+}

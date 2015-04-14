@@ -6,6 +6,10 @@ chatters h3 {
 	margin-bottom: 0;
 }
 
+chatters h3:first-child {
+	margin-top: 0;
+}
+
 chatters .usernames {
 	padding-left: 10px;
 }

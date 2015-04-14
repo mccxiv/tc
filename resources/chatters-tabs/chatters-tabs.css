@@ -9,6 +9,10 @@ chatters-tabs md-tabs-content-wrapper {
 chatters-tabs md-tab-content {
 	-webkit-transition: none !important;
 	transition: none !important;
-	overflow-y: auto;
+	/*overflow-y: auto;*/
 	padding: 10px;
+}
+
+chatters-tabs md-tabs:not(.md-no-tab-content) {
+	min-height: 0 !important;
 }
