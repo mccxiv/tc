@@ -10,6 +10,8 @@ angular.module('tc').directive('chatters', ['$http', '$filter', function($http, 
 		fetchList();
 		
 		function fetchList() {
+			console.log('Getting user list for channel '+scope.channel);
+			
 			var broadcaster = $filter('stripHash')(scope.channel);
 			var url = makeListUrl(broadcaster);
 			var req = $http.jsonp(url);

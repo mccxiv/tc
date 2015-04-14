@@ -20,12 +20,3 @@ chat {
 	height: 100%;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-
-
-.chatter-tabs md-tabs-wrapper {
-	display: none;
-}
-
-.chatter-tabs md-tabs-content-wrapper {
-	top: 0;
-}
