@@ -4,13 +4,21 @@ chat-box {
 
 chat-box .input {
 	padding-bottom: 0;
+	margin-top: -23px;
 }
 
 chat-box .input label {
 	padding-left: 20px !important;
+	margin-bottom: -3px;
+	padding-top: 7px;
 }
 
 chat-box .input .md-input {
 	border-color: transparent;
-	padding-left: 15px;
+	padding-left: 20px;
+}
+
+chat-box .md-input-has-value label,
+chat-box .md-input-focused label {
+	opacity: 0;
 }

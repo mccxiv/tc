@@ -15,4 +15,5 @@ chatters-tabs md-tab-content {
 
 chatters-tabs md-tabs:not(.md-no-tab-content) {
 	min-height: 0 !important;
+	height: auto !important;
 }

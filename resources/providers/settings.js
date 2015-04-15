@@ -3,7 +3,8 @@ angular.module('tc').factory('settings', function() {
 		username: '',
 		password: '',
 		selectedTabIndex: 0,
-		channels: ['#k3nt0456', '#itshafu']
+		channels: []
+		//channels: ['#k3nt0456', '#itshafu']
 	}
 });
 
@@ -12,6 +13,7 @@ angular.module('tc').factory('sessionSettings', function() {
 		username: '',
 		password: '',
 		selectedTabIndex: 0,
-		channels: ['#k3nt0456', '#itshafu']
+		channels: []
+		//channels: ['#k3nt0456', '#itshafu']
 	}
 });

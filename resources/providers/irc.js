@@ -15,7 +15,7 @@ angular.module('tc').factory('irc', ['settings', function(settings) {
 		console.log('['+channel+'] '+user.username+': '+message);
 	});
 	
-	window.client = client;
+	window.client = client; // TODO remove debugging statement
 	
 	return client;
 }]);
