@@ -1,4 +1,4 @@
-<div layout="row" class="cp-toolbar" ng-if="settings.channels[settings.selectedTabIndex]">
+<div layout="row" class="cp-toolbar" ng-if="channel()">
 	<span flex></span>
 	<md-button ng-click="leave()">
 		<md-tooltip md-autohide>
@@ -6,7 +6,7 @@
 		</md-tooltip>
 		<i class="mdi mdi-close"></i>
 	</md-button>
-	<md-button md-click="openStream()">
+	<md-button ng-click="openStream()">
 		<md-tooltip md-autohide>
 			Stream popout
 		</md-tooltip>
