@@ -1,5 +1,14 @@
+channel-panel .mdi {
+	vertical-align: -2px;
+}
+
 channel-panel .md-button {
 	min-width: 0;
 	border-radius: 0 !important;
 	margin: 0;
+	line-height: 35px;
+}
+
+channel-panel .cp-toolbar {
+	line-height: 35px;
 }
