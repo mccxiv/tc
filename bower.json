@@ -4,7 +4,8 @@
     "angular": "1.4",
     "angular-material": "master",
     "angular-animate": "1.4",
-    "material-design-icons": "~1.0.1"
+    "material-design-icons": "~1.0.1",
+    "material-design-iconic-font": "mccxiv/material-design-iconic-font#~2.0.0"
   },
   "devDependencies": {}
 }

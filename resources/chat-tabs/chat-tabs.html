@@ -2,7 +2,12 @@
 	<md-tab ng-repeat="channel in settings.channels" label="{{channel | stripHash}}">
 		<chat channel="channel"></chat>
 	</md-tab>
-	<md-tab label="+">
-		<add-channel></add-channel>
+	<md-tab>
+		<md-tab-label>
+			<i class="mdi mdi-add mdi-lg"></i>
+		</md-tab-label>
+		<md-tab-template>
+			<add-channel></add-channel>
+		</md-tab-template>
 	</md-tab>
 </md-tabs>
