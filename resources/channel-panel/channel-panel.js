@@ -13,6 +13,7 @@ angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', fu
 
 		scope.leave = function() {
 			settings.channels.splice(settings.selectedTabIndex, 1);
+			irc.part(scope.channel());
 		};
 
 		scope.openStream = function() {
