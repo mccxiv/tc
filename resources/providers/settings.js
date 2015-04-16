@@ -5,8 +5,8 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	var appData = gui.App.dataPath;
 	var filename = path.join(appData, 'settings/', 'settings.json');
 	var settings = {
-		username: 'k3nt0456',
-		password: 'oauth:c5t0hxspkfav4ivsammp2tswswuyze',
+		username: '',
+		password: '',
 		selectedTabIndex: 0,
 		channels: []
 	};
