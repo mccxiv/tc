@@ -1,19 +1,32 @@
-angular.module('tc').factory('settings', function() {
-	return {
+angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $rootScope) {
+	
+	var fse = require('fs-extra');
+	var path = require('path');
+	var appData = gui.App.dataPath;
+	var filename = path.join(appData, 'settings/', 'settings.json');
+	var settings = {
 		username: '',
 		password: '',
 		selectedTabIndex: 0,
 		channels: []
-		//channels: ['#k3nt0456', '#itshafu']
-	}
-});
+	};
 
-angular.module('tc').factory('sessionSettings', function() {
-	return {
-		username: '',
-		password: '',
-		selectedTabIndex: 0,
-		channels: []
-		//channels: ['#k3nt0456', '#itshafu']
+	// TODO dont' trust file values to be valid and update it with new defaults
+	try {settings = fse.readJsonSync(filename);}
+	catch (e) {console.info('No saved settings found.');}
+
+	$rootScope.$watch(watchVal, watchListener, true);
+	
+	function watchVal() {
+		return settings;
 	}
-});
+	
+	function watchListener(newV, oldV) {
+		if (newV !== oldV) {
+			console.log('Settings changed, saving.', settings);
+			fse.outputJson(filename, settings, function() {});
+		}
+	}
+	
+	return settings;
+}]);

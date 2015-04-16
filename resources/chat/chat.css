@@ -6,6 +6,7 @@ chat {
 
 chat .chat-line {
 	padding: 4px 0;
+	word-wrap: break-word;
 }
 
 chat .chat-line .colon {
