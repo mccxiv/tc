@@ -5,8 +5,8 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	var appData = gui.App.dataPath;
 	var filename = path.join(appData, 'settings/', 'settings.json');
 	var settings = {
-		username: '',
-		password: '',
+		username: 'k3nt0456',
+		password: 'oauth:c5t0hxspkfav4ivsammp2tswswuyze',
 		selectedTabIndex: 0,
 		channels: []
 	};
@@ -27,6 +27,9 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			fse.outputJson(filename, settings, function() {});
 		}
 	}
+	
+	// TODO remove debug stuff
+	window.settings = settings;	
 	
 	return settings;
 }]);

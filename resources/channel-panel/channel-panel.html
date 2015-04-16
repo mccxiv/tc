@@ -1,20 +1,20 @@
 <div layout="row" class="cp-toolbar" ng-if="channel()">
 	<span flex></span>
-	<md-button ng-click="leave()">
+	<md-button ng-click="leave()" aria-label="Leave channel">
 		<md-tooltip md-autohide>
 			Leave channel
 		</md-tooltip>
 		<i class="mdi mdi-close"></i>
 	</md-button>
-	<md-button ng-click="openStream()">
+	<md-button ng-click="openStream()" aria-label="Stream popout">
 		<md-tooltip md-autohide>
-			Stream popout
+			Stream Popout
 		</md-tooltip>
 		<i class="mdi mdi-slideshow"></i>
 	</md-button>
-	<md-button ng-click="openChannel()">
+	<md-button ng-click="openChannel()" aria-label="Go to Channel">
 		<md-tooltip md-autohide>
-			Go to channel
+			Go to Channel
 		</md-tooltip>
 		<i class="mdi mdi-open-in-new"></i>
 	</md-button>
