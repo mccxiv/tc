@@ -1,5 +1,11 @@
 channel-panel .mdi {
-	vertical-align: -2px;
+	vertical-align: -3px;
+}
+
+channel-panel md-divider.vertical {
+	display: inline;
+	border-top-style: none;
+	border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 channel-panel .md-button {

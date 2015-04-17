@@ -1,8 +1,15 @@
 <div layout="row" class="cp-toolbar" ng-if="channel()">
+	<md-button ng-click="log()" aria-label="Change account">
+		<md-tooltip md-autohide md-direction="right">
+			Change Account
+		</md-tooltip>
+		<i class="mdi mdi-account-child"></i>
+	</md-button>
+	<md-divider class="vertical"></md-divider>
 	<span flex></span>
 	<md-button ng-click="leave()" aria-label="Leave channel">
 		<md-tooltip md-autohide>
-			Leave channel
+			Leave Channel
 		</md-tooltip>
 		<i class="mdi mdi-close"></i>
 	</md-button>
@@ -12,7 +19,7 @@
 		</md-tooltip>
 		<i class="mdi mdi-slideshow"></i>
 	</md-button>
-	<md-button ng-click="openChannel()" aria-label="Go to Channel">
+	<md-button ng-click="openChannel()" aria-label="Go to channel">
 		<md-tooltip md-autohide>
 			Go to Channel
 		</md-tooltip>

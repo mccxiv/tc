@@ -4,6 +4,10 @@ chat {
 	padding-left: 15px;
 }
 
+chat .chat-lines {
+	padding-top: 10px;
+}
+
 chat .chat-line {
 	padding: 4px 0;
 	word-wrap: break-word;

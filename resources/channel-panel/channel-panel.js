@@ -10,6 +10,10 @@ angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', fu
 		scope.broadcaster = function () {
 			return $filter('stripHash')(scope.channel());
 		};
+		
+		scope.log = function() {
+			settings.identity.password = '';	
+		};
 
 		scope.leave = function() {	
 			settings.channels.splice(settings.selectedTabIndex, 1);
