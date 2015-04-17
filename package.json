@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "fs-extra": "^0.18.1",
-    "twitch-irc": "^1.2.5"
+    "twitch-irc": "^1.2.6"
   },
   "devDependencies": {}
 }

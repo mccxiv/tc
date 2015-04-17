@@ -39,6 +39,10 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	function makeNewClient() {
 		if (credentialsValid()) {
 			var clientSettings = {
+				options: {
+					exitOnError : false,
+					emitSelf: true
+				},
 				identity: settings.identity,
 				channels: settings.channels
 			};

@@ -1,4 +1,4 @@
-angular.module('tc').directive('chat', ['irc', function(irc) {
+angular.module('tc').directive('chat', ['$timeout', 'irc', function($timeout, irc) {
 	
 	function link(scope, element) {
 		scope.messages = [];
@@ -7,8 +7,9 @@ angular.module('tc').directive('chat', ['irc', function(irc) {
 		addChannelListener(irc, 'chat', scope.channel, autoScroll);		
 		
 		function addMessage(user, message) {
-			scope.messages.push({user: user, message: message});
-			scope.$apply();
+			$timeout(function() {
+				scope.messages.push({user: user, message: message});
+			});
 		}
 		
 		function autoScroll() {
