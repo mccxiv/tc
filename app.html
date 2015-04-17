@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="resources/application/app.css">
+		<link rel="stylesheet" href="resources/login/login.css">
 		<link rel="stylesheet" href="resources/channel-panel/channel-panel.css">
 		<link rel="stylesheet" href="resources/chat/chat.css">
 		<link rel="stylesheet" href="resources/chat-tabs/chat-tabs.css">
@@ -14,8 +15,10 @@
 		<link rel="stylesheet" href="bower_components/material-design-iconic-font/css/material-design-iconic-font.css">
 		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 	</head>
-	<body layout="column" ng-controller="main as main">
+	<body layout="column" ng-controller="main" ng-cloak>
+	
 		
+	
 		<section layout="row" flex>
 
 			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2" layout="column">				
@@ -31,7 +34,8 @@
 			</section>
 			
 		</section>
-		
+
+		<login ng-if="!settings.identity.password.length" layout-fill></login>
 
 		<script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.js"></script>
@@ -39,6 +43,8 @@
 		<script src="bower_components/angular-material/angular-material.js"></script>
 
 		<script src="resources/application/app.js"></script>
+
+		<script src="resources/login/login.js"></script>
 		
 		<script src="resources/channel-panel/channel-panel.js"></script>
 

@@ -24,3 +24,10 @@ chat {
 chatters-tabs {
 	overflow-y: auto;
 }
+
+.login-panel {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+}

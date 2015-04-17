@@ -1,0 +1,24 @@
+login {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	background-color: #baeeff;
+}
+
+login .form {
+	width: 250px;
+	border-radius: 3px;
+	background-color: #ffffff;
+	position: relative;
+}
+
+login .login-button {
+	position: absolute;
+	bottom: -39px;
+	right: 9px;
+}
+
+login .login-button i {
+	margin-top: 7px;
+}

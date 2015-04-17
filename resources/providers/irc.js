@@ -1,9 +1,7 @@
 angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootScope, settings) {
-
 	
 	var irc = require('twitch-irc');
 	var Emitter = require("events").EventEmitter;
-	var credentials = [settings.username, settings.password];
 	var ee = new Emitter();
 	var client;
 	var events = [ 
@@ -41,10 +39,7 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	function makeNewClient() {
 		if (credentialsValid()) {
 			var clientSettings = {
-				identity: {
-					username: settings.username,
-					password: settings.password
-				},
+				identity: settings.identity,
 				channels: settings.channels
 			};
 			
@@ -54,12 +49,12 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 			attachDebuggingListeners();
 		}
 		else {
-			console.log('Aborting creation of client because of invalid credentials');
+			console.log('IRC: Aborting creation of client because of invalid credentials');
 		}
 	}
 
 	function destroyClient() {
-		client.disconnect();	
+		if (client) client.disconnect();	
 	}
 	
 	function onChannelsChange(cb) {
@@ -67,23 +62,22 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	}
 	
 	function onCredentialsChange(cb) {
-		$rootScope.$watch(watchVal, handler); // TODO this is broken, watch collection instead?
+		$rootScope.$watchCollection(watchVal, handler); // TODO this is broken, watch collection instead?
 		
 		function watchVal() {
-			return credentials;
+			return settings.identity;
 		}
 
 		function handler(newV, oldV) {
 			if (newV !== oldV) {
-				console.log('Credentials changed.');
+				console.log('IRC: Credentials changed.');
 				cb();
 			}
 		}
 	}
 	
 	function credentialsValid() {
-		return true
-		//return !!settings.password.length
+		return !!settings.identity.password.length;
 	}
 	
 	function attachDebuggingListeners() {

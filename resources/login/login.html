@@ -1,0 +1,17 @@
+<div class="form md-whiteframe-z1" layout-padding>
+	<md-input-container>
+		<label>Username</label>
+		<input ng-model="username">
+	</md-input-container>
+	
+	<form ng-submit="login()">
+		<md-input-container>
+			<label>Oauth password</label>
+			<input ng-model="password" type="password">
+		</md-input-container>
+	</form>
+	
+	<md-button class="login-button md-fab md-primary" aria-label="Log in" ng-click="login()">
+		<i class="mdi mdi-keyboard-arrow-right mdi-3x"></i>
+	</md-button>
+</div>

@@ -5,8 +5,10 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	var appData = gui.App.dataPath;
 	var filename = path.join(appData, 'settings/', 'settings.json');
 	var settings = {
-		username: '',
-		password: '',
+		identity: {
+			username: '',
+			password: ''
+		},
 		selectedTabIndex: 0,
 		channels: []
 	};
