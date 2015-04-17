@@ -2,13 +2,11 @@ angular.module('tc').directive('chatBox', ['settings', 'irc', function(settings,
 
 	function link(scope) {
 		scope.message = '';
-
-		scope.keypress = function(event) {
-			if (event.which === 13) {
-				var channel = settings.channels[settings.selectedTabIndex];
-				irc.say(channel, scope.message);
-				scope.message = '';
-			}
+		
+		scope.say = function() {
+			var channel = settings.channels[settings.selectedTabIndex];
+			irc.say(channel, scope.message);
+			scope.message = '';
 		};
 	}
 

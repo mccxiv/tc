@@ -54,7 +54,12 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	}
 
 	function destroyClient() {
-		if (client) client.disconnect();	
+		console.log('IRC: Client when disconnecting:', client);
+		// Need to track this to avoid emitting disconnect twice
+		if (client && !client.destroyed) {
+			client.disconnect();
+			client.destroyed = true;
+		}	
 	}
 	
 	function onChannelsChange(cb) {
@@ -93,6 +98,10 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 			console.warn('Disconnected');
 		});	
 	}
+	
+	ee.say = function(channel, msg) {
+		client.say(channel, msg);	
+	};
 	
 	return ee;
 }]);
