@@ -2,6 +2,13 @@ chat {
 	display: block;
 	overflow: auto;
 	padding-left: 15px;
+	font-size: 1.4rem;
+}
+
+chat .emoticon {
+	display: inline-block;
+	vertical-align: 5px;
+	margin: -9px 0;
 }
 
 chat .chat-lines {

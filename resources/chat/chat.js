@@ -1,14 +1,18 @@
-angular.module('tc').directive('chat', ['$timeout', 'irc', function($timeout, irc) {
+angular.module('tc').directive('chat', ['$timeout', '$filter', 'irc', function($timeout, $filter, irc) {
 	
 	function link(scope, element) {
 		scope.messages = [];
 
-		addChannelListener(irc, 'chat', scope.channel, addMessage);
-		addChannelListener(irc, 'chat', scope.channel, autoScroll);		
+		addChannelListener(irc, 'chat', scope.channel, addMessage);		
 		
 		function addMessage(user, message) {
-			$timeout(function() {
-				scope.messages.push({user: user, message: message});
+			scope.messages.push({
+				user: user,
+				messageHtml: $filter('emotify')(message, user.emote)
+			});
+			$timeout().then(function() {
+				//scope.$apply();
+				autoScroll();
 			});
 		}
 		
@@ -33,7 +37,6 @@ angular.module('tc').directive('chat', ['$timeout', 'irc', function($timeout, ir
 	 */
 	function addChannelListener(client, event, channel, handler) {
 		client.addListener(event, function() {
-			console.log('addChannelListener callback fired');
 			if (arguments[0] === channel) {
 				// Convert `arguments` to a real array and
 				// get rid of `channel` because it's implied

@@ -29,8 +29,7 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 				var args = Array.prototype.slice.call(arguments);
 				args.unshift(event);
 				
-				console.log('IRC: Rebroadcasting event: '+event);
-				console.log('IRC: Rebroadcasting with args', args)
+				console.log('IRC: Rebroadcasting with args', args);
 				reEmitter.emit.apply(reEmitter, args);
 			});
 		});
@@ -91,7 +90,12 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	
 	function attachDebuggingListeners() {
 		client.addListener('chat', function(ch, usr, msg) {
-			console.log(ch+' '+usr.username+': '+msg);
+			console.log('======== Message =====================');
+			console.log('channel', ch);
+			console.log('user', usr);
+			console.log('message', msg);
+			console.log('emotes', usr.emote);
+			console.log('======== Msg end =====================');
 		});
 
 		client.addListener('connected', function() {
