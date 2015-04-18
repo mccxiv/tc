@@ -15,7 +15,12 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	onCredentialsChange(function() {
 		destroyClient();
 		makeNewClient();
-	});	
+	});
+	
+	onChannelsChange(function() {
+		joinChannels();
+		leaveChannels();
+	});
 
 	/**
 	 * Re emits events from `emitter` on `reEmitter`
@@ -48,11 +53,45 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 			
 			client = new irc.client(clientSettings);
 			forwardEvents(events, client, ee);
-			client.connect();
+			client.addListener('connected', joinChannels);
+			client.connect();			
 			attachDebuggingListeners();
 		}
 		else {
 			console.log('IRC: Aborting creation of client because of invalid credentials');
+		}
+	}
+
+	/**
+	 * Joins any channels in settings.channels 
+	 * that haven't been joined yet.
+	 */
+	function joinChannels() {
+		client.tcJoined = client.tcJoined || [];
+		
+		settings.channels.forEach(function(channel) {
+			if (client.tcJoined.indexOf(channel) === -1) {
+				client.tcJoined.push(channel);
+				console.log('IRC: joining channel '+channel);
+				client.join(channel);
+			}
+		})
+	}
+
+	/**
+	 * Leaves joined channels that do not
+	 * appear in settings.channels.
+	 */
+	function leaveChannels() {
+		client.tcJoined = client.tcJoined || [];
+		
+		for (var i = client.tcJoined.length - 1; i > -1; i--) {
+			var channel = client.tcJoined[i];
+			if (settings.channels.indexOf(channel) === -1) {
+				console.log('IRC: leaving channel '+channel);
+				client.tcJoined.splice(i, 1);
+				client.part(channel);
+			}
 		}
 	}
 
@@ -66,7 +105,20 @@ angular.module('tc').factory('irc', ['$rootScope', 'settings', function($rootSco
 	}
 	
 	function onChannelsChange(cb) {
-		// TODO join and leave channels
+		$rootScope.$watchCollection(watchVal, handler); // TODO this is broken, watch collection instead?
+
+		function watchVal() {
+			return settings.channels;
+		}
+
+		function handler(newV, oldV) {
+			if (newV !== oldV) {
+				console.log('IRC: Channels changed.');
+				console.log('IRC: Channels old', oldV);
+				console.log('IRC: Channels new', newV);
+				cb();
+			}
+		}
 	}
 	
 	function onCredentialsChange(cb) {
