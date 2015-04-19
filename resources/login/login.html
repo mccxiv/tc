@@ -1,13 +1,15 @@
 <div class="form md-whiteframe-z1" layout-padding>
 	<md-input-container>
 		<label>Username</label>
-		<input ng-model="username">
+		<input ng-if="!m.haveUsername" ng-model="m.username" auto-focus>
+		<input ng-if="m.haveUsername" ng-model="m.username">
 	</md-input-container>
 	
 	<form ng-submit="login()">
 		<md-input-container>
 			<label>Oauth password</label>
-			<input ng-model="password" type="password">
+			<input ng-if="m.haveUsername" ng-model="m.password" type="password" auto-focus>
+			<input ng-if="!m.haveUsername" ng-model="m.password" type="password">
 		</md-input-container>
 	</form>
 	

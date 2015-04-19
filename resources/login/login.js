@@ -3,15 +3,21 @@ angular.module('tc').directive('login', ['settings', function(settings) {
 		restrict: 'E',
 		templateUrl: 'resources/login/login.html',
 		link: function(scope, element) {
+			scope.m = {
+				username: settings.identity.username,
+				password: settings.identity.password,
+				haveUsername: !!settings.identity.username.length
+			};
+			
 			element.attr('layout', 'row');
 			element.attr('layout-align', 'center center');
-			scope.username = settings.identity.username;
-			scope.password = settings.identity.password;
+			
+			window.login = scope;
 						
 			scope.login = function() {
-				console.log('LOGIN: User supplied credentials.');
-				settings.identity.username = scope.username;
-				settings.identity.password = scope.password;
+				console.log('LOGIN: User supplied credentials.', scope.m.username, scope.m.password, '|');
+				settings.identity.username = scope.m.username;
+				settings.identity.password = scope.m.password;
 			}
 		}
 	}
