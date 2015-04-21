@@ -17,10 +17,7 @@
 	</head>
 	<body layout="column" ng-controller="main" ng-cloak>
 	
-		
-	
 		<section layout="row" flex>
-
 			<md-sidenav md-is-locked-open="true" class="md-sidenav-left md-whiteframe-z2" layout="column">				
 				<channel-panel></channel-panel>
 				<md-divider></md-divider>
@@ -31,11 +28,10 @@
 				<chat-tabs flex></chat-tabs>
 				<md-divider></md-divider>
 				<chat-box></chat-box>
-			</section>
-			
+			</section>			
 		</section>
 
-		<login ng-if="!settings.identity.password.length" layout-fill></login>
+		<login ng-show="needLogin()"></login>
 
 		<script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.js"></script>
@@ -71,5 +67,6 @@
 		<script src="resources/filters/pretty-chatter-type.js"></script>
 
 		<script src="resources/util/auto-focus.js"></script>
+		<script src="resources/util/twitch-irc-logger.js"></script>
 	</body>
 </html>

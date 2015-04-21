@@ -1,4 +1,8 @@
 login {
+	
+}
+
+login .login-overlay {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -21,4 +25,11 @@ login .login-button {
 
 login .login-button i {
 	margin-top: 7px;
+}
+
+login .error {
+	color: rgb(244,67,54);
+	font-size: 12px;
+	line-height: 24px;
+	margin-bottom: 15px;
 }

@@ -1,4 +1,4 @@
-angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', function(settings, gui, $filter) {
+angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', '$mdDialog', 'irc', function(settings, gui, $filter, $mdDialog, irc) {
 	
 	function link(scope) {
 		scope.settings = settings;
@@ -11,8 +11,24 @@ angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', fu
 			return $filter('stripHash')(scope.channel());
 		};
 		
-		scope.log = function() {
-			settings.identity.password = '';	
+		scope.confirmLogout = function(event) {
+			var confirm = $mdDialog.confirm()
+				.parent(angular.element(document.body))
+				//.title('llll')
+				.content('Are you sure you want to log out? You will need to re-enter your password.')
+				.ok('OK')
+				.cancel('Cancel')
+				.targetEvent(event);
+			confirm._options.clickOutsideToClose = true;
+			
+			console.log('confirm is ', confirm);
+
+			$mdDialog.show(confirm).then(function() {
+				settings.identity.password = '';
+				irc.logout();
+			}, function() {
+				// do nothing
+			});
 		};
 
 		scope.leave = function() {	

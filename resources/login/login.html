@@ -1,19 +1,27 @@
-<div class="form md-whiteframe-z1" layout-padding>
-	<md-input-container>
-		<label>Username</label>
-		<input ng-if="!m.haveUsername" ng-model="m.username" auto-focus>
-		<input ng-if="m.haveUsername" ng-model="m.username">
-	</md-input-container>
-	
-	<form ng-submit="login()">
+<div class="login-overlay" layout-fill layout="row" layout-align="center center">
+	<div class="form md-whiteframe-z1" layout-padding>
+		
+		<div class="error" ng-if="irc.badLogin">
+			<div>{{irc.badLogin}}</div>
+			<md-divider></md-divider>
+		</div>
+		
 		<md-input-container>
-			<label>Oauth password</label>
-			<input ng-if="m.haveUsername" ng-model="m.password" type="password" auto-focus>
-			<input ng-if="!m.haveUsername" ng-model="m.password" type="password">
+			<label>Username</label>
+			<input ng-if="!m.haveUsername" ng-model="m.username" auto-focus>
+			<input ng-if="m.haveUsername" ng-model="m.username" value="">
 		</md-input-container>
-	</form>
-	
-	<md-button class="login-button md-fab md-primary" aria-label="Log in" ng-click="login()">
-		<i class="mdi mdi-keyboard-arrow-right mdi-3x"></i>
-	</md-button>
+		
+		<form ng-submit="login()">
+			<md-input-container>
+				<label>Oauth password</label>
+				<input ng-if="m.haveUsername" ng-model="m.password" type="password" auto-focus>
+				<input ng-if="!m.haveUsername" ng-model="m.password" type="password">
+			</md-input-container>
+		</form>
+		
+		<md-button class="login-button md-fab md-primary" aria-label="Log in" ng-click="login()">
+			<i class="mdi mdi-keyboard-arrow-right mdi-3x"></i>
+		</md-button>
+	</div>
 </div>

@@ -1,24 +1,23 @@
-angular.module('tc').directive('login', ['settings', function(settings) {
+angular.module('tc').directive('login', ['settings', 'irc', function(settings, irc) {
 	return {
 		restrict: 'E',
 		templateUrl: 'resources/login/login.html',
-		link: function(scope, element) {
-			scope.m = {
-				username: settings.identity.username,
-				password: settings.identity.password,
-				haveUsername: !!settings.identity.username.length
-			};
-			
-			element.attr('layout', 'row');
-			element.attr('layout-align', 'center center');
-			
-			window.login = scope;
-						
+		link: function(scope) {
+			scope.irc = irc;
+			scope.settings = settings;
 			scope.login = function() {
-				console.log('LOGIN: User supplied credentials.', scope.m.username, scope.m.password, '|');
 				settings.identity.username = scope.m.username;
 				settings.identity.password = scope.m.password;
-			}
+				console.log('LOGIN: User supplied credentials.', settings.identity.username, settings.identity.password, '|');
+				irc.login();
+			};
+			// These values should NOT update the settings object or
+			// it will break the form's conditionals
+			scope.m = {};
+			scope.m.username = settings.identity.username;
+			scope.m.password = settings.identity.password;
+			scope.m.haveUsername = !!settings.identity.username.length;
+			scope.m.haveNoPassword = !settings.identity.password.length;		
 		}
 	}
 }]);
