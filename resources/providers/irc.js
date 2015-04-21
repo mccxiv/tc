@@ -154,17 +154,6 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 		}
 	}
 	
-	function onCredentialsChange(cb) {
-		$rootScope.$watchCollection(watchVal, handler); // TODO this is broken, watch collection instead?
-		function watchVal() {return settings.identity;}
-		function handler(newV, oldV) {
-			if (newV !== oldV) {
-				console.log('IRC: Credentials changed.');
-				cb();
-			}
-		}
-	}
-	
 	function credentialsValid() {
 		return !!settings.identity.username.length && !!settings.identity.password.length;
 	}
@@ -185,7 +174,6 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 			console.warn('Disconnected');
 		});	
 	}
-	
 	
 	window.irc = this;
 	window.irc.ee = ee;
