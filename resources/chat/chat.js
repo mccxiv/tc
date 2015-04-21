@@ -10,8 +10,8 @@ angular.module('tc').directive('chat', ['$timeout', '$filter', 'irc', function($
 				user: user,
 				messageHtml: $filter('emotify')(message, user.emote)
 			});
-			$timeout().then(function() {
-				//scope.$apply();
+			$timeout(function() {
+				scope.$apply(); // TODO why is this necessary? Don't work without it
 				autoScroll();
 			});
 		}
