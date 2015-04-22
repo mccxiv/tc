@@ -9,7 +9,10 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', func
 			scope.messages.push({
 				user: user,
 				messageHtml: $filter('emotify')(message, user.emote)
-			});
+			});	
+			if (scope.messages.length > settings.maxChaLines) {
+				scope.messages.shift();
+			}			
 			$timeout(function() {
 				scope.$apply(); // TODO why is this necessary? Don't work without it
 				autoScroll();
