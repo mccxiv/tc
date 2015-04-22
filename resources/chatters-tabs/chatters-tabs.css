@@ -7,9 +7,9 @@ chatters-tabs md-tabs-content-wrapper {
 }
 
 chatters-tabs md-tab-content {
-	-webkit-transition: none !important;
 	transition: none !important;
-	/*overflow-y: auto;*/
+	-webkit-animation: none !important;
+	animation: none !important;
 	padding: 10px;
 }
 

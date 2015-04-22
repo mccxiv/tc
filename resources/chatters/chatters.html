@@ -1,6 +1,6 @@
 <div ng-repeat="(key, value) in api.chatters">
 	<h3 ng-if="value.length">{{key | prettyChatterType}}</h3>
 	<div class="md-body-1 usernames">
-		<div ng-repeat="username in value">{{username}}</div>
+		<div ng-repeat="username in value | limitTo: 30">{{username}}</div>
 	</div>
 </div>
