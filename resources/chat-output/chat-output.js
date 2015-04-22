@@ -1,4 +1,4 @@
-angular.module('tc').directive('chat', ['$timeout', '$filter', 'irc', function($timeout, $filter, irc) {
+angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', function($timeout, $filter, irc) {
 	
 	function link(scope, element) {
 		scope.messages = [];
@@ -49,7 +49,7 @@ angular.module('tc').directive('chat', ['$timeout', '$filter', 'irc', function($
 	
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/chat/chat.html',
+		templateUrl: 'resources/chat-output/chat-output.html',
 		scope: {channel: '='},
 		link: link
 	} 

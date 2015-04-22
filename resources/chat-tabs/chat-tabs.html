@@ -1,6 +1,6 @@
 <md-tabs class="chat-tabs" flex md-selected="settings.selectedTabIndex" md-border-bottom>
 	<md-tab ng-repeat="channel in settings.channels" label="{{channel | stripHash}}">
-		<chat channel="channel"></chat>
+		<chat-output channel="channel"></chat-output>
 	</md-tab>
 	<md-tab>
 		<md-tab-label>

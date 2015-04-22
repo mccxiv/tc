@@ -1,29 +1,29 @@
-chat {
+chat-output {
 	display: block;
 	overflow: auto;
 	padding-left: 15px;
 	font-size: 1.4rem;
 }
 
-chat .emoticon {
+chat-output .emoticon {
 	display: inline-block;
 	vertical-align: 5px;
 	margin: -9px 0;
 }
 
-chat .chat-lines {
+chat-output .chat-lines {
 	padding-top: 10px;
 }
 
-chat .chat-line {
+chat-output .chat-line {
 	padding: 4px 0;
 	word-wrap: break-word;
 }
 
-chat .chat-line .colon {
+chat-output .chat-line .colon {
 	margin-right: 2px;
 }
 
-chat .chat-line .username {
+chat-output .chat-line .username {
 	font-weight: bold;
 }
