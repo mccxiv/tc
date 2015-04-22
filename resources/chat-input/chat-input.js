@@ -1,4 +1,4 @@
-angular.module('tc').directive('chatBox', ['settings', 'irc', function(settings, irc) {
+angular.module('tc').directive('chatInput', ['settings', 'irc', function(settings, irc) {
 
 	function link(scope) {
 		scope.message = '';
@@ -12,7 +12,7 @@ angular.module('tc').directive('chatBox', ['settings', 'irc', function(settings,
 
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/chat-box/chat-box.html',
+		templateUrl: 'resources/chat-input/chat-input.html',
 		link: link
 	}
 }]);

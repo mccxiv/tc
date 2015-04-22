@@ -1,24 +1,24 @@
-chat-box {
+chat-input {
 	display: block;
 }
 
-chat-box .input {
+chat-input .input {
 	padding-bottom: 0;
 	margin-top: -23px;
 }
 
-chat-box .input label {
+chat-input .input label {
 	padding-left: 20px !important;
 	margin-bottom: -3px;
 	padding-top: 7px;
 }
 
-chat-box .input .md-input {
+chat-input .input .md-input {
 	border-color: transparent;
 	padding-left: 20px;
 }
 
-chat-box .md-input-has-value label,
-chat-box .md-input-focused label {
+chat-input .md-input-has-value label,
+chat-input .md-input-focused label {
 	opacity: 0;
 }
