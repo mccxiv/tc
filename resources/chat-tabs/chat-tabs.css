@@ -5,7 +5,7 @@ chat-tabs {
 /* TODO geting rid of animations for performance, it's dirty */
 chat-tabs md-tab-content {
 	/*transition: transform 0s 3s !important;*/
-	transition: none !important;
+	transition: transform 0s 500ms !important;
 	-webkit-animation: none !important;
 	animation: none !important;
 }

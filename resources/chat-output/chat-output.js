@@ -2,6 +2,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', func
 	
 	function link(scope, element) {
 		scope.messages = [];
+		scope.maxChatLines = settings.maxChaLines;
 
 		addChannelListener(irc, 'chat', scope.channel, addMessage);		
 		
@@ -10,9 +11,10 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', func
 				user: user,
 				messageHtml: $filter('emotify')(message, user.emote)
 			});	
-			if (scope.messages.length > settings.maxChaLines) {
+			/*if (scope.messages.length > settings.maxChaLines) {
+				console.log('CHAT-OUTPUT: Removing extra lines');
 				scope.messages.shift();
-			}			
+			}*/			
 			$timeout(function() {
 				scope.$apply(); // TODO why is this necessary? Don't work without it
 				autoScroll();
@@ -22,6 +24,10 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', func
 		function autoScroll() {
 			element[0].scrollTop = element[0].scrollHeight;
 		}
+
+		scope.$on('$destroy', function() {
+			console.warn('CHAT-OUTPUT: Destroying scope');
+		});
 	}
 
 	/**

@@ -9,7 +9,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			username: '',
 			password: ''
 		},
-		maxChaLines: 200,
+		maxChaLines: 80,
 		selectedTabIndex: 0,
 		channels: []
 	};
