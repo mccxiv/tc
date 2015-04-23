@@ -5,10 +5,15 @@ chat-output {
 	font-size: 1.4rem;
 }
 
-chat-output .emoticon {
+chat-output .emoticon, 
+chat-output .badge {
 	display: inline-block;
 	vertical-align: 5px;
 	margin: -9px 0;
+}
+
+chat-output .badge:not(:first-child) {
+	margin-left: 3px;
 }
 
 chat-output .chat-lines {

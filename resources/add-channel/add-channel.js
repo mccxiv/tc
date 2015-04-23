@@ -5,9 +5,6 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
 		
 		scope.keypress = function(event) {
 			if (event.which === 13) {
-				if (scope.value.charAt(0) !== '#') {
-					scope.value = '#'+scope.value;
-				}
 				settings.channels.push(scope.value);
 				scope.value = '';			
 			}

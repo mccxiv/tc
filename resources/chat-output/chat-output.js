@@ -1,24 +1,33 @@
-angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', function($timeout, $filter, irc) {
+angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'irc', function($timeout, $filter, $http, irc) {
 	
 	function link(scope, element) {
 		scope.messages = [];
+		scope.badges = null;
 		scope.maxChatLines = settings.maxChaLines;
 
-		addChannelListener(irc, 'chat', scope.channel, addMessage);		
+		addChannelListener(irc, 'chat', scope.channel, addMessage);
+		addChannelListener(irc, 'action', scope.channel, addMessage);
+		fetchBadges();
 		
-		function addMessage(user, message) {
+		function addMessage(event, user, message) {
 			scope.messages.push({
-				user: user,
-				messageHtml: $filter('emotify')(message, user.emote)
+				user: user, 
+				messageHtml: $filter('emotify')(message, user.emote),
+				messageCss: event === 'action'? 'color: '+user.color : ''
 			});	
-			/*if (scope.messages.length > settings.maxChaLines) {
-				console.log('CHAT-OUTPUT: Removing extra lines');
-				scope.messages.shift();
-			}*/			
 			$timeout(function() {
 				scope.$apply(); // TODO why is this necessary? Don't work without it
 				autoScroll();
 			});
+		}
+		
+		function fetchBadges() {
+			var url = 'https://api.twitch.tv/kraken/chat/'+scope.channel+'/badges?callback=JSON_CALLBACK';
+			console.log('CHAT-OUTPUT: badges url:', url);			
+			$http.jsonp(url).success(function(badges) {
+				console.log('CHAT-OUTPUT: badges json:', badges);
+				scope.badges = badges;
+			}); // TODO handle error, retry maybe.
 		}
 		
 		function autoScroll() {
@@ -36,21 +45,20 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', func
 	 * Adds event listener to `client` that only calls `handler` if the first 
 	 * parameter of the listener matches `channel`.
 	 * 
-	 * The `handler` will not receive `channel` as first argument, as it's 
-	 * already implied.
+	 * The `handler` will not receive `channel` as first argument, instead,
+	 * its first argument will be the event name
 	 * 
-	 * @param {{addListener: function}} client
-	 * @param {string} event
-	 * @param {string} channel
-	 * @param {function} handler
+	 * @param {Object} client      - Object to listen on, has .addListener method
+	 * @param {String} event       - Event to listen for
+	 * @param {String} channel     - Ignore events from channels other than this one
+	 * @param {Function} handler   - Same as twitch-irc but first arg is `event`, not `channel`
 	 */
 	function addChannelListener(client, event, channel, handler) {
 		client.addListener(event, function() {
-			if (arguments[0] === channel) {
-				// Convert `arguments` to a real array and
-				// get rid of `channel` because it's implied
+			if (arguments[0] === '#'+channel) {
+				// Convert `arguments` to a real array. TODO unnecessary?
 				var args = Array.prototype.slice.call(arguments);
-				args.shift();
+				args[0] = event;
 				handler.apply(this, args);
 			}
 		});

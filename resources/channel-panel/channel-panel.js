@@ -6,10 +6,6 @@ angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', '$
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]
 		};
-
-		scope.broadcaster = function () {
-			return $filter('stripHash')(scope.channel());
-		};
 		
 		scope.confirmLogout = function(event) {
 			var confirm = $mdDialog.confirm()
@@ -37,11 +33,11 @@ angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', '$
 		};
 
 		scope.openStream = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.broadcaster()+'/popout');
+			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel+'/popout');
 		};
 
 		scope.openChannel = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.broadcaster());
+			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel);
 		};
 	}
 	
