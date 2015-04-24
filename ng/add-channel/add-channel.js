@@ -5,8 +5,11 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
 		
 		scope.keypress = function(event) {
 			if (event.which === 13) {
-				settings.channels.push(scope.value);
-				scope.value = '';			
+				if (scope.value.trim().length) {
+					settings.channels.push(scope.value);
+					scope.value = '';
+				} 
+				// TODO give user feedback if invalid, but only on enter
 			}
 		};
 	}
