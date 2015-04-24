@@ -34,7 +34,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', function($http, 
 
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/chatters/chatters.html',
+		templateUrl: 'ng/chatters/chatters.html',
 		scope: {channel: '='},
 		link: link
 	}

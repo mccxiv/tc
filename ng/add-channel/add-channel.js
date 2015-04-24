@@ -13,7 +13,7 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
 
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/add-channel/add-channel.html',
+		templateUrl: 'ng/add-channel/add-channel.html',
 		link: link
 	}
 }]);

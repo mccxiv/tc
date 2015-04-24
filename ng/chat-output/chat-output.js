@@ -67,7 +67,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 	
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/chat-output/chat-output.html',
+		templateUrl: 'ng/chat-output/chat-output.html',
 		scope: {channel: '='},
 		link: link
 	} 

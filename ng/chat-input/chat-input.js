@@ -12,7 +12,7 @@ angular.module('tc').directive('chatInput', ['settings', 'irc', function(setting
 
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/chat-input/chat-input.html',
+		templateUrl: 'ng/chat-input/chat-input.html',
 		link: link
 	}
 }]);
