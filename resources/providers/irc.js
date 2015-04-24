@@ -41,6 +41,11 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	});
 
 	makeNewClient();
+	
+	// TODO remove debugging stuff
+	window.$rootScope = $rootScope;
+	window.irc = this;
+	window.irc.ee = ee;
 
 	//===============================================================
 	// Private methods
@@ -185,9 +190,6 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 			console.warn('Disconnected');
 		});	
 	}
-	
-	window.irc = this;
-	window.irc.ee = ee;
 	
 	return ee;
 }]);
