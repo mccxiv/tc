@@ -1,3 +1,10 @@
+<md-button md-no-ink aria-label="Connection status" class="connection {{connectionStatus()}}">
+	<md-tooltip md-autohide md-direction="right">
+		Connection: {{connectionStatus()}}
+	</md-tooltip>
+	<i class="mdi mdi-swap-vert"></i>
+</md-button>
+
 <md-button ng-click="confirmLogout($event)" aria-label="Change account">
 	<md-tooltip md-autohide md-direction="right">
 		Change Account

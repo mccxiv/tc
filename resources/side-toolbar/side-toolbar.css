@@ -18,3 +18,15 @@ side-toolbar .md-button {
 side-toolbar {
 	line-height: 35px;
 }
+
+side-toolbar .connection {
+	cursor: default;
+}
+
+side-toolbar .connection.disconnected {
+	color: darkred;
+}
+
+side-toolbar .connection.connecting {
+	color: #c6a600;
+}

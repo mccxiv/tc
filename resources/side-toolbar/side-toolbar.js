@@ -2,8 +2,16 @@ angular.module('tc').directive('sideToolbar', ['settings', 'gui', '$filter', '$m
 	
 	function link(scope, element) {
 		scope.settings = settings;
+		scope.irc = irc;
 		element.attr('layout', 'row');
 
+		scope.connectionStatus = function() {
+			var message = 'disconnected';
+			if (irc.connected) message = 'connected';
+			else if (irc.connecting) message = 'connecting';
+			return message;
+		};
+		
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]
 		};

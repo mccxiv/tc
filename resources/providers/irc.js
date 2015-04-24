@@ -14,18 +14,6 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	];
 	
 	//===============================================================
-	// Setup
-	//===============================================================
-	onChannelsChange(function() {
-		if (client.connected) {
-			joinChannels();
-			leaveChannels();
-		}
-	});
-	
-	makeNewClient();	
-	
-	//===============================================================
 	// Public members
 	//===============================================================
 	ee.connected = false;
@@ -41,6 +29,18 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 			destroyClient();
 		});
 	};
+
+	//===============================================================
+	// Setup
+	//===============================================================
+	onChannelsChange(function() {
+		if (client.connected) {
+			joinChannels();
+			leaveChannels();
+		}
+	});
+
+	makeNewClient();
 
 	//===============================================================
 	// Private methods
