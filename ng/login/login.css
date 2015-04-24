@@ -7,7 +7,7 @@ login .login-overlay {
 	top: 0;
 	left: 0;
 	z-index: 100;
-	background-color: #baeeff;
+	background-color: white;
 }
 
 login .form {
@@ -15,6 +15,7 @@ login .form {
 	border-radius: 3px;
 	background-color: #ffffff;
 	position: relative;
+	border: 1px solid #ebebeb;
 }
 
 login .login-button {
