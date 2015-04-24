@@ -1,28 +1,31 @@
-<div layout="row" class="cp-toolbar" ng-if="channel()">
-	<md-button ng-click="confirmLogout($event)" aria-label="Change account">
-		<md-tooltip md-autohide md-direction="right">
-			Change Account
-		</md-tooltip>
-		<i class="mdi mdi-account-child"></i>
-	</md-button>
-	<md-divider class="vertical"></md-divider>
-	<span flex></span>
-	<md-button ng-click="leave()" aria-label="Leave channel">
-		<md-tooltip md-autohide>
-			Leave Channel
-		</md-tooltip>
-		<i class="mdi mdi-close"></i>
-	</md-button>
-	<md-button ng-click="openStream()" aria-label="Stream popout">
-		<md-tooltip md-autohide>
-			Stream Popout
-		</md-tooltip>
-		<i class="mdi mdi-slideshow"></i>
-	</md-button>
-	<md-button ng-click="openChannel()" aria-label="Go to channel">
-		<md-tooltip md-autohide>
-			Go to Channel
-		</md-tooltip>
-		<i class="mdi mdi-open-in-new"></i>
-	</md-button>
-</div>
+<md-button ng-click="confirmLogout($event)" aria-label="Change account">
+	<md-tooltip md-autohide md-direction="right">
+		Change Account
+	</md-tooltip>
+	<i class="mdi mdi-account-child"></i>
+</md-button>
+
+<md-divider class="vertical"></md-divider>
+
+<span flex></span>
+
+<md-button ng-click="leave()" aria-label="Leave channel" ng-if="channel()">
+	<md-tooltip md-autohide>
+		Leave Channel
+	</md-tooltip>
+	<i class="mdi mdi-close"></i>
+</md-button>
+
+<md-button ng-click="openStream()" aria-label="Stream popout" ng-if="channel()">
+	<md-tooltip md-autohide>
+		Stream Popout
+	</md-tooltip>
+	<i class="mdi mdi-slideshow"></i>
+</md-button>
+
+<md-button ng-click="openChannel()" aria-label="Go to channel" ng-if="channel()">
+	<md-tooltip md-autohide>
+		Go to Channel
+	</md-tooltip>
+	<i class="mdi mdi-open-in-new"></i>
+</md-button>

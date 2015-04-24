@@ -1,7 +1,8 @@
 angular.module('tc').directive('sideToolbar', ['settings', 'gui', '$filter', '$mdDialog', 'irc', function(settings, gui, $filter, $mdDialog, irc) {
 	
-	function link(scope) {
+	function link(scope, element) {
 		scope.settings = settings;
+		element.attr('layout', 'row');
 
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]
