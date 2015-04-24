@@ -1,3 +1,7 @@
+chatters-tabs {
+	overflow-y: auto;
+}
+
 chatters-tabs md-tabs-wrapper {
 	display: none !important;
 }

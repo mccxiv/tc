@@ -1,6 +1,8 @@
 chat-output {
 	display: block;
 	overflow: auto;
+	height: 100%;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	padding-left: 15px;
 	font-size: 1.4rem;
 }
