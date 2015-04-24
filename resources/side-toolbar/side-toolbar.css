@@ -1,20 +1,20 @@
-channel-panel .mdi {
+side-toolbar .mdi {
 	vertical-align: -3px;
 }
 
-channel-panel md-divider.vertical {
+side-toolbar md-divider.vertical {
 	display: inline;
 	border-top-style: none;
 	border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-channel-panel .md-button {
+side-toolbar .md-button {
 	min-width: 0;
 	border-radius: 0 !important;
 	margin: 0;
 	line-height: 35px;
 }
 
-channel-panel .cp-toolbar {
+side-toolbar .cp-toolbar {
 	line-height: 35px;
 }

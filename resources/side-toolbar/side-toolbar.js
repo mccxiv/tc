@@ -1,4 +1,4 @@
-angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', '$mdDialog', 'irc', function(settings, gui, $filter, $mdDialog, irc) {
+angular.module('tc').directive('sideToolbar', ['settings', 'gui', '$filter', '$mdDialog', 'irc', function(settings, gui, $filter, $mdDialog, irc) {
 	
 	function link(scope) {
 		scope.settings = settings;
@@ -43,7 +43,7 @@ angular.module('tc').directive('channelPanel', ['settings', 'gui', '$filter', '$
 	
 	return {
 		restrict: 'E',
-		templateUrl: 'resources/channel-panel/channel-panel.html',
+		templateUrl: 'resources/side-toolbar/side-toolbar.html',
 		link: link
 	}
 }]);

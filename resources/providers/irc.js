@@ -29,7 +29,8 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	// Public members
 	//===============================================================
 	ee.connected = false;
-	ee.badLogin = false;	
+	ee.connecting = false;
+	ee.badLogin = false;
 	ee.login = makeNewClient;
 	ee.credentialsValid = credentialsValid;
 	ee.say = function(channel, msg) {
@@ -120,17 +121,27 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	function attachListeners() {
 		client.addListener('disconnected', function(reason) {
 			$timeout(function() {
+				ee.connecting = false;
 				ee.connected = false;
 				if (reason === 'Login unsuccessful.') ee.badLogin = reason;
 			});
 		});		
 		client.addListener('connected', function() {
 			$timeout(function() {
+				ee.connecting = false;
 				ee.connected = true;
 				ee.badLogin = false;
 			});
-		});		
+		});
+		client.addListener('connecting', setStatusConnecting);
+		client.addListener('reconnect', setStatusConnecting);
 		client.once('connected', joinChannels);
+		
+		function setStatusConnecting() {
+			$timeout(function() {
+				ee.connecting = true;
+			});
+		}
 	}
 
 	function destroyClient() {
