@@ -11,7 +11,8 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 		
 		function addMessage(event, user, message) {
 			scope.messages.push({
-				user: user, 
+				user: user,
+				type: event,
 				messageHtml: $filter('emotify')(message, user.emote),
 				messageCss: event === 'action'? 'color: '+user.color : ''
 			});	
