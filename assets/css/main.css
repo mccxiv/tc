@@ -13,3 +13,8 @@ html {
 body {
 	border: 1px solid #e1e1e1;
 }
+
+.side-bar {
+	width: 190px !important;
+	min-width: 0 !important;
+}
