@@ -1,6 +1,8 @@
 angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'irc', function($timeout, $filter, $http, irc) {
 	
 	function link(scope, element) {
+		var latestScrollWasAutomatic;
+		scope.autoScroll = true;
 		scope.messages = [];
 		scope.badges = null;
 		scope.maxChatLines = settings.maxChaLines;
@@ -8,6 +10,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 		addChannelListener(irc, 'chat', scope.channel, addMessage);
 		addChannelListener(irc, 'action', scope.channel, addMessage);
 		fetchBadges();
+		watchScroll();
 		
 		function addMessage(event, user, message) {
 			scope.messages.push({
@@ -31,8 +34,24 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 			}); // TODO handle error, retry maybe.
 		}
 		
+		function watchScroll() {
+			element.bind('scroll', function() {
+				if (!latestScrollWasAutomatic) {
+					scope.autoScroll = false;
+					if (element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight < 50) {
+						console.log('CHAT-OUTPUT: enabling autoscroll');
+						scope.autoScroll = true;
+					}
+				}
+				latestScrollWasAutomatic = false; // Reset it
+			});
+		}
+		
 		function autoScroll() {
-			element[0].scrollTop = element[0].scrollHeight;
+			if (scope.autoScroll) {
+				latestScrollWasAutomatic = true;
+				element[0].scrollTop = element[0].scrollHeight;
+			}
 		}
 
 		scope.$on('$destroy', function() {
