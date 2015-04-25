@@ -6,8 +6,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', func
 	
 	function link(scope) {
 		var forceShowViewers = false;
-		var timeoutReload = null;
-		var timeoutOnSelect = null;
+		var timeout = null;
 		
 		scope.api = null;
 		scope.showViewers = showViewers;
@@ -18,7 +17,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', func
 		 */
 		onChannelSelected(function() {
 			if (!scope.api) fetchList();
-			else timeoutOnSelect = setTimeout(fetchList, 2000)
+			else timeoutFetch(2000);
 		});
 		
 		function fetchList() {
@@ -29,7 +28,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', func
 			var req = $http.jsonp(url);
 			req.success(onList);
 			req.error(onListError);
-			timeoutReload = setTimeout(fetchList, 120000);
+			timeoutFetch(120000);
 		}		
 		
 		function onList(result, status) {
@@ -50,11 +49,14 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', func
 		
 		function onChannelSelected(cb) {
 			scope.$watch(
-				function() {return settings.selectedTabIndex},
-				function(o, n) {
-					if (isChannelSelected()) cb();
-				}
+				function() {return settings.selectedTabIndex;},
+				function() {if (isChannelSelected()) cb();}
 			);
+		}
+		
+		function timeoutFetch(duration) {
+			clearTimeout(timeout);
+			timeout = setTimeout(fetchList, duration);
 		}
 		
 		function showViewers(force) {
