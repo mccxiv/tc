@@ -1,27 +1,34 @@
 angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'irc', function($timeout, $filter, $http, irc) {
 	
 	function link(scope, element) {
-		var latestScrollWasAutomatic;
+		var latestScrollWasAutomatic = false;
 		scope.autoScroll = true;
+		scope.chatLimit = -settings.maxChaLines;
 		scope.messages = [];
 		scope.badges = null;
-		scope.maxChatLines = settings.maxChaLines;
 
 		addChannelListener(irc, 'chat', scope.channel, addMessage);
 		addChannelListener(irc, 'action', scope.channel, addMessage);
 		fetchBadges();
 		watchScroll();
+
+		scope.$on('$destroy', function() {
+			console.warn('CHAT-OUTPUT: Destroying scope');
+		});
 		
 		function addMessage(event, user, message) {
+			// increase the limit so that they don't disappear from the top
+			// while chat autoscrolling is paused
+			if (!scope.autoScroll) scope.chatLimit--;
 			scope.messages.push({
 				user: user,
 				type: event,
 				messageHtml: $filter('emotify')(message, user.emote),
 				messageCss: event === 'action'? 'color: '+user.color : ''
-			});	
+			});
 			$timeout(function() {
 				scope.$apply(); // TODO why is this necessary? Don't work without it
-				autoScroll();
+				if (scope.autoScroll) autoScroll();
 			});
 		}
 		
@@ -33,30 +40,47 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 				scope.badges = badges;
 			}); // TODO handle error, retry maybe.
 		}
-		
+
+		/**
+		 * Turns autoscroll on and off based on user scrolling,
+		 * resets the max lines when autoscroll is turned back on,
+		 * shows all lines when scrolling up to the top (infinite scroll)
+		 */
 		function watchScroll() {
 			element.bind('scroll', function() {
-				if (!latestScrollWasAutomatic) {
-					scope.autoScroll = false;
-					if (element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight < 50) {
-						console.log('CHAT-OUTPUT: enabling autoscroll');
-						scope.autoScroll = true;
-					}
-				}
+				if (!latestScrollWasAutomatic) scope.autoScroll = distanceFromBottom() === 0;
 				latestScrollWasAutomatic = false; // Reset it
+				if (scope.autoScroll) scope.chatLimit = -settings.maxChaLines;
+				else if (distanceFromTop() === 0) showAllLines();
+				scope.$apply();				
+			});
+		}
+
+		/**
+		 * Causes ng-repeat to load all chat lines.
+		 * Makes sure the scrollbar doesn't jump to the 
+		 * top when the new lines are added.
+		 */
+		function showAllLines() {
+			scope.chatLimit = Infinity;
+			var originalBottomDistance = distanceFromBottom();
+			$timeout(function() {
+				element[0].scrollTop = element[0].scrollHeight - (originalBottomDistance + element[0].offsetHeight);
 			});
 		}
 		
 		function autoScroll() {
-			if (scope.autoScroll) {
-				latestScrollWasAutomatic = true;
-				element[0].scrollTop = element[0].scrollHeight;
-			}
+			latestScrollWasAutomatic = true;
+			element[0].scrollTop = element[0].scrollHeight;
 		}
-
-		scope.$on('$destroy', function() {
-			console.warn('CHAT-OUTPUT: Destroying scope');
-		});
+		
+		function distanceFromTop() {
+			return element[0].scrollTop;
+		}
+		
+		function distanceFromBottom() {
+			return element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight;
+		}
 	}
 
 	/**

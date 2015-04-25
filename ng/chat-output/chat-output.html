@@ -1,5 +1,5 @@
 <div class="chat-lines">
-	<div class="chat-line" ng-repeat="m in messages | limitTo: maxChatLines * -1" style="{{m.messageCss}}">
+	<div class="chat-line" ng-repeat="m in messages | limitTo: chatLimit" style="{{m.messageCss}}">
 		<!-- Awkward indentation to avoid any whitespace -->
 		<span class="badges">
 			<img class="badge" ng-repeat="badge in m.user.special" ng-src="{{badges[badge].image}}">
