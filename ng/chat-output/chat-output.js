@@ -24,8 +24,8 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 		scope.messages = [];
 		scope.badges = null;
 
-		addChannelListener(irc, 'chat', scope.channel, addMessage);
-		addChannelListener(irc, 'action', scope.channel, addMessage);
+		addChannelListener(irc, 'chat', scope.channel, addUserMessage);
+		addChannelListener(irc, 'action', scope.channel, addUserMessage);
 		fetchBadges();
 		watchScroll();
 		handleAnchorClicks();
@@ -33,21 +33,60 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 		scope.$on('$destroy', function() {
 			console.warn('CHAT-OUTPUT: Destroying scope');
 		});
-		
-		function addMessage(event, user, message) {
+
+		function addUserMessage(event, user, message) {
+			addMessage(makeUserMessage(event, user, message));
+		}
+
+		/**
+		 * Adds a message object to chat
+		 * @see makeUserMessage
+		 * @see makeNotificationMessage
+		 *
+		 * @param {object} messageObject
+		 */
+		function addMessage(messageObject) {
 			// increase the limit so that they don't disappear from the top
 			// while chat autoscrolling is paused
 			if (!scope.autoScroll) scope.chatLimit--;
-			scope.messages.push({
-				user: user,
-				type: event,
-				messageHtml: combine(escape(linkify(emotify(message, user.emote)))),
-				messageCss: event === 'action'? 'color: '+user.color : ''
-			});
+			scope.messages.push(messageObject);
 			$timeout(function() {
 				scope.$apply(); // TODO why is this necessary? Don't work without it
 				if (scope.autoScroll) autoScroll();
 			});
+		}
+
+		/**
+		 * Returns a message object for use in addMessage
+		 * @see addMessage
+		 *
+		 * @param {string} type
+		 * @param {object} user
+		 * @param {string} message
+		 * @returns {{user: object, type: string, message: string, style: string}}
+		 */
+		function makeUserMessage(type, user, message) {
+			return {
+				user: user,
+				type: type,
+				message: combine(escape(linkify(emotify(message, user.emote)))),
+				style: type === 'action'? 'color: '+user.color : ''
+			}
+		}
+
+		/**
+		 * returns a message object for use in addMessage
+		 * @see addMessage
+		 *
+		 * @param {string} message
+		 * @returns {{type: string, message: string, style: string}}
+		 */
+		function makeNotificationMessage(message) {
+			return {
+				type: 'notification',
+				message: escape(message),
+				style: 'color: black'
+			}
 		}
 		
 		function fetchBadges() {

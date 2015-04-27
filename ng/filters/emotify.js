@@ -68,14 +68,14 @@ angular.module('tc').filter('emotify', function() {
 		occurrences.forEach(function(occurrence) {
 			// +1 because occurrence[2] is the position of the last character
 			// not the position of the character after the last
-			output.push(makePart(line.substring(occurrence[2]+1), false)); // 3.1
+			var prev = line.substring(occurrence[2]+1);
+			if (prev) output.push(makePart(prev, false)); // 3.1
 			output.push(makePart(imgEmote(occurrence[0]), true)); // 3.2
 			line = line.substring(0, occurrence[1]); //3.3
 		});
 
-		output.push(makePart(line, false)); // 4
+		if (line) output.push(makePart(line, false)); // 4
 		output.reverse(); // 5
-		
 		return output;
 	};
 });

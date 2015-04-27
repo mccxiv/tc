@@ -6,7 +6,7 @@
  * @name escape
  * @type function
  *
- * @param parts {MessagePart[]} Elements will not be escaped, only text strings
+ * @param parts {string | MessagePart[]} Elements will not be escaped, only text strings
  * @return {MessagePart[]}
  */
 angular.module('tc').filter('escape', function() {
@@ -21,6 +21,7 @@ angular.module('tc').filter('escape', function() {
 	}
 
     return function(parts) {
+	    if (typeof parts === 'string') return escape(parts);
         parts.forEach(function(part) {
             if (part.isElement) return;
 	        part.string = escape(part.string);

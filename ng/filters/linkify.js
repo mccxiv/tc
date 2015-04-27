@@ -40,7 +40,10 @@ angular.module('tc').filter('linkify', function() {
         var newParts = [];
 
         parts.forEach(function(part) {
-            if (part.isElement) return;
+            if (part.isElement) {
+	            newParts.push(part);
+	            return;
+            }
 
             var string = part.string;
 
