@@ -10,7 +10,7 @@
  * @property {isElement} boolean - Filters would probably ignore this message if it's an element
  */
 
-angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'irc', 'gui', function($timeout, $filter, $http, irc, gui) {
+angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui', 'badges', function($timeout, $filter, irc, gui, badges) {
 	
 	var emotify = $filter('emotify');
 	var linkify = $filter('linkify');
@@ -51,12 +51,9 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 		}
 		
 		function fetchBadges() {
-			var url = 'https://api.twitch.tv/kraken/chat/'+scope.channel+'/badges?callback=JSON_CALLBACK';
-			console.log('CHAT-OUTPUT: badges url:', url);			
-			$http.jsonp(url).success(function(badges) {
-				console.log('CHAT-OUTPUT: badges json:', badges);
+			badges(scope.channel).success(function(badges) {
 				scope.badges = badges;
-			}); // TODO handle error, retry maybe.
+			}); // TODO handle error
 		}
 
 		/**
