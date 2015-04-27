@@ -14,6 +14,11 @@ body {
 	border: 1px solid #e1e1e1;
 }
 
+a {
+    text-decoration: none;
+    color: #008CD0;
+}
+
 .side-bar {
 	width: 190px !important;
 	min-width: 0 !important;

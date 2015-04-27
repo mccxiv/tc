@@ -1,4 +1,21 @@
-angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'irc', function($timeout, $filter, $http, irc) {
+/**
+ * Chat message filters receive and return an array of these objects.
+ * It makes it easier to know which sections of the string should be filtered
+ * and which should be left alone.
+ * Examples of why this is important:
+ * - Avoid converting an emoticon's url to a link
+ * - Avoid escaping the html of emoticons and links *
+ * @typedef {Object} MessagePart
+ * @property {string} string - A piece of text that filters could act on
+ * @property {isElement} boolean - Filters would probably ignore this message if it's an element
+ */
+
+angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'irc', 'gui', function($timeout, $filter, $http, irc, gui) {
+	
+	var emotify = $filter('emotify');
+	var linkify = $filter('linkify');
+	var escape = $filter('escape');
+	var combine = $filter('combine');
 	
 	function link(scope, element) {
 		var latestScrollWasAutomatic = false;
@@ -11,6 +28,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 		addChannelListener(irc, 'action', scope.channel, addMessage);
 		fetchBadges();
 		watchScroll();
+		handleAnchorClicks();
 
 		scope.$on('$destroy', function() {
 			console.warn('CHAT-OUTPUT: Destroying scope');
@@ -23,7 +41,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 			scope.messages.push({
 				user: user,
 				type: event,
-				messageHtml: $filter('emotify')(message, user.emote),
+				messageHtml: combine(escape(linkify(emotify(message, user.emote)))),
 				messageCss: event === 'action'? 'color: '+user.color : ''
 			});
 			$timeout(function() {
@@ -80,6 +98,17 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', '$http', 'i
 		
 		function distanceFromBottom() {
 			return element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight;
+		}
+
+		function handleAnchorClicks() {
+			// TODO any way to get rid of jquery dependency? need event delegation though
+			element.on('click', 'a', function(event) {
+				event.preventDefault();
+				event.stopPropagation();
+				console.log('CHAT-OUTPUT: Clicked on a link', event.target.getAttribute('href'));
+				gui.Shell.openExternal(event.target.getAttribute('href'));
+				return false;
+			})
 		}
 	}
 

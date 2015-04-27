@@ -3,7 +3,7 @@
 	<head lang="en">
 		<meta charset="UTF-8">
 		<title></title>
-		<link rel="stylesheet" href="assets/css/main.css">
+		<link rel="stylesheet" href="ng/app.css">
 		<link rel="stylesheet" href="ng/login/login.css">
 		<link rel="stylesheet" href="ng/side-toolbar/side-toolbar.css">
 		<link rel="stylesheet" href="ng/chat-output/chat-output.css">
@@ -33,6 +33,7 @@
 
 		<login ng-show="needLogin()"></login>
 
+		<script src="bower_components/jquery/dist/jquery.js"></script>
 		<script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.js"></script>
 		<script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -62,6 +63,9 @@
 
 		<script src="ng/filters/strip-hash.js"></script>
 		<script src="ng/filters/emotify.js"></script>
+        <script src="ng/filters/linkify.js"></script>
+        <script src="ng/filters/escape.js"></script>
+        <script src="ng/filters/combine.js"></script>
 		<script src="ng/filters/capitalize.js"></script>
 		<script src="ng/filters/pretty-chatter-type.js"></script>
 
