@@ -44,21 +44,35 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 		// Functions
 		//===============================================================
 		function setupIrcListeners() {
-			addChannelListener(irc, 'chat', scope.channel, addUserMessage);
-			addChannelListener(irc, 'action', scope.channel, addUserMessage);
 			addNotificationListener('connecting', 'Connecting...');
 			addNotificationListener('connected', 'Welcome to '+scope.channel+'\'s chat.');
 			addNotificationListener('disconnected', 'Disconnected from the server.');
 			addNotificationListener('crash', 'IRC crashed! You need to restart the client. Sorry :(');
-			irc.addListener('hosting', function(channel, target, viewers) {
-				if (channel === scope.channel) {
-					addNotificationMessage(capitalize(channel) + ' is hosting ' + target + ' with ' + viewers + ' viewers.');
-				}
+			addChannelListener('chat', addUserMessage);
+			addChannelListener('action', addUserMessage);
+			addChannelListener('hosting', function(event, target, viewers) {
+				addNotificationMessage(scope.channel + ' is hosting ' + target + ' with ' + viewers + ' viewers.');
 			});
-			irc.addListener('hosted', function(channel, target, viewers) {
-				if (channel === scope.channel) {
-					addNotificationMessage(capitalize(target) + ' is hosting you with ' + viewers + ' viewers.');
-				}
+			addChannelListener('hosted', function(event, target, viewers) {
+				addNotificationMessage(target + ' is hosting you with ' + viewers + ' viewers.');
+			});
+			addChannelListener('slowmode', function(event, enabled, length) {
+				var msg;
+				if (!enabled) msg = 'This room is no longer in slow mode.';
+				else msg = 'This room is now in slow mode. You may send messages every '+length+' seconds.';
+				addNotificationMessage(msg);
+			});
+			addChannelListener('subanniversary', function(event, username, months) {
+				addNotificationMessage(username + ' subscribed for ' + months + ' months in a row!');
+			});
+			addChannelListener('subscription', function(event, username) {
+				addNotificationMessage(username + ' has just subscribed!');
+			});
+			addChannelListener('timeout', function(event, username) {
+				addNotificationMessage(username + ' has been timed out.');
+			});
+			addChannelListener('unhost', function() {
+				addNotificationMessage('Stopped hosting.');
 			});
 		}
 
@@ -84,7 +98,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 		function addNotificationMessage(message) {
 			addMessage({
 				type: 'notification',
-				message: escape(message),
+				message: capitalize(escape(message)),
 				style: 'color: #999999'
 			});
 		}
@@ -173,31 +187,29 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 				addNotificationMessage(message);
 			});
 		}
-	}
 
-	/**
-	 * When you only care about responding to events from a particular channel.
-	 * 
-	 * Adds event listener to `client` that only calls `handler` if the first 
-	 * parameter of the listener matches `channel`.
-	 * 
-	 * The `handler` will not receive `channel` as first argument, instead,
-	 * its first argument will be the event name
-	 * 
-	 * @param {Object} client      - Object to listen on, has .addListener method
-	 * @param {String} event       - Event to listen for
-	 * @param {String} channel     - Ignore events from channels other than this one
-	 * @param {Function} handler   - Same as twitch-irc but first arg is `event`, not `channel`
-	 */
-	function addChannelListener(client, event, channel, handler) {
-		client.addListener(event, function() {
-			if (arguments[0] === '#'+channel) {
-				// Convert `arguments` to a real array. TODO unnecessary?
-				var args = Array.prototype.slice.call(arguments);
-				args[0] = event;
-				handler.apply(this, args);
-			}
-		});
+		/**
+		 * When you only care about responding to events from a particular channel.
+		 *
+		 * Adds event listener to the irc client that only calls `handler` if the first
+		 * parameter of the listener matches `channel`.
+		 *
+		 * The `handler` will not receive `channel` as first argument, instead,
+		 * its first argument will be the event name
+		 *
+		 * @param {string} event     - Event to listen for
+		 * @param {function} handler - Same as twitch-irc but first arg is `event`, not `channel`
+		 */
+		function addChannelListener(event, handler) {
+			irc.addListener(event, function() {
+				if (arguments[0] === '#'+scope.channel) {
+					// Convert `arguments` to a real array. TODO unnecessary?
+					var args = Array.prototype.slice.call(arguments);
+					args[0] = event;
+					handler.apply(this, args);
+				}
+			});
+		}
 	}
 	
 	return {

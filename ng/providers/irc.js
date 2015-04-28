@@ -9,8 +9,8 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	var client;
 	var eventsToForward = [
 		'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-		'disconnected', 'hosted', 'hosting', 'subanniversary',
-		'subscriber', 'timeout', 'unhost'
+		'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
+		'subscriber', 'subscription', 'timeout', 'unhost'
 	];
 	
 	//===============================================================
