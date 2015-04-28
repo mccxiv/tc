@@ -27,7 +27,7 @@ chat-output .chat-line {
 	word-wrap: break-word;
 }
 
-chat-output .chat-line .colon {
+chat-output .chat-line .separator {
 	margin-right: 2px;
 }
 

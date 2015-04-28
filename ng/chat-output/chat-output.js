@@ -11,21 +11,27 @@
  */
 
 angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui', 'badges', function($timeout, $filter, irc, gui, badges) {
-	
+
+	var capitalize = $filter('capitalize');
 	var emotify = $filter('emotify');
 	var linkify = $filter('linkify');
 	var escape = $filter('escape');
 	var combine = $filter('combine');
 	
 	function link(scope, element) {
+		//===============================================================
+		// Variables
+		//===============================================================
 		var latestScrollWasAutomatic = false;
 		scope.autoScroll = true;
 		scope.chatLimit = -settings.maxChaLines;
 		scope.messages = [];
 		scope.badges = null;
 
-		addChannelListener(irc, 'chat', scope.channel, addUserMessage);
-		addChannelListener(irc, 'action', scope.channel, addUserMessage);
+		//===============================================================
+		// Setup
+		//===============================================================
+		setupIrcListeners();
 		fetchBadges();
 		watchScroll();
 		handleAnchorClicks();
@@ -34,15 +40,58 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 			console.warn('CHAT-OUTPUT: Destroying scope');
 		});
 
-		function addUserMessage(event, user, message) {
-			addMessage(makeUserMessage(event, user, message));
+		//===============================================================
+		// Functions
+		//===============================================================
+		function setupIrcListeners() {
+			addChannelListener(irc, 'chat', scope.channel, addUserMessage);
+			addChannelListener(irc, 'action', scope.channel, addUserMessage);
+			addNotificationListener('connecting', 'Connecting...');
+			addNotificationListener('connected', 'Welcome to '+scope.channel+'\'s chat.');
+			addNotificationListener('disconnected', 'Disconnected from the server.');
+			addNotificationListener('crash', 'IRC crashed! You need to restart the client. Sorry :(');
+			irc.addListener('hosting', function(channel, target, viewers) {
+				if (channel === scope.channel) {
+					addNotificationMessage(capitalize(channel) + ' is hosting ' + target + ' with ' + viewers + ' viewers.');
+				}
+			});
+			irc.addListener('hosted', function(channel, target, viewers) {
+				if (channel === scope.channel) {
+					addNotificationMessage(capitalize(target) + ' is hosting you with ' + viewers + ' viewers.');
+				}
+			});
+		}
+
+		/**
+		 * Add a user message to chat, types are 'action' or 'chat'
+		 * @param {string} type
+		 * @param {object} user - As provided by twitch-irc
+		 * @param {string} message
+		 */
+		function addUserMessage(type, user, message) {
+			addMessage({
+				user: user,
+				type: type,
+				message: combine(escape(linkify(emotify(message, user.emote)))),
+				style: type === 'action'? 'color: '+user.color : ''
+			});
+		}
+
+		/**
+		 * Adds a message with the 'notification' type
+		 * @param {string} message
+		 */
+		function addNotificationMessage(message) {
+			addMessage({
+				type: 'notification',
+				message: escape(message),
+				style: 'color: #999999'
+			});
 		}
 
 		/**
 		 * Adds a message object to chat
-		 * @see makeUserMessage
-		 * @see makeNotificationMessage
-		 *
+		 * Not used directly, but via helpers
 		 * @param {object} messageObject
 		 */
 		function addMessage(messageObject) {
@@ -54,39 +103,6 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 				scope.$apply(); // TODO why is this necessary? Don't work without it
 				if (scope.autoScroll) autoScroll();
 			});
-		}
-
-		/**
-		 * Returns a message object for use in addMessage
-		 * @see addMessage
-		 *
-		 * @param {string} type
-		 * @param {object} user
-		 * @param {string} message
-		 * @returns {{user: object, type: string, message: string, style: string}}
-		 */
-		function makeUserMessage(type, user, message) {
-			return {
-				user: user,
-				type: type,
-				message: combine(escape(linkify(emotify(message, user.emote)))),
-				style: type === 'action'? 'color: '+user.color : ''
-			}
-		}
-
-		/**
-		 * returns a message object for use in addMessage
-		 * @see addMessage
-		 *
-		 * @param {string} message
-		 * @returns {{type: string, message: string, style: string}}
-		 */
-		function makeNotificationMessage(message) {
-			return {
-				type: 'notification',
-				message: escape(message),
-				style: 'color: black'
-			}
 		}
 		
 		function fetchBadges() {
@@ -145,6 +161,17 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 				gui.Shell.openExternal(event.target.getAttribute('href'));
 				return false;
 			})
+		}
+
+		/**
+		 * When `event` happens, put `message` in chat
+		 * @param {string} event
+		 * @param {string} message
+		 */
+		function addNotificationListener(event, message) {
+			irc.addListener(event, function() {
+				addNotificationMessage(message);
+			});
 		}
 	}
 

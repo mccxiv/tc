@@ -1,11 +1,13 @@
+
+<!-- Awkward indentation to avoid any whitespace -->
+<!-- TODO find a css solution to these indentation shenanigans -->
+
 <div class="chat-lines">
-	<div class="chat-line" ng-repeat="m in messages | limitTo: chatLimit" style="{{m.style}}">
-		<!-- Awkward indentation to avoid any whitespace -->
-		<span
-            class="badges" ng-if="m.user"><img class="badge" ng-repeat="badge in m.user.special" ng-src="{{badges[badge].image}}"></span>&nbsp;<span
+	<div class="chat-line" ng-repeat="m in messages | limitTo: chatLimit" style="{{m.style}}"><span
+            class="badges" ng-if="m.user.special.length"><img class="badge" ng-repeat="badge in m.user.special" ng-src="{{badges[badge].image}}">&nbsp;</span><span
             class="username" ng-if="m.user" style="color: {{m.user.color}}">{{m.user.displayname}}</span><span
-            class="colon" ng-if="m.type === 'chat'">:</span>&nbsp;<span
+            class="separator" ng-if="m.type === 'chat'">:&nbsp;</span><span
+            class="separator" ng-if="m.type === 'action'">&nbsp;</span><span
             class="message" ng-bind-html="m.message"></span
-        >
-	</div>
+    ></div>
 </div>

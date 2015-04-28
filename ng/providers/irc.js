@@ -7,8 +7,8 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
 	var client;
-	var eventsToForward = [ 
-		'action', 'chat', 'clearchat', 'connected', 
+	var eventsToForward = [
+		'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
 		'disconnected', 'hosted', 'hosting', 'subanniversary',
 		'subscriber', 'timeout', 'unhost'
 	];
@@ -51,6 +51,8 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	// Private methods
 	//===============================================================
 	/**
+	 * TODO better way to do this? eg. add them dynamically instead
+	 *
 	 * Re emits events from `emitter` on `reEmitter`
 	 * @param {string[]} events    - Events to be rebroadcast
 	 * @param {Object}   emitter   - Emits events to rebroadcast. Has .addListener()
