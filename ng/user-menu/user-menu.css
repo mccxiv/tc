@@ -33,10 +33,12 @@ user-menu .md-button {
 
 user-menu .toolbar {
     margin-left: 4px;
+    margin-right: 4px;
 }
 
 user-menu .row {
     margin-left: 6px;
+    margin-right: 3px;
     line-height: 16px;
     height: 16px;
 }

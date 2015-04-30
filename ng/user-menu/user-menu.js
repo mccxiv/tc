@@ -19,8 +19,7 @@ angular.module('tc').directive('userMenu', ['settings', 'session', 'gui', 'irc',
 		);
 
 		scope.amMod = function() {
-			//return irc.isMod(settings.channels[settings.selectedTabIndex], settings.identity.username);
-			return true; // TODO non mods should have lighter color icons
+			return irc.isMod(settings.channels[settings.selectedTabIndex], settings.identity.username);
 		};
 
 		scope.userSelectedInThisChannel = function() {

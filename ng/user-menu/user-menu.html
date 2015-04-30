@@ -14,8 +14,8 @@
         </div>
 
         <div class="row lighter creation-date">
-           <md-tooltip md-autohide>Registration date</md-tooltip>
-           {{m.created | date: 'MMM d, y h:mm a'}}
+            <md-tooltip md-autohide>Registration date</md-tooltip>
+            Since {{m.created | date: 'MMM d, y'}}
         </div>
 
         <div class="toolbar" layout="row">
@@ -32,7 +32,7 @@
 
             <span flex></span>
 
-            <span ng-if="amMod()">
+            <span ng-class="{lighter: !amMod()}">
 
                 <md-button ng-click="timeout(3)" aria-label="Purge">
                     <md-tooltip md-autohide>Purge (3s)</md-tooltip>
