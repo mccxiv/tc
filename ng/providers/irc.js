@@ -21,6 +21,9 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	ee.badLogin = false;
 	ee.login = makeNewClient;
 	ee.credentialsValid = credentialsValid;
+	ee.isMod = function(channel, username) {
+		return client.isMod(channel, username);
+	} ;
 	ee.say = function(channel, msg) {
 		client.say(channel, msg);
 	};

@@ -4,8 +4,13 @@
 
     <div class="buttons-container" flex layout="column">
 
-        <div class="username row">
-            {{session.selectedUser | capitalize}}
+        <div class="row" layout="row">
+            <span class="username">{{session.selectedUser | capitalize}}</span>
+            <span flex></span>
+            <md-button class="close-button" ng-click="close()" aria-label="Close">
+                <md-tooltip md-autohide>Close</md-tooltip>
+                <i class="mdi mdi-close"></i>
+            </md-button>
         </div>
 
         <div class="row lighter creation-date">
@@ -13,23 +18,38 @@
            {{m.created | date: 'MMM d, y h:mm a'}}
         </div>
 
-        <div class="toolbar row" layout="row">
+        <div class="toolbar" layout="row">
 
-            <md-button ng-click="close()" aria-label="Close">
-                <md-tooltip md-autohide>
-                    Close
-                </md-tooltip>
-                <i class="mdi mdi-close"></i>
-            </md-button>
-
-            <md-button ng-click="goToChannel()" aria-label="Go to channel">
-                <md-tooltip md-autohide>
-                    Go to their channel
-                </md-tooltip>
+            <md-button ng-click="goToChannel()" aria-label="Their channel">
+                <md-tooltip md-autohide>Their Channel</md-tooltip>
                 <i class="mdi mdi-open-in-new"></i>
             </md-button>
 
+            <md-button ng-click="sendMessage()" aria-label="Message">
+                <md-tooltip md-autohide>Private Message</md-tooltip>
+                <i class="mdi mdi-mail"></i>
+            </md-button>
+
             <span flex></span>
+
+            <span ng-if="amMod()">
+
+                <md-button ng-click="timeout(3)" aria-label="Purge">
+                    <md-tooltip md-autohide>Purge (3s)</md-tooltip>
+                    <i class="mdi mdi-timer-3"></i>
+                </md-button>
+
+                <md-button ng-click="timeout(600)" aria-label="Timeout">
+                    <md-tooltip md-autohide>Timeout (10m)</md-tooltip>
+                    <i class="mdi mdi-history"></i>
+                </md-button>
+
+                <md-button ng-click="ban()" aria-label="Ban">
+                    <md-tooltip md-autohide>Ban</md-tooltip>
+                    <i class="mdi mdi-block"></i>
+                </md-button>
+
+            </span>
 
         </div>
     </div>

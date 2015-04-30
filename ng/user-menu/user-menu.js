@@ -18,6 +18,11 @@ angular.module('tc').directive('userMenu', ['settings', 'session', 'gui', 'irc',
 			}
 		);
 
+		scope.amMod = function() {
+			//return irc.isMod(settings.channels[settings.selectedTabIndex], settings.identity.username);
+			return true; // TODO non mods should have lighter color icons
+		};
+
 		scope.userSelectedInThisChannel = function() {
 			var selectedChannel = settings.channels[settings.selectedTabIndex];
 			return session.selectedUser && session.selectedUserChannel === selectedChannel;
@@ -25,6 +30,20 @@ angular.module('tc').directive('userMenu', ['settings', 'session', 'gui', 'irc',
 
 		scope.goToChannel = function() {
 			gui.Shell.openExternal('http://www.twitch.tv/'+session.selectedUser);
+		};
+
+		scope.sendMessage = function() {
+			gui.Shell.openExternal('http://www.twitch.tv/message/compose?to='+session.selectedUser);
+		};
+
+		scope.timeout = function(seconds) {
+			irc.say(session.selectedUserChannel, '.timeout ' + session.selectedUser + ' ' + seconds);
+			scope.close();
+		};
+
+		scope.ban = function() {
+			irc.say(session.selectedUserChannel, '.ban ' + session.selectedUser);
+			scope.close();
 		};
 
 		scope.close = function() {
