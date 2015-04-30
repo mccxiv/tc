@@ -10,7 +10,7 @@
  * @property {isElement} boolean - Filters would probably ignore this message if it's an element
  */
 
-angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui', 'badges', function($timeout, $filter, irc, gui, badges) {
+angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'session', 'irc', 'gui', 'api', function($timeout, $filter, session, irc, gui, api) {
 
 	var capitalize = $filter('capitalize');
 	var emotify = $filter('emotify');
@@ -39,6 +39,15 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 		scope.$on('$destroy', function() {
 			console.warn('CHAT-OUTPUT: Destroying scope');
 		});
+
+		//===============================================================
+		// Directive methods
+		//===============================================================
+		scope.selectUsername = function(username) {
+			console.log('CHAT-OUTPUT: Username selected:', username);
+			session.selectedUser = username;
+			session.selectedUserChannel = scope.channel;
+		};
 
 		//===============================================================
 		// Functions
@@ -120,7 +129,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'irc', 'gui
 		}
 		
 		function fetchBadges() {
-			badges(scope.channel).success(function(badges) {
+			api.badges(scope.channel).success(function(badges) {
 				scope.badges = badges;
 			}); // TODO handle error
 		}

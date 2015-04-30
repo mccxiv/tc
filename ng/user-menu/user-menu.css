@@ -1,0 +1,42 @@
+user-menu {
+    font-size: 1.2rem;
+}
+
+user-menu .mdi {
+	vertical-align: -1px;
+}
+
+user-menu .profile-picture {
+    display: block;
+    height: 53px;
+    width: 53px;
+}
+
+user-menu .toolbar md-divider.vertical {
+	display: inline;
+	border-top-style: none;
+	border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+user-menu .toolbar .md-button {
+	min-width: 0;
+	border-radius: 0 !important;
+	margin: 0;
+	line-height: normal;
+    height: 21px;
+    padding: 0 2px;
+}
+
+user-menu .toolbar {
+    margin-left: 4px;
+}
+
+user-menu .username,
+user-menu .creation-date{
+    margin-left: 6px;
+    line-height: 16px;
+}
+
+user-menu .creation-date {
+    font-size: 1.1rem;
+}

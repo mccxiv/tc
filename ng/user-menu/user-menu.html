@@ -1,0 +1,38 @@
+<div class="user-menu-container" layout="row" ng-if="userSelectedInThisChannel()">
+
+    <img ng-src="{{m.profilePicSrc}}" class="profile-picture">
+
+    <div class="buttons-container" flex layout="column">
+
+        <div class="username row">
+            {{session.selectedUser | capitalize}}
+        </div>
+
+        <div class="row lighter creation-date">
+           <md-tooltip md-autohide>Registration date</md-tooltip>
+           {{m.created | date: 'MMM d, y h:mm a'}}
+        </div>
+
+        <div class="toolbar row" layout="row">
+
+            <md-button ng-click="close()" aria-label="Close">
+                <md-tooltip md-autohide>
+                    Close
+                </md-tooltip>
+                <i class="mdi mdi-close"></i>
+            </md-button>
+
+            <md-button ng-click="goToChannel()" aria-label="Go to channel">
+                <md-tooltip md-autohide>
+                    Go to their channel
+                </md-tooltip>
+                <i class="mdi mdi-open-in-new"></i>
+            </md-button>
+
+            <span flex></span>
+
+        </div>
+    </div>
+</div>
+
+<md-divider ng-if="userSelectedInThisChannel()"></md-divider>

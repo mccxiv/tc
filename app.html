@@ -8,10 +8,11 @@
 		<link rel="stylesheet" href="ng/side-toolbar/side-toolbar.css">
 		<link rel="stylesheet" href="ng/chat-output/chat-output.css">
 		<link rel="stylesheet" href="ng/chat-tabs/chat-tabs.css">
-		<link rel="stylesheet" href="ng/chatters/chatters.css">
+        <link rel="stylesheet" href="ng/chatters/chatters.css">
 		<link rel="stylesheet" href="ng/chatters-tabs/chatters-tabs.css">
 		<link rel="stylesheet" href="ng/chat-input/chat-input.css">
 		<link rel="stylesheet" href="ng/add-channel/add-channel.css">
+        <link rel="stylesheet" href="ng/user-menu/user-menu.css">
 		<link rel="stylesheet" href="bower_components/material-design-iconic-font/css/material-design-iconic-font.css">
 		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
 	</head>
@@ -21,6 +22,7 @@
 			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">				
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
+                <user-menu></user-menu>
 				<chatters-tabs flex></chatters-tabs>
 			</md-sidenav>
 
@@ -52,15 +54,18 @@
 		<script src="ng/chat-output/chat-output.js"></script>
 		<script src="ng/chat-tabs/chat-tabs.js"></script>
 
+        <script src="ng/user-menu/user-menu.js"></script>
+
 		<script src="ng/chatters/chatters.js"></script>
 		<script src="ng/chatters-tabs/chatters-tabs.js"></script>
 		
 		<script src="ng/add-channel/add-channel.js"></script>
-		
-		<script src="ng/providers/settings.js"></script>
+
+        <script src="ng/providers/settings.js"></script>
+        <script src="ng/providers/session.js"></script>
 		<script src="ng/providers/irc.js"></script>
         <script src="ng/providers/gui.js"></script>
-        <script src="ng/providers/badges.js"></script>
+        <script src="ng/providers/api.js"></script>
 
 		<script src="ng/filters/strip-hash.js"></script>
 		<script src="ng/filters/emotify.js"></script>

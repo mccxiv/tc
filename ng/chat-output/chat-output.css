@@ -18,6 +18,10 @@ chat-output .badge:not(:first-child) {
 	margin-left: 3px;
 }
 
+chat-output .username {
+    outline: none;
+}
+
 chat-output .chat-lines {
 	padding-top: 10px;
 }

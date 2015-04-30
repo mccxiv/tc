@@ -1,3 +1,10 @@
+/**
+ * Provides an object whose json representation is automatically
+ * saved to disk whenever its properties are modified.
+ *
+ * @ngdoc factory
+ * @name settings
+ */
 angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $rootScope) {
 	
 	var fse = require('fs-extra');

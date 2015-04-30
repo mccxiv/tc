@@ -19,6 +19,10 @@ a {
     color: #008CD0;
 }
 
+.lighter {
+    color: #999999;
+}
+
 .side-bar {
 	width: 190px !important;
 	min-width: 0 !important;
