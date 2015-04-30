@@ -19,3 +19,12 @@ chatters .show-more-button {
 	text-transform: none;
 	padding: 0;
 }
+
+chatters .usernames > * {
+    cursor: pointer;
+    outline: none;
+}
+
+chatters .usernames > *:hover {
+    text-decoration: underline;
+}

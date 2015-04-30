@@ -1,4 +1,4 @@
-angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', function($http, $filter, settings) {
+angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', 'session', function($http, $filter, settings, session) {
 	
 	function makeListUrl(broadcaster) {
 		return 'https://tmi.twitch.tv/group/user/'+broadcaster+'/chatters?callback=JSON_CALLBACK';
@@ -8,8 +8,20 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', func
 		var forceShowViewers = false;
 		var timeout = null;
 		
-		scope.api = null;
-		scope.showViewers = showViewers;
+		scope.api = null; // TODO refactor to use api service
+
+		scope.showViewers = function (force) {
+			if (typeof force === 'boolean') forceShowViewers = force;
+			if (!scope.api) return false;
+			if (scope.api.chatters.viewers.length < 201) return true;
+			else return forceShowViewers;
+		};
+
+		// TODO not DRY (same function in different files)
+		scope.selectUser = function(username) {
+			session.selectedUser = username;
+			session.selectedUserChannel = scope.channel;
+		};
 
 		/**
 		 * Fetches viewer list when this channel is selected.
@@ -59,12 +71,7 @@ angular.module('tc').directive('chatters', ['$http', '$filter', 'settings', func
 			timeout = setTimeout(fetchList, duration);
 		}
 		
-		function showViewers(force) {
-			if (typeof force === 'boolean') forceShowViewers = force;
-			if (!scope.api) return false;
-			if (scope.api.chatters.viewers.length < 201) return true;
-			else return forceShowViewers;
-		}		
+
 	}
 
 	return {
