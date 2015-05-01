@@ -4,12 +4,20 @@
  * and which should be left alone.
  * Examples of why this is important:
  * - Avoid converting an emoticon's url to a link
- * - Avoid escaping the html of emoticons and links *
+ * - Avoid escaping the html of emoticons and links
+ *
  * @typedef {Object} MessagePart
  * @property {string} string - A piece of text that filters could act on
  * @property {isElement} boolean - Filters would probably ignore this message if it's an element
  */
 
+/**
+ * Renders a channel's messages
+ *
+ * @ngdoc directive
+ * @name chatOutput
+ * @restrict E
+ */
 angular.module('tc').directive('chatOutput', function($timeout, $filter, session, irc, gui, api, ffz) {
 
 	// TODO dry
