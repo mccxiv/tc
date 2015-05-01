@@ -10,13 +10,15 @@
  * @property {isElement} boolean - Filters would probably ignore this message if it's an element
  */
 
-angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'session', 'irc', 'gui', 'api', function($timeout, $filter, session, irc, gui, api) {
+angular.module('tc').directive('chatOutput', function($timeout, $filter, session, irc, gui, api, ffz) {
 
+	// TODO dry
 	var capitalize = $filter('capitalize');
 	var emotify = $filter('emotify');
 	var linkify = $filter('linkify');
 	var escape = $filter('escape');
 	var combine = $filter('combine');
+	var ffzfy = $filter('ffzfy');
 	
 	function link(scope, element) {
 		//===============================================================
@@ -95,7 +97,7 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'session', 
 			addMessage({
 				user: user,
 				type: type,
-				message: combine(escape(linkify(emotify(message, user.emote)))),
+				message: combine(escape(linkify(ffzfy(scope.channel, emotify(message, user.emote))))),
 				style: type === 'action'? 'color: '+user.color : ''
 			});
 		}
@@ -227,4 +229,4 @@ angular.module('tc').directive('chatOutput', ['$timeout', '$filter', 'session', 
 		scope: {channel: '='},
 		link: link
 	} 
-}]);
+});

@@ -10,9 +10,14 @@
     "min_width": 700,
     "min_height": 350
   },
+  "scripts": {
+    "start": "nw"
+  },
   "dependencies": {
     "fs-extra": "^0.18.1",
     "twitch-irc": "git://github.com/twitch-irc/twitch-irc.git"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nw": "^0.12.1"
+  }
 }

@@ -5,8 +5,10 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
 		
 		scope.keypress = function(event) {
 			if (event.which === 13) {
-				if (scope.value.trim().length) {
-					settings.channels.push(scope.value);
+				var channel = scope.value.trim();
+				if (channel.length) {
+					channel = channel.toLowerCase();
+					settings.channels.push(channel);
 					scope.value = '';
 				} 
 				// TODO give user feedback if invalid, but only on enter
