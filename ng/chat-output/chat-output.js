@@ -18,7 +18,7 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function($timeout, $filter, session, irc, gui, api, ffz) {
+angular.module('tc').directive('chatOutput', function($timeout, $filter, session, irc, gui, api, highlights) {
 
 	// TODO dry
 	var capitalize = $filter('capitalize');
@@ -102,12 +102,20 @@ angular.module('tc').directive('chatOutput', function($timeout, $filter, session
 		 * @param {string} message
 		 */
 		function addUserMessage(type, user, message) {
-			addMessage({
+			var msgObj = {
 				user: user,
 				type: type,
+				highlighted: highlights.test(message),
 				message: combine(escape(linkify(ffzfy(scope.channel, emotify(message, user.emote))))),
 				style: type === 'action'? 'color: '+user.color : ''
-			});
+			};
+
+			if (msgObj.highlighted) {
+				// TODO fire notification
+				console.warn('CHAT-OUTPUT: Notification NYI');
+			}
+
+			addMessage(msgObj);
 		}
 
 		/**

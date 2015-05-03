@@ -43,3 +43,7 @@ chat-output .chat-line .separator {
 chat-output .chat-line .username {
 	font-weight: bold;
 }
+
+chat-output .highlighted {
+    background-color: rgba(255, 0, 0, 0.5);
+}
