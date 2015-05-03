@@ -7,7 +7,7 @@
 
 <md-button ng-click="confirmLogout($event)" aria-label="Change account">
 	<md-tooltip md-autohide md-direction="right">
-		Change Account
+		{{settings.identity.username | capitalize}}: Sign out
 	</md-tooltip>
 	<i class="mdi mdi-account-child"></i>
 </md-button>
