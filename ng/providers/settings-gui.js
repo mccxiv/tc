@@ -1,5 +1,5 @@
 /**
- * Opens the options panel.
+ * Provides methods to register options pages and display them
  *
  * @ngdoc factory
  * @name settingsGui
