@@ -33,6 +33,7 @@ angular.module('tc').directive('chatOutput', function($timeout, $filter, session
 		// Variables
 		//===============================================================
 		var latestScrollWasAutomatic = false;
+		var messageLimit = 3500; // Keep this many messages in memory
 		scope.autoScroll = true;
 		scope.chatLimit = -settings.maxChaLines;
 		scope.messages = [];
@@ -139,11 +140,17 @@ angular.module('tc').directive('chatOutput', function($timeout, $filter, session
 			// increase the limit so that they don't disappear from the top
 			// while chat autoscrolling is paused
 			if (!scope.autoScroll) scope.chatLimit--;
+
 			scope.messages.push(messageObject);
 			$timeout(function() {
 				scope.$apply(); // TODO why is this necessary? Don't work without it
 				if (scope.autoScroll) autoScroll();
 			});
+
+			// Too many messages in memory
+			if (scope.messages.length > messageLimit) {
+				scope.messages.shift();
+			}
 		}
 		
 		function fetchBadges() {
