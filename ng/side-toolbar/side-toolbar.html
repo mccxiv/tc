@@ -5,11 +5,18 @@
 	<i class="mdi mdi-swap-vert"></i>
 </md-button>
 
-<md-button ng-click="confirmLogout($event)" aria-label="Change account">
-	<md-tooltip md-autohide md-direction="right">
-		{{settings.identity.username | capitalize}}: Sign out
-	</md-tooltip>
-	<i class="mdi mdi-account-child"></i>
+<md-button ng-click="confirmLogout()" aria-label="Sign out">
+    <md-tooltip md-autohide md-direction="right">
+        {{settings.identity.username | capitalize}}: Sign out
+    </md-tooltip>
+    <i class="mdi mdi-person"></i>
+</md-button>
+
+<md-button ng-click="settingsPanel.show()" aria-label="Settings">
+    <md-tooltip md-autohide md-direction="right">
+        Settings
+    </md-tooltip>
+    <i class="mdi mdi-settings"></i>
 </md-button>
 
 <md-divider class="vertical"></md-divider>
