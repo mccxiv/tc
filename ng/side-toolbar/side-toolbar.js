@@ -1,9 +1,9 @@
-angular.module('tc').directive('sideToolbar', function(settings, settingsPanel, gui, $filter, $mdDialog, irc) {
+angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gui, $filter, $mdDialog, irc) {
 	
 	function link(scope, element) {
 		scope.irc = irc;
 		scope.settings = settings;
-		scope.settingsPanel = settingsPanel;
+		scope.settingsGui = settingsGui;
 		element.attr('layout', 'row');
 
 		scope.connectionStatus = function() {

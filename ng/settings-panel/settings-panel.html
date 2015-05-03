@@ -1,0 +1,13 @@
+<md-sidenav class="md-sidenav-left md-whiteframe-z2 menu" md-is-locked-open="true">
+
+    <md-list>
+        <md-subheader class="md-no-sticky">Settings</md-subheader>
+        <md-list-item ng-repeat="item in items" ng-click="m.selected = $index">
+            <p>{{item.name}}</p>
+        </md-list-item>
+    </md-list>
+
+</md-sidenav>
+
+<md-content ng-repeat="item in items" ng-if="$index === m.selected" ng-bind-html="item.html"></md-content>
+    

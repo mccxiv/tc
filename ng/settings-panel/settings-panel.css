@@ -1,0 +1,5 @@
+settings-panel .menu {
+    width: 150px;
+    min-width: 0;
+    max-width: none;
+}
