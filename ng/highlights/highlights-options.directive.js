@@ -5,8 +5,11 @@
 angular.module('tc').directive('highlightsOptions', function(highlights) {
 
 	function link(scope) {
-		scope.m = {input: ''};
 		scope.highlights = highlights.get();
+		scope.m = {
+			input: '',
+			highlightMe: highlights.highlightMe()
+		};
 
 		scope.delete = function(index) {
 			scope.highlights.splice(index, 1);
@@ -19,6 +22,10 @@ angular.module('tc').directive('highlightsOptions', function(highlights) {
 				save();
 			}
 			scope.m.input = '';
+		};
+
+		scope.changeHighlightMe = function() {
+			highlights.highlightMe(scope.m.highlightMe);
 		};
 
 		function save() {highlights.set(scope.highlights);}

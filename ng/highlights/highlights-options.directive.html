@@ -1,5 +1,9 @@
 <h1 class="md-headline">Highlighted Phrases</h1>
-<p>You may add words and phrases to make them stand out in chat and show up as desktop notifications.</p>
+<p>You may add words and phrases to make them stand out in chat and show up as desktop notifications. Matches are not case sensitive.</p>
+
+<md-switch ng-model="m.highlightMe" aria-label="Highlight Self" ng-change="changeHighlightMe()">
+    Highlight my own name
+</md-switch>
 
 <md-list class="phrase-list">
     <md-list-item class="item" ng-repeat="highlight in highlights track by $index">

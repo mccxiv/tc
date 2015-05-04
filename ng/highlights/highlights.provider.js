@@ -17,12 +17,26 @@ angular.module('tc').factory('highlights', function(settings, settingsGui) {
 		 * @return {boolean}     - True if `line` contains a highlighted phrase.
 		 */
 		test: function(line) {
-			var me = new RegExp(settings.identity.username, 'i');
-			if (me.test(line)) return true;
+			if (settings.highlightMe) {
+				var me = new RegExp(settings.identity.username, 'i');
+				if (me.test(line)) return true;
+			}
 			return settings.highlights.some(function (highlight) {
 				var regex = new RegExp(highlight, 'i');
 				return regex.test(line);
 			});
+		},
+
+		/**
+		 *
+		 * @param {boolean} [should] - Sets the status, if provided.
+		 * @return {boolean} - Whether or not the user's name should be highlighted.
+		 */
+		highlightMe: function(should) {
+			if (typeof should === 'boolean') {
+				settings.highlightMe = should;
+			}
+			return settings.highlightMe;
 		},
 
 		/**

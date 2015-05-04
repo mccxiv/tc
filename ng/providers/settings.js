@@ -22,7 +22,8 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		maxChaLines: 80,
 		selectedTabIndex: 0,
 		channels: [],
-		highlights: []
+		highlights: [],
+		highlightMe: true
 	};
 
 	//===============================================================
@@ -54,6 +55,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);
+		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
 	}
 
 	function watchVal() {
