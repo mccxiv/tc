@@ -5,6 +5,10 @@
  * @name settingsGui
  */
 angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
+
+	var entries = [];
+	window.entries = entries;
+
 	return {
 
 		/**
@@ -13,7 +17,7 @@ angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
 		 * @param {string} html - Shown when the user selects this menu item
 		 */
 		addItem: function(name, html) {
-
+			entries.push({name: name, html: html});
 		},
 
 		/**
@@ -21,7 +25,8 @@ angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
 		 * @return {{name: {string}, html: {string}}[]}
 		 */
 		getItems: function() {
-
+			console.log('SETTINGS-GUI: returning entries copy', angular.copy(entries));
+			return entries;
 		},
 
 		/**

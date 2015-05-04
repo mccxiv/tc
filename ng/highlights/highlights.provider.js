@@ -1,13 +1,15 @@
 /**
- *
+ * Provides methods to get, set and test for highlight phrases.
  *
  * @ngdoc factory
  * @name highlights
 
  */
-angular.module('tc').factory('highlights', function(settings) {
-	return {
+angular.module('tc').factory('highlights', function(settings, settingsGui) {
 
+	settingsGui.addItem('Highlights', '<md-button>btn!</md-button> <highlights-options></highlights-options>');
+
+	return {
 		/**
 		 * Test if a string matches any of the saved highlighted phrases.
 		 * @param {string} line  - Where to search for highlights.
