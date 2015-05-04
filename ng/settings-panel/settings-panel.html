@@ -2,12 +2,12 @@
 
     <md-list>
         <md-subheader class="md-no-sticky">Settings</md-subheader>
-        <md-list-item ng-repeat="item in items" ng-click="render($index)">
+        <md-list-item class="menu-item" ng-repeat="item in items | orderBy: 'name'" ng-click="render($index)">
             <p>{{item.name}}</p>
         </md-list-item>
     </md-list>
 
 </md-sidenav>
 
-<md-content class="settings-content" ng-repeat="item in items" bind-html-compile="item.html"></md-content>
+<md-content flex class="settings-content" ng-repeat="item in items" bind-html-compile="item.html"></md-content>
     

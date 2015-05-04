@@ -1,0 +1,19 @@
+highlights-options .item {
+    font-size: 1.4rem;
+    cursor: default;
+}
+
+highlights-options .close-button {
+    width: 26px;
+    min-width: 0;
+    line-height: 2.5rem;
+    height: 2.5rem;
+}
+
+highlights-options .input-form {
+    width: 300px;
+}
+
+highlights-options md-list-item.md-clickable:hover {
+    cursor: default;
+}

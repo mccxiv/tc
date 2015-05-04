@@ -37,7 +37,7 @@ angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
 			$mdDialog.show({
 				parent: $rootElement,
 				targetEvent: $event,
-				template: '<md-dialog><md-content style="padding: 0"><settings-panel></settings-panel></md-content></md-dialog>',
+				templateUrl: 'ng/settings-panel/settings-gui-dialog.html',
 				clickOutsideToClose: true
 			});
 		}

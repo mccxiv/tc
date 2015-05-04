@@ -1,0 +1,9 @@
+.settings-gui-dialog {
+    height: 100%;
+    width: 100%;
+    font-size: 1.3rem;
+}
+
+.settings-gui-dialog .settings-gui-dialog-content {
+    padding: 0;
+}
