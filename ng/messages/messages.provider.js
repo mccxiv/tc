@@ -20,7 +20,7 @@
  * @param {string} channel
  * @return {object[]} - List of message objects for this channel
  */
-angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights) {
+angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings) {
 
 	// TODO dry
 	var capitalize = $filter('capitalize');
@@ -49,7 +49,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		});
 
 		irc.addListener('connected', function() {
-			Object.keys(messages).forEach(function(channel) {
+			settings.channels.forEach(function(channel) {
 				addNotificationMessage(channel, 'Welcome to '+channel+'\'s chat.');
 			});
 		});
@@ -93,7 +93,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	 */
 	function listenGlobal(event, message) {
 		irc.addListener(event, function() {
-			Object.keys(messages).forEach(function(channel) {
+			settings.channels.forEach(function(channel) {
 				addNotificationMessage(channel, message);
 			});
 		})

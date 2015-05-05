@@ -5,9 +5,11 @@
  * @name notifications
 
  */
-angular.module('tc').factory('notifications', function(settings, settingsGui) {
+angular.module('tc').factory('notifications', function() {
 
-	settingsGui.addItem('Notifications', '<highlights-options></highlights-options>');
+	//settingsGui.addItem('Notifications', '<highlights-options></highlights-options>');
+
+	console.log('NOTIFICATIONS: initialized');
 
 	return {
 
