@@ -1,12 +1,26 @@
 /**
+ * Chat message filters receive and return an array of these objects.
+ * It makes it easier to know which sections of the string should be filtered
+ * and which should be left alone.
+ * Examples of why this is important:
+ * - Avoid converting an emoticon's url to a link
+ * - Avoid escaping the html of emoticons and links
+ *
+ * @typedef {Object} MessagePart
+ * @property {string} string - A piece of text that filters could act on
+ * @property {isElement} boolean - Filters would probably ignore this message if it's an element
+ */
+
+/**
  * Provides chat messages for outputting on screen
  *
  * @ngdoc factory
  * @name messages
- * @property {function} get
- * @property {function} user
+ * @kind function
+ * @param {string} channel
+ * @return {object[]} - List of message objects for this channel
  */
-angular.module('tc').factory('messages', function($rootScope, irc, api, highlights) {
+angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights) {
 
 	// TODO dry
 	var capitalize = $filter('capitalize');
@@ -17,10 +31,9 @@ angular.module('tc').factory('messages', function($rootScope, irc, api, highligh
 	var ffzfy = $filter('ffzfy');
 	var messageLimit = 3500;
 	var messages = {};
-	var badges = {};
 
+	window.messagesFactory = messages;
 	setupIrcListeners();
-	fetchBadges();
 
 	function setupIrcListeners() {
 		listenGlobal('connecting', 'Connecting...');
@@ -98,7 +111,7 @@ angular.module('tc').factory('messages', function($rootScope, irc, api, highligh
 			user: user,
 			type: type,
 			highlighted: highlights.test(message),
-			message: combine(escape(linkify(ffzfy(scope.channel, emotify(message, user.emote))))),
+			message: combine(escape(linkify(ffzfy(channel, emotify(message, user.emote))))),
 			style: type === 'action'? 'color: '+user.color : ''
 		});
 	}
@@ -123,6 +136,8 @@ angular.module('tc').factory('messages', function($rootScope, irc, api, highligh
 	 * @param {object} messageObject
 	 */
 	function addMessage(channel, messageObject) {
+		if (channel.charAt(0) === '#') channel = channel.substring(1);
+		if (!messages[channel]) messages[channel] = [];
 		messages[channel].push(messageObject);
 
 		// Too many messages in memory
@@ -133,17 +148,8 @@ angular.module('tc').factory('messages', function($rootScope, irc, api, highligh
 		$rootScope.$apply();
 	}
 
-	function fetchBadges() {
-		Object.keys(messages).forEach(function(channel) {
-			api.badges(channel).success(function(apiBadges) {
-				badges[channel] = apiBadges;
-			});
-		}); // TODO handle error
-	}
-
-	return {
-		get: function(channel) {
-			return messages[channel];
-		}
+	return function(channel) {
+		if (!messages[channel]) messages[channel] = [];
+		return messages[channel];
 	}
 });
