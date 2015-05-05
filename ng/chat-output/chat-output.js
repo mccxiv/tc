@@ -29,7 +29,7 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 		});
 
 		scope.$watch(
-			function() {return scope.messages.length},
+			function() {return scope.messages[scope.messages.length-1]},
 			function(nv, ov) {
 				if (scope.autoScroll) scrollDown();
 				else scope.chatLimit--; // ng-repeat uses negative
