@@ -1,19 +1,21 @@
 chat-input {
 	display: block;
+    overflow: hidden;
 }
 
-chat-input .input {
+chat-input .input-container {
 	padding-bottom: 0;
 	margin-top: -23px;
 }
 
-chat-input .input label {
+chat-input .input-container label {
 	padding-left: 20px !important;
 	margin-bottom: -3px;
 	padding-top: 7px;
 }
 
-chat-input .input .md-input {
+chat-input .input-container .md-input {
+    transition: border-color 300ms;
 	border-color: transparent;
 	padding-left: 20px;
 }
