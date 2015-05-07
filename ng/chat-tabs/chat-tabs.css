@@ -2,7 +2,10 @@ chat-tabs {
 	display: block;
 }
 
-/* TODO geting rid of animations for performance, it's dirty */
+chat-tabs md-tabs-content-wrapper {
+    top: 30px;
+}
+
 chat-tabs md-tab-content {
 	transition: transform 0s 300ms !important;
 	-webkit-animation: none !important;
