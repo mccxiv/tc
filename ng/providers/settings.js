@@ -19,6 +19,11 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			username: '',
 			password: ''
 		},
+		notifications: {
+			onConnect: false,
+			onMention: true,
+			soundOnMention: true
+		}, // TODO refactor highlights to an object
 		maxChaLines: 80,
 		selectedTabIndex: 0,
 		channels: [],
@@ -47,6 +52,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	 * @param {object} s - The settings object to verify and fix
 	 */
 	function makeValid(s) {
+		// TODO this whole thing is dumb, needs refactor
 		if (!angular.isObject(s)) s = angular.copy(defaults);
 		if (!angular.isObject(s.identity)) s.identity = angular.copy(defaults.identity);
 		if (!angular.isString(s.identity.username)) s.identity.username = defaults.identity.username;
@@ -56,6 +62,12 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);
 		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
+
+
+		if (!angular.isObject(s.notifications)) s.notifications = angular.copy(defaults.notifications);
+		if (typeof s.notifications.onConnect !== 'boolean') s.notifications.onConnect = defaults.notifications.onConnect;
+		if (typeof s.notifications.onMention !== 'boolean') s.notifications.onMention = defaults.notifications.onMention;
+		if (typeof s.notifications.soundOnMention !== 'boolean') s.notifications.soundOnMention = defaults.notifications.soundOnMention;
 	}
 
 	function watchVal() {

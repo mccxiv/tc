@@ -5,14 +5,16 @@
  * @name notifications
 
  */
-angular.module('tc').factory('notifications', function(irc, highlights) {
+angular.module('tc').factory('notifications', function(irc, settings, highlights, settingsGui) {
 
 	settingsGui.addItem('Notifications', '<notification-options></notification-options>');
 
 	var sound = new Audio('assets/audio/notification.ogg');
 
 	irc.addListener('disconnected', function() {
-		n('Disconnected', 'The connection to the chat server has ended.');
+		if (settings.notifications.onConnect) {
+			n('Disconnected', 'The connection to the chat server has ended.');
+		}
 	});
 
 	irc.addListener('crash', function() {
@@ -24,16 +26,20 @@ angular.module('tc').factory('notifications', function(irc, highlights) {
 	irc.addListener('action', fromUser);
 
 	function fromUser(channel, user, message) {
-		channel = channel.substring(1);
-		// TODO inefficient, runs test twice: here and in messages
-		if (highlights.test(message)) {
-			n('Mentioned on '+channel, user.displayname+': '+message);
+		if (settings.notifications.onMention) {
+			// TODO inefficient, runs test twice: here and in messages
+			if (highlights.test(message)) {
+				channel = channel.substring(1);
+				n('Mentioned on '+channel, user.displayname+': '+message);
+				if (settings.notifications.soundOnMention) {
+					sound.play();
+				}
+			}
 		}
 	}
 
 	function n(title, body) {
 		console.log('NOTIFICATIONS: firing notification', title, body);
-		sound.play();
 		return new Notification(title, {body: body});
 	}
 
