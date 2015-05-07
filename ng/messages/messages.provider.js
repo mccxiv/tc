@@ -138,6 +138,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	function addMessage(channel, messageObject) {
 		if (channel.charAt(0) === '#') channel = channel.substring(1);
 		if (!messages[channel]) messages[channel] = [];
+		messageObject.time = new Date().getTime();
 		messages[channel].push(messageObject);
 
 		// Too many messages in memory
