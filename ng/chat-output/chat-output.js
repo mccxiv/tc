@@ -5,17 +5,18 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function($timeout, messages, session, irc, gui, api, highlights) {
+angular.module('tc').directive('chatOutput', function($timeout, messages, session, irc, gui, api) {
 	
 	function link(scope, element) {
 		//===============================================================
 		// Variables
 		//===============================================================
 		var latestScrollWasAutomatic = false;
-		scope.autoScroll = true;
-		scope.chatLimit = -settings.maxChaLines;
-		scope.messages = messages(scope.channel);
+		scope.opts = settings.chat;
 		scope.badges = null;
+		scope.messages = messages(scope.channel);
+		scope.chatLimit = -scope.opts.maxChaLines;
+		scope.autoScroll = true;
 
 		//===============================================================
 		// Setup
@@ -30,7 +31,7 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 
 		scope.$watch(
 			function() {return scope.messages[scope.messages.length-1]},
-			function(nv, ov) {
+			function() {
 				if (scope.autoScroll) scrollDown();
 				else scope.chatLimit--; // ng-repeat uses negative
 			}
@@ -57,7 +58,7 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 			element.bind('scroll', function() {
 				if (!latestScrollWasAutomatic) scope.autoScroll = distanceFromBottom() === 0;
 				latestScrollWasAutomatic = false; // Reset it
-				if (scope.autoScroll) scope.chatLimit = -settings.maxChaLines;
+				if (scope.autoScroll) scope.chatLimit = -scope.opts.maxChaLines;
 				else if (distanceFromTop() === 0) showAllLines();
 				scope.$apply();				
 			});

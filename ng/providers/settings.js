@@ -19,12 +19,15 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			username: '',
 			password: ''
 		},
+		chat: {
+			maxChaLines: 80,
+			timestamps: false
+		},
 		notifications: {
 			onConnect: false,
 			onMention: true,
 			soundOnMention: true
 		}, // TODO refactor highlights to an object
-		maxChaLines: 80,
 		selectedTabIndex: 0,
 		channels: [],
 		highlights: [],
@@ -54,9 +57,20 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	function makeValid(s) {
 		// TODO this whole thing is dumb, needs refactor
 		if (!angular.isObject(s)) s = angular.copy(defaults);
+
 		if (!angular.isObject(s.identity)) s.identity = angular.copy(defaults.identity);
 		if (!angular.isString(s.identity.username)) s.identity.username = defaults.identity.username;
 		if (!angular.isString(s.identity.password)) s.identity.password = defaults.identity.password;
+
+		if (!angular.isObject(s.notifications)) s.notifications = angular.copy(defaults.notifications);
+		if (typeof s.notifications.onConnect !== 'boolean') s.notifications.onConnect = defaults.notifications.onConnect;
+		if (typeof s.notifications.onMention !== 'boolean') s.notifications.onMention = defaults.notifications.onMention;
+		if (typeof s.notifications.soundOnMention !== 'boolean') s.notifications.soundOnMention = defaults.notifications.soundOnMention;
+
+		if (!angular.isObject(s.chat)) s.chat = angular.copy(defaults.chat);
+		if (typeof s.chat.timestamps !== 'boolean') s.chat.timestamps = defaults.chat.timestamps;
+		if (!angular.isNumber(s.chat.maxChaLines)) s.chat.maxChaLines = defaults.chat.maxChaLines;
+
 		if (!angular.isNumber(s.maxChaLines)) s.maxChatLines = defaults.maxChaLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
@@ -64,10 +78,6 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
 
 
-		if (!angular.isObject(s.notifications)) s.notifications = angular.copy(defaults.notifications);
-		if (typeof s.notifications.onConnect !== 'boolean') s.notifications.onConnect = defaults.notifications.onConnect;
-		if (typeof s.notifications.onMention !== 'boolean') s.notifications.onMention = defaults.notifications.onMention;
-		if (typeof s.notifications.soundOnMention !== 'boolean') s.notifications.soundOnMention = defaults.notifications.soundOnMention;
 	}
 
 	function watchVal() {

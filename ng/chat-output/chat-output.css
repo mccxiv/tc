@@ -7,6 +7,10 @@ chat-output {
 	font-size: 1.4rem;
 }
 
+chat-output .timestamp {
+    font-size: 1rem;
+}
+
 chat-output .emoticon, 
 chat-output .badge {
 	display: inline-block;
