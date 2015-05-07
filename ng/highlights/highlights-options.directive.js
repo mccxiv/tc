@@ -1,5 +1,6 @@
 /**
  * @ngdoc directive
+ * @name highlightsOptions
  * @restrict E
  */
 angular.module('tc').directive('highlightsOptions', function(highlights) {

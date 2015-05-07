@@ -3,7 +3,6 @@
  *
  * @ngdoc factory
  * @name highlights
-
  */
 angular.module('tc').factory('highlights', function(settings, settingsGui) {
 
