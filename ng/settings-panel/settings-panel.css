@@ -9,6 +9,14 @@ settings-panel .settings-content {
     padding: 15px;
 }
 
+settings-panel .md-button {
+    border-radius: 0 !important;
+}
+
 settings-panel .menu-item .md-button:hover {
     background-color: rgba(0 ,0 ,0, 0.1) !important;
+}
+
+settings-panel .selected .md-button{
+    background-color: rgba(0 ,0 ,0, 0.2) !important;
 }
