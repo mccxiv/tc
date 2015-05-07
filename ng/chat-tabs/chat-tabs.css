@@ -13,3 +13,8 @@ chat-tabs md-tab-content {
 chat-tabs .chat-tabs {
 	height: 100%;
 }
+
+chat-tabs .md-tab {
+    padding-top: 3px;
+    padding-bottom: 3px !important;
+}
