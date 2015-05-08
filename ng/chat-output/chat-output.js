@@ -15,7 +15,7 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 		scope.opts = settings.chat;
 		scope.badges = null;
 		scope.messages = messages(scope.channel);
-		scope.chatLimit = -scope.opts.maxChaLines;
+		scope.chatLimit = -scope.opts.maxChatLines;
 		scope.autoScroll = true;
 
 		//===============================================================
@@ -58,7 +58,7 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 			element.bind('scroll', function() {
 				if (!latestScrollWasAutomatic) scope.autoScroll = distanceFromBottom() === 0;
 				latestScrollWasAutomatic = false; // Reset it
-				if (scope.autoScroll) scope.chatLimit = -scope.opts.maxChaLines;
+				if (scope.autoScroll) scope.chatLimit = -scope.opts.maxChatLines;
 				else if (distanceFromTop() === 0) showAllLines();
 				scope.$apply();				
 			});
