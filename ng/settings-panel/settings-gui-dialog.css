@@ -2,8 +2,17 @@
     height: 100%;
     width: 100%;
     font-size: 1.3rem;
+    overflow: visible !important;
 }
 
 .settings-gui-dialog .settings-gui-dialog-content {
     padding: 0;
+}
+
+.settings-gui-dialog .settings-close-button {
+    position: absolute;
+    top: -13px;
+    right: -36px;
+    font-size: 2.5rem;
+    vertical-align: -6px;
 }
