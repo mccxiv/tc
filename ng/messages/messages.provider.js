@@ -29,7 +29,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var escape = $filter('escape');
 	var combine = $filter('combine');
 	var ffzfy = $filter('ffzfy');
-	var messageLimit = 1500;
+	var messageLimit = 1000;
 	var messages = {};
 
 	window.messagesFactory = messages;
