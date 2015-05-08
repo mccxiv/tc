@@ -70,11 +70,13 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 		 * top when the new lines are added.
 		 */
 		function showAllLines() {
-			scope.chatLimit = Infinity;
-			var originalBottomDistance = distanceFromBottom();
 			$timeout(function() {
-				element[0].scrollTop = element[0].scrollHeight - (originalBottomDistance + element[0].offsetHeight);
-			});
+				scope.chatLimit = Infinity;
+				var originalBottomDistance = distanceFromBottom();
+				$timeout(function() {
+					element[0].scrollTop = element[0].scrollHeight - (originalBottomDistance + element[0].offsetHeight);
+				});
+			}, 30);
 		}
 
 		// TODO needs to be called on new messages
