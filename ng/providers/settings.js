@@ -20,7 +20,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			password: ''
 		},
 		chat: {
-			maxChaLines: 80,
+			maxChatLines: 80,
 			timestamps: false
 		},
 		notifications: {
@@ -69,9 +69,9 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 
 		if (!angular.isObject(s.chat)) s.chat = angular.copy(defaults.chat);
 		if (typeof s.chat.timestamps !== 'boolean') s.chat.timestamps = defaults.chat.timestamps;
-		if (!angular.isNumber(s.chat.maxChaLines)) s.chat.maxChaLines = defaults.chat.maxChaLines;
+		if (!angular.isNumber(s.chat.maxChatLines)) s.chat.maxChatLines = defaults.chat.maxChatLines;
 
-		if (!angular.isNumber(s.maxChaLines)) s.maxChatLines = defaults.maxChaLines;
+		if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);

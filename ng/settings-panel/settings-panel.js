@@ -4,20 +4,20 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settingsGui, $compile) {
-
-	function main(scope, element) {
+angular.module('tc').directive('settingsPanel', function() {
+	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.m = {selected: 0};
-		scope.items = settingsGui.getItems();
-		scope.compile = function(html) {
-			return $compile(html)(scope);
-		};
+		scope.items = [
+			{name: 'Highlights', html: '<highlights-options></highlights-options>'},
+			{name: 'Notifications', html: '<notification-options></notification-options>'},
+			{name: 'Chat', html: '<chat-options></chat-options>'}
+		];
 	}
 
 	return {
 		restrict: 'E',
 		templateUrl: 'ng/settings-panel/settings-panel.html',
-		link: main
+		link: link
 	}
 });

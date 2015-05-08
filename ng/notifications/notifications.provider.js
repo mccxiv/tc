@@ -5,9 +5,7 @@
  * @name notifications
 
  */
-angular.module('tc').factory('notifications', function(irc, settings, highlights, settingsGui) {
-
-	settingsGui.addItem('Notifications', '<notification-options></notification-options>');
+angular.module('tc').factory('notifications', function(irc, settings, highlights) {
 
 	var sound = new Audio('assets/audio/notification.ogg');
 

@@ -4,12 +4,8 @@
  * @ngdoc factory
  * @name highlights
  */
-angular.module('tc').factory('highlights', function(settings, settingsGui) {
-
-	settingsGui.addItem('Highlights', '<highlights-options></highlights-options>');
-
+angular.module('tc').factory('highlights', function(settings) {
 	return {
-
 		/**
 		 * Test if a string matches any of the saved highlighted phrases.
 		 * @param {string} line  - Where to search for highlights.
