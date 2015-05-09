@@ -38,7 +38,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	function setupIrcListeners() {
 		listenGlobal('connecting', 'Connecting...');
 		listenGlobal('disconnected', 'Disconnected from the server.');
-		listenGlobal('crash', 'IRC crashed! You need to restart the application. Sorry :(');
+		listenGlobal('crash', 'IRC crashed! You may need to restart the application. Sorry :(');
 
 		irc.addListener('chat', function(channel, user, message) {
 			addUserMessage('chat', channel, user, message);

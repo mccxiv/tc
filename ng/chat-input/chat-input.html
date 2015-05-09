@@ -1,6 +1,6 @@
 <form ng-submit="say()">
 	<md-input-container class="input-container">
 		<label>Send a message</label>
-		<input ng-model="message">
+		<input ng-model="message" tab-completion tab-completion-fn="getUsernames()">
 	</md-input-container>	
 </form>

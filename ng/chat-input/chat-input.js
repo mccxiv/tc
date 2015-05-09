@@ -1,7 +1,22 @@
-angular.module('tc').directive('chatInput', ['settings', 'irc', function(settings, irc) {
+angular.module('tc').directive('chatInput', function(settings, irc, messages) {
 
 	function link(scope) {
 		scope.message = '';
+
+		scope.getUsernames = function() {
+			var channel = settings.channels[settings.selectedTabIndex];
+
+			if (!channel) return [];
+			else return _(messages(channel)).filter(hasUser).map(getNames).unique().value();
+
+			function hasUser(message) {
+				return !!message.user;
+			}
+
+			function getNames(message) {
+				return message.user.username;
+			}
+		};
 		
 		scope.say = function() {
 			var channel = settings.channels[settings.selectedTabIndex];
@@ -21,4 +36,4 @@ angular.module('tc').directive('chatInput', ['settings', 'irc', function(setting
 		templateUrl: 'ng/chat-input/chat-input.html',
 		link: link
 	}
-}]);
+});
