@@ -20,7 +20,7 @@ angular.module('tc').directive('chatInput', function(settings, irc, messages) {
 		
 		scope.say = function() {
 			var channel = settings.channels[settings.selectedTabIndex];
-			if (!channel) return;
+			if (!channel || !scope.message.trim().length) return;
 			
 			if (scope.message.charAt(0) === '/') {
 				scope.message = '.' + scope.message.substr(1);
