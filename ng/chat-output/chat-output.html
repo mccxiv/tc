@@ -4,7 +4,7 @@
 
 <div class="chat-lines">
 	<div class="chat-line" ng-repeat="m in messages | limitTo: chatLimit" ng-class="{highlighted: m.highlighted}" style="{{m.style}}"><span
-            class="timestamp lighter" ng-if="opts.timestamps">{{m.time | date: 'H:mm'}}&nbsp;</span><span
+            class="timestamp lighter" ng-if="opts.timestamps">{{m.time | date: 'H:mm'}}&nbsp;&nbsp;</span><span
             class="badges" ng-if="m.user.special.length"><img
                 class="badge" ng-repeat="badge in m.user.special" ng-src="{{badges[badge].image}}">&nbsp;</span><span
             class="username" ng-if="m.user" ng-click="selectUsername(m.user.username)" style="color: {{m.user.color}}">{{m.user.displayname}}</span><span
