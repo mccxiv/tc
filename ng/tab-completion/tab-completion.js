@@ -25,7 +25,7 @@ angular.module('tc').directive('tabCompletion', function() {
 						userString = words[words.length-1];
 						if (userString.length) {
 							matchingItems = scope.tabCompletionFn().filter(function (item) {
-								return item.startsWith(userString);
+								return item.startsWith(userString.toLowerCase());
 							});
 							currentItem = 0;
 							previousKeyWasTab = true;
