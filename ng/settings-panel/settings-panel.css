@@ -9,7 +9,7 @@ settings-panel .settings-content {
     padding: 15px;
 }
 
-settings-panel .md-button {
+settings-panel .menu-item .md-button {
     border-radius: 0 !important;
 }
 

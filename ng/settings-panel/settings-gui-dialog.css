@@ -11,8 +11,12 @@
 
 .settings-gui-dialog .settings-close-button {
     position: absolute;
-    top: -13px;
-    right: -36px;
+    top: -24px;
+    right: -28px;
     font-size: 2.5rem;
     vertical-align: -6px;
+}
+
+.settings-gui-dialog .settings-close-button i {
+    vertical-align: -1px;
 }
