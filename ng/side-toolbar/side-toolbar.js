@@ -20,7 +20,6 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		scope.confirmLogout = function(event) {
 			var confirm = $mdDialog.confirm()
 				.parent(angular.element(document.body))
-				//.title('llll')
 				.content('Are you sure you want to log out? You will need to re-enter your password.')
 				.ok('OK')
 				.cancel('Cancel')
@@ -43,11 +42,11 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		};
 
 		scope.openStream = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel+'/popout');
+			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel()+'/popout');
 		};
 
 		scope.openChannel = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel);
+			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel());
 		};
 	}
 	
