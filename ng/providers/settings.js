@@ -20,7 +20,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			password: ''
 		},
 		chat: {
-			maxChatLines: 80,
+			maxChatLines: 160,
 			timestamps: false
 		},
 		notifications: {
@@ -76,8 +76,6 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);
 		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
-
-
 	}
 
 	function watchVal() {
