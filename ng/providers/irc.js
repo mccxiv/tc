@@ -7,6 +7,7 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
 	var client;
+	var clientWrite;
 	var eventsToForward = [
 		'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
 		'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
@@ -19,17 +20,18 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	ee.connected = false;
 	ee.connecting = false;
 	ee.badLogin = false;
-	ee.login = makeNewClient;
+	ee.login = makeNewClients;
 	ee.credentialsValid = credentialsValid;
 	ee.isMod = function(channel, username) {
 		return client.isMod(channel, username);
 	} ;
 	ee.say = function(channel, msg) {
-		client.say(channel, msg);
+		clientWrite.say(channel, msg);
 	};
 	ee.logout = function() {
 		$timeout(function() {
-			destroyClient();
+			destroyClient(client);
+			destroyClient(clientWrite);
 		});
 	};
 
@@ -38,12 +40,14 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	//===============================================================
 	onChannelsChange(function() {
 		if (client.connected) {
-			joinChannels();
-			leaveChannels();
+			joinChannels(client);
+			joinChannels(clientWrite);
+			leaveChannels(client);
+			leaveChannels(clientWrite);
 		}
 	});
 
-	makeNewClient();
+	makeNewClients();
 	
 	// TODO remove debugging stuff
 	window.$rootScope = $rootScope;
@@ -71,14 +75,19 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 			});
 		});
 	}
+
+	function makeNewClients() {
+		makeNewClient();
+		makeNewClientWrite()
+	}
 	
 	function makeNewClient() {
-		destroyClient();
+		destroyClient(client);
 		if (credentialsValid()) {
 			var clientSettings = {
 				options: {
 					exitOnError : false,
-					emitSelf: true
+					emitSelf: false
 				},
 				loggerClass: TwitchIrcLogger,
 				identity: settings.identity,
@@ -87,9 +96,27 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 			client = new irc.client(clientSettings);
 			window.client = client; // TODO remove
 			attachListeners();
+			client.once('connected', function() {joinChannels(client)});
 			forwardEvents(eventsToForward, client, ee);
 			client.connect();			
 			attachDebuggingListeners();
+		}
+		else {
+			console.log('IRC: Aborting creation of client because of invalid credentials');
+		}
+	}
+
+	function makeNewClientWrite() {
+		destroyClient(clientWrite);
+		if (credentialsValid()) {
+			var clientSettings = {
+				options: {exitOnError : false},
+				identity: settings.identity,
+				channels: settings.channels
+			};
+			clientWrite = new irc.client(clientSettings);
+			client.once('connected', function() {joinChannels(clientWrite)});
+			clientWrite.connect();
 		}
 		else {
 			console.log('IRC: Aborting creation of client because of invalid credentials');
@@ -100,12 +127,12 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	 * Joins any channels in settings.channels 
 	 * that haven't been joined yet.
 	 */
-	function joinChannels() {
-		client.tcJoined = client.tcJoined || [];		
+	function joinChannels(client) {
+		client._tcJoined = client._tcJoined || [];
 		settings.channels.forEach(function(channel) {
 			console.log('checking if need to join '+channel);
-			if (client.tcJoined.indexOf(channel) === -1) {
-				client.tcJoined.push(channel);
+			if (client._tcJoined.indexOf(channel) === -1) {
+				client._tcJoined.push(channel);
 				console.log('IRC: joining channel '+channel);
 				client.join(channel);
 			}
@@ -116,7 +143,7 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	 * Leaves joined channels that do not
 	 * appear in settings.channels.
 	 */
-	function leaveChannels() {
+	function leaveChannels(client) {
 		client._tcJoined = client._tcJoined || [];		
 		for (var i = client._tcJoined.length - 1; i > -1; i--) {
 			var channel = client._tcJoined[i];
@@ -145,7 +172,6 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 		});
 		client.addListener('connecting', setStatusConnecting);
 		client.addListener('reconnect', setStatusConnecting);
-		client.once('connected', joinChannels);
 		
 		function setStatusConnecting() {
 			$timeout(function() {
@@ -154,7 +180,7 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 		}
 	}
 
-	function destroyClient() {
+	function destroyClient(client) {
 		// Need to track this to avoid emitting disconnect twice
 		if (client && !client._tcDestroyed) {
 			client.disconnect();
