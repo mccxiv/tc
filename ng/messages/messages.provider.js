@@ -146,7 +146,12 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			messages[channel].shift();
 		}
 
-		$rootScope.$apply();
+		// TODO should not use a timeout
+		// The problem is twitch-irc's API is inconsistent and
+		// returns synchronously when using emitSelf.
+		setTimeout(function() {
+			$rootScope.$apply();
+		}, 0)
 	}
 
 	return function(channel) {
