@@ -60,7 +60,7 @@ angular.module('tc').directive('userMenu', ['settings', 'session', 'gui', 'irc',
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/user-menu/user-menu.html',
+		templateUrl: 'ng/user-panel/user-panel.html',
 		link: link
 	}
 }]);
