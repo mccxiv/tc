@@ -26,6 +26,24 @@ angular.module('tc').factory('api', ['$http', function($http) {
 			return this._jsonp('https://api.twitch.tv/kraken/users/'+channel+'?callback=JSON_CALLBACK');
 		},
 
+		/**
+		 * Get public channel object from twitch (profile picture etc)
+		 * @param {string} channel
+		 * @returns {promise} As from GET /channels/:channel
+		 */
+		channel: function(channel) {
+			return this._jsonp('https://api.twitch.tv/kraken/channels/'+channel+'?callback=JSON_CALLBACK');
+		},
+
+		/**
+		 * Get public stream object from twitch (live viewers etc)
+		 * @param {string} channel
+		 * @returns {promise} As from GET /streams/:channel
+		 */
+		stream: function(channel) {
+			return this._jsonp('https://api.twitch.tv/kraken/streams/'+channel+'?callback=JSON_CALLBACK');
+		},
+
 		_jsonp: function(url) {
 			return $http.jsonp(url);
 		}

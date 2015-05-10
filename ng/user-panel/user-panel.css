@@ -1,28 +1,28 @@
-user-menu {
+user-panel {
     font-size: 1.2rem;
 }
 
-user-menu .mdi {
+user-panel .mdi {
 	vertical-align: -1px;
 }
 
-user-menu .profile-picture {
+user-panel .profile-picture {
     display: block;
     height: 53px;
     width: 53px;
 }
 
-user-menu .close-button {
+user-panel .close-button {
     margin-right: 4px;
 }
 
-user-menu .toolbar md-divider.vertical {
+user-panel .toolbar md-divider.vertical {
 	display: inline;
 	border-top-style: none;
 	border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-user-menu .md-button {
+user-panel .md-button {
 	min-width: 0;
 	border-radius: 0 !important;
 	margin: 0;
@@ -31,22 +31,22 @@ user-menu .md-button {
     padding: 0 2px;
 }
 
-user-menu .toolbar {
+user-panel .toolbar {
     margin-left: 4px;
     margin-right: 4px;
 }
 
-user-menu .row {
+user-panel .row {
     margin-left: 6px;
     margin-right: 3px;
     line-height: 16px;
     height: 16px;
 }
 
-user-menu .username {
+user-panel .username {
     margin-top: 3px;
 }
 
-user-menu .creation-date {
+user-panel .creation-date {
     font-size: 1.1rem;
 }

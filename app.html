@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="ng/chat-input/chat-input.css">
 		<link rel="stylesheet" href="ng/add-channel/add-channel.css">
         <link rel="stylesheet" href="ng/user-panel/user-panel.css">
+        <link rel="stylesheet" href="ng/stream-panel/stream-panel.css">
 		<link rel="stylesheet" href="bower_components/material-design-iconic-font/css/material-design-iconic-font.css">
 		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
         <link rel="stylesheet" href="ng/highlights/highlights-options.directive.css">
@@ -25,7 +26,8 @@
 			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">				
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
-                <user-menu></user-menu>
+                <stream-panel></stream-panel>
+                <user-panel></user-panel>
 				<chatters-tabs flex></chatters-tabs>
 			</md-sidenav>
 
@@ -62,6 +64,7 @@
 		<script src="ng/chat-tabs/chat-tabs.js"></script>
 
         <script src="ng/user-panel/user-panel.js"></script>
+        <script src="ng/stream-panel/stream-panel.js"></script>
 
 		<script src="ng/chatters/chatters.js"></script>
 		<script src="ng/chatters-tabs/chatters-tabs.js"></script>

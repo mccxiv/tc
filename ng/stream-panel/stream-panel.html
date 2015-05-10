@@ -1,0 +1,14 @@
+<div class="content" ng-if="api.stream" ng-click="openStream()">
+    <span class="title" title="{{api.channel.status}}">
+        {{api.channel.status}}
+    </span>
+    <div class="stats">
+        <span class="followers">
+            <i class="mdi mdi-favorite"></i> {{api.channel.followers}}
+        </span>
+        <span class="viewers">
+            <i class="mdi mdi-person"></i> {{api.stream.viewers}}
+        </span>
+    </div>
+    <img class="preview" src="{{api.stream.preview.medium}}"></div>
+<md-divider ng-if="api.stream"></md-divider>

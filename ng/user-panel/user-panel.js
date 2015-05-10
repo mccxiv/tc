@@ -1,4 +1,4 @@
-angular.module('tc').directive('userMenu', ['settings', 'session', 'gui', 'irc', 'api', function(settings, session, gui, irc, api) {
+angular.module('tc').directive('userPanel', function(settings, session, gui, irc, api) {
 
 	function link(scope) {
 
@@ -63,4 +63,4 @@ angular.module('tc').directive('userMenu', ['settings', 'session', 'gui', 'irc',
 		templateUrl: 'ng/user-panel/user-panel.html',
 		link: link
 	}
-}]);
+});

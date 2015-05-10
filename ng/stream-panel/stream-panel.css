@@ -1,0 +1,46 @@
+stream-panel {
+    color: #e1e1e1;
+}
+
+stream-panel img {
+    display: block;
+}
+
+stream-panel .content {
+    position: relative;
+    min-height: 100px;
+    cursor: pointer;
+}
+
+stream-panel i {
+    vertical-align: -1px;
+}
+
+stream-panel .title {
+    font-size: 1.2rem;
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+    padding: 3px 8px;
+    background-color: rgba(0, 0, 0, .4);
+
+}
+
+stream-panel .stats {
+    font-size: 1.1rem;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    padding: 3px;
+    background-color: rgba(0, 0, 0, .5);
+}
+
+stream-panel .viewers i {
+    color: red;
+}
+
+stream-panel .preview {
+    width: 100%;
+}
