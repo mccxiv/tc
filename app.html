@@ -3,6 +3,8 @@
 	<head lang="en">
 		<meta charset="UTF-8">
 		<title>TC</title>
+
+        <!-- build:css style.css -->
 		<link rel="stylesheet" href="ng/app.css">
 		<link rel="stylesheet" href="ng/login/login.css">
 		<link rel="stylesheet" href="ng/side-toolbar/side-toolbar.css">
@@ -19,6 +21,7 @@
         <link rel="stylesheet" href="ng/highlights/highlights-options.directive.css">
         <link rel="stylesheet" href="ng/settings-panel/settings-panel.css">
         <link rel="stylesheet" href="ng/settings-panel/settings-gui-dialog.css">
+        <!-- endbuild -->
 	</head>
 	<body layout="column" ng-controller="main" ng-cloak>
 	
@@ -41,6 +44,7 @@
         <!-- TODO ng-if causes error with animation -->
 		<login ng-show="needLogin()"></login>
 
+        <!-- build:js app.js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/lodash/lodash.js"></script>
 		<script src="bower_components/angular/angular.js"></script>
@@ -103,6 +107,7 @@
 		<script src="ng/util/auto-focus.js"></script>
 		<script src="ng/util/twitch-irc-logger.js"></script>
         <script src="ng/util/bind-html-compile.directive.js"></script>
+        <!-- endbuild -->
 
 	</body>
 </html>
