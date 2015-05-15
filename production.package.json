@@ -1,0 +1,18 @@
+{
+  "main": "app.html",
+  "name": "tc",
+  "version": "0.0.1",
+  "window": {
+    "toolbar": false,
+    "frame": true,
+    "width": 800,
+    "height": 450,
+    "min_width": 500,
+    "min_height": 300
+  },
+  "maintainers":[{
+    "name": "Andrea Stella",
+    "email": "adr.stella@gmail.com",
+    "web": "http://mccxiv.me"
+  }]
+}
