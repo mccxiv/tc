@@ -1,4 +1,6 @@
 chat-output {
+    -webkit-user-select: text;
+    user-select: text;
 	display: block;
 	overflow: auto;
 	height: 100%;
