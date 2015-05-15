@@ -39,6 +39,7 @@
     "gulp-zip": "^3.0.2",
     "node-webkit-builder": "^1.0.11",
     "nw": "^0.12.1",
+    "rimraf": "^2.3.3",
     "run-sequence": "^1.1.0"
   }
 }

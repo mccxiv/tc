@@ -1,7 +1,7 @@
 .idea
-node_modules
-bower_components
-tc.iml
 cache
 build
-build-temp
+tc.iml
+node_modules
+bower_components
+installers/windows/output

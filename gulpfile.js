@@ -1,4 +1,5 @@
 var del =             require('del');
+var rimraf =          require('rimraf');
 var zip =             require('gulp-zip');
 var exec =            require('child_process').exec;
 var gulp =            require('gulp');
@@ -23,9 +24,9 @@ gulp.task('clean-before', function(cb) {
 });
 
 gulp.task('clean-after', function(cb) {
-	del(['build-temp/**/**'], function() {
-		setTimeout(cb, 500); // Fix Windows issues
-	});
+	setTimeout(function() {
+		del(['build-temp/**/**'], cb);
+	}, 1000);
 });
 
 gulp.task('cache-templates', function() {

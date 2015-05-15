@@ -6,23 +6,24 @@ angular.module('tc').directive('streamPanel', function(settings, gui, irc, api) 
 			stream: null
 		};
 
-		load(channel());
+		load();
+		setInterval(load, 60000);
 		element.attr('layout', 'column');
 
 		scope.$watch(
 			function() {return settings.selectedTabIndex;},
-			function() {load(channel());}
+			function() {load();}
 		);
 
 		function channel() {
 			return settings.channels[settings.selectedTabIndex];
 		}
 
-		function load(channel) {
+		function load() {
+			var channel = channel();
 			api.channel(channel).success(function(data) {
 				scope.api.channel = data;
 			});
-
 			api.stream(channel).success(function(data) {
 				scope.api.stream = data.stream;
 			})
