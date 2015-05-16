@@ -1,7 +1,8 @@
 angular.module('tc').directive('streamPanel', function(settings, gui, irc, api) {
 
 	function link(scope, element) {
-		scope.api = {
+		scope.m = {
+			img : '',
 			channel: null,
 			stream: null
 		};
@@ -15,17 +16,21 @@ angular.module('tc').directive('streamPanel', function(settings, gui, irc, api) 
 			function() {load();}
 		);
 
-		function channel() {
+		function getChannel() {
 			return settings.channels[settings.selectedTabIndex];
 		}
 
 		function load() {
-			var channel = channel();
+			var channel = getChannel();
 			api.channel(channel).success(function(data) {
-				scope.api.channel = data;
+				scope.m.channel = data;
 			});
 			api.stream(channel).success(function(data) {
-				scope.api.stream = data.stream;
+				scope.m.stream = data.stream;
+				if (data.stream) {
+					scope.m.img = data.stream.preview.medium + '?' + new Date().getTime();
+					console.log('STREAM-PANEL: new image is ', scope.m.img);
+				}
 			})
 		}
 	}
