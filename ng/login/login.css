@@ -7,11 +7,14 @@ login .login-overlay {
 	top: 0;
 	left: 0;
 	z-index: 100;
-	background-color: white;
+    background: white url('../../assets/img/bg.png') no-repeat center center;
+    background-size: cover;
 }
 
 login .form {
-	width: 250px;
+    margin-top: -80px;
+    width: 315px;
+    padding: 20px;
 	border-radius: 3px;
 	background-color: #ffffff;
 	position: relative;
