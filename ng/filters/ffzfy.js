@@ -22,13 +22,9 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 		return '<img class="emoticon" src="http://cdn.frankerfacez.com/channel/'+channel+'/'+emote+'.png">';
 	}
 
-	console.log('FFZFY: Initialized');
-
 	return function(channel, parts) {
-		console.log('FFZFY: running filter with input', arguments[0], arguments[1]);
 
 		var emotes = ffz(channel);
-		console.log('FFZFY emotes for this channel are', emotes);
 		if (!emotes) return parts;
 		var newParts = [];
 
@@ -58,10 +54,6 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 
 					// Track progress through string
 					endIndexOfPreviousEmote = match.lastIndex;
-				}
-
-				else {
-					console.log('FFZFY: Was not a match');
 				}
 			}
 

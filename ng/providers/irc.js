@@ -69,8 +69,7 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 		events.forEach(function(event) {
 			emitter.addListener(event, function() {
 				var args = Array.prototype.slice.call(arguments);
-				args.unshift(event);				
-				console.log('IRC: Rebroadcasting with args', args);
+				args.unshift(event);
 				reEmitter.emit.apply(reEmitter, args);
 			});
 		});
@@ -98,8 +97,7 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 			attachListeners();
 			client.once('connected', function() {joinChannels(client)});
 			forwardEvents(eventsToForward, client, ee);
-			client.connect();			
-			attachDebuggingListeners();
+			client.connect();
 		}
 		else {
 			console.log('IRC: Aborting creation of client because of invalid credentials');
@@ -203,23 +201,6 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	
 	function credentialsValid() {
 		return !!settings.identity.username.length && !!settings.identity.password.length;
-	}
-	
-	function attachDebuggingListeners() {
-		client.addListener('chat', function(ch, usr, msg) {
-			console.log('======== Message =====================');
-			console.log('channel', ch);
-			console.log('user', usr);
-			console.log('message', msg);
-			console.log('emotes', usr.emote);
-			console.log('======== Msg end =====================');
-		});
-		client.addListener('connected', function() {
-			console.info('Connected');
-		});
-		client.addListener('disconnected', function() {
-			console.warn('Disconnected');
-		});	
 	}
 	
 	return ee;
