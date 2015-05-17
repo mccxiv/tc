@@ -7,7 +7,7 @@
  */
 angular.module('tc').factory('notifications', function(irc, settings, highlights) {
 
-	var sound = new Audio('assets/audio/notification.ogg');
+	var sound = new Audio('assets/notification.ogg');
 
 	irc.addListener('disconnected', function() {
 		if (settings.notifications.onConnect) {

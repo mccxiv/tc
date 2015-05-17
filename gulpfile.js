@@ -10,6 +10,7 @@ var gulpif =          require('gulp-if');
 var concat =          require('gulp-concat');
 var addsrc =          require('gulp-add-src');
 var rename =          require('gulp-rename');
+var base64 =          require('gulp-css-base64');
 var minifyCss =       require('gulp-minify-css');
 var NwBuilder =       require('node-webkit-builder');
 var stripDebug =      require('gulp-strip-debug');
@@ -25,7 +26,9 @@ gulp.task('clean-before', function(cb) {
 
 gulp.task('clean-after', function(cb) {
 	setTimeout(function() {
-		del(['build-temp/**/**'], cb);
+		del(['build-temp/**/**'],  function() {
+			setTimeout(cb, 1000); // Fix Windows issues
+		});
 	}, 1000);
 });
 
@@ -40,7 +43,7 @@ gulp.task('clean-cached-templates', function(cb) {
 });
 
 gulp.task('concat-minify-replace', function() {
-	var assets = useref.assets();
+	var assets = useref.assets({noconcat: true});
 	return gulp.src('app.html')
 		.pipe(assets)
 		.pipe(addsrc.append('build-temp/temp/templates.js'))
@@ -48,7 +51,9 @@ gulp.task('concat-minify-replace', function() {
 		.pipe(gulpif('*.js', ngAnnotate()))
 		.pipe(gulpif('*.js', stripDebug()))
 		.pipe(gulpif('*.js', uglify()))
-		.pipe(gulpif('*.css', minifyCss({rebase: true, relativeTo: 'build-temp/'})))
+		.pipe(gulpif('*.css', base64({maxWeightResource: Infinity})))
+		.pipe(gulpif('*.css', concat('style.css')))
+		.pipe(gulpif('*.css', minifyCss()))
 		.pipe(assets.restore())
 		.pipe(useref())
 		.pipe(gulp.dest('build-temp/'));
@@ -62,7 +67,7 @@ gulp.task('copy-assets', function() {
 gulp.task('copy-fonts', function() {
 	return gulp.src('bower_components/material-design-iconic-font/fonts/**')
 		.pipe(gulp.dest('build-temp/fonts/'));
-})
+});
 
 gulp.task('copy-package-json', function() {
 	return gulp.src('production.package.json')
@@ -91,7 +96,8 @@ gulp.task('build', function() {
 	var nw = new NwBuilder({
 		files: 'build-temp/**/**',
 		platforms: ['osx32', 'win32'],
-		version: '0.12.1'
+		version: '0.12.1',
+		winIco: 'assets-embed/win.ico'
 	});
 	nw.on('log',  console.log);
 	return nw.build();
@@ -108,7 +114,6 @@ gulp.task('make-build', function(cb) {
 		'concat-minify-replace',
 		'clean-cached-templates',
 		'build',
-		'clean-after',
 		cb);
 });
 

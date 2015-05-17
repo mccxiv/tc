@@ -2,7 +2,7 @@ angular.module('tc').directive('userPanel', function(settings, session, gui, irc
 
 	function link(scope) {
 
-		var noPicSrc = 'assets/img/user404.png';
+		var noPicSrc = '';
 
 		scope.m = {
 			created: '',

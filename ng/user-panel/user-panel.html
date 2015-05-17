@@ -1,6 +1,9 @@
 <div class="user-menu-container" layout="row" ng-if="userSelectedInThisChannel()">
 
-    <img ng-src="{{m.profilePicSrc}}" class="profile-picture">
+    <div class="profile-picture-div">
+        <img ng-if="m.profilePicSrc" ng-src="{{m.profilePicSrc}}" class="profile-picture">
+    </div>
+
 
     <div class="buttons-container" flex layout="column">
 

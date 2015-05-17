@@ -7,7 +7,7 @@ login .login-overlay {
 	top: 0;
 	left: 0;
 	z-index: 100;
-    background: white url('../../assets/img/bg.png') no-repeat center center;
+    background: white url(../../assets-embed/bg.png) no-repeat center center;
     background-size: cover;
 }
 

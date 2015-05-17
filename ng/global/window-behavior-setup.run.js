@@ -4,7 +4,7 @@
  */
 angular.module('tc').run(['gui', function(gui) {
 	var win = gui.Window.get();
-	var tray = new gui.Tray({ title: 'Tray', icon: 'assets/img/twitch.png' });
+	var tray = new gui.Tray({ title: 'Tray', icon: 'assets/icon16.png' });
 	var shown = true;
 
 	tray.on('click', function() {
@@ -20,8 +20,8 @@ angular.module('tc').run(['gui', function(gui) {
 		}
 	});
 
-	win.on('minimize', function() {
+	/*win.on('minimize', function() {
 		shown = false;
 		win.hide();
-	});
+	});*/
 }]);

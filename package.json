@@ -8,7 +8,8 @@
     "width": 800,
     "height": 450,
     "min_width": 500,
-    "min_height": 300
+    "min_height": 300,
+    "icon": "assets/icon256.png"
   },
   "maintainers": [
     {
@@ -26,7 +27,9 @@
     "gulp": "^3.8.11",
     "gulp-add-src": "^0.2.0",
     "gulp-angular-templatecache": "^1.6.0",
+    "gulp-base64": "^0.1.2",
     "gulp-concat": "^2.5.2",
+    "gulp-css-base64": "^1.3.2",
     "gulp-if": "^1.2.5",
     "gulp-json-editor": "^2.2.1",
     "gulp-minify-css": "^1.1.1",
