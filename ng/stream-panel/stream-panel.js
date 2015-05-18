@@ -1,4 +1,4 @@
-angular.module('tc').directive('streamPanel', function(settings, gui, irc, api) {
+angular.module('tc').directive('streamPanel', function(settings, channelWatcher, gui, irc, api) {
 
 	function link(scope, element) {
 		scope.m = {
@@ -11,10 +11,11 @@ angular.module('tc').directive('streamPanel', function(settings, gui, irc, api) 
 		setInterval(load, 60000);
 		element.attr('layout', 'column');
 
-		scope.$watch(
-			function() {return settings.selectedTabIndex;},
-			function() {load();}
-		);
+		channelWatcher.on('change', function() {
+			scope.m.stream = null;
+			scope.m.channel = null;
+			load();
+		});
 
 		function getChannel() {
 			return settings.channels[settings.selectedTabIndex];
