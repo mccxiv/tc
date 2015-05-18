@@ -1,4 +1,4 @@
-<div class="user-menu-container" layout="row" ng-if="userSelectedInThisChannel()">
+<div class="user-menu-container" layout="row" ng-if="shouldDisplay()">
 
     <div class="profile-picture-div">
         <img ng-if="m.profilePicSrc" ng-src="{{m.profilePicSrc}}" class="profile-picture">
@@ -37,12 +37,12 @@
 
             <span ng-class="{lighter: !amMod()}">
 
-                <md-button ng-click="timeout(3)" aria-label="Purge">
+                <md-button ng-click="purge()" aria-label="Purge">
                     <md-tooltip md-autohide>Purge (3s)</md-tooltip>
                     <i class="mdi mdi-timer-3"></i>
                 </md-button>
 
-                <md-button ng-click="timeout(600)" aria-label="Timeout">
+                <md-button ng-click="timeout()" aria-label="Timeout">
                     <md-tooltip md-autohide>Timeout (10m)</md-tooltip>
                     <i class="mdi mdi-history"></i>
                 </md-button>

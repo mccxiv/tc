@@ -2,7 +2,6 @@
  * Lets a user tab through various items on an input field
  * @ngdoc directive
  * @name tabCompletion
- *
  */
 angular.module('tc').directive('tabCompletion', function() {
 	return {
@@ -38,6 +37,7 @@ angular.module('tc').directive('tabCompletion', function() {
 						words[words.length-1] = matchingItems[currentItem];
 						currentItem++;
 						element.val(words.join(' '));
+						element.trigger('input');
 					}
 				}
 				else previousKeyWasTab = false;

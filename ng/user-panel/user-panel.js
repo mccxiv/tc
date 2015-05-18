@@ -1,28 +1,36 @@
-angular.module('tc').directive('userPanel', function(settings, session, gui, irc, api) {
+angular.module('tc').directive('userPanel', function($document, settings, session, gui, irc, api) {
 
 	function link(scope) {
-
-		var noPicSrc = '';
-
 		scope.m = {
 			created: '',
 			profilePicSrc: ''
 		};
 
+		$document.bind('keypress', function(e) {
+			if (!session.inputFocused && scope.shouldDisplay()) {
+				var character = String.fromCharCode(e.which);
+				switch (character) {
+					case 'p': scope.purge(); break;
+					case 't': scope.timeout(); break;
+					case 'b': scope.ban(); break;
+				}
+			}
+		});
+
 		scope.$watch(
 			function() {return session.selectedUser;},
-			function() {
-				scope.m.created = '';
-				scope.m.profilePicSrc = noPicSrc;
-				fetchUser();
-			}
+			function() {if (session.selectedUser) fetchUser();}
 		);
 
 		scope.amMod = function() {
 			return irc.isMod(settings.channels[settings.selectedTabIndex], settings.identity.username);
 		};
 
-		scope.userSelectedInThisChannel = function() {
+		/**
+		 * True when the user was selected in the currently active channel
+		 * @returns {boolean}
+		 */
+		scope.shouldDisplay = function() {
 			var selectedChannel = settings.channels[settings.selectedTabIndex];
 			return session.selectedUser && session.selectedUserChannel === selectedChannel;
 		};
@@ -36,8 +44,13 @@ angular.module('tc').directive('userPanel', function(settings, session, gui, irc
 		};
 
 		scope.timeout = function(seconds) {
+			seconds = seconds || 600;
 			irc.say(session.selectedUserChannel, '.timeout ' + session.selectedUser + ' ' + seconds);
 			scope.close();
+		};
+
+		scope.purge = function() {
+			scope.timeout(3);
 		};
 
 		scope.ban = function() {
@@ -52,7 +65,7 @@ angular.module('tc').directive('userPanel', function(settings, session, gui, irc
 
 		function fetchUser() {
 			api.user(session.selectedUser).success(function(user) {
-				scope.m.profilePicSrc = user.logo? user.logo : noPicSrc;
+				scope.m.profilePicSrc = user.logo? user.logo : '';
 				scope.m.created = user.created_at;
 			});
 		}

@@ -1,7 +1,8 @@
-angular.module('tc').directive('chatInput', function(settings, irc, messages) {
+angular.module('tc').directive('chatInput', function(settings, session, irc, messages) {
 
 	function link(scope) {
 		scope.message = '';
+		scope.session = session;
 
 		scope.getUsernames = function() {
 			var channel = settings.channels[settings.selectedTabIndex];

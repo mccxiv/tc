@@ -8,6 +8,7 @@
 angular.module('tc').factory('session', function() {
 	return {
 		selectedUser: null,
-		selectedUserChannel: null
+		selectedUserChannel: null,
+		inputFocused: null
 	};
 });
