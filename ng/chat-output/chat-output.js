@@ -60,7 +60,6 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 				latestScrollWasAutomatic = false; // Reset it
 				if (scope.autoScroll) scope.chatLimit = -scope.opts.maxChatLines;
 				else if (distanceFromTop() === 0) showAllLines();
-				scope.$apply();				
 			});
 		}
 

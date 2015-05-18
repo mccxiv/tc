@@ -32,7 +32,6 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var messageLimit = 1000;
 	var messages = {};
 
-	window.messagesFactory = messages;
 	setupIrcListeners();
 
 	function setupIrcListeners() {
@@ -150,7 +149,13 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		// The problem is twitch-irc's API is inconsistent and
 		// returns synchronously when using emitSelf.
 		setTimeout(function() {
-			$rootScope.$apply();
+			// TODO get rid of this completely, refactor somehow.
+			// it makes this service UI aware and feels dirty, but it's
+			// a massive performance boost to check and only $apply if
+			// the message is for the currently selected channel
+			if (channel === settings.channels[settings.selectedTabIndex]) {
+				$rootScope.$apply();
+			}
 		}, 0)
 	}
 
