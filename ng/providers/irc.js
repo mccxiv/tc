@@ -12,21 +12,21 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	// Public members
 	//===============================================================
 	ee.badLogin = false;
-	ee.login = function() {throw new Error('NYI')};
 	ee.credentialsValid = credentialsValid;
+
 	ee.isMod = function(channel, username) {
 		return clients.write.isMod(channel, username);
-	} ;
+	};
+
 	ee.say = function(channel, msg) {
 		clients.write.say(channel, msg);
 	};
-	ee.logout = function() {throw new Error('NYI')};
 
 	//===============================================================
 	// Setup
 	//===============================================================
 
-	//connect();
+	connectMaybe();
 
 	onChannelsChange(syncChannels);
 	onInvalidCredentials(disconnect);
@@ -38,7 +38,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	//===============================================================
 
 	/**
-	 * Creates irc clients and attaches listeners to them
+	 * Creates both irc clients and attaches listeners to them
 	 */
 	function connect() {
 		var clientSettings = {
@@ -49,6 +49,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			channels: settings.channels
 		};
 		Object.keys(clients).forEach(function(key) {
+			console.log('IRC: creating a client');
 			clients[key] =  new irc.client(clientSettings);
 			clients[key].connect();
 		});
@@ -157,16 +158,17 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			console.log('IRC: clients object changes:', changes);
 			changes.forEach(function(change) {
 				var client = clients[change.name];
-				client.addListener('disconnect', disconnected);
+				console.log('IRC: onEitherDisconnect attaching disconnect listener');
+				client.addListener('disconnected', disconnected);
 			});
-
 		}, ['update']);
 
 		// callback is fired, no need to listen for disconnect anymore
 		// new listeners will be created when new clients are ready
 		function disconnected() {
+			console.log('IRC: onEtiherDisconnect fired');
 			[clients.read, clients.write].forEach(function(client) {
-				if (client) client.removeListener('disconnect', disconnected);
+				if (client) client.removeListener('disconnected', disconnected);
 			});
 			cbs.forEach(function(cb) {cb();});
 		}
@@ -196,8 +198,9 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 
 
 	function onCredentialsValidChange(cb) {
-		$rootScope.$watch(credentialsValid, function(oldv, newv) {
-				cb(newv);
+		// TODO change this so it doesn't run for each call
+		$rootScope.$watch(credentialsValid, function(newv, oldv) {
+				if (oldv !== newv) cb(newv);
 			}
 		);
 	}

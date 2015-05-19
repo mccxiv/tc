@@ -8,8 +8,7 @@ angular.module('tc').directive('login', ['settings', 'irc', function(settings, i
 			scope.login = function() {
 				settings.identity.username = scope.m.username;
 				settings.identity.password = scope.m.password;
-				console.log('LOGIN: User supplied credentials.', settings.identity.username, settings.identity.password, '|');
-				irc.login();
+				console.log('LOGIN: User supplied credentials.', settings.identity.username, settings.identity.password);
 			};
 			// These values should NOT update the settings object or
 			// it will break the form's conditionals

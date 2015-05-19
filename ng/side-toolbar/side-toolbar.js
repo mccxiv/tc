@@ -4,15 +4,12 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		scope.irc = irc;
 		scope.settings = settings;
 		scope.settingsGui = settingsGui;
+		scope.m = {status: ''};
 		element.attr('layout', 'row');
 
-		scope.connectionStatus = function() {
-			// TODO use events instead
-			var message = 'disconnected';
-			if (irc.connected) message = 'connected';
-			else if (irc.connecting) message = 'connecting';
-			return message;
-		};
+		irc.on('connected', function() {scope.m.status = 'connected';});
+		irc.on('connecting', function() {scope.m.status = 'connecting';});
+		irc.on('disconnected', function() {scope.m.status = 'disconnected';});
 		
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]
@@ -29,12 +26,10 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 			
 			console.log('confirm is ', confirm);
 
-			$mdDialog.show(confirm).then(function() {
-				settings.identity.password = '';
-				irc.logout();
-			}, function() {
-				// do nothing
-			});
+			$mdDialog.show(confirm).then(
+				function() {settings.identity.password = '';},
+				function() {}
+			);
 		};
 
 		scope.leave = function() {	
