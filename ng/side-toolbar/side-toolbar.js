@@ -7,6 +7,7 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		element.attr('layout', 'row');
 
 		scope.connectionStatus = function() {
+			// TODO use events instead
 			var message = 'disconnected';
 			if (irc.connected) message = 'connected';
 			else if (irc.connecting) message = 'connecting';

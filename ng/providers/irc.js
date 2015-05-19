@@ -1,4 +1,4 @@
-angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', function($rootScope, $timeout, settings) {
+angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings) {
 	
 	//===============================================================
 	// Variables
@@ -6,66 +6,99 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	var irc = require('twitch-irc');
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
-	var client;
-	var clientWrite;
-	var eventsToForward = [
-		'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-		'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
-		'subscriber', 'subscription', 'timeout', 'unhost'
-	];
+	var clients = {read: null, write: null};
 	
 	//===============================================================
 	// Public members
 	//===============================================================
-	ee.connected = false;
-	ee.connecting = false;
 	ee.badLogin = false;
-	ee.login = makeNewClients;
+	ee.login = function() {throw new Error('NYI')};
 	ee.credentialsValid = credentialsValid;
 	ee.isMod = function(channel, username) {
-		return client.isMod(channel, username);
+		return clients.write.isMod(channel, username);
 	} ;
 	ee.say = function(channel, msg) {
-		clientWrite.say(channel, msg);
+		clients.write.say(channel, msg);
 	};
-	ee.logout = function() {
-		$timeout(function() {
-			destroyClient(client);
-			destroyClient(clientWrite);
-		});
-	};
+	ee.logout = function() {throw new Error('NYI')};
 
 	//===============================================================
 	// Setup
 	//===============================================================
-	onChannelsChange(function() {
-		if (client.connected) {
-			joinChannels(client);
-			joinChannels(clientWrite);
-			leaveChannels(client);
-			leaveChannels(clientWrite);
-		}
-	});
 
-	makeNewClients();
-	
-	// TODO remove debugging stuff
-	window.$rootScope = $rootScope;
-	window.irc = this;
-	window.irc.ee = ee;
+	//connect();
+
+	onChannelsChange(syncChannels);
+	onInvalidCredentials(disconnect);
+	onValidCredentials(connect);
+	onEitherDisconnect([disconnect, connectMaybe]);
 
 	//===============================================================
 	// Private methods
 	//===============================================================
+
 	/**
-	 * TODO better way to do this? eg. add them dynamically instead
+	 * Creates irc clients and attaches listeners to them
+	 */
+	function connect() {
+		var clientSettings = {
+			options: {exitOnError : false},
+			connection: {reconnect: false},
+			loggerClass: TwitchIrcLogger,
+			identity: settings.identity,
+			channels: settings.channels
+		};
+		Object.keys(clients).forEach(function(key) {
+			clients[key] =  new irc.client(clientSettings);
+			clients[key].connect();
+		});
+		attachReadListeners();
+		attachWriteListeners();
+		forwardEvents(clients.read, ee);
+	}
+
+	function connectMaybe() {
+		if (credentialsValid() && !ee.badLogin) connect();
+	}
+
+	function attachReadListeners() {
+		clients.read.once('connected', function() {
+			joinChannels(clients.read);
+			ee.badLogin = false;
+			$rootScope.$apply();
+		});
+
+		clients.write.once('disconnected', function(reason) {
+			if (reason === 'Login unsuccessful.') {
+				ee.badLogin = reason;
+				$rootScope.$apply();
+			}
+		});
+	}
+
+	function attachWriteListeners() {
+		clients.write.once('connected', function() {
+			joinChannels(clients.write);
+			ee.emit('say-available');
+		});
+
+		clients.write.once('disconnected', function() {
+			ee.emit('say-unavailable');
+		});
+	}
+
+	/**
 	 *
 	 * Re emits events from `emitter` on `reEmitter`
-	 * @param {string[]} events    - Events to be rebroadcast
 	 * @param {Object}   emitter   - Emits events to rebroadcast. Has .addListener()
 	 * @param {Object}   reEmitter - The object that will rebroadcast. Has .emit()
 	 */
-	function forwardEvents(events, emitter, reEmitter) {
+	function forwardEvents(emitter, reEmitter) {
+		var events = [
+			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
+			'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
+			'subscriber', 'subscription', 'timeout', 'unhost'
+		];
 		events.forEach(function(event) {
 			emitter.addListener(event, function() {
 				var args = Array.prototype.slice.call(arguments);
@@ -75,66 +108,28 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 		});
 	}
 
-	function makeNewClients() {
-		makeNewClient();
-		makeNewClientWrite()
-	}
-	
-	function makeNewClient() {
-		destroyClient(client);
-		if (credentialsValid()) {
-			var clientSettings = {
-				options: {
-					exitOnError : false,
-					emitSelf: false
-				},
-				loggerClass: TwitchIrcLogger,
-				identity: settings.identity,
-				channels: settings.channels
-			};			
-			client = new irc.client(clientSettings);
-			window.client = client; // TODO remove
-			attachListeners();
-			client.once('connected', function() {joinChannels(client)});
-			forwardEvents(eventsToForward, client, ee);
-			client.connect();
-		}
-		else {
-			console.log('IRC: Aborting creation of client because of invalid credentials');
-		}
-	}
-
-	function makeNewClientWrite() {
-		destroyClient(clientWrite);
-		if (credentialsValid()) {
-			var clientSettings = {
-				options: {exitOnError : false},
-				identity: settings.identity,
-				channels: settings.channels
-			};
-			clientWrite = new irc.client(clientSettings);
-			client.once('connected', function() {joinChannels(clientWrite)});
-			clientWrite.connect();
-		}
-		else {
-			console.log('IRC: Aborting creation of client because of invalid credentials');
-		}
+	/**
+	 * Makes sure the clients are connected to the
+	 * correct channels, the ones in the settings.
+	 */
+	function syncChannels() {
+		[clients.read, clients.write].forEach(function(client) {
+			joinChannels(client);
+			leaveChannels(client);
+		})
 	}
 
 	/**
-	 * Joins any channels in settings.channels 
+	 * Joins any channels in settings.channels
 	 * that haven't been joined yet.
 	 */
 	function joinChannels(client) {
-		client._tcJoined = client._tcJoined || [];
 		settings.channels.forEach(function(channel) {
 			console.log('checking if need to join '+channel);
-			if (client._tcJoined.indexOf(channel) === -1) {
-				client._tcJoined.push(channel);
-				console.log('IRC: joining channel '+channel);
+			if (client.currentChannels.indexOf(channel) === -1) {
 				client.join(channel);
 			}
-		})
+		});
 	}
 
 	/**
@@ -142,61 +137,69 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	 * appear in settings.channels.
 	 */
 	function leaveChannels(client) {
-		client._tcJoined = client._tcJoined || [];		
-		for (var i = client._tcJoined.length - 1; i > -1; i--) {
-			var channel = client._tcJoined[i];
+		// Need for loop for the index and it's
+		// backwards so that array changes don't affect the loop
+		for (var i = client.currentChannels.length - 1; i > -1; i--) {
+			var channel = client.currentChannels[i];
 			if (settings.channels.indexOf(channel) === -1) {
-				console.log('IRC: leaving channel '+channel);
-				client._tcJoined.splice(i, 1);
 				client.part(channel);
 			}
 		}
 	}
-	
-	function attachListeners() {
-		client.addListener('disconnected', function(reason) {
-			$timeout(function() {
-				ee.connecting = false;
-				ee.connected = false;
-				if (reason === 'Login unsuccessful.') ee.badLogin = reason;
-			});
-		});		
-		client.addListener('connected', function() {
-			$timeout(function() {
-				ee.connecting = false;
-				ee.connected = true;
-				ee.badLogin = false;
-			});
-		});
-		client.addListener('connecting', setStatusConnecting);
-		client.addListener('reconnect', setStatusConnecting);
-		
-		function setStatusConnecting() {
-			$timeout(function() {
-				ee.connecting = true;
-			});
-		}
+
+	function disconnect(cb) {
+		$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
 	}
 
-	function destroyClient(client) {
-		// Need to track this to avoid emitting disconnect twice
-		if (client && !client._tcDestroyed) {
-			client.disconnect();
-			client._tcDestroyed = true;
-		}	
+	function onEitherDisconnect(cbs) {
+		//noinspection JSCheckFunctionSignatures
+		Object.observe(clients, function onUpdate(changes) {
+			console.log('IRC: clients object changes:', changes);
+			changes.forEach(function(change) {
+				var client = clients[change.name];
+				client.addListener('disconnect', disconnected);
+			});
+
+		}, ['update']);
+
+		// callback is fired, no need to listen for disconnect anymore
+		// new listeners will be created when new clients are ready
+		function disconnected() {
+			[clients.read, clients.write].forEach(function(client) {
+				if (client) client.removeListener('disconnect', disconnected);
+			});
+			cbs.forEach(function(cb) {cb();});
+		}
+
 	}
 	
 	function onChannelsChange(cb) {
-		$rootScope.$watchCollection(watchVal, handler); // TODO this is broken, watch collection instead?
-		function watchVal() {return settings.channels;}
-		function handler(newV, oldV) {
-			if (newV !== oldV) {
-				console.log('IRC: Channels changed.');
-				console.log('IRC: Channels old', oldV);
-				console.log('IRC: Channels new', newV);
-				cb();
+		$rootScope.$watchCollection(
+			function watchVal() {return settings.channels;},
+			function handler(newV, oldV) {
+				if (newV !== oldV) cb();
 			}
-		}
+		);
+	}
+
+	function onInvalidCredentials(cb) {
+		onCredentialsValidChange(function(valid) {
+			if (!valid) cb();
+		})
+	}
+
+	function onValidCredentials(cb) {
+		onCredentialsValidChange(function(valid) {
+			if (valid) cb();
+		})
+	}
+
+
+	function onCredentialsValidChange(cb) {
+		$rootScope.$watch(credentialsValid, function(oldv, newv) {
+				cb(newv);
+			}
+		);
 	}
 	
 	function credentialsValid() {
@@ -204,4 +207,4 @@ angular.module('tc').factory('irc', ['$rootScope', '$timeout', 'settings', funct
 	}
 	
 	return ee;
-}]);
+});
