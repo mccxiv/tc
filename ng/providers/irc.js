@@ -22,16 +22,19 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		clients.write.say(channel, msg);
 	};
 
+	// TODO debug stuff
+	window.getClients = function() {return clients;};
+
 	//===============================================================
 	// Setup
 	//===============================================================
-
-	connectMaybe();
-
 	onChannelsChange(syncChannels);
 	onInvalidCredentials(disconnect);
 	onValidCredentials(connect);
-	onEitherDisconnect([disconnect, connectMaybe]);
+	onEitherDisconnect(function() {disconnect(connectMaybe);});
+
+	// needs to be after onEitherDisconnect
+	connectMaybe();
 
 	//===============================================================
 	// Private methods
@@ -50,7 +53,9 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		};
 		Object.keys(clients).forEach(function(key) {
 			console.log('IRC: creating a client');
-			clients[key] =  new irc.client(clientSettings);
+			var settings = angular.copy(clientSettings);
+			if (key === 'write') settings.loggerClass = undefined;
+			clients[key] =  new irc.client(settings);
 			clients[key].connect();
 		});
 		attachReadListeners();
@@ -152,7 +157,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
 	}
 
-	function onEitherDisconnect(cbs) {
+	function onEitherDisconnect(cb) {
 		//noinspection JSCheckFunctionSignatures
 		Object.observe(clients, function onUpdate(changes) {
 			console.log('IRC: clients object changes:', changes);
@@ -170,7 +175,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			[clients.read, clients.write].forEach(function(client) {
 				if (client) client.removeListener('disconnected', disconnected);
 			});
-			cbs.forEach(function(cb) {cb();});
+			cb();
 		}
 
 	}

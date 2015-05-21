@@ -1,7 +1,8 @@
 <form ng-submit="say()">
 	<md-input-container class="input-container">
 		<label>Send a message</label>
-		<input ng-model="message"
+		<input disabled
+               ng-model="message"
                ng-focus="session.inputFocused = true"
                ng-blur="session.inputFocused = false"
                tab-completion tab-completion-fn="getUsernames()">
