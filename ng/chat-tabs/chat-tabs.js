@@ -13,6 +13,8 @@ angular.module('tc').directive('chatTabs', function($timeout, settings) {
 			 	element.find('md-tab-item').eq(settings.selectedTabIndex).click();
 			}, 10);
 
+			if (currChannel()) scope.visible[currChannel()] = true;
+
 			/**
 			 * The chat-output directive should not be shown and hidden immediately
 			 * because they it's a very CPU intensive operation, let the animations
@@ -22,9 +24,15 @@ angular.module('tc').directive('chatTabs', function($timeout, settings) {
 			 */
 			scope.setVisibilityDelayed = function(channel, show) {
 				$timeout(function() {
+					// Abort hide operation if the tab to be hidden is selected again
+					if (currChannel() === channel && !show) return;
 					scope.visible[channel] = show;
 				}, show? 600 : 3000);
 			};
+
+			function currChannel() {
+				return settings.channels[settings.selectedTabIndex];
+			}
 		}
 	} 
 });
