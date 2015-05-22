@@ -29,7 +29,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var escape = $filter('escape');
 	var combine = $filter('combine');
 	var ffzfy = $filter('ffzfy');
-	var messageLimit = 1000;
+	var messageLimit = 250;
 	var messages = {};
 
 	setupIrcListeners();
@@ -150,7 +150,9 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		// a massive performance boost to check and only $apply if
 		// the message is for the currently selected channel
 		if (channel === settings.channels[settings.selectedTabIndex]) {
-			$rootScope.$apply();
+			setTimeout(function() {
+				$rootScope.$apply();
+			}, 0);
 		}
 	}
 

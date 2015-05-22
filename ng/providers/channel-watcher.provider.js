@@ -8,6 +8,7 @@
 angular.module('tc').factory('channelWatcher', function($rootScope, settings) {
 	var Ee = require('events').EventEmitter;
 	var ee = new Ee();
+	ee.setMaxListeners(0);
 
 	$rootScope.$watchGroup([
 		function() {return settings.channels.length},

@@ -20,7 +20,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			password: ''
 		},
 		chat: {
-			maxChatLines: 160,
+			maxChatLines: 120,
 			timestamps: false
 		},
 		notifications: {

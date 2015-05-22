@@ -7,7 +7,7 @@ chat-tabs md-tabs-content-wrapper {
 }
 
 chat-tabs md-tab-content {
-	transition: transform 0s 300ms !important;
+	transition: transform 0s 0s !important;
 	-webkit-animation: none !important;
 	animation: none !important;
 }

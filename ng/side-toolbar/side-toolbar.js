@@ -4,7 +4,7 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		scope.irc = irc;
 		scope.settings = settings;
 		scope.settingsGui = settingsGui;
-		scope.m = {status: ''};
+		scope.m = {status: 'disconnected'};
 		element.attr('layout', 'row');
 
 		irc.on('connected', function() {scope.m.status = 'connected';});
