@@ -11,9 +11,6 @@ chatters-tabs md-tabs-content-wrapper {
 }
 
 chatters-tabs md-tab-content {
-	transition: none !important;
-	-webkit-animation: none !important;
-	animation: none !important;
 	padding: 10px;
 }
 
