@@ -3,6 +3,7 @@ var rimraf =          require('rimraf');
 var zip =             require('gulp-zip');
 var exec =            require('child_process').exec;
 var gulp =            require('gulp');
+var inno =            require("innosetup-compiler");
 var shell =           require('gulp-shell');
 var useref =          require('gulp-useref');
 var uglify =          require('gulp-uglify');
@@ -114,7 +115,12 @@ gulp.task('make-build', function(cb) {
 		'concat-minify-replace',
 		'clean-cached-templates',
 		'build',
+		'windows-installer',
 		cb);
+});
+
+gulp.task('windows-installer', function(cb) {
+	inno('installers/tc-inno-setup.iss', {gui: false, verbose: false}, cb);
 });
 
 gulp.task('run-production-win32', function(cb) {
