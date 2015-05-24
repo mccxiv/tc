@@ -1,3 +1,4 @@
+var fs =              require('fs');
 var del =             require('del');
 var rimraf =          require('rimraf');
 var zip =             require('gulp-zip');
@@ -20,8 +21,14 @@ var ngAnnotate =      require('gulp-ng-annotate');
 var runSequence =     require('run-sequence');
 var templateCache =   require('gulp-angular-templatecache');
 
+var version = require('root-require')('src/package.json').version;
+
+if (typeof version !== 'string' || version.length < 6) {
+	throw new Error('Invalid version from package.json');
+}
+
 gulp.task('clean-before', function(cb) {
-	del(['build-temp/**/**', 'build/**/**', 'dist/**/**'], function() {
+	del(['build-temp/**/**', 'build/**/**', 'dist/'], function() {
 		setTimeout(cb, 500); // Fix Windows issues
 	});
 });
@@ -103,15 +110,20 @@ gulp.task('make-build', function(cb) {
 		'concat-minify-replace',
 		'clean-cached-templates',
 		'build',
-		['windows-installer',
+		['make-windows-installer',
 		'windows-zip',
 		'mac-zip',
 		'linux-tarball'],
+		'rename-windows-installer',
 		cb);
 });
 
-gulp.task('windows-installer', function(cb) {
+gulp.task('make-windows-installer', function(cb) {
 	inno('tc-inno-setup.iss', {gui: false, verbose: false}, cb);
+});
+
+gulp.task('rename-windows-installer', function(cb) {
+	fs.rename('dist/tc-setup.exe', 'dist/tc-setup-'+version+'.exe', cb);
 });
 
 gulp.task('windows-zip', function() {
@@ -119,19 +131,19 @@ gulp.task('windows-zip', function() {
 		.pipe(rename(function(path) {
 			path.dirname = path.dirname === '.'? 'tc' : 'tc/'+path.dirname;
 		}))
-		.pipe(zip('tc-windows.zip'))
+		.pipe(zip('tc-windows-'+version+'.zip'))
 		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('mac-zip', function() {
 	return gulp.src('build/tc/osx32/**/*')
-		.pipe(zip('tc-osx.zip'))
+		.pipe(zip('tc-osx-'+version+'.zip'))
 		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('linux-tarball', function() {
 	return gulp.src('build/tc/linux32/**/*')
-		.pipe(zip('tc-linux.zip'))
+		.pipe(zip('tc-linux-'+version+'.zip'))
 		.pipe(gulp.dest('dist/'));
 });
 
