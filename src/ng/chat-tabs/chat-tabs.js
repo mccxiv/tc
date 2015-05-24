@@ -4,7 +4,8 @@ angular.module('tc').directive('chatTabs', function($timeout, settings) {
 		templateUrl: 'ng/chat-tabs/chat-tabs.html',
 		link: function(scope, element) {
 			scope.settings = settings;
-			scope.visible = [];
+			scope.hidden = {};
+			scope.loaded = {};
 			element.attr('layout', 'column');
 
 			// Wait for chat-outputs to be rendered
@@ -13,7 +14,7 @@ angular.module('tc').directive('chatTabs', function($timeout, settings) {
 			 	element.find('md-tab-item').eq(settings.selectedTabIndex).click();
 			}, 10);
 
-			if (currChannel()) scope.visible[currChannel()] = true;
+			if (currChannel()) scope.loaded[currChannel()] = true;
 
 			/**
 			 * The chat-output directive should not be shown and hidden immediately
@@ -22,12 +23,20 @@ angular.module('tc').directive('chatTabs', function($timeout, settings) {
 			 * @param {string} channel
 			 * @param {boolean} show
 			 */
-			scope.setVisibilityDelayed = function(channel, show) {
+			scope.load = function(channel, show) {
 				$timeout(function() {
-					// Abort hide operation if the tab to be hidden is selected again
+					// Abort unload operation if the tab to be hidden is selected again
 					if (currChannel() === channel && !show) return;
-					scope.visible[channel] = show;
-				}, show? 600 : 3000);
+					if (show) scope.loaded[channel] = true;
+					else delete scope.loaded[channel];
+				}, show? 1300 : 3000);
+			};
+
+			scope.hideTemporarily = function(channel) {
+				scope.hidden[channel] = true;
+				$timeout(function() {
+					delete scope.hidden[channel];
+				}, 1500)
 			};
 
 			function currChannel() {
