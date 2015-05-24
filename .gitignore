@@ -1,7 +1,9 @@
 .idea
-cache
-build
-tc.iml
+/art
+/cache
+/build
+/tc.iml
+/dist
+/build-temp
 node_modules
 bower_components
-installers/windows/output

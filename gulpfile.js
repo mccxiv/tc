@@ -12,6 +12,7 @@ var concat =          require('gulp-concat');
 var addsrc =          require('gulp-add-src');
 var rename =          require('gulp-rename');
 var base64 =          require('gulp-css-base64');
+var jeditor =         require("gulp-json-editor");
 var minifyCss =       require('gulp-minify-css');
 var NwBuilder =       require('node-webkit-builder');
 var stripDebug =      require('gulp-strip-debug');
@@ -20,21 +21,22 @@ var runSequence =     require('run-sequence');
 var templateCache =   require('gulp-angular-templatecache');
 
 gulp.task('clean-before', function(cb) {
-	del(['build-temp/**/**', 'build/**/**'], function() {
+	del(['build-temp/**/**', 'build/**/**', 'dist/**/**'], function() {
 		setTimeout(cb, 500); // Fix Windows issues
 	});
 });
 
 gulp.task('clean-after', function(cb) {
+	// TODO doesn't clean up properly, why?
 	setTimeout(function() {
-		del(['build-temp/**/**'],  function() {
+		del(['build-temp/'], function() {
 			setTimeout(cb, 1000); // Fix Windows issues
 		});
 	}, 1000);
 });
 
 gulp.task('cache-templates', function() {
-	return gulp.src('ng/**/*.html')
+	return gulp.src('src/ng/**/*.html')
 		.pipe(templateCache({module: 'tc', root: 'ng'}))
 		.pipe(gulp.dest('build-temp/temp/'));
 });
@@ -45,7 +47,7 @@ gulp.task('clean-cached-templates', function(cb) {
 
 gulp.task('concat-minify-replace', function() {
 	var assets = useref.assets({noconcat: true});
-	return gulp.src('app.html')
+	return gulp.src('src/app.html')
 		.pipe(assets)
 		.pipe(addsrc.append('build-temp/temp/templates.js'))
 		.pipe(gulpif('*.js', concat('app.js')))
@@ -61,44 +63,31 @@ gulp.task('concat-minify-replace', function() {
 });
 
 gulp.task('copy-assets', function() {
-	return gulp.src('assets/**/*')
+	return gulp.src('src/assets/**/*')
 		.pipe(gulp.dest('build-temp/assets/'));
 });
 
-gulp.task('copy-fonts', function() {
-	return gulp.src('bower_components/material-design-iconic-font/fonts/**')
-		.pipe(gulp.dest('build-temp/fonts/'));
-});
-
 gulp.task('copy-package-json', function() {
-	return gulp.src('production.package.json')
-		.pipe(rename('package.json'))
+	return gulp.src('src/package.json')
+		.pipe(jeditor(function(json) {
+			delete json.dependencies;
+			json.window.toolbar = false;
+			return json;
+		}))
 		.pipe(gulp.dest('build-temp/'));
 });
 
 gulp.task('copy-node-modules', function () {
-	return gulp.src(['node_modules/fs-extra/**/*', 'node_modules/twitch-irc/**/*'], {base: 'node_modules'})
+	return gulp.src(['src/node_modules/fs-extra/**/*', 'src/node_modules/twitch-irc/**/*'], {base: 'src/node_modules'})
 		.pipe(gulp.dest('build-temp/node_modules/'));
-});
-
-gulp.task('zip', function() {
-	return gulp.src('build-temp/**/*')
-		.pipe(zip('tc.nw', {compress: false}))
-		.pipe(gulp.dest('build-temp/'));
-});
-
-gulp.task('clean-except-zip', function(cb) {
-	del(['build-temp/**/*', '!build-temp/tc.nw'], function() {
-		setTimeout(cb, 500); // Fix Windows issues
-	});
 });
 
 gulp.task('build', function() {
 	var nw = new NwBuilder({
 		files: 'build-temp/**/**',
-		platforms: ['osx32', 'win32'],
+		platforms: ['osx32', 'win32', 'linux32'],
 		version: '0.12.1',
-		winIco: 'assets-embed/win.ico'
+		winIco: 'src/assets-embed/win.ico'
 	});
 	nw.on('log',  console.log);
 	return nw.build();
@@ -107,20 +96,43 @@ gulp.task('build', function() {
 gulp.task('make-build', function(cb) {
 	runSequence(
 		'clean-before',
-		['copy-fonts',
-		'copy-assets',
+		['copy-assets',
 		'copy-package-json',
 		'copy-node-modules'],
 		'cache-templates',
 		'concat-minify-replace',
 		'clean-cached-templates',
 		'build',
-		'windows-installer',
+		['windows-installer',
+		'windows-zip',
+		'mac-zip',
+		'linux-tarball'],
 		cb);
 });
 
 gulp.task('windows-installer', function(cb) {
-	inno('installers/tc-inno-setup.iss', {gui: false, verbose: false}, cb);
+	inno('tc-inno-setup.iss', {gui: false, verbose: false}, cb);
+});
+
+gulp.task('windows-zip', function() {
+	return gulp.src('build/tc/win32/**/*')
+		.pipe(rename(function(path) {
+			path.dirname = path.dirname === '.'? 'tc' : 'tc/'+path.dirname;
+		}))
+		.pipe(zip('tc-windows.zip'))
+		.pipe(gulp.dest('dist/'));
+});
+
+gulp.task('mac-zip', function() {
+	return gulp.src('build/tc/osx32/**/*')
+		.pipe(zip('tc-osx.zip'))
+		.pipe(gulp.dest('dist/'));
+});
+
+gulp.task('linux-tarball', function() {
+	return gulp.src('build/tc/linux32/**/*')
+		.pipe(zip('tc-linux.zip'))
+		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('run-production-win32', function(cb) {
@@ -128,7 +140,7 @@ gulp.task('run-production-win32', function(cb) {
 });
 
 gulp.task('run-development', function(cb) {
-	exec('nw .', cb);
+	exec('nw src/.', cb);
 });
 
 gulp.task('default', ['make-build']);

@@ -18,22 +18,22 @@ DefaultDirName={pf}\{#MyAppName}
 DisableDirPage=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=Tc-Setup
+OutputBaseFilename=tc-setup
 Compression=lzma
 SolidCompression=yes
 UninstallDisplayName={#MyAppName}
-OutputDir=.\output
+OutputDir=.\dist
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
-Source: "..\build\tc\win32\tc.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\tc\win32\ffmpegsumo.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\tc\win32\icudtl.dat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\tc\win32\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\tc\win32\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\tc\win32\nw.pak"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\tc\win32\tc.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\tc\win32\ffmpegsumo.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\tc\win32\icudtl.dat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\tc\win32\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\tc\win32\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\tc\win32\nw.pak"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

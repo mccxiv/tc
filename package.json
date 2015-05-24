@@ -1,49 +1,29 @@
 {
-  "main": "app.html",
-  "name": "tc",
-  "version": "0.0.1",
-  "window": {
-    "toolbar": true,
-    "frame": true,
-    "width": 800,
-    "height": 450,
-    "min_width": 500,
-    "min_height": 300,
-    "icon": "assets/icon256.png"
-  },
-  "maintainers": [
-    {
-      "name": "Andrea Stella",
-      "email": "adr.stella@gmail.com",
-      "web": "http://mccxiv.me"
-    }
-  ],
-  "dependencies": {
-    "fs-extra": "^0.18.1",
-    "twitch-irc": "git://github.com/twitch-irc/twitch-irc.git"
-  },
+  "private": true,
+  "name": "tc-project",
+  "version": "0.0.0",
   "devDependencies": {
-    "del": "^1.1.1",
-    "gulp": "^3.8.11",
-    "gulp-add-src": "^0.2.0",
-    "gulp-angular-templatecache": "^1.6.0",
-    "gulp-base64": "^0.1.2",
-    "gulp-concat": "^2.5.2",
-    "gulp-css-base64": "^1.3.2",
-    "gulp-if": "^1.2.5",
+    "del": "1.1.1",
+    "gulp": "3.8.11",
+    "gulp-add-src": "0.2.0",
+    "gulp-angular-templatecache": "1.6.0",
+    "gulp-base64": "0.1.2",
+    "gulp-concat": "2.5.2",
+    "gulp-css-base64": "1.3.2",
+    "gulp-if": "1.2.5",
     "gulp-json-editor": "^2.2.1",
-    "gulp-minify-css": "^1.1.1",
-    "gulp-ng-annotate": "^0.5.3",
-    "gulp-rename": "^1.2.2",
-    "gulp-shell": "^0.4.1",
-    "gulp-strip-debug": "^1.0.2",
-    "gulp-uglify": "^1.2.0",
-    "gulp-useref": "^1.1.2",
-    "gulp-zip": "^3.0.2",
-    "innosetup-compiler": "^5.5.52",
-    "node-webkit-builder": "^1.0.11",
-    "nw": "^0.12.1",
-    "rimraf": "^2.3.3",
-    "run-sequence": "^1.1.0"
+    "gulp-minify-css": "1.1.1",
+    "gulp-ng-annotate": "0.5.3",
+    "gulp-rename": "1.2.2",
+    "gulp-shell": "0.4.1",
+    "gulp-strip-debug": "1.0.2",
+    "gulp-uglify": "1.2.0",
+    "gulp-useref": "1.1.2",
+    "gulp-zip": "3.0.2",
+    "innosetup-compiler": "5.5.52",
+    "node-webkit-builder": "1.0.11",
+    "nw": "0.12.1",
+    "rimraf": "2.3.3",
+    "run-sequence": "1.1.0"
   }
 }
