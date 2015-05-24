@@ -5,7 +5,7 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function($timeout, messages, session, irc, gui, api) {
+angular.module('tc').directive('chatOutput', function($timeout, settings, messages, session, irc, gui, api) {
 	
 	function link(scope, element) {
 		//===============================================================
@@ -24,10 +24,6 @@ angular.module('tc').directive('chatOutput', function($timeout, messages, sessio
 		watchScroll();
 		fetchBadges();
 		handleAnchorClicks();
-
-		scope.$on('$destroy', function() {
-			console.warn('CHAT-OUTPUT: Destroying scope');
-		});
 
 		scope.$watch(
 			function() {return scope.messages[scope.messages.length-1]},

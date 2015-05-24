@@ -23,6 +23,10 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			maxChatLines: 120,
 			timestamps: false
 		},
+		tray: {
+			minimizeToTray: false,
+			closeToTray: false
+		},
 		notifications: {
 			onConnect: false,
 			onMention: true,
@@ -43,8 +47,6 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	// Watch before applying fixes so that they are saved.
 	$rootScope.$watch(watchVal, watchListener, true);
 	makeValid(settings);
-
-	window.settings = settings; // TODO remove
 
 	//===============================================================
 	// Functions
@@ -70,6 +72,10 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isObject(s.chat)) s.chat = angular.copy(defaults.chat);
 		if (typeof s.chat.timestamps !== 'boolean') s.chat.timestamps = defaults.chat.timestamps;
 		if (!angular.isNumber(s.chat.maxChatLines)) s.chat.maxChatLines = defaults.chat.maxChatLines;
+
+		if (!angular.isObject(s.tray)) s.tray = angular.copy(defaults.tray);
+		if (typeof s.tray.minimizeToTray !== 'boolean') s.tray.minimizeToTray = defaults.tray.minimizeToTray;
+		if (typeof s.tray.closeToTray !== 'boolean') s.tray.closeToTray = defaults.tray.closeToTray;
 
 		if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;

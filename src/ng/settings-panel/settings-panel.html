@@ -1,12 +1,15 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2 menu" md-is-locked-open="true">
 
-    <md-list>
+    <>
         <md-subheader class="md-no-sticky">Settings</md-subheader>
         <md-list-item class="menu-item"
                       ng-repeat="item in items"
                       ng-click="m.selected = $index"
                       ng-class="{selected: m.selected === $index}">
             <p>{{item.name}}</p>
+        </md-list-item>
+        <md-list-item class="menu-item" ng-click="m.selected = 'tray'" ng-class="{selected: m.selected === 'tray'}">
+            <p>Tray icon</p>
         </md-list-item>
     </md-list>
 
@@ -16,4 +19,18 @@
             ng-repeat="item in items"
             ng-if="$index === m.selected"
             bind-html-compile="item.html">
+</md-content>
+
+<md-content flex class="settings-content" ng-if="m.selected === 'tray'">
+    <h1 class="md-headline">Tray Icon Options</h1>
+
+    <p>You may always click the tray icon to hide the window.</p>
+
+    <md-switch ng-model="settings.tray.minimizeToTray">
+        Minimize to tray area
+    </md-switch>
+
+    <md-switch ng-model="settings.tray.closeToTray">
+        Close to tray area
+    </md-switch>
 </md-content>
