@@ -29,3 +29,16 @@ a {
 	width: 190px !important;
 	min-width: 0 !important;
 }
+
+/* The starting CSS styles for the enter animation */
+.slide.ng-enter {
+    transition: 1000ms linear all;
+    /*margin-bottom:-250px;*/
+    opacity: 0;
+}
+
+/* The starting CSS styles for the enter animation */
+.slide.ng-enter.ng-enter-active {
+    /*margin-bottom: 0;*/
+    opacity: 1;
+}

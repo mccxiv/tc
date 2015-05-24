@@ -13,7 +13,7 @@ angular.module('tc').run(['gui', function(gui) {
 	});
 
 	win.on('close', function() {
-		if (confirm('You will disconnect from the server'))	{
+		if (confirm('You will be disconnected from the server'))	{
 			win.hide(); // snappier perceived performance
 			tray.remove();
 			win.close(true);
