@@ -13,7 +13,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	var path = require('path');
 	var appData = gui.App.dataPath;
 	var filename = path.join(appData, 'settings/', 'settings.json');
-	var settings;
+	var settings = {};
 	var defaults = {
 		identity: {
 			username: '',
