@@ -1,4 +1,4 @@
-<md-tabs md-no-ink class="chat-tabs" flex md-selected="settings.selectedTabIndex" md-border-bottom>
+<md-tabs class="chat-tabs" flex md-selected="settings.selectedTabIndex" md-border-bottom>
 	<md-tab ng-repeat="channel in settings.channels" label="{{channel}}"
             md-on-select="load(channel, true)"
             md-on-deselect="load(channel, false); hideTemporarily(channel)">
