@@ -37,3 +37,9 @@ login .error {
 	line-height: 24px;
 	margin-bottom: 15px;
 }
+
+login .generate-link {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+}

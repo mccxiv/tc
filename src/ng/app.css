@@ -18,7 +18,9 @@ body {
 
 a {
     text-decoration: none;
+    cursor: pointer;
     color: #008CD0;
+    outline: none;
 }
 
 .lighter {
