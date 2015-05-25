@@ -22,11 +22,11 @@ chatters .show-more-button {
 	padding: 0;
 }
 
-chatters .usernames > * {
+chatters .usernames > * > * {
     cursor: pointer;
     outline: none;
 }
 
-chatters .usernames > *:hover {
+chatters .usernames > * > *:hover {
     text-decoration: underline;
 }
