@@ -11,7 +11,7 @@ angular.module('tc').factory('titleManager', function($filter, channelWatcher, s
 
 	channelWatcher.on('change', function() {
 		var prefix;
-		var suffix = ' - TC';
+		var suffix = ' - Tc';
 		var channel = settings.channels[settings.selectedTabIndex];
 		if (channel) prefix = capitalize(channel);
 		else prefix = 'Join channel';

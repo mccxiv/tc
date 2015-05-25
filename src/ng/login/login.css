@@ -12,7 +12,6 @@ login .login-overlay {
 }
 
 login .form {
-    margin-top: -80px;
     width: 315px;
     padding: 20px;
 	border-radius: 3px;
@@ -42,4 +41,8 @@ login .generate-link {
     display: block;
     font-size: 1.4rem;
     margin-bottom: 20px;
+}
+
+login .password-notice {
+    margin-top: 0;
 }
