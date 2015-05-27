@@ -44,6 +44,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	 * Creates both irc clients and attaches listeners to them
 	 */
 	function connect() {
+		ee.badLogin = false;
 		var clientSettings = {
 			options: {exitOnError : false},
 			connection: {reconnect: false},
@@ -70,13 +71,13 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	function attachReadListeners() {
 		clients.read.once('connected', function() {
 			joinChannels(clients.read);
-			ee.badLogin = false;
 			$rootScope.$apply();
 		});
 
 		clients.write.once('disconnected', function(reason) {
 			if (reason === 'Login unsuccessful.') {
 				ee.badLogin = reason;
+				settings.identity.password = '';
 				$rootScope.$apply();
 			}
 		});
