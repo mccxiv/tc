@@ -29,9 +29,9 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	// Setup
 	//===============================================================
 	onChannelsChange(syncChannels);
-	onInvalidCredentials(disconnect);
+	onInvalidCredentials(destroy);
 	onValidCredentials(connect);
-	onEitherDisconnect(function() {disconnect(connectMaybe);});
+	onEitherDisconnect(function() {destroy(connectMaybe);});
 
 	// needs to be after onEitherDisconnect
 	connectMaybe();
@@ -74,7 +74,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			$rootScope.$apply();
 		});
 
-		clients.write.once('disconnected', function(reason) {
+		clients.read.once('disconnected', function(reason) {
 			if (reason === 'Login unsuccessful.') {
 				ee.badLogin = reason;
 				settings.identity.password = '';
@@ -154,8 +154,13 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		}
 	}
 
-	function disconnect(cb) {
-		$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
+	function destroy(cb) {
+		var disconnect = $q.all([clients.read.disconnect(), clients.write.disconnect()]);
+		disconnect.then(function() {
+			clients.read.removeAllListeners();
+			clients.write.removeAllListeners();
+			cb();
+		});
 	}
 
 	function onEitherDisconnect(cb) {
