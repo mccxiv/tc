@@ -13,6 +13,9 @@ client.addListener('connected', function() {
 	client.join('itshafu');
 });
 
+
+
+
 /*client.addListener('connected', function() {
 	client.join(clientSettings.identity.username);
 });
