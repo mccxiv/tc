@@ -14,8 +14,6 @@ client.addListener('connected', function() {
 });
 
 
-
-
 /*client.addListener('connected', function() {
 	client.join(clientSettings.identity.username);
 });
