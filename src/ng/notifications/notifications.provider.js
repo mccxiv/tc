@@ -28,7 +28,7 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 			// TODO inefficient, runs test twice: here and in messages
 			if (highlights.test(message)) {
 				channel = channel.substring(1);
-				n('Mentioned on '+channel, user.displayname+': '+message);
+				n('Mentioned on '+channel, user['display-name']+': '+message);
 				if (settings.notifications.soundOnMention) {
 					sound.play();
 				}
