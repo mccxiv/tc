@@ -5,6 +5,5 @@
 /tc.iml
 /dist
 /build-temp
-/test.js
 node_modules
 bower_components
