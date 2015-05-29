@@ -85,7 +85,7 @@ gulp.task('copy-package-json', function() {
 });
 
 gulp.task('copy-node-modules', function () {
-	return gulp.src(['src/node_modules/fs-extra/**/*', 'src/node_modules/twitch-irc/**/*'], {base: 'src/node_modules'})
+	return gulp.src(['src/node_modules/**/*', '!src/node_modules/.bin'], {base: 'src/node_modules'})
 		.pipe(gulp.dest('build-temp/node_modules/'));
 });
 
