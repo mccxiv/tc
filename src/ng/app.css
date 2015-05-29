@@ -1,6 +1,20 @@
-::-webkit-scrollbar{width: 3px;}
-::-webkit-scrollbar-thumb{background-color:rgb(196, 196, 196); border-radius: 0px;}
-::-webkit-scrollbar-thumb:hover{background-color: rgb(152, 152, 152);}
+::-webkit-scrollbar {
+    width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 0px;
+}
+
+:hover::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .3);
+}
+
 
 html {
 	box-sizing: border-box;
