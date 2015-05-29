@@ -24,6 +24,7 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		watchScroll();
 		fetchBadges();
 		handleAnchorClicks();
+		hideUnscrolledLines();
 
 		scope.$watch(
 			function() {return scope.messages[scope.messages.length-1]},
@@ -78,10 +79,16 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		function scrollDown() {
 			latestScrollWasAutomatic = true;
 			setTimeout(function() {
+				console.log('CHAT-OUTPUT: scrolling down automatically');
 				element[0].scrollTop = element[0].scrollHeight;
 			}, 0);
 		}
-		
+
+		function hideUnscrolledLines() {
+			element.css({'opacity': 0});
+			setTimeout(function() {element.css({'opacity': 1});}, 0);
+		}
+
 		function distanceFromTop() {
 			return element[0].scrollTop;
 		}
