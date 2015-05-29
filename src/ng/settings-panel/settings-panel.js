@@ -4,11 +4,14 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settings) {
+angular.module('tc').directive('settingsPanel', function(settings, gui) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
-		scope.m = {selected: 0};
 		scope.settings = settings;
+		scope.m = {
+			version: gui.App.manifest.version,
+			selected: 0
+		};
 		scope.items = [
 			{name: 'Highlights', html: '<highlights-options></highlights-options>'},
 			{name: 'Notifications', html: '<notification-options></notification-options>'},
