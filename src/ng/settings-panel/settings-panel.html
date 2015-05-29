@@ -12,7 +12,7 @@
             <p>Tray icon</p>
         </md-list-item>
         <md-list-item class="menu-item" ng-click="m.selected = 'about'" ng-class="{selected: m.selected === 'about'}">
-            <p>Tray icon</p>
+            <p>About</p>
         </md-list-item>
     </md-list>
 
@@ -39,7 +39,7 @@
 </md-content>
 
 <md-content flex class="settings-content" ng-if="m.selected === 'about'" layout="column" layout-align="center center">
-    <img src="assets/icon256.png">
+    <img  style="width: 150px;" src="assets/icon256.png">
 
     <h1 class="md-headline">Tc, the chat client for Twitch</h1>
     <p>
