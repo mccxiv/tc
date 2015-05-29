@@ -11,13 +11,16 @@
     "min_height": 390,
     "icon": "assets/icon256.png"
   },
-  "maintainers": [{
-    "name": "Andrea Stella",
-    "email": "adr.stella@gmail.com",
-    "web": "http://mccxiv.me"
-  }],
+  "maintainers": [
+    {
+      "name": "Andrea Stella",
+      "email": "adr.stella@gmail.com",
+      "web": "http://mccxiv.me"
+    }
+  ],
   "dependencies": {
     "fs-extra": "^0.18.1",
+    "semver-diff": "^2.0.0",
     "twitch-irc": "git://github.com/twitch-irc/twitch-irc.git"
   }
 }

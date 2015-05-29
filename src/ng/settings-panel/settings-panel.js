@@ -4,7 +4,7 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settings, gui) {
+angular.module('tc').directive('settingsPanel', function(settings, gui, updateChecker) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
@@ -17,6 +17,8 @@ angular.module('tc').directive('settingsPanel', function(settings, gui) {
 			{name: 'Notifications', html: '<notification-options></notification-options>'},
 			{name: 'Chat', html: '<chat-options></chat-options>'}
 		];
+
+		updateChecker.show();
 	}
 
 	return {

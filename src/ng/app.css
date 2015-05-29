@@ -37,6 +37,10 @@ a {
     outline: none;
 }
 
+md-toast {
+    bottom: 45px !important;
+}
+
 .lighter {
     color: #999999;
 }
