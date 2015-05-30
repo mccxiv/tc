@@ -1,8 +1,14 @@
 <md-tabs class="chat-tabs" flex md-selected="settings.selectedTabIndex" md-border-bottom>
-	<md-tab ng-repeat="channel in settings.channels" label="{{channel}}"
-            md-on-select="load(channel, true)"
-            md-on-deselect="load(channel, false); hideTemporarily(channel)">
-		<chat-output channel="channel" ng-hide="hidden[channel]" ng-if="loaded[channel]"></chat-output>
+	<md-tab ng-repeat="channel in settings.channels"
+            md-on-select="selected(channel)"
+            md-on-deselect="deselected(channel)">
+        <md-tab-label>
+            {{channel}}
+            <span class="counter">{{unread(channel)}}</span>
+        </md-tab-label>
+        <md-tab-body>
+            <chat-output channel="channel" ng-hide="hidden[channel]" ng-if="loaded[channel]"></chat-output>
+        </md-tab-body>
 	</md-tab>
 	<md-tab>
 		<md-tab-label>

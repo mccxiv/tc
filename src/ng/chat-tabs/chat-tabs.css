@@ -17,6 +17,19 @@ chat-tabs .chat-tabs {
 }
 
 chat-tabs .md-tab {
-    padding-top: 5px;
+    padding-top: 5px !important;
     padding-bottom: 5px !important;
+}
+
+chat-tabs md-tab-label {
+    position: relative;
+}
+
+chat-tabs .counter {
+    top: 7px;
+    width: 0;
+    right: 20px;
+    font-size: 1.0rem;
+    position: absolute;
+    color: rgba(0,0,0,0.35);
 }

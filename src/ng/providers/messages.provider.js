@@ -31,6 +31,8 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var ffzfy = $filter('ffzfy');
 	var messageLimit = 500;
 	var messages = {};
+	var throttledApplySlow = _.throttle(function() {$rootScope.$apply();}, 3000);
+	var throttledApplyFast = _.throttle(function() {$rootScope.$apply();}, 100);
 
 	setupIrcListeners();
 
@@ -137,9 +139,10 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	 */
 	function addMessage(channel, messageObject) {
 		if (channel.charAt(0) === '#') channel = channel.substring(1);
-		if (!messages[channel]) messages[channel] = [];
+		if (!messages[channel]) make(channel);
 		messageObject.time = new Date().getTime();
 		messages[channel].push(messageObject);
+		if (messageObject.user) messages[channel].counter++;
 
 		// Too many messages in memory
 		if (messages[channel].length > messageLimit) {
@@ -151,14 +154,20 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		// a massive performance boost to check and only $apply if
 		// the message is for the currently selected channel
 		if (channel === settings.channels[settings.selectedTabIndex]) {
-			setTimeout(function() {
-				$rootScope.$apply();
-			}, 0);
+			throttledApplyFast();
+		}
+		else if (messageObject.user) {
+			throttledApplySlow();
 		}
 	}
 
+	function make(channel) {
+		messages[channel] = [];
+		messages[channel].counter = 0;
+	}
+
 	return function(channel) {
-		if (!messages[channel]) messages[channel] = [];
+		if (!messages[channel]) make(channel);
 		return messages[channel];
 	}
 });
