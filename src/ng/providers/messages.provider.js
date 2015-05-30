@@ -1,14 +1,15 @@
 /**
+ * @typedef {Object} MessagePart
+ * @property {string} string - A piece of text that filters could act on
+ * @property {isElement} boolean - Filters would probably ignore this message if it's an element
+ *
+ * @description
  * Chat message filters receive and return an array of these objects.
  * It makes it easier to know which sections of the string should be filtered
  * and which should be left alone.
  * Examples of why this is important:
  * - Avoid converting an emoticon's url to a link
  * - Avoid escaping the html of emoticons and links
- *
- * @typedef {Object} MessagePart
- * @property {string} string - A piece of text that filters could act on
- * @property {isElement} boolean - Filters would probably ignore this message if it's an element
  */
 
 /**
@@ -109,6 +110,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	 * @param {string} message
 	 */
 	function addUserMessage(type, channel, user, message) {
+		user.special.reverse();
 		addMessage(channel, {
 			user: user,
 			type: type,
