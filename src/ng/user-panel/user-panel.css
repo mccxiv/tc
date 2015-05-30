@@ -7,16 +7,16 @@ user-panel .mdi {
 }
 
 user-panel .profile-picture-div {
-    height: 53px;
     width: 53px;
-    background-image: url(../../assets-embed/user404.png);
-    background-size: cover;
+    height: 53px;
     overflow: hidden;
+    background-size: cover;
+    background-image: url(../../assets-embed/user404.png);
 }
 
 user-panel .profile-picture {
-    display: block;
     width: 100%;
+    display: block;
 }
 
 user-panel .close-button {
@@ -30,12 +30,13 @@ user-panel .toolbar md-divider.vertical {
 }
 
 user-panel .md-button {
-	min-width: 0;
-	border-radius: 0 !important;
-	margin: 0;
-	line-height: normal;
+    margin: 0;
     height: 21px;
+	min-width: 0;
+    min-height: 0;
     padding: 0 2px;
+    line-height: normal;
+	border-radius: 0 !important;
 }
 
 user-panel .toolbar {
@@ -44,10 +45,10 @@ user-panel .toolbar {
 }
 
 user-panel .row {
+    height: 16px;
     margin-left: 6px;
     margin-right: 3px;
     line-height: 16px;
-    height: 16px;
 }
 
 user-panel .username {

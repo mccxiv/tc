@@ -21,6 +21,8 @@
 angular.module('tc').factory('ffz', function($http, channelWatcher) {
 	var emotes = {};
 
+	//channelWatcher.on('change')
+
 	$http.get('http://frankerfacez.com/users.txt').success(function(list) {
 		emotes = txtToObj(list);
 		window.emotes = emotes;
