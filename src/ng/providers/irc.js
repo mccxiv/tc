@@ -159,7 +159,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		disconnect.then(function() {
 			clients.read.removeAllListeners();
 			clients.write.removeAllListeners();
-			cb();
+			if (cb) cb();
 		});
 	}
 

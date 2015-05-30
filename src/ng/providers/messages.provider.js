@@ -32,8 +32,8 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var ffzfy = $filter('ffzfy');
 	var messageLimit = 500;
 	var messages = {};
-	var throttledApplySlow = _.throttle(function() {$rootScope.$apply();}, 3000);
-	var throttledApplyFast = _.throttle(function() {$rootScope.$apply();}, 100);
+	var throttledApplySlow = _.throttle(applyLate, 3000);
+	var throttledApplyFast = _.throttle(applyLate, 100);
 
 	setupIrcListeners();
 
@@ -161,6 +161,17 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		else if (messageObject.user) {
 			throttledApplySlow();
 		}
+	}
+
+	/**
+	 * Because of inconsistent sync/async APIs
+	 * the $apply() operation should be delayed to the next cycle
+	 * TODO see if this is a performance issue
+	 */
+	function applyLate() {
+		setTimeout(function() {
+			$rootScope.$apply();
+		}, 0);
 	}
 
 	function make(channel) {
