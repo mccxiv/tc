@@ -15,7 +15,6 @@
     background-color: rgba(0, 0, 0, .3);
 }
 
-
 html {
 	box-sizing: border-box;
     -webkit-user-select: none;
@@ -55,12 +54,10 @@ md-toast {
 /* The starting CSS styles for the enter animation */
 .slide.ng-enter {
     transition: 1000ms linear all;
-    /*margin-bottom:-250px;*/
     opacity: 0;
 }
 
 /* The starting CSS styles for the enter animation */
 .slide.ng-enter.ng-enter-active {
-    /*margin-bottom: 0;*/
     opacity: 1;
 }

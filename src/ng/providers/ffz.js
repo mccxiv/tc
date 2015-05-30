@@ -8,8 +8,8 @@
  */
 
 /**
- * Provides an array of FrankerFaceZ emotes for a channel or
- * returns undefined if they haven't been fetched yet.
+ * Provides an array of valid FrankerFaceZ emotes for a channel, including
+ * global emotes or returns undefined if they haven't been fetched yet.
  * It's designed to be synchronous so that it can be used in filters.
  *
  * @ngdoc factory
@@ -18,9 +18,8 @@
  *
  * @return {promise<getEmotes>}
  */
-angular.module('tc').factory('ffz', function($http) {
+angular.module('tc').factory('ffz', function($http, channelWatcher) {
 	var emotes = {};
-	window.ffz = get; // TODO remove
 
 	$http.get('http://frankerfacez.com/users.txt').success(function(list) {
 		emotes = txtToObj(list);
