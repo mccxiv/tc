@@ -20,6 +20,7 @@ html {
 	box-sizing: border-box;
     -webkit-user-select: none;
     user-select: none;
+    font-size: 10px;
 }
 
 *, *:before, *:after {
@@ -28,6 +29,7 @@ html {
 
 body {
 	border: 1px solid #e1e1e1;
+    font-size: 1.4em;
 }
 
 a {

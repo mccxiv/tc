@@ -4,7 +4,7 @@
  * @ngdoc factory
  * @name settingsGui
  */
-angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
+angular.module('tc').factory('settingsGui', function($mdDialog, $document) {
 	return {
 		/**
 		 * Shows the options page.
@@ -12,7 +12,7 @@ angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
 		 */
 		show: function($event) {
 			$mdDialog.show({
-				parent: $rootElement,
+				parent: $document[0].body,
 				targetEvent: $event,
 				templateUrl: 'ng/settings-panel/settings-gui-dialog.html',
 				clickOutsideToClose: true,

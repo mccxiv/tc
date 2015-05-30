@@ -5,7 +5,7 @@
 	<i class="mdi mdi-swap-vert"></i>
 </md-button>
 
-<md-button ng-click="confirmLogout()" aria-label="Sign out">
+<md-button ng-click="confirmLogout($event)" aria-label="Sign out">
     <md-tooltip md-autohide md-direction="right">
         {{settings.identity.username | capitalize}}: Sign out
     </md-tooltip>
