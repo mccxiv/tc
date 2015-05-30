@@ -2,8 +2,10 @@
 
 Hi, this is the developer's hideout. <a href="http://mccxiv.github.io/tc/" target="_blank">Click here if you just wanted to download Tc</a>.
 
-Tc is a cross-platform desktop application for chatting on Twitch.tv's servers.  
-It uses the IRC protocol for connection, but is not a full featured IRC client. In general it mimicks the chat found on the official website, but with some useful enhancements. You should check the <a href="http://mccxiv.github.io/tc/" target="_blank">download page</a> for more information.
+Tc is a cross-platform desktop application for chatting on Twitch.tv's servers. 
+ 
+It uses the IRC protocol for connection, but is not a full featured IRC client. In general it mimicks the chat found on the official website, but with some useful enhancements.  
+You should check the <a href="http://mccxiv.github.io/tc/" target="_blank">download page</a> for more information.
 
 ### Technical stuff
 Tc is built with html, css, and javascript.  
