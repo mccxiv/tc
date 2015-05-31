@@ -55,6 +55,7 @@ chat-output .chat-lines {
 
 chat-output .chat-line {
 	padding: 4px 0;
+    line-height: 17px;
 	word-wrap: break-word;
 }
 
