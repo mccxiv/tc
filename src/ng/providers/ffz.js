@@ -21,8 +21,6 @@ angular.module('tc').factory('ffz', function($http, channels) {
 	channels.on('remove', remove);
 	channels.channels.forEach(cache);
 
-	window.ffz = get;
-
 	function cacheGlobal() {
 		$http.get('http://api.frankerfacez.com/v1/set/global').success(function(data) {
 			try {

@@ -30,6 +30,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var escape = $filter('escape');
 	var combine = $filter('combine');
 	var ffzfy = $filter('ffzfy');
+	var bttvmotes = $filter('bttvmotes');
 	var messageLimit = 500;
 	var messages = {};
 	var throttledApplySlow = _.throttle(applyLate, 3000);
@@ -117,7 +118,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			user: user,
 			type: type,
 			highlighted: highlights.test(message),
-			message: combine(escape(linkify(ffzfy(channel, emotify(message, user.emote))))),
+			message: combine(escape(linkify(bttvmotes(ffzfy(channel, emotify(message, user.emote)))))),
 			style: type === 'action'? 'color: '+user.color : ''
 		});
 	}
