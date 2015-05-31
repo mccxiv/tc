@@ -8,7 +8,7 @@
  * @return {MessagePart[]}
  */
 angular.module('tc').filter('bttvmotes', function(bttv) {
-	var potentialEmoteRegex = /[a-zA-Z_]{3,}/g;
+	var potentialEmoteRegex = /[^\s]+/g;
 
 	function makePart(string, isElement) {
 		return {string: string, isElement: isElement};

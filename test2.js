@@ -1,26 +1,24 @@
 var irc = require('twitch-irc');
 
-var clientSettings = {
-	options: {
-		debug: true
-	}
-};
-
-var client = new irc.client(clientSettings);
+var client = new irc.client({channels: ['twitchplayspokemon']});
 client.connect();
 
-client.addListener('connected', function() {
-	client.join('itshafu');
+client.addListener('chat', function(channel, user, message) {
+	if (typeof user['display-name'] === 'boolean') {
+		console.log(user.username + '\'s display name is ' + user['display-name']);
+	}
 });
 
+/*
+ client.addListener('connected', function() {
+ client.join('twitchplayspokemon');
+ });*/
 
 /*client.addListener('connected', function() {
 	client.join(clientSettings.identity.username);
 });
 
-client.addListener('chat', function(channel, user, message) {
-	console.log('Received: ', message);
-});*/
+*/
 
 
 /*

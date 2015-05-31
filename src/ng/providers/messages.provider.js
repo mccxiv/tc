@@ -114,6 +114,9 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	function addUserMessage(type, channel, user, message) {
 		user.special.reverse();
 		channel = channel.substring(1);
+		if (typeof user['display-name'] === 'boolean') {
+			user['display-name'] = user.username;
+		}
 		addMessage(channel, {
 			user: user,
 			type: type,
