@@ -25,7 +25,6 @@ angular.module('tc').filter('bttvmotes', function(bttv) {
 	return function(parts) {
 
 		var emotes = bttv;
-		console.log('BTTVMOTES: checking, current emotes are', emotes);
 		var newParts = [];
 
 		parts.forEach(function(part) {

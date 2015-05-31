@@ -25,7 +25,6 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 	return function(channel, parts) {
 
 		var emotes = ffz(channel);
-		console.log('FFZFY: emotes for '+channel, emotes);
 		var newParts = [];
 
 		parts.forEach(function(part) {
