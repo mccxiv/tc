@@ -15,17 +15,17 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 	}
 
 	function isEmote(emote, emotes) {
-		return emotes.indexOf(emote) > -1;
+		return !!_.find(emotes, 'emote', emote);
 	}
 
-	function makeEmote(channel, emote) {
-		return '<img class="emoticon" src="http://cdn.frankerfacez.com/channel/'+channel+'/'+emote+'.png">';
+	function makeEmote(url) {
+		return '<img class="emoticon" src="'+url+'">';
 	}
 
 	return function(channel, parts) {
 
 		var emotes = ffz(channel);
-		if (!emotes) return parts;
+		console.log('FFZFY: emotes for '+channel, emotes);
 		var newParts = [];
 
 		parts.forEach(function(part) {
@@ -39,6 +39,7 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 			var match;
 
 			while ((match = potentialEmoteRegex.exec(string)) !== null) {
+				// TODO refactor inefficient algorithm
 				if (isEmote(match[0], emotes)) {
 					console.log('FFZFY: Emote found', match[0]);
 
@@ -49,7 +50,7 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 					}
 
 					// Save emote as tag
-					var img = makeEmote(channel, match[0]);
+					var img = makeEmote(_.find(emotes, 'emote', match[0]).url);
 					add(img, true);
 
 					// Track progress through string

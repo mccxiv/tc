@@ -1,13 +1,4 @@
 /**
- * Returns a list of FFZ emotes for a particular channel.
- *
- * @typedef {function} getEmotes
- * @function
- * @param {string} channel
- * @return {string[]}
- */
-
-/**
  * Provides an array of valid FrankerFaceZ emotes for a channel, including
  * global emotes or returns undefined if they haven't been fetched yet.
  * It's designed to be synchronous so that it can be used in filters.
@@ -16,44 +7,63 @@
  * @name ffz
  * @function
  *
- * @return {promise<getEmotes>}
+ * @param {string} channel
+ * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('ffz', function($http, channelWatcher) {
-	var emotes = {};
+angular.module('tc').factory('ffz', function($http, channels) {
+	// Using node instead of browser requests to avoid red 404 errors in the console
+	var globalEmotes = [];
+	var channelEmotes = {};
+	var request = require('request');
 
-	//channelWatcher.on('change')
+	cacheGlobal();
+	channels.on('add', cache);
+	channels.on('remove', remove);
+	channels.channels.forEach(cache);
 
-	$http.get('http://frankerfacez.com/users.txt').success(function(list) {
-		emotes = txtToObj(list);
-		window.emotes = emotes;
-		console.log('FFZ: Fetched list, object:', emotes);
-	}).error(function() {
-		console.warn('FFZ: Error fetching FrankerFaceZ emotes.');
-	});
+	window.ffz = get;
 
-	function txtToObj(txt) {
-		var currentChannel;
-		var arr = txt.split('\n');
-		var obj = {};
-		arr.forEach(function(line) {
-			line = line.trim(); // otherwise Unexpected token ILLEGAL
-			if (!line.length) return;
-			if (line.charAt(0) !== '.') {
-				currentChannel = line;
-				obj[currentChannel] = [];
+	function cacheGlobal() {
+		$http.get('http://api.frankerfacez.com/v1/set/global').success(function(data) {
+			try {
+				data.default_sets.forEach(function(setKey) {
+					data.sets[setKey].emoticons.forEach(function(emote) {
+						globalEmotes.push({
+							emote: emote.name,
+							url: 'http:'+emote.urls['1']
+						});
+					});
+				});
 			}
-			else {
-				if (Array.isArray(obj[currentChannel])) {
-					obj[currentChannel].push(line.substring(1));
-				}
-				else console.warn('FFZ: Malformed emotes file');
-			}
+			catch(e) {console.warn('FFZ: ffz API error', e);}
+			console.log('FFZ: global emotes', globalEmotes)
 		});
-		return obj;
+	}
+
+	function cache(channel) {
+		channelEmotes[channel] = [];
+		request('http://api.frankerfacez.com/v1/room/'+channel, function(err, response, body) {
+			try {
+				var data = JSON.parse(body);
+				if (data.error) return;
+				data.sets[data.room.set].emoticons.forEach(function (emote) {
+					channelEmotes[channel].push({
+						emote: emote.name,
+						url: 'http:' + emote.urls['1']
+					});
+				});
+			}
+			catch(e) {console.warn('FFZ: ffz API error', e);}
+			console.log('FFZ: channel emotes for '+channel, channelEmotes[channel]);
+		});
+	}
+
+	function remove(channel) {
+		delete channelEmotes[channel];
 	}
 
 	function get(channel) {
-		return emotes[channel];
+		return globalEmotes.concat(channelEmotes[channel] || []);
 	}
 
 	return get;

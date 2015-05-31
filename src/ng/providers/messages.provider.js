@@ -36,6 +36,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var throttledApplyFast = _.throttle(applyLate, 100);
 
 	setupIrcListeners();
+	window.messages = get; // TODO remove
 
 	function setupIrcListeners() {
 		listenGlobal('connecting', 'Connecting...');
@@ -111,6 +112,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	 */
 	function addUserMessage(type, channel, user, message) {
 		user.special.reverse();
+		channel = channel.substring(1);
 		addMessage(channel, {
 			user: user,
 			type: type,
@@ -179,8 +181,10 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		messages[channel].counter = 0;
 	}
 
-	return function(channel) {
+	function get(channel) {
 		if (!messages[channel]) make(channel);
 		return messages[channel];
 	}
+
+	return get;
 });

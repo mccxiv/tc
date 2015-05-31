@@ -1,4 +1,4 @@
-angular.module('tc').directive('streamPanel', function(settings, channelWatcher, gui, irc, api) {
+angular.module('tc').directive('streamPanel', function(settings, channels, gui, irc, api) {
 
 	function link(scope, element) {
 		scope.m = {
@@ -11,7 +11,7 @@ angular.module('tc').directive('streamPanel', function(settings, channelWatcher,
 		setInterval(load, 60000);
 		element.attr('layout', 'column');
 
-		channelWatcher.on('change', function() {
+		channels.on('change', function() {
 			scope.m.stream = null;
 			scope.m.channel = null;
 			load();

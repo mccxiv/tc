@@ -1,4 +1,4 @@
-angular.module('tc').directive('chatters', function($http, settings, session, api, channelWatcher) {
+angular.module('tc').directive('chatters', function($http, settings, session, api, channels) {
 	
 	function link(scope) {
 		var forceShowViewers = false;
@@ -9,7 +9,7 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
 		fetchList();
 		setInterval(function() {fetchList();}, 120000);
 
-		channelWatcher.on('change', function() {
+		channels.on('change', function() {
 			if (!scope.api) timeoutFetch(200);
 			else timeoutFetch(2000);
 		});

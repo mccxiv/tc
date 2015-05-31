@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "fs-extra": "^0.18.1",
+    "request": "^2.56.0",
     "semver-diff": "^2.0.0",
     "twitch-irc": "git://github.com/twitch-irc/twitch-irc.git"
   }
