@@ -1,6 +1,7 @@
-<md-button md-no-ink aria-label="Connection status" class="connection {{m.status}}">
+<md-button md-no-ink aria-label="Connection status" class="connection"
+           ng-class="{'not-ready': !irc.ready, 'ready': irc.ready}">
 	<md-tooltip md-autohide md-direction="right">
-		Status: {{m.status}}
+		Status: {{irc.ready? 'Connected' : 'Connecting'}}
 	</md-tooltip>
 	<i class="mdi mdi-swap-vert"></i>
 </md-button>

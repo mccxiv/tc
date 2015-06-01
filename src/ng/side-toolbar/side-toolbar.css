@@ -23,10 +23,6 @@ side-toolbar .connection {
 	cursor: default;
 }
 
-side-toolbar .connection.disconnected {
-	color: darkred;
-}
-
-side-toolbar .connection.connecting {
+side-toolbar .connection.not-ready {
 	color: #c6a600;
 }

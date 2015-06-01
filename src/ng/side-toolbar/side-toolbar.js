@@ -4,12 +4,7 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		scope.irc = irc;
 		scope.settings = settings;
 		scope.settingsGui = settingsGui;
-		scope.m = {status: 'disconnected'};
 		element.attr('layout', 'row');
-
-		irc.on('connected', function() {scope.m.status = 'connected';});
-		irc.on('connecting', function() {scope.m.status = 'connecting';});
-		irc.on('disconnected', function() {scope.m.status = 'disconnected';});
 		
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]

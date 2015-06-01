@@ -1,7 +1,7 @@
 <form ng-submit="say()">
-	<md-input-container class="input-container">
+	<md-input-container class="input-container" ng-class="{disabled: !irc.ready}">
 		<label>Send a message</label>
-		<input disabled
+		<input ng-disabled="!irc.ready"
                ng-model="message"
                ng-focus="session.inputFocused = true"
                ng-blur="session.inputFocused = false"

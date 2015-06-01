@@ -1,3 +1,9 @@
+/**
+ * Wrapper for twitch-irc, adds some events
+ *
+ * @emits irc#ready - When both connections have been successfully established
+ * @emits irc#not-ready - When disconnect
+ */
 angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings) {
 	
 	//===============================================================
@@ -11,6 +17,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	//===============================================================
 	// Public members
 	//===============================================================
+	ee.ready = false;
 	ee.badLogin = false;
 	ee.credentialsValid = credentialsValid;
 
@@ -24,6 +31,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 
 	// TODO debug stuff
 	window.getClients = function() {return clients;};
+	window.irc = ee;
 
 	//===============================================================
 	// Setup
@@ -33,7 +41,8 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	onValidCredentials(connect);
 	onEitherDisconnect(function() {destroy(connectMaybe);});
 
-	// needs to be after onEitherDisconnect
+	// connecting needs to be after onEitherDisconnect
+	watchForBadLogin();
 	connectMaybe();
 
 	//===============================================================
@@ -57,41 +66,28 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			var settings = angular.copy(clientSettings);
 			if (key === 'write') settings.loggerClass = undefined;
 			clients[key] =  new irc.client(settings);
-			clients[key].connect();
 		});
-		attachReadListeners();
-		attachWriteListeners();
+
 		forwardEvents(clients.read, ee);
+
+		$q.all([clients.read.connect(), clients.write.connect()]).then(function() {
+			var connected = 0;
+			[clients.read, clients.write].forEach(function(client) {
+				joinChannels(client);
+				client.once('connected', function() {
+					connected++;
+					if (connected > 1) {
+						console.log('IRC both connected');
+						ee.ready = true;
+						$rootScope.$apply();
+					}
+				});
+			});
+		});
 	}
 
 	function connectMaybe() {
 		if (credentialsValid() && !ee.badLogin) connect();
-	}
-
-	function attachReadListeners() {
-		clients.read.once('connected', function() {
-			joinChannels(clients.read);
-			$rootScope.$apply();
-		});
-
-		clients.read.once('disconnected', function(reason) {
-			if (reason === 'Login unsuccessful.') {
-				ee.badLogin = reason;
-				settings.identity.password = '';
-				$rootScope.$apply();
-			}
-		});
-	}
-
-	function attachWriteListeners() {
-		clients.write.once('connected', function() {
-			joinChannels(clients.write);
-			ee.emit('say-available');
-		});
-
-		clients.write.once('disconnected', function() {
-			ee.emit('say-unavailable');
-		});
 	}
 
 	/**
@@ -161,6 +157,29 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			clients.write.removeAllListeners();
 			if (cb) cb();
 		});
+		ee.ready = false;
+		$rootScope.$apply();
+	}
+
+	function watchForBadLogin() {
+		//noinspection JSCheckFunctionSignatures
+		Object.observe(clients, function(changes) {
+			changes.forEach(function(change) {
+				if (change.name === 'read') {
+					attachBadLoginCheck()
+				}
+			});
+		}, ['update']);
+
+		function attachBadLoginCheck() {
+			clients.read.once('disconnected', function(reason) {
+				if (reason === 'Login unsuccessful.') {
+					ee.badLogin = reason;
+					settings.identity.password = '';
+					$rootScope.$apply();
+				}
+			});
+		}
 	}
 
 	function onEitherDisconnect(cb) {
@@ -183,7 +202,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			});
 			cb();
 		}
-
 	}
 	
 	function onChannelsChange(cb) {
@@ -206,7 +224,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 			if (valid) cb();
 		})
 	}
-
 
 	function onCredentialsValidChange(cb) {
 		// TODO change this so it doesn't run for each call

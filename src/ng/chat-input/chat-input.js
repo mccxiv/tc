@@ -3,18 +3,8 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 	function link(scope, element) {
 		scope.message = '';
 		scope.session = session;
+		scope.irc = irc;
 		var input = element.find('input')[0];
-		var inputContainer = element.find('md-input-container');
-
-		irc.on('say-available', function() {
-			inputContainer.removeClass('disabled');
-			input.removeAttribute('disabled');
-		});
-
-		irc.on('say-unavailable', function() {
-			inputContainer.addClass('disabled');
-			input.setAttribute('disabled', 'disabled');
-		});
 
 		scope.getUsernames = function() {
 			var channel = settings.channels[settings.selectedTabIndex];
