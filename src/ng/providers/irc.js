@@ -151,12 +151,11 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	}
 
 	function destroy(cb) {
-		var disconnect = $q.all([clients.read.disconnect(), clients.write.disconnect()]);
-		disconnect.then(function() {
-			clients.read.removeAllListeners();
-			clients.write.removeAllListeners();
-			if (cb) cb();
-		});
+		cb = cb || function() {};
+		clients.read.removeAllListeners();
+		clients.write.removeAllListeners();
+
+		$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
 		ee.ready = false;
 		$rootScope.$apply();
 	}
