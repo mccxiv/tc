@@ -30,10 +30,10 @@ chat-output .badge {
 }
 
 chat-output .emoticon {
-    top: -19px;
+    bottom: -4px;
     max-height: 30px;
+    margin-top: -30px;
     position: relative;
-    margin-bottom: -30px;
 }
 
 chat-output .badge:not(:first-child) {
