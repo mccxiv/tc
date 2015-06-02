@@ -4,7 +4,7 @@
  * @ngdoc factory
  * @name updateChecker
  */
-angular.module('tc').factory('updateChecker', function($http, $mdToast, gui) {
+angular.module('tc').factory('updateChecker', function($http, $mdToast, notifications, gui) {
 
 	var semverDiff = require('semver-diff');
 	var version = gui.App.manifest.version;
@@ -13,7 +13,7 @@ angular.module('tc').factory('updateChecker', function($http, $mdToast, gui) {
 
 	$http.jsonp(url).success(function(response) {
 		latest = response.data[0].tag_name;
-		//latest = "1.0.0-beta.6"; // For testing;
+		//latest = "1.0.0-beta.99"; // For testing;
 		setTimeout(notify, 5000);
 	});
 
@@ -29,6 +29,7 @@ angular.module('tc').factory('updateChecker', function($http, $mdToast, gui) {
 			toast.then(function() {
 				gui.Shell.openExternal('http://mccxiv.github.io/tc/');
 			});
+			notifications.create('New version of Tc!', latest+' is available for download.');
 		}
 	}
 
