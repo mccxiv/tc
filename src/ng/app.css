@@ -27,7 +27,6 @@ html {
 }
 
 body {
-	border: 1px solid #e1e1e1;
     font-size: 1.4em;
 }
 
@@ -36,6 +35,10 @@ a {
     cursor: pointer;
     color: #008CD0;
     outline: none;
+}
+
+md-sidenav {
+    background-color: transparent;
 }
 
 md-toast {

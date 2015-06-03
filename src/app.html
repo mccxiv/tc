@@ -5,8 +5,12 @@
         <title>Tc</title>
 
         <!-- build:css style.css -->
+        <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+        <link rel="stylesheet" href="bower_components/material-design-iconic-font/css/material-design-iconic-font.css">
+
 		<link rel="stylesheet" href="ng/app.css">
-		<link rel="stylesheet" href="ng/login/login.css">
+        <link rel="stylesheet" href="ng/themes/dark.css">
+        <link rel="stylesheet" href="ng/login/login.css">
 		<link rel="stylesheet" href="ng/side-toolbar/side-toolbar.css">
 		<link rel="stylesheet" href="ng/chat-output/chat-output.css">
 		<link rel="stylesheet" href="ng/chat-tabs/chat-tabs.css">
@@ -16,8 +20,6 @@
 		<link rel="stylesheet" href="ng/add-channel/add-channel.css">
         <link rel="stylesheet" href="ng/user-panel/user-panel.css">
         <link rel="stylesheet" href="ng/stream-panel/stream-panel.css">
-		<link rel="stylesheet" href="bower_components/material-design-iconic-font/css/material-design-iconic-font.css">
-		<link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
         <link rel="stylesheet" href="ng/highlights/highlights-options.directive.css">
         <link rel="stylesheet" href="ng/settings-panel/settings-panel.css">
         <link rel="stylesheet" href="ng/settings-panel/settings-gui-dialog.css">
@@ -55,10 +57,11 @@
 
 		<script src="ng/app.js"></script>
         <script src="ng/global/main.controller.js"></script>
-        <script src="ng/global/dev-tools-hotkey.js"></script>
-        <script src="ng/global/prevent-default-click.js"></script>
-        <script src="ng/global/eager-load-providers.run.js"></script>
-        <script src="ng/global/window-behavior-setup.run.js"></script>
+
+        <script src="ng/on-load/dev-tools-hotkey.js"></script>
+        <script src="ng/on-load/prevent-default-click.js"></script>
+        <script src="ng/on-load/eager-load-providers.run.js"></script>
+        <script src="ng/on-load/window-behavior-setup.run.js"></script>
 
         <script src="ng/login/login.js"></script>
         <script src="ng/settings-panel/settings-panel.js"></script>
