@@ -32,6 +32,9 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			onMention: true,
 			soundOnMention: true
 		}, // TODO refactor highlights to an object
+		theme: {
+			dark: false
+		},
 		selectedTabIndex: 0,
 		channels: [],
 		highlights: [],
@@ -82,6 +85,9 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);
 		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
+
+		if (!angular.isObject(s.theme)) s.theme = angular.copy(defaults.theme);
+		if (typeof s.theme.dark !== 'boolean') s.theme.dark = defaults.theme.dark;
 	}
 
 	function watchVal() {

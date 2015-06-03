@@ -8,6 +8,9 @@
                       ng-class="{selected: m.selected === $index}">
             <p>{{item.name}}</p>
         </md-list-item>
+        <md-list-item class="menu-item" ng-click="m.selected = 'theme'" ng-class="{selected: m.selected === 'theme'}">
+            <p>Dark theme</p>
+        </md-list-item>
         <md-list-item class="menu-item" ng-click="m.selected = 'tray'" ng-class="{selected: m.selected === 'tray'}">
             <p>Tray icon</p>
         </md-list-item>
@@ -22,6 +25,14 @@
             ng-repeat="item in items"
             ng-if="$index === m.selected"
             bind-html-compile="item.html">
+</md-content>
+
+<md-content flex class="settings-content" ng-if="m.selected === 'theme'">
+    <h1 class="md-headline">Theme Options</h1>
+
+    <md-switch ng-model="settings.theme.dark">
+        Use dark theme
+    </md-switch>
 </md-content>
 
 <md-content flex class="settings-content" ng-if="m.selected === 'tray'">
@@ -46,5 +57,4 @@
         <span>Version: {{m.version}}</span> |
         <a href-external="http://mccxiv.github.io/tc/">Website link</a>
     </p>
-
 </md-content>

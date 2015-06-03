@@ -25,7 +25,7 @@
         <link rel="stylesheet" href="ng/settings-panel/settings-gui-dialog.css">
         <!-- endbuild -->
 	</head>
-	<body layout="column" ng-controller="main" ng-cloak>
+	<body layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
 	
 		<section layout="row" flex>
 			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">				
