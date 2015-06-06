@@ -14,11 +14,11 @@ angular.module('tc').run(function(gui, settings) {
 	}));
 	tray.menu = menu;
 	
-	if(process.platform === 'darwin') {
-+               var osxbar = new gui.Menu({ type: "menubar" });
-+               osxbar.createMacBuiltin("TC");
-+               win.menu = osxbar;
-+       }
+	if (process.platform === 'darwin') {
+		var osxbar = new gui.Menu({type: 'menubar'});
+		osxbar.createMacBuiltin('Tc');
+		win.menu = osxbar;
+	}
 
 	tray.on('click', function() {
 		shown = !shown;
