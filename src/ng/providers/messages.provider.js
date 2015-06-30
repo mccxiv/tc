@@ -23,7 +23,9 @@
  */
 angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings) {
 
-	// TODO dry
+	//=====================================================
+	// Variables | TODO dry
+	//=====================================================
 	var capitalize = $filter('capitalize');
 	var emotify = $filter('emotify');
 	var linkify = $filter('linkify');
@@ -36,72 +38,92 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var throttledApplySlow = _.throttle(applyLate, 3000);
 	var throttledApplyFast = _.throttle(applyLate, 100);
 
+	//=====================================================
+	// Setup
+	//=====================================================
 	setupIrcListeners();
-	window.messages = get; // TODO remove
 
+	//=====================================================
+	// Public methods
+	//=====================================================
+	var factoryReturnValue = function getMessages(channel) {
+		if (!messages[channel]) make(channel);
+		return messages[channel];
+	};
+
+	factoryReturnValue.addWhisper = addWhisperMessage;
+
+	//=====================================================
+	// Private methods
+	//=====================================================
 	function setupIrcListeners() {
 		listenGlobal('connecting', 'Connecting...');
 		listenGlobal('disconnected', 'Disconnected from the server.');
 		listenGlobal('crash', 'IRC crashed! You may need to restart the application. Sorry :(');
 
-		irc.addListener('chat', function(channel, user, message) {
+		irc.on('chat', function(channel, user, message) {
 			addUserMessage('chat', channel, user, message);
 		});
 
-		irc.addListener('action', function(channel, user, message) {
+		irc.on('action', function(channel, user, message) {
 			addUserMessage('action', channel, user, message);
 		});
 
-		irc.addListener('connected', function() {
+		irc.on('connected', function() {
 			settings.channels.forEach(function(channel) {
 				addNotificationMessage(channel, 'Welcome to '+channel+'\'s chat.');
 			});
 		});
 
-		irc.addListener('hosting', function(channel, target, viewers) {
+		irc.on('hosting', function(channel, target, viewers) {
 			if (typeof viewers !== 'number') return; // TODO remove this bandaid when twitch-irc gets fixed
 			addNotificationMessage(channel, channel + ' is hosting ' + target + ' with ' + viewers + ' viewers.');
 		});
 
-		irc.addListener('hosted', function(channel, target, viewers) {
+		irc.on('hosted', function(channel, target, viewers) {
 			addNotificationMessage(channel, target + ' is hosting you with ' + viewers + ' viewers.');
 		});
 
-		irc.addListener('slowmode', function(channel, enabled, length) {
+		irc.on('slowmode', function(channel, enabled, length) {
 			var msg;
 			if (!enabled) msg = 'This room is no longer in slow mode.';
 			else msg = 'This room is now in slow mode. You may send messages every '+length+' seconds.';
 			addNotificationMessage(channel, msg);
 		});
 
-		irc.addListener('subanniversary', function(channel, username, months) {
+		irc.on('subanniversary', function(channel, username, months) {
 			addNotificationMessage(channel, username + ' subscribed for ' + months + ' months in a row!');
 		});
 
-		irc.addListener('subscription', function(channel, username) {
+		irc.on('subscription', function(channel, username) {
 			addNotificationMessage(channel, username + ' has just subscribed!');
 		});
 
-		irc.addListener('timeout', function(channel, username) {
+		irc.on('timeout', function(channel, username) {
 			addNotificationMessage(channel, username + ' has been timed out.');
 		});
 
-		irc.addListener('unhost', function(channel) {
+		irc.on('unhost', function(channel) {
 			addNotificationMessage(channel, 'Stopped hosting.');
+		});
+
+		irc.on('whisper', function(from, message) {
+			addWhisperMessage(from, settings.identity.username, message);
 		});
 	}
 
 	/**
-	 * Register a listener that will add an identical message to every channel
+	 * Register a listener that will add an identical
+	 * notification message to every channel
 	 * @param {string} event
 	 * @param {string} message
 	 */
 	function listenGlobal(event, message) {
-		irc.addListener(event, function() {
+		irc.on(event, function() {
 			settings.channels.forEach(function(channel) {
 				addNotificationMessage(channel, message);
 			});
-		})
+		});
 	}
 
 	/**
@@ -112,16 +134,17 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	 * @param {string} message
 	 */
 	function addUserMessage(type, channel, user, message) {
-		user.special.reverse();
+		//todo figure out the user.special situation
+		if (user.special) user.special.reverse();
 		channel = channel.substring(1);
-		if (typeof user['display-name'] === 'boolean') {
+		if (!user['display-name']) {
 			user['display-name'] = user.username;
 		}
 		addMessage(channel, {
 			user: user,
 			type: type,
 			highlighted: highlights.test(message),
-			message: combine(escape(linkify(bttvmotes(ffzfy(channel, emotify(message, user.emote)))))),
+			message: combine(escape(linkify(bttvmotes(ffzfy(channel, emotify(message, user.emotes)))))),
 			style: type === 'action'? 'color: '+user.color : ''
 		});
 	}
@@ -136,6 +159,24 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			type: 'notification',
 			message: capitalize(escape(message)),
 			style: 'color: #999999'
+		});
+	}
+
+	/**
+	 * Adds a message with the 'whisper' type
+	 * @param {string} from
+	 * @param {string} to
+	 * @param {string} message
+	 */
+	function addWhisperMessage(from, to, message) {
+		settings.channels.forEach(function(channel) {
+			addMessage(channel, {
+				type: 'whisper',
+				from: capitalize(from),
+				to: capitalize(to),
+				message: escape(message),
+				style: 'color: #999999'
+			});
 		});
 	}
 
@@ -185,10 +226,5 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		messages[channel].counter = 0;
 	}
 
-	function get(channel) {
-		if (!messages[channel]) make(channel);
-		return messages[channel];
-	}
-
-	return get;
+	return factoryReturnValue;
 });

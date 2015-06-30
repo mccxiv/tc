@@ -21,15 +21,24 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 			}
 		};
 		
-		scope.say = function() {
+		scope.input = function() {
 			var channel = settings.channels[settings.selectedTabIndex];
 			if (!channel || !scope.message.trim().length) return;
-			
+
 			if (scope.message.charAt(0) === '/') {
 				scope.message = '.' + scope.message.substr(1);
 			}
-			
-			irc.say(channel, scope.message);
+
+			if (scope.message.indexOf('.w') === 0) {
+				var words =  scope.message.split(' ');
+				var username = words[1];
+				var message = words.slice(2).join(' ');
+				irc.whisper(username, message);
+				messages.addWhisper(settings.identity.username, username, message);
+			}
+
+			else irc.say(channel, scope.message);
+
 			scope.message = '';
 		};
 	}

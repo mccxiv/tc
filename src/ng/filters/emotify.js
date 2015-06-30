@@ -41,6 +41,7 @@ angular.module('tc').filter('emotify', function() {
 	}
 	
 	return function(message, emotes) {
+		console.log('EMOTIFY: emotes object is:', emotes);
 		emotes = emotes || {};
 		var line = message || '';
 		var occurrences = [];

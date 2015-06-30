@@ -4,15 +4,16 @@
  * @emits irc#ready - When both connections have been successfully established
  * @emits irc#not-ready - When disconnect
  */
-angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings) {
+angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, _) {
 	
 	//===============================================================
 	// Variables
 	//===============================================================
-	var irc = require('twitch-irc');
+	//var irc = require('twitch-irc');
+	var tmi = require('tmi.js');
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
-	var clients = {read: null, write: null};
+	var clients = {read: null, write: null, whisper: null};
 	
 	//===============================================================
 	// Public members
@@ -25,13 +26,19 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		return clients.write.isMod(channel, username);
 	};
 
-	ee.say = function(channel, msg) {
-		clients.write.say(channel, msg);
+	ee.say = function(channel, message) {
+		clients.write.say(channel, message);
+	};
+
+	ee.whisper = function(username, message) {
+		clients.whisper.whisper(username, message).then(function() {
+			console.log('whisper sent, args:', arguments);
+		});
 	};
 
 	// TODO debug stuff
-	window.getClients = function() {return clients;};
-	window.irc = ee;
+	window.ircFactory = ee;
+	window.clients = clients;
 
 	//===============================================================
 	// Setup
@@ -42,6 +49,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	onEitherDisconnect(function() {destroy(connectMaybe);});
 
 	// connecting needs to be after onEitherDisconnect
+	// because that watches for object reference changes
 	watchForBadLogin();
 	connectMaybe();
 
@@ -55,22 +63,34 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	function connect() {
 		ee.badLogin = false;
 		var clientSettings = {
-			options: {exitOnError : false},
-			connection: {reconnect: false},
-			loggerClass: TwitchIrcLogger,
+			options: {exitOnError : false, debug: true},
+			connection: {random: 'chat'},
 			identity: settings.identity,
 			channels: settings.channels
 		};
+
 		Object.keys(clients).forEach(function(key) {
-			console.log('IRC: creating a client');
-			var settings = angular.copy(clientSettings);
-			if (key === 'write') settings.loggerClass = undefined;
-			clients[key] =  new irc.client(settings);
+			var setts = angular.copy(clientSettings);
+
+			if (key === 'whisper') {
+				setts.connection.reconnect = true;
+				setts.connection.random = 'group';
+				setts.channels = null;
+			}
+
+			clients[key] = new tmi.client(setts);
+			if (setts.channels) clients[key].tcCurrentChannels = angular.copy(setts.channels);
 		});
 
-		forwardEvents(clients.read, ee);
+		forwardEvents(clients.read, ee, [
+			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
+			'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
+			'subscriber', 'subscription', 'timeout', 'unhost'
+		]);
 
-		$q.all([clients.read.connect(), clients.write.connect()]).then(function() {
+		forwardEvents(clients.whisper, ee, ['whisper']);
+
+		$q.all(_.map(clients, function(c) {return c.connect();})).then(function() {
 			var connected = 0;
 			[clients.read, clients.write].forEach(function(client) {
 				joinChannels(client);
@@ -95,13 +115,9 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	 * Re emits events from `emitter` on `reEmitter`
 	 * @param {Object}   emitter   - Emits events to rebroadcast. Has .addListener()
 	 * @param {Object}   reEmitter - The object that will rebroadcast. Has .emit()
+	 * @param {String[]} events    - The events to listen for on `emitter`
 	 */
-	function forwardEvents(emitter, reEmitter) {
-		var events = [
-			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-			'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
-			'subscriber', 'subscription', 'timeout', 'unhost'
-		];
+	function forwardEvents(emitter, reEmitter, events) {
 		events.forEach(function(event) {
 			emitter.addListener(event, function() {
 				var args = Array.prototype.slice.call(arguments);
@@ -129,8 +145,9 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	function joinChannels(client) {
 		settings.channels.forEach(function(channel) {
 			console.log('checking if need to join '+channel);
-			if (client.currentChannels.indexOf(channel) === -1) {
+			if (client.tcCurrentChannels.indexOf(channel) === -1) {
 				client.join(channel);
+				client.tcCurrentChannels.push(channel);
 			}
 		});
 	}
@@ -140,22 +157,29 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 	 * appear in settings.channels.
 	 */
 	function leaveChannels(client) {
-		// Need for loop for the index and it's
-		// backwards so that array changes don't affect the loop
-		for (var i = client.currentChannels.length - 1; i > -1; i--) {
-			var channel = client.currentChannels[i];
+		// Need for loop for the index.
+		// Backwards so that array changes don't affect the loop
+		for (var i = client.tcCurrentChannels.length - 1; i > -1; i--) {
+			var channel = client.tcCurrentChannels[i];
 			if (settings.channels.indexOf(channel) === -1) {
 				client.part(channel);
+				client.tcCurrentChannels.splice(i, 1);
 			}
 		}
 	}
 
 	function destroy(cb) {
 		cb = cb || function() {};
-		clients.read.removeAllListeners();
-		clients.write.removeAllListeners();
 
-		$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
+		_.forEach(clients, function(client) {
+			client.removeAllListeners();
+		});
+
+		//clients.read.removeAllListeners();
+		//clients.write.removeAllListeners();
+		//$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
+
+		$q.all(_.map(clients, function(c) {c.disconnect()})).then(cb);
 		ee.ready = false;
 		$rootScope.$apply();
 	}
@@ -186,6 +210,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings)
 		Object.observe(clients, function onUpdate(changes) {
 			console.log('IRC: clients object changes:', changes);
 			changes.forEach(function(change) {
+				if (change.name === 'whisper') return;
 				var client = clients[change.name];
 				console.log('IRC: onEitherDisconnect attaching disconnect listener');
 				client.addListener('disconnected', disconnected);

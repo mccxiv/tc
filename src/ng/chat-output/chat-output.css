@@ -3,19 +3,19 @@ chat-output::-webkit-scrollbar {
 }
 
 chat-output::-webkit-scrollbar-thumb {
-    background-color:rgba(0, 0, 0, .3);
     border-radius: 2px;
+    background-color:rgba(0, 0, 0, .3);
 }
 
 chat-output {
-    -webkit-user-select: text;
-    user-select: text;
+    height: 100%;
 	display: block;
 	overflow: auto;
-	height: 100%;
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	padding-left: 15px;
 	font-size: 1.4rem;
+    user-select: text;
+    padding-left: 15px;
+    -webkit-user-select: text;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 chat-output .timestamp {
@@ -24,9 +24,9 @@ chat-output .timestamp {
 
 chat-output .emoticon, 
 chat-output .badge {
+    margin: -9px 0;
+    vertical-align: 5px;
 	display: inline-block;
-	vertical-align: 5px;
-	margin: -9px 0;
 }
 
 chat-output .emoticon {
@@ -69,5 +69,11 @@ chat-output .chat-line .username {
 }
 
 chat-output .highlighted {
-    background-color: rgba(255, 0, 0, 0.3);
+    background-color: rgba(255, 0, 0, 0.15);
+}
+
+chat-output .whisper {
+    padding-left: 3px;
+    border-left: 2px solid #a68ed2;
+    background-color: rgba(255, 174, 0, 0.15);
 }

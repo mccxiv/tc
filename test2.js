@@ -1,13 +1,26 @@
-var irc = require('twitch-irc');
+//var irc = require('twitch-irc');
+var irc = require('tmi.js');
 
-var client = new irc.client({channels: ['twitchplayspokemon']});
+var client = new irc.client({
+	connection: {random: 'group'},
+	"identity": {
+		"username": "k3nt0456",
+		"password": ""
+	},
+});
+
 client.connect();
 
-client.addListener('chat', function(channel, user, message) {
-	if (typeof user['display-name'] === 'boolean') {
-		console.log(user.username + '\'s display name is ' + user['display-name']);
-	}
+client.on('whisper', function() {
+	console.log('args receiving', arguments);
 });
+
+setTimeout(function() {
+	client.whisper('k3nt0456_test', 'message!').then(function() {
+		console.log('args sending', arguments);
+	});
+}, 4000);
+
 
 /*
  client.addListener('connected', function() {
