@@ -75,9 +75,8 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			});
 		});
 
-		irc.on('hosting', function(channel, target, viewers) {
-			if (typeof viewers !== 'number') return; // TODO remove this bandaid when twitch-irc gets fixed
-			addNotificationMessage(channel, channel + ' is hosting ' + target + ' with ' + viewers + ' viewers.');
+		irc.on('hosting', function(channel, target) {
+			addNotificationMessage(channel, channel.substring(1) + ' is hosting ' + target);
 		});
 
 		irc.on('hosted', function(channel, target, viewers) {
