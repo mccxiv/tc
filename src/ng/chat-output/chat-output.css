@@ -29,6 +29,10 @@ chat-output .badge {
 	display: inline-block;
 }
 
+chat-output .badge:last-child {
+    margin-right: 3px;
+}
+
 chat-output .emoticon {
     bottom: -8px;
     max-height: 30px;

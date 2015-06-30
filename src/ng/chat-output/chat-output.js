@@ -43,6 +43,10 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 			session.selectedUserChannel = scope.channel;
 		};
 
+		scope.isBroadcaster = function(username) {
+			return username.toLowerCase() === scope.channel.toLowerCase();
+		};
+
 		//===============================================================
 		// Functions
 		//===============================================================
