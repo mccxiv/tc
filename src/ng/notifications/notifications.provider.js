@@ -9,19 +9,26 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 
 	var sound = new Audio('assets/notification.ogg');
 
-	irc.addListener('disconnected', function() {
+	irc.on('disconnected', function() {
 		if (settings.notifications.onConnect) {
 			n('Disconnected', 'The connection to the chat server has ended.');
 		}
 	});
 
-	irc.addListener('crash', function() {
+	irc.on('crash', function() {
 		// TODO do something more helpful than just report
 		n('Crashed', 'Sorry, the IRC client has crashed. Please restart the application.');
 	});
 
-	irc.addListener('chat', fromUser);
-	irc.addListener('action', fromUser);
+	irc.on('whisper', function(from, message) {
+		if (settings.notifications.onWhisper) {
+			n('Whisper from ' + from, message);
+			if (settings.notifications.soundOnMention) sound.play();
+		}
+	});
+
+	irc.on('chat', fromUser);
+	irc.on('action', fromUser);
 
 	function fromUser(channel, user, message) {
 		if (settings.notifications.onMention) {
