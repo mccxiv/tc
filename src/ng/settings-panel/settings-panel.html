@@ -2,11 +2,15 @@
 
     <md-list>
         <md-subheader class="md-no-sticky">Settings</md-subheader>
-        <md-list-item class="menu-item"
-                      ng-repeat="item in items"
-                      ng-click="m.selected = $index"
-                      ng-class="{selected: m.selected === $index}">
-            <p>{{item.name}}</p>
+
+        <md-list-item class="menu-item" ng-click="m.selected = 'highlights'" ng-class="{selected: m.selected === 'highlights'}">
+            <p>Highlights</p>
+        </md-list-item>
+        <md-list-item class="menu-item" ng-click="m.selected = 'notifications'" ng-class="{selected: m.selected === 'notifications'}">
+            <p>Notifications</p>
+        </md-list-item>
+        <md-list-item class="menu-item" ng-click="m.selected = 'chat'" ng-class="{selected: m.selected === 'chat'}">
+            <p>Chat</p>
         </md-list-item>
         <md-list-item class="menu-item" ng-click="m.selected = 'theme'" ng-class="{selected: m.selected === 'theme'}">
             <p>Dark theme</p>
@@ -21,10 +25,16 @@
 
 </md-sidenav>
 
-<md-content flex class="settings-content"
-            ng-repeat="item in items"
-            ng-if="$index === m.selected"
-            bind-html-compile="item.html">
+<md-content flex class="settings-content" ng-if="m.selected === 'highlights'">
+    <highlights-options></highlights-options>
+</md-content>
+
+<md-content flex class="settings-content" ng-if="m.selected === 'notifications'">
+    <notification-options></notification-options>
+</md-content>
+
+<md-content flex class="settings-content" ng-if="m.selected === 'chat'">
+    <chat-options></chat-options>
 </md-content>
 
 <md-content flex class="settings-content" ng-if="m.selected === 'theme'">

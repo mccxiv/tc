@@ -10,14 +10,8 @@ angular.module('tc').directive('settingsPanel', function(settings, gui, updateCh
 		scope.settings = settings;
 		scope.m = {
 			version: gui.App.manifest.version,
-			selected: 0
+			selected: 'highlights'
 		};
-		scope.items = [
-			{name: 'Highlights', html: '<highlights-options></highlights-options>'},
-			{name: 'Notifications', html: '<notification-options></notification-options>'},
-			{name: 'Chat', html: '<chat-options></chat-options>'}
-		];
-
 		updateChecker.show();
 	}
 

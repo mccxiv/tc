@@ -30,6 +30,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		notifications: {
 			onConnect: false,
 			onMention: true,
+			onWhisper: true,
 			soundOnMention: true
 		}, // TODO refactor highlights to an object
 		theme: {
@@ -70,6 +71,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isObject(s.notifications)) s.notifications = angular.copy(defaults.notifications);
 		if (typeof s.notifications.onConnect !== 'boolean') s.notifications.onConnect = defaults.notifications.onConnect;
 		if (typeof s.notifications.onMention !== 'boolean') s.notifications.onMention = defaults.notifications.onMention;
+		if (typeof s.notifications.onWhisper !== 'boolean') s.notifications.onWhisper = defaults.notifications.onWhisper;
 		if (typeof s.notifications.soundOnMention !== 'boolean') s.notifications.soundOnMention = defaults.notifications.soundOnMention;
 
 		if (!angular.isObject(s.chat)) s.chat = angular.copy(defaults.chat);
