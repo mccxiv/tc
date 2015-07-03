@@ -5,7 +5,7 @@
  * @emits irc#not-ready - When disconnect
  */
 angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, _) {
-	
+
 	//===============================================================
 	// Variables
 	//===============================================================
@@ -14,7 +14,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
 	var clients = {read: null, write: null, whisper: null};
-	
+
 	//===============================================================
 	// Public members
 	//===============================================================
@@ -77,7 +77,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				setts.connection.random = 'group';
 				setts.channels = null;
 			}
-
+			
 			clients[key] = new tmi.client(setts);
 			if (setts.channels) clients[key].tcCurrentChannels = angular.copy(setts.channels);
 		});
@@ -227,7 +227,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			cb();
 		}
 	}
-	
+
 	function onChannelsChange(cb) {
 		$rootScope.$watchCollection(
 			function watchVal() {return settings.channels;},
@@ -256,10 +256,10 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			}
 		);
 	}
-	
+
 	function credentialsValid() {
 		return !!settings.identity.username.length && !!settings.identity.password.length;
 	}
-	
+
 	return ee;
 });

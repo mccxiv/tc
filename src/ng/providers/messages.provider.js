@@ -139,6 +139,11 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		if (!user['display-name']) {
 			user['display-name'] = user.username;
 		}
+
+		if(settings.chat.ignored.indexOf(user.username) >= 0) {
+			return;
+		}
+
 		addMessage(channel, {
 			user: user,
 			type: type,
