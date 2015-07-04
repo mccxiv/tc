@@ -10,7 +10,7 @@ angular.module('tc').directive('chatOptions', function(settings) {
 		scope.ignoreInput = '';
 
 		scope.add = function() {
-			var username = scope.ignoreInput;
+			var username = scope.ignoreInput.trim().toLowerCase();
 			if (scope.ignoreInput.length && settings.chat.ignored.indexOf(username) < 0) {
 				settings.chat.ignored.push(username);
 			}
