@@ -94,7 +94,8 @@ gulp.task('build', function() {
 		files: 'build-temp/**/**',
 		platforms: ['osx32', 'win32', 'linux32'],
 		version: '0.12.1',
-		winIco: 'src/assets-embed/win.ico'
+		winIco: 'src/assets-embed/win.ico',
+		macIcns: 'src/assets-embed/osx.icns'
 	});
 	nw.on('log',  console.log);
 	return nw.build();
