@@ -153,7 +153,7 @@ gulp.task('run-production-win32', function(cb) {
 });
 
 gulp.task('run-development', function(cb) {
-	exec('nw src/.', cb);
+	exec('node_modules\\.bin\\nw .\\src', cb);
 });
 
 gulp.task('default', ['make-build']);
