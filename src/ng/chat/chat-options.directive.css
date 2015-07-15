@@ -1,0 +1,19 @@
+chat-options .item {
+    font-size: 1.4rem;
+    cursor: default;
+}
+
+chat-options .close-button {
+    width: 26px;
+    min-width: 0;
+    line-height: 2.5rem;
+    height: 2.5rem;
+}
+
+chat-options .input-form {
+    width: 300px;
+}
+
+chat-options md-list-item.md-clickable:hover {
+    cursor: default;
+}

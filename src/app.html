@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="ng/themes/dark.css">
         <link rel="stylesheet" href="ng/login/login.css">
 		<link rel="stylesheet" href="ng/side-toolbar/side-toolbar.css">
+		<link rel="stylesheet" href="ng/chat/chat-options.directive.css">
 		<link rel="stylesheet" href="ng/chat-output/chat-output.css">
 		<link rel="stylesheet" href="ng/chat-tabs/chat-tabs.css">
         <link rel="stylesheet" href="ng/chatters/chatters.css">
@@ -26,9 +27,9 @@
         <!-- endbuild -->
 	</head>
 	<body layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
-	
+
 		<section layout="row" flex>
-			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">				
+			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
                 <stream-panel></stream-panel>
@@ -40,7 +41,7 @@
 				<chat-tabs flex></chat-tabs>
 				<md-divider></md-divider>
 				<chat-input></chat-input>
-			</section>			
+			</section>
 		</section>
 
         <!-- TODO ng-if causes error with animation -->
@@ -65,7 +66,7 @@
 
         <script src="ng/login/login.js"></script>
         <script src="ng/settings-panel/settings-panel.js"></script>
-		
+
 		<script src="ng/side-toolbar/side-toolbar.js"></script>
 
 		<script src="ng/chat-input/chat-input.js"></script>
@@ -77,7 +78,7 @@
 
 		<script src="ng/chatters/chatters.js"></script>
 		<script src="ng/chatters-tabs/chatters-tabs.js"></script>
-		
+
 		<script src="ng/add-channel/add-channel.js"></script>
 
         <script src="ng/providers/settings.js"></script>

@@ -21,7 +21,8 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		},
 		chat: {
 			maxChatLines: 120,
-			timestamps: false
+			timestamps: false,
+			ignored: []
 		},
 		tray: {
 			minimizeToTray: false,
@@ -77,6 +78,7 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		if (!angular.isObject(s.chat)) s.chat = angular.copy(defaults.chat);
 		if (typeof s.chat.timestamps !== 'boolean') s.chat.timestamps = defaults.chat.timestamps;
 		if (!angular.isNumber(s.chat.maxChatLines)) s.chat.maxChatLines = defaults.chat.maxChatLines;
+		if (!angular.isArray(s.chat.ignored)) s.chat.ignored = defaults.chat.ignored;
 
 		if (!angular.isObject(s.tray)) s.tray = angular.copy(defaults.tray);
 		if (typeof s.tray.minimizeToTray !== 'boolean') s.tray.minimizeToTray = defaults.tray.minimizeToTray;
@@ -102,6 +104,6 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 			fse.outputJson(filename, settings, function() {});
 		}
 	}
-	
+
 	return settings;
 }]);
