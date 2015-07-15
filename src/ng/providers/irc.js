@@ -9,11 +9,15 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 	// Variables
 	//===============================================================
-	//var irc = require('twitch-irc');
-	var tmi = require('tmi.js');
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
 	var clients = {read: null, write: null, whisper: null};
+	var tmi = (function() {
+		// if tmi.js detects a window object, require() doesn't
+		// properly return a constructor. Band aid hack
+		require('tmi.js');
+		return window.irc;
+	})();
 
 	//===============================================================
 	// Public members
@@ -31,9 +35,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	};
 
 	ee.whisper = function(username, message) {
-		clients.whisper.whisper(username, message).then(function() {
-			console.log('whisper sent, args:', arguments);
-		});
+		clients.whisper.whisper(username, message);
 	};
 
 	// TODO debug stuff
@@ -63,8 +65,8 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	function connect() {
 		ee.badLogin = false;
 		var clientSettings = {
-			options: {exitOnError : false, debug: true},
-			connection: {random: 'chat'},
+			options: {exitOnError : false, debug: false},
+			connection: {random: 'chat', timeout: 10000},
 			identity: settings.identity,
 			channels: settings.channels
 		};
@@ -106,12 +108,12 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		});
 	}
 
+	/** Connects only if credentials are good */
 	function connectMaybe() {
 		if (credentialsValid() && !ee.badLogin) connect();
 	}
 
 	/**
-	 *
 	 * Re emits events from `emitter` on `reEmitter`
 	 * @param {Object}   emitter   - Emits events to rebroadcast. Has .addListener()
 	 * @param {Object}   reEmitter - The object that will rebroadcast. Has .emit()
@@ -168,6 +170,11 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		}
 	}
 
+	/**
+	 * Disconnect and destroy both
+	 * read and write clients.
+	 * @param {Function} cb
+	 */
 	function destroy(cb) {
 		cb = cb || function() {};
 
@@ -175,15 +182,17 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			client.removeAllListeners();
 		});
 
-		//clients.read.removeAllListeners();
-		//clients.write.removeAllListeners();
-		//$q.all([clients.read.disconnect(), clients.write.disconnect()]).then(cb);
-
 		$q.all(_.map(clients, function(c) {c.disconnect()})).then(cb);
 		ee.ready = false;
 		$rootScope.$apply();
 	}
 
+	/**
+	 * When a client disconnects due to unsuccessful login,
+	 * sets ee.badLogin and deletes the password from settings.
+	 * This should cause the login form to display with an error.
+	 * Uses observers to attach this behavior to future client instances.
+	 */
 	function watchForBadLogin() {
 		//noinspection JSCheckFunctionSignatures
 		Object.observe(clients, function(changes) {
@@ -205,6 +214,11 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		}
 	}
 
+	/**
+	 * Executes the given callback when either one
+	 * of the read or write clients gets disconnected.
+	 * @param {Function} cb
+	 */
 	function onEitherDisconnect(cb) {
 		//noinspection JSCheckFunctionSignatures
 		Object.observe(clients, function onUpdate(changes) {
