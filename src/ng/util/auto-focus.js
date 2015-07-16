@@ -4,13 +4,13 @@
  *
  * @description
  * When set as an attribute on an input, it'll focus
- * it right after being rendered
+ * it soon after being rendered
  */
 angular.module('tc').directive('autoFocus', function() {
 	return {
 		link: {
 			post: function postLink(scope, element) {
-				element[0].focus();
+				setTimeout(function() {element[0].focus();}, 300);
 			}
 		}
 	}
