@@ -24,7 +24,7 @@ angular.module('tc').directive('tabCompletion', function() {
 						userString = words[words.length-1];
 						if (userString.length) {
 							matchingItems = scope.tabCompletionFn().filter(function (item) {
-								return item.startsWith(userString.toLowerCase());
+								return item.toLowerCase().startsWith(userString.toLowerCase());
 							});
 							currentItem = 0;
 							previousKeyWasTab = true;
@@ -36,7 +36,7 @@ angular.module('tc').directive('tabCompletion', function() {
 						if (currentItem >= matchingItems.length) currentItem = 0;
 						words[words.length-1] = matchingItems[currentItem];
 						currentItem++;
-						element.val(words.join(' '));
+						element.val(words.join(' ') + ' ');
 						element.trigger('input');
 					}
 				}

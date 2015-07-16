@@ -17,7 +17,7 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 			}
 
 			function getNames(message) {
-				return message.user.username;
+				return message.user['display-name'] || message.user.username;
 			}
 		};
 		
