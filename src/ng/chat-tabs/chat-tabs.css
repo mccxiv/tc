@@ -20,6 +20,10 @@ chat-tabs md-tab-content {
 	animation: none !important;
 }
 
+chat-tabs .md-tab.md-focused {
+    background: transparent;
+}
+
 chat-tabs md-tab-content > * {
     height: 100%;
 }
