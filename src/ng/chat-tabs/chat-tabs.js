@@ -58,6 +58,10 @@ angular.module('tc').directive('chatTabs', function($timeout, settings, messages
 				else return unread;
 			};
 
+			scope.showingAddChannel = function() {
+				return settings.selectedTabIndex === settings.channels.length;
+			};
+
 			/**
 			 * The chat-output directive should not be shown and hidden immediately
 			 * because they it's a very CPU intensive operation, let the animations

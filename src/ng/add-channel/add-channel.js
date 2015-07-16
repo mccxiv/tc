@@ -1,6 +1,6 @@
 angular.module('tc').directive('addChannel', ['settings', function(settings) {
 
-	function link(scope) {
+	function link(scope, element) {
 		scope.value = '';
 		
 		scope.keypress = function(event) {
@@ -14,6 +14,10 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
 				// TODO give user feedback if invalid, but only on enter
 			}
 		};
+
+		setTimeout(function() {
+			element.find('#add-channel-input').focus();
+		}, 500);
 	}
 
 	return {
