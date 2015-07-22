@@ -14,7 +14,7 @@ angular.module('tc').factory('bttv', function($http) {
 	getEmotes();
 
 	function getEmotes(delay) {
-		delay = delay || 1;
+		delay = delay || 0;
 
 		setTimeout(function() {
 			$http.get('https://api.betterttv.net/emotes').success(onSuccess).error(onFail);
@@ -29,11 +29,11 @@ angular.module('tc').factory('bttv', function($http) {
 					});
 				});
 			}
-			catch (e) {getEmotes(delay*2)}
+			catch (e) {onFail();}
 		}
 
 		function onFail() {
-			getEmotes(delay*2);
+			getEmotes((delay || 1000) * 2);
 		}
 	}
 

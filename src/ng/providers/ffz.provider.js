@@ -21,8 +21,14 @@ angular.module('tc').factory('ffz', function($http, channels) {
 	channels.on('remove', remove);
 	channels.channels.forEach(cache);
 
-	function cacheGlobal() {
-		$http.get('http://api.frankerfacez.com/v1/set/global').success(function(data) {
+	function cacheGlobal(delay) {
+		delay = delay || 0;
+
+		setTimeout(function() {
+			$http.get('http://api.frankerfacez.com/v1/set/global').success(onSuccess).error(onError);
+		}, delay);
+
+		function onSuccess(data) {
 			try {
 				data.default_sets.forEach(function(setKey) {
 					data.sets[setKey].emoticons.forEach(function(emote) {
@@ -33,9 +39,13 @@ angular.module('tc').factory('ffz', function($http, channels) {
 					});
 				});
 			}
-			catch(e) {console.warn('FFZ: ffz API error', e);}
-			console.log('FFZ: global emotes', globalEmotes)
-		});
+			catch(e) {onError();}
+			console.log('FFZ: global emotes', globalEmotes);
+		}
+
+		function onError() {
+			cacheGlobal((delay || 1000) * 2);
+		}
 	}
 
 	function cache(channel) {
@@ -43,7 +53,7 @@ angular.module('tc').factory('ffz', function($http, channels) {
 		request('http://api.frankerfacez.com/v1/room/'+channel, function(err, response, body) {
 			try {
 				var data = JSON.parse(body);
-				if (data.error) return;
+				if (data.error) return; // This channel doesn't have emotes
 				data.sets[data.room.set].emoticons.forEach(function (emote) {
 					channelEmotes[channel].push({
 						emote: emote.name,
@@ -51,7 +61,7 @@ angular.module('tc').factory('ffz', function($http, channels) {
 					});
 				});
 			}
-			catch(e) {console.warn('FFZ: ffz API error', e);}
+			catch(e) {console.warn('FFZ: error parsing a seemingly successful API call', e);}
 			console.log('FFZ: channel emotes for '+channel, channelEmotes[channel]);
 		});
 	}
