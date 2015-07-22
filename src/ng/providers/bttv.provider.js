@@ -11,6 +11,8 @@
 angular.module('tc').factory('bttv', function($http) {
 	var emotes = [];
 
+	getEmotes();
+
 	function getEmotes(delay) {
 		delay = delay || 1;
 
