@@ -22,7 +22,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 	// Public members
 	//===============================================================
-	ee.ready = false;
+	ee.ready = true;
 	ee.badLogin = false;
 	ee.credentialsValid = credentialsValid;
 
@@ -45,72 +45,62 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 	// Setup
 	//===============================================================
-	onChannelsChange(syncChannels);
-	onInvalidCredentials(destroy);
-	onValidCredentials(connect);
-	onEitherDisconnect(function() {destroy(connectMaybe);});
+	if (credentialsValid()) create();
 
-	// connecting needs to be after onEitherDisconnect
-	// because that watches for object reference changes
-	watchForBadLogin();
-	connectMaybe();
+	onBadLogin(destroy);
+	onValidCredentials(create);
+	onInvalidCredentials(destroy);
+	onChannelsChange(syncChannels);
+
 
 	//===============================================================
 	// Private methods
 	//===============================================================
 
-	/**
-	 * Creates both irc clients and attaches listeners to them
-	 */
-	function connect() {
+	function create() {
 		ee.badLogin = false;
+
+		var readEvents = [
+			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
+			'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
+			'subscriber', 'subscription', 'timeout', 'unhost'
+		];
+
 		var clientSettings = {
-			options: {exitOnError : false, debug: false},
-			connection: {random: 'chat', timeout: 10000},
+			options: {debug: false},
+			connection: {random: 'chat', timeout: 10000, reconnect: true},
 			identity: settings.identity,
 			channels: settings.channels
 		};
 
-		Object.keys(clients).forEach(function(key) {
+		_.forEach(clients, function(v, key) {
 			var setts = angular.copy(clientSettings);
-
 			if (key === 'whisper') {
-				setts.connection.reconnect = true;
 				setts.connection.random = 'group';
-				setts.channels = null;
+				setts.channels = [];
 			}
-			
 			clients[key] = new tmi.client(setts);
 			if (setts.channels) clients[key].tcCurrentChannels = angular.copy(setts.channels);
+			clients[key].connect();
 		});
 
-		forwardEvents(clients.read, ee, [
-			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-			'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
-			'subscriber', 'subscription', 'timeout', 'unhost'
-		]);
-
+		forwardEvents(clients.read, ee, readEvents);
 		forwardEvents(clients.whisper, ee, ['whisper']);
 
-		$q.all(_.map(clients, function(c) {return c.connect();})).then(function() {
-			var connected = 0;
-			[clients.read, clients.write].forEach(function(client) {
-				joinChannels(client);
-				client.once('connected', function() {
-					connected++;
-					if (connected > 1) {
-						console.log('IRC both connected');
-						ee.ready = true;
-						$rootScope.$apply();
-					}
-				});
-			});
+		clients.read.once('disconnected', function(reason) {
+			if (reason === 'Login unsuccessful.') {
+				ee.badLogin = reason;
+				settings.identity.password = '';
+				$rootScope.$apply();
+			}
 		});
 	}
 
-	/** Connects only if credentials are good */
-	function connectMaybe() {
-		if (credentialsValid() && !ee.badLogin) connect();
+	function destroy() {
+		_.forEach(clients, function(client) {
+			client.removeAllListeners();
+			client.disconnect();
+		});
 	}
 
 	/**
@@ -171,35 +161,19 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	}
 
 	/**
-	 * Disconnect and destroy both
-	 * read and write clients.
-	 * @param {Function} cb
-	 */
-	function destroy(cb) {
-		cb = cb || function() {};
-
-		_.forEach(clients, function(client) {
-			client.removeAllListeners();
-		});
-
-		$q.all(_.map(clients, function(c) {c.disconnect()})).then(cb);
-		ee.ready = false;
-		$rootScope.$apply();
-	}
-
-	/**
 	 * When a client disconnects due to unsuccessful login,
 	 * sets ee.badLogin and deletes the password from settings.
 	 * This should cause the login form to display with an error.
 	 * Uses observers to attach this behavior to future client instances.
 	 */
-	function watchForBadLogin() {
+	function onBadLogin(cb) {
+
+		if (clients.read) attachBadLoginCheck();
+
 		//noinspection JSCheckFunctionSignatures
 		Object.observe(clients, function(changes) {
 			changes.forEach(function(change) {
-				if (change.name === 'read') {
-					attachBadLoginCheck()
-				}
+				if (change.name === 'read') attachBadLoginCheck();
 			});
 		}, ['update']);
 
@@ -209,36 +183,9 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 					ee.badLogin = reason;
 					settings.identity.password = '';
 					$rootScope.$apply();
+					cb();
 				}
 			});
-		}
-	}
-
-	/**
-	 * Executes the given callback when either one
-	 * of the read or write clients gets disconnected.
-	 * @param {Function} cb
-	 */
-	function onEitherDisconnect(cb) {
-		//noinspection JSCheckFunctionSignatures
-		Object.observe(clients, function onUpdate(changes) {
-			console.log('IRC: clients object changes:', changes);
-			changes.forEach(function(change) {
-				if (change.name === 'whisper') return;
-				var client = clients[change.name];
-				console.log('IRC: onEitherDisconnect attaching disconnect listener');
-				client.addListener('disconnected', disconnected);
-			});
-		}, ['update']);
-
-		// callback is fired, no need to listen for disconnect anymore
-		// new listeners will be created when new clients are ready
-		function disconnected() {
-			console.log('IRC: onEtiherDisconnect fired');
-			[clients.read, clients.write].forEach(function(client) {
-				if (client) client.removeListener('disconnected', disconnected);
-			});
-			cb();
 		}
 	}
 

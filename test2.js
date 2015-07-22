@@ -1,31 +1,19 @@
-//var irc = require('twitch-irc');
-var irc = require('tmi.js');
+var tmi = require('tmi.js');
 
-var client = new irc.client({
+var client = new tmi.client({
 	connection: {random: 'chat'},
-	/*"identity": {
-		"username": "k3nt0456",
-		"password": ""
-	},*/
 });
 
 client.connect();
 
-/*client.on('whisper', function() {
-	console.log('args receiving', arguments);
-});*/
-
-/*setTimeout(function() {
-	client.whisper('k3nt0456_test', 'message!').then(function() {
-		console.log('args sending', arguments);
-	});
-}, 4000);*/
-
-client.on('pong', function() {
-	console.log('server PONG!');
+client.on('connecting', function() {
+	console.log('CONNECTING EVENT');
 });
 
+client.on('connected', function() {
+	console.log('CONNECTED EVENT');
+});
 
-setTimeout(function() {
-	client.ping();
-}, 6000);
+client.on('disconnected', function() {
+	console.log('DISCONNECTED EVENT');
+});
