@@ -79,7 +79,6 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 			}, 30);
 		}
 
-		// TODO needs to be called on new messages
 		function scrollDown() {
 			latestScrollWasAutomatic = true;
 			setTimeout(function() {
@@ -112,10 +111,13 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 			})
 		}
 
-		function fetchBadges() {
+		function fetchBadges(timeout) {
 			api.badges(scope.channel).success(function(badges) {
 				scope.badges = badges;
-			});  // TODO handle error
+			}).error(function() {
+				var delay = (timeout || 1000) * 2;
+				setTimeout(function() {fetchBadges(delay)}, delay);
+			});
 		}
 	}
 	
