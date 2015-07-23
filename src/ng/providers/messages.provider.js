@@ -21,7 +21,7 @@
  * @param {string} channel
  * @return {object[]} - List of message objects for this channel
  */
-angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings) {
+angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings, channels) {
 
 	//=====================================================
 	// Variables | TODO dry
@@ -42,6 +42,9 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	// Setup
 	//=====================================================
 	setupIrcListeners();
+	channels.on('remove', function(channel) {
+		delete messages[channel];
+	});
 
 	//=====================================================
 	// Public methods
