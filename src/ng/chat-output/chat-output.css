@@ -81,3 +81,14 @@ chat-output .whisper {
     border-left: 2px solid #a68ed2;
     background-color: rgba(255, 174, 0, 0.15);
 }
+
+chat-output .auto-scroll-notice {
+    position: fixed;
+    bottom: 0;
+    width: calc(100% + 15px);
+    margin-left: -15px;
+    padding: 5px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+}

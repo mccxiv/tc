@@ -1,6 +1,5 @@
 
 <!-- Awkward indentation to avoid any whitespace -->
-<!-- TODO find a css solution to these indentation shenanigans -->
 
 <div class="chat-lines">
 	<div class="chat-line"
@@ -22,4 +21,5 @@
     ---><span class="separator" ng-if="m.type === 'action'">&nbsp;</span><!--
     ---><span class="message" ng-bind-html="m.message"></span>
     </div>
+    <div class="auto-scroll-notice" ng-if="!autoScroll">More messages below</div>
 </div>

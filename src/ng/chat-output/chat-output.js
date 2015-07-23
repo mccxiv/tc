@@ -34,6 +34,10 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 			}
 		);
 
+		scope.$watch('autoScroll', function(newV, oldV) {
+			if (newV !== oldV) scope.$apply();
+		});
+
 		//===============================================================
 		// Directive methods
 		//===============================================================
