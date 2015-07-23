@@ -22,7 +22,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 	// Public members
 	//===============================================================
-	ee.ready = true;
+	ee.ready = false;
 	ee.badLogin = false;
 	ee.credentialsValid = credentialsValid;
 
@@ -51,6 +51,15 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	onValidCredentials(create);
 	onInvalidCredentials(destroy);
 	onChannelsChange(syncChannels);
+
+	// TODO Hack until reconnection issues are solved
+	setInterval(function() {
+		_.forEach(clients, function(client) {
+			if (client && client.ws && client.ws.readyState === 3) {
+				client.connect();
+			}
+		});
+	}, 30000);
 
 
 	//===============================================================
@@ -87,19 +96,28 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		forwardEvents(clients.read, ee, readEvents);
 		forwardEvents(clients.whisper, ee, ['whisper']);
 
-		clients.read.once('disconnected', function(reason) {
+		clients.read.on('disconnected', function(reason) {
 			if (reason === 'Login unsuccessful.') {
 				ee.badLogin = reason;
 				settings.identity.password = '';
-				$rootScope.$apply();
 			}
+			ee.ready = false;
+			$rootScope.$apply();
+		});
+
+		console.log('IRC: registering connected event');
+		clients.read.on('connected', function() {
+			console.log('IRC: connected event fired');
+			ee.ready = true;
+			$rootScope.$apply();
 		});
 	}
 
 	function destroy() {
-		_.forEach(clients, function(client) {
+		_.forEach(clients, function(client, key) {
 			client.removeAllListeners();
 			client.disconnect();
+			clients[key] = null;
 		});
 	}
 
