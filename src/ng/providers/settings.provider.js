@@ -5,7 +5,7 @@
  * @ngdoc factory
  * @name settings
  */
-angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $rootScope) {
+angular.module('tc').factory('settings', function(gui, $rootScope) {
 	//===============================================================
 	// Variables
 	//===============================================================
@@ -37,6 +37,9 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 		theme: {
 			dark: false
 		},
+		appearance: {
+			zoom: 100
+		},
 		selectedTabIndex: 0,
 		channels: [],
 		highlights: [],
@@ -63,6 +66,8 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	 */
 	function makeValid(s) {
 		// TODO this whole thing is dumb, needs refactor
+
+		// TODO this line seems pointless/broken
 		if (!angular.isObject(s)) s = angular.copy(defaults);
 
 		if (!angular.isObject(s.identity)) s.identity = angular.copy(defaults.identity);
@@ -92,6 +97,11 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 
 		if (!angular.isObject(s.theme)) s.theme = angular.copy(defaults.theme);
 		if (typeof s.theme.dark !== 'boolean') s.theme.dark = defaults.theme.dark;
+
+		if (!angular.isObject(s.appearance)) s.appearance = angular.copy(defaults.appearance);
+		if (!angular.isNumber(s.appearance.zoom)) s.appearance.zoom = defaults.appearance.zoom;
+
+		return s;
 	}
 
 	function watchVal() {
@@ -106,4 +116,4 @@ angular.module('tc').factory('settings', ['gui', '$rootScope', function(gui, $ro
 	}
 
 	return settings;
-}]);
+});

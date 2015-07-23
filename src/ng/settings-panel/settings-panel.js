@@ -12,7 +12,13 @@ angular.module('tc').directive('settingsPanel', function(settings, gui, updateCh
 			version: gui.App.manifest.version,
 			selected: 'highlights'
 		};
+
 		updateChecker.show();
+
+		scope.zoomLabel = function() {
+			if (settings.appearance.zoom === 100) return 'Normal';
+			return settings.appearance.zoom + '%';
+		}
 	}
 
 	return {

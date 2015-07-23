@@ -14,11 +14,11 @@
         <md-list-item class="menu-item" ng-click="m.selected = 'chat'" ng-class="{selected: m.selected === 'chat'}">
             <p>Chat</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'theme'" ng-class="{selected: m.selected === 'theme'}">
-            <p>Dark theme</p>
+        <md-list-item class="menu-item" ng-click="m.selected = 'appearance'" ng-class="{selected: m.selected === 'appearance'}">
+            <p>Appearance</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'tray'" ng-class="{selected: m.selected === 'tray'}">
-            <p>Tray icon</p>
+        <md-list-item class="menu-item" ng-click="m.selected = 'window'" ng-class="{selected: m.selected === 'window'}">
+            <p>Window</p>
         </md-list-item>
         <md-list-item class="menu-item" ng-click="m.selected = 'about'" ng-class="{selected: m.selected === 'about'}">
             <p>About</p>
@@ -39,15 +39,24 @@
     <chat-options></chat-options>
 </md-content>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'theme'">
+<md-content flex class="settings-content" ng-if="m.selected === 'appearance'">
     <h1 class="md-headline">Theme Options</h1>
 
     <md-switch ng-model="settings.theme.dark">
         Use dark theme
     </md-switch>
+
+    <md-divider></md-divider>
+
+    <h1 class="md-headline">Zoom Level</h1>
+
+    <div layout>
+        <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
+        <md-slider flex md-discrete ng-model="settings.appearance.zoom" min="100" max="175" step="5"></md-slider>
+    </div>
 </md-content>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'tray'">
+<md-content flex class="settings-content" ng-if="m.selected === 'window'">
     <h1 class="md-headline">Tray Icon Options</h1>
 
     <p>You may always click the tray icon to hide the window.</p>
