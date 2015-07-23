@@ -5,5 +5,7 @@
  * @name gui
  */
 angular.module('tc').factory('gui', function() {
-	return require('nw.gui');
+	var gui = require('nw.gui');
+	window.gui = gui; // TODO remove
+	return gui;
 });

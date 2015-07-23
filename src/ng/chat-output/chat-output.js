@@ -17,6 +17,7 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		scope.messages = messages(scope.channel);
 		scope.chatLimit = -scope.opts.maxChatLines;
 		scope.autoScroll = true;
+		scope.scrollDown = scrollDown;
 
 		//===============================================================
 		// Setup
@@ -34,9 +35,7 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 			}
 		);
 
-		scope.$watch('autoScroll', function(newV, oldV) {
-			if (newV !== oldV) scope.$apply();
-		});
+		window.dfb = distanceFromBottom;
 
 		//===============================================================
 		// Directive methods
@@ -61,7 +60,10 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		 */
 		function watchScroll() {
 			element.bind('scroll', function() {
-				if (!latestScrollWasAutomatic) scope.autoScroll = distanceFromBottom() === 0;
+				if (!latestScrollWasAutomatic) {
+					scope.autoScroll = distanceFromBottom() === 0;
+					scope.$apply();
+				}
 				latestScrollWasAutomatic = false; // Reset it
 				if (scope.autoScroll) scope.chatLimit = -scope.opts.maxChatLines;
 				else if (distanceFromTop() === 0) showAllLines();
@@ -84,6 +86,7 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		}
 
 		function scrollDown() {
+			scope.autoScroll = true;
 			latestScrollWasAutomatic = true;
 			setTimeout(function() {
 				console.log('CHAT-OUTPUT: scrolling down automatically');
@@ -97,11 +100,12 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		}
 
 		function distanceFromTop() {
-			return element[0].scrollTop;
+			return Math.floor(element[0].scrollTop);
 		}
 		
 		function distanceFromBottom() {
-			return element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight;
+			var distance = element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight;
+			return Math.floor(Math.abs(distance));
 		}
 
 		function handleAnchorClicks() {

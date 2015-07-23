@@ -91,4 +91,5 @@ chat-output .auto-scroll-notice {
     color: white;
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
+    cursor: pointer;
 }

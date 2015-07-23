@@ -21,5 +21,5 @@
     ---><span class="separator" ng-if="m.type === 'action'">&nbsp;</span><!--
     ---><span class="message" ng-bind-html="m.message"></span>
     </div>
-    <div class="auto-scroll-notice" ng-if="!autoScroll">More messages below</div>
+    <div class="auto-scroll-notice" ng-if="!autoScroll" ng-click="scrollDown()">More messages below</div>
 </div>
