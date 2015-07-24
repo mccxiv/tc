@@ -18,8 +18,8 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 		return !!_.find(emotes, 'emote', emote);
 	}
 
-	function makeEmote(url) {
-		return '<img class="emoticon" src="'+url+'">';
+	function makeEmote(url, emote) {
+		return '<img class="emoticon" data-emote-name="'+emote+'" data-emote-description="FrankerFaceZ Emote" src="'+url+'">';
 	}
 
 	return function(channel, parts) {
@@ -49,7 +49,7 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 					}
 
 					// Save emote as tag
-					var img = makeEmote(_.find(emotes, 'emote', match[0]).url);
+					var img = makeEmote(_.find(emotes, 'emote', match[0]).url, match[0]);
 					add(img, true);
 
 					// Track progress through string
