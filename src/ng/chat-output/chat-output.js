@@ -69,7 +69,7 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 				if (description) tooltip += '<br>' + description;
 				emoticon.frosty({html: true, content: tooltip});
 				emoticon.frosty('show');
-				emoticon.once('mouseleave', function() {
+				emoticon.one('mouseleave', function() {
 					emoticon.frosty('hide');
 				})
 			});

@@ -18,8 +18,8 @@ angular.module('tc').filter('bttvmotes', function(bttv) {
 		return !!_.find(emotes, 'emote', emote);
 	}
 
-	function makeEmote(url) {
-		return '<img class="emoticon" src="'+url+'">';
+	function makeEmote(url, emote) {
+		return '<img class="emoticon" data-emote-name="'+emote+'" data-emote-description="BTTV Global Emote" src="'+url+'">';
 	}
 
 	return function(parts) {
@@ -54,7 +54,7 @@ angular.module('tc').filter('bttvmotes', function(bttv) {
 					}
 
 					// Save emote as tag element
-					var img = makeEmote(_.find(emotes, 'emote', match[0]).url);
+					var img = makeEmote(_.find(emotes, 'emote', match[0]).url, match[0]);
 					add(img, true);
 
 					// Track progress through string
