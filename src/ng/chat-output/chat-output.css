@@ -94,3 +94,8 @@ chat-output .auto-scroll-notice {
     cursor: pointer;
     outline: none;
 }
+
+chat-output .deleted .message {
+    text-decoration: line-through;
+    opacity: 0.5;
+}

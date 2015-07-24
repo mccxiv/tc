@@ -4,7 +4,7 @@
 <div class="chat-lines">
 	<div class="chat-line"
          ng-repeat="m in messages | limitTo: chatLimit"
-         ng-class="{highlighted: m.highlighted, whisper: m.type === 'whisper'}"
+         ng-class="{highlighted: m.highlighted, deleted: m.deleted, whisper: m.type === 'whisper'}"
          style="{{m.style}}"><!--
 	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.time | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="m.user"><!--

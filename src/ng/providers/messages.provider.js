@@ -104,6 +104,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		});
 
 		irc.on('timeout', function(channel, username) {
+			timeout(channel, username);
 			addNotificationMessage(channel, username + ' has been timed out.');
 		});
 
@@ -216,6 +217,19 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		}
 		else if (messageObject.user) {
 			throttledApplySlow();
+		}
+	}
+
+	function timeout(channel, username) {
+		channel = channel.substring(1);
+		console.log('checking timeouts', messages[channel]);
+		if (messages[channel]) {
+			messages[channel].forEach(function(message) {
+				console.log('checking msg');
+				if (message.user && message.user.username === username) {
+					message.deleted = true;
+				}
+			});
 		}
 	}
 
