@@ -67,6 +67,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 
 	function create() {
+		destroy();
 		ee.badLogin = false;
 
 		var readEvents = [
@@ -115,9 +116,11 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 	function destroy() {
 		_.forEach(clients, function(client, key) {
-			client.removeAllListeners();
-			client.disconnect();
-			clients[key] = null;
+			if (client) {
+				client.removeAllListeners();
+				client.disconnect();
+				clients[key] = null;
+			}
 		});
 	}
 
