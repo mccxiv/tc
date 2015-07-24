@@ -60,7 +60,7 @@ gulp.task('concat-minify-replace', function() {
 		.pipe(gulpif('*.js', concat('app.js')))
 		.pipe(gulpif('*.js', ngAnnotate()))
 		.pipe(gulpif('*.js', stripDebug()))
-		//.pipe(gulpif('*.js', uglify())) // TODO re-enable but it breaks things!
+		.pipe(gulpif('*.js', uglify())) // TODO re-enable but it breaks things!
 		.pipe(gulpif('*.css', base64({maxWeightResource: Infinity})))
 		.pipe(gulpif('*.css', concat('style.css')))
 		.pipe(gulpif('*.css', minifyCss()))
