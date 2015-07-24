@@ -89,7 +89,8 @@ chat-output .auto-scroll-notice {
     margin-left: -15px;
     padding: 5px;
     color: white;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     text-align: center;
     cursor: pointer;
+    outline: none;
 }
