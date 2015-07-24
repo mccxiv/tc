@@ -5,7 +5,7 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function($timeout, settings, messages, session, irc, gui, api) {
+angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, messages, session, irc, gui, api) {
 	
 	function link(scope, element) {
 		//===============================================================
@@ -17,7 +17,6 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		scope.messages = messages(scope.channel);
 		scope.chatLimit = -scope.opts.maxChatLines;
 		scope.autoScroll = true;
-		scope.scrollDown = scrollDown;
 
 		//===============================================================
 		// Setup
@@ -26,6 +25,7 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 		fetchBadges();
 		handleAnchorClicks();
 		hideUnscrolledLines();
+		handleEmoteHover();
 
 		scope.$watch(
 			function() {return scope.messages[scope.messages.length-1]},
@@ -50,16 +50,38 @@ angular.module('tc').directive('chatOutput', function($timeout, settings, messag
 			return username.toLowerCase() === scope.channel.toLowerCase();
 		};
 
+		scope.trusted = function(html) {
+			return $sce.trustAsHtml(html);
+		};
+
+		scope.scrollDown = scrollDown;
+
 		//===============================================================
 		// Functions
 		//===============================================================
+		function handleEmoteHover() {
+
+			element.on('mouseenter', '.emoticon', function(e) {
+				var emoticon = $(e.target);
+				var tooltip = emoticon.data('emote-name');
+				var description = emoticon.data('emote-description');
+
+				if (description) tooltip += '<br>' + description;
+				emoticon.frosty({html: true, content: tooltip});
+				emoticon.frosty('show');
+				emoticon.once('mouseleave', function() {
+					emoticon.frosty('hide');
+				})
+			});
+		}
+
 		/**
 		 * Turns autoscroll on and off based on user scrolling,
 		 * resets the max lines when autoscroll is turned back on,
 		 * shows all lines when scrolling up to the top (infinite scroll)
 		 */
 		function watchScroll() {
-			element.bind('scroll', function() {
+			element.on('scroll', function() {
 				if (!latestScrollWasAutomatic) {
 					scope.autoScroll = distanceFromBottom() === 0;
 					scope.$apply();

@@ -32,8 +32,8 @@ angular.module('tc').filter('emotify', function() {
 	 *  
 	 */
 	
-	function imgEmote(id) {
-		return '<img class="emoticon" src="http://static-cdn.jtvnw.net/emoticons/v1/'+id+'/1.0">';
+	function imgEmote(id, emote) {
+		return '<img class="emoticon " data-emote-name="'+emote+'" src="http://static-cdn.jtvnw.net/emoticons/v1/'+id+'/1.0">';
 	}
 	
 	function makePart(string, isElement) {
@@ -66,11 +66,13 @@ angular.module('tc').filter('emotify', function() {
 		
 		// 3
 		occurrences.forEach(function(occurrence) {
+			var prev, emote;
 			// +1 because occurrence[2] is the position of the last character
 			// not the position of the character after the last
-			var prev = line.substring(occurrence[2]+1);
+			emote = line.substring(occurrence[1], occurrence[2]+1);
+			prev = line.substring(occurrence[2]+1);
 			if (prev) output.push(makePart(prev, false)); // 3.1
-			output.push(makePart(imgEmote(occurrence[0]), true)); // 3.2
+			output.push(makePart(imgEmote(occurrence[0], emote), true)); // 3.2
 			line = line.substring(0, occurrence[1]); //3.3
 		});
 
