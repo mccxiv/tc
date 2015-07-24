@@ -23,7 +23,7 @@ angular.module('tc').factory('updateChecker', function($http, $mdToast, notifica
 				$mdToast.simple()
 					.content('New version available!')
 					.position('bottom right')
-					.hideDelay(5000)
+					.hideDelay(25000)
 					.action('DOWNLOAD')
 			);
 			toast.then(function() {
