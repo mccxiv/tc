@@ -1,9 +1,3 @@
-/**
- * Wrapper for twitch-irc, adds some events
- *
- * @emits irc#ready - When both connections have been successfully established
- * @emits irc#not-ready - When disconnect
- */
 angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, _) {
 
 	//===============================================================
