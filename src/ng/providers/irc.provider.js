@@ -46,14 +46,14 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	onInvalidCredentials(destroy);
 	onChannelsChange(syncChannels);
 
-	// TODO Hack until reconnection issues are solved
+	/*// TODO Hack until reconnection issues are solved
 	setInterval(function() {
 		_.forEach(clients, function(client) {
 			if (client && client.ws && client.ws.readyState === 3) {
 				client.connect();
 			}
 		});
-	}, 30000);
+	}, 30000);*/
 
 
 	//===============================================================
@@ -64,9 +64,11 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		destroy();
 		ee.badLogin = false;
 
+		// TODO disconnected is temporarily gone from this
+		// It is being handled at the end of this function as a special case
 		var readEvents = [
 			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-			'disconnected', 'hosted', 'hosting', 'slowmode', 'subanniversary',
+			'hosted', 'hosting', 'slowmode', 'subanniversary',
 			'subscriber', 'subscription', 'timeout', 'unhost'
 		];
 
@@ -106,6 +108,21 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			ee.ready = true;
 			$rootScope.$apply();
 		});
+
+		// TODO see if tmi.js has fixed this on their end
+		// Disconnected event gets spammed on every connection
+		// attempt. This is not ok if the internet is temporarily
+		// down, for example.
+		onlyEmitDisconnectedOnce();
+
+		function onlyEmitDisconnectedOnce() {
+			clients.read.once('disconnected', function() {
+				var args = Array.prototype.slice.call(arguments);
+				args.unshift('disconnected');
+				ee.emit.apply(ee, args);
+				clients.read.once('connected', onlyEmitDisconnectedOnce);
+			});
+		}
 	}
 
 	function destroy() {
