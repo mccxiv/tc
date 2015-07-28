@@ -199,7 +199,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		}, ['update']);
 
 		function attachBadLoginCheck() {
-			clients.read.once('disconnected', function(reason) {
+			clients.read.on('disconnected', function(reason) {
 				if (reason === 'Login unsuccessful.') {
 					ee.badLogin = reason;
 					settings.identity.password = '';
