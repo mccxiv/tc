@@ -1,7 +1,7 @@
 {
   "main": "app.html",
   "name": "Tc",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.14",
   "window": {
     "toolbar": true,
     "frame": true,

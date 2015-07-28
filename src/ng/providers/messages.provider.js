@@ -222,7 +222,6 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 
 	function timeout(channel, username) {
 		channel = channel.substring(1);
-		console.log('checking timeouts', messages[channel]);
 		if (messages[channel]) {
 			messages[channel].forEach(function(message) {
 				console.log('checking msg');
