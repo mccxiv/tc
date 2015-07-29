@@ -35,6 +35,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	// TODO debug stuff
 	window.ircFactory = ee;
 	window.clients = clients;
+	window.$rootScope = $rootScope;
 
 	//===============================================================
 	// Setup
@@ -46,16 +47,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	onInvalidCredentials(destroy);
 	onChannelsChange(syncChannels);
 
-	/*// TODO Hack until reconnection issues are solved
-	setInterval(function() {
-		_.forEach(clients, function(client) {
-			if (client && client.ws && client.ws.readyState === 3) {
-				client.connect();
-			}
-		});
-	}, 30000);*/
-
-
 	//===============================================================
 	// Private methods
 	//===============================================================
@@ -64,8 +55,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		destroy();
 		ee.badLogin = false;
 
-		// TODO disconnected is temporarily gone from this
-		// It is being handled at the end of this function as a special case
+		// Disconnected is handled elsewhere
 		var readEvents = [
 			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
 			'hosted', 'hosting', 'slowmode', 'subanniversary',
@@ -99,17 +89,16 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				settings.identity.password = '';
 			}
 			ee.ready = false;
-			$rootScope.$apply();
+			process.nextTick(function() {$rootScope.$apply();});
 		});
 
 		console.log('IRC: registering connected event');
 		clients.read.on('connected', function() {
 			console.log('IRC: connected event fired');
 			ee.ready = true;
-			$rootScope.$apply();
+			process.nextTick(function() {$rootScope.$apply();});
 		});
 
-		// TODO see if tmi.js has fixed this on their end
 		// Disconnected event gets spammed on every connection
 		// attempt. This is not ok if the internet is temporarily
 		// down, for example.
@@ -214,7 +203,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				if (reason === 'Login unsuccessful.') {
 					ee.badLogin = reason;
 					settings.identity.password = '';
-					$rootScope.$apply();
+					process.nextTick(function() {$rootScope.$apply();});
 					cb();
 				}
 			});
