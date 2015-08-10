@@ -27,46 +27,41 @@ if (typeof version !== 'string' || version.length < 6) {
 	throw new Error('Invalid version from package.json');
 }
 
+gulp.task('default', ['make-dist']);
+
+gulp.task('run-production-win32', function(cb) {
+	exec('"build/tc/win32/tc.exe"', cb);
+});
+
+gulp.task('run-development', function(cb) {
+	exec('node_modules\\.bin\\nw .\\src', cb);
+});
+
+gulp.task('make-dist', function(cb) {
+	runSequence(
+		'clean-before',
+		[
+			'copy-assets',
+			'copy-package-json',
+			'copy-node-modules'
+		],
+		'cache-templates',
+		'concat-minify-replace',
+		'clean-cached-templates',
+		'build',
+		[
+			'make-windows-installer',
+			'windows-zip',
+			'mac-zip',
+			'linux-tarball'
+		],
+		'rename-windows-installer',
+		'clean-after',
+		cb);
+});
+
 gulp.task('clean-before', function(cb) {
-	del(['build-temp/**/**', 'build/**/**', 'dist/'], function() {
-		setTimeout(cb, 500); // Fix Windows issues
-	});
-});
-
-gulp.task('clean-after', function(cb) {
-	// TODO doesn't clean up properly, why?
-	setTimeout(function() {
-		del(['build-temp/'], function() {
-			setTimeout(cb, 1000); // Fix Windows issues
-		});
-	}, 1000);
-});
-
-gulp.task('cache-templates', function() {
-	return gulp.src('src/ng/**/*.html')
-		.pipe(templateCache({module: 'tc', root: 'ng'}))
-		.pipe(gulp.dest('build-temp/temp/'));
-});
-
-gulp.task('clean-cached-templates', function(cb) {
-	del(['build-temp/temp/**'], cb);
-});
-
-gulp.task('concat-minify-replace', function() {
-	var assets = useref.assets({noconcat: true});
-	return gulp.src('src/app.html')
-		.pipe(assets)
-		.pipe(addsrc.append('build-temp/temp/templates.js'))
-		.pipe(gulpif('*.js', concat('app.js')))
-		.pipe(gulpif('*.js', ngAnnotate()))
-		.pipe(gulpif('*.js', stripDebug()))
-		.pipe(gulpif('*.js', uglify())) // TODO re-enable but it breaks things!
-		.pipe(gulpif('*.css', base64({maxWeightResource: Infinity})))
-		.pipe(gulpif('*.css', concat('style.css')))
-		.pipe(gulpif('*.css', minifyCss()))
-		.pipe(assets.restore())
-		.pipe(useref())
-		.pipe(gulp.dest('build-temp/'));
+	del(['build-temp/', 'build/', 'dist/'], cb);
 });
 
 gulp.task('copy-assets', function() {
@@ -89,6 +84,33 @@ gulp.task('copy-node-modules', function () {
 		.pipe(gulp.dest('build-temp/node_modules/'));
 });
 
+gulp.task('cache-templates', function() {
+	return gulp.src('src/ng/**/*.html')
+		.pipe(templateCache({module: 'tc', root: 'ng'}))
+		.pipe(gulp.dest('build-temp/temp/'));
+});
+
+gulp.task('concat-minify-replace', function() {
+	var assets = useref.assets({noconcat: true});
+	return gulp.src('src/app.html')
+		.pipe(assets)
+		.pipe(addsrc.append('build-temp/temp/templates.js'))
+		.pipe(gulpif('*.js', concat('app.js')))
+		.pipe(gulpif('*.js', ngAnnotate()))
+		.pipe(gulpif('*.js', stripDebug()))
+		.pipe(gulpif('*.js', uglify()))
+		.pipe(gulpif('*.css', base64({maxWeightResource: Infinity})))
+		.pipe(gulpif('*.css', concat('style.css')))
+		.pipe(gulpif('*.css', minifyCss()))
+		.pipe(assets.restore())
+		.pipe(useref())
+		.pipe(gulp.dest('build-temp/'));
+});
+
+gulp.task('clean-cached-templates', function(cb) {
+	del(['build-temp/temp/**'], cb);
+});
+
 gulp.task('build', function() {
 	var nw = new NwBuilder({
 		files: 'build-temp/**/**',
@@ -97,34 +119,11 @@ gulp.task('build', function() {
 		winIco: 'src/assets-embed/win.ico',
 		macIcns: 'src/assets-embed/osx.icns'
 	});
-	nw.on('log',  console.log);
 	return nw.build();
-});
-
-gulp.task('make-build', function(cb) {
-	runSequence(
-		'clean-before',
-		['copy-assets',
-		'copy-package-json',
-		'copy-node-modules'],
-		'cache-templates',
-		'concat-minify-replace',
-		'clean-cached-templates',
-		'build',
-		['make-windows-installer',
-		'windows-zip',
-		'mac-zip',
-		'linux-tarball'],
-		'rename-windows-installer',
-		cb);
 });
 
 gulp.task('make-windows-installer', function(cb) {
 	inno('tc-inno-setup.iss', {gui: false, verbose: false}, cb);
-});
-
-gulp.task('rename-windows-installer', function(cb) {
-	fs.rename('dist/tc-setup.exe', 'dist/tc-setup-'+version+'.exe', cb);
 });
 
 gulp.task('windows-zip', function() {
@@ -148,12 +147,10 @@ gulp.task('linux-tarball', function() {
 		.pipe(gulp.dest('dist/'));
 });
 
-gulp.task('run-production-win32', function(cb) {
-	exec('"build/tc/win32/tc.exe"', cb);
+gulp.task('rename-windows-installer', function(cb) {
+	fs.rename('dist/tc-setup.exe', 'dist/tc-setup-'+version+'.exe', cb);
 });
 
-gulp.task('run-development', function(cb) {
-	exec('node_modules\\.bin\\nw .\\src', cb);
+gulp.task('clean-after', function(cb) {
+	del(['build-temp/'], cb);
 });
-
-gulp.task('default', ['make-build']);

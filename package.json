@@ -3,7 +3,7 @@
   "name": "tc-project",
   "version": "0.0.0",
   "devDependencies": {
-    "del": "1.1.1",
+    "del": "1.2.0",
     "gulp": "3.8.11",
     "gulp-add-src": "0.2.0",
     "gulp-angular-templatecache": "1.6.0",
