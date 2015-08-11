@@ -70,6 +70,6 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 		/**
 		 * Play the notification sound, regardless of settings.
 		 */
-		playSound: sound.play
+		playSound: sound.play.bind(sound)
 	}
 });
