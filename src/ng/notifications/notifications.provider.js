@@ -1,9 +1,17 @@
 /**
- * Displays notifications based on settings
+ * Display desktop notifications and sound warnings
+ *
+ * Automatically displays notifications based on settings and also
+ * returns an object that allows the creation of custom notifications
+ * or the independent playback of the notification sound.
  *
  * @ngdoc factory
  * @name notifications
-
+ *
+ * @type {object}
+ * @property {function} create     - Creates and displays desktop notifications
+ * @property {function} playSound  - Plays the notification sound, regardless of settings
+ *
  */
 angular.module('tc').factory('notifications', function(irc, settings, highlights) {
 
@@ -50,11 +58,18 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 
 	return {
 		/**
-		 * Create and display a system notification (Eg. Balloon notification on Windows)
-		 * @param {string} title           - Notification title
-		 * @param {string} body            - Notification body
-		 * @return {Notification}          - The Notification object that was created
+		 * Create notifications.
+		 * Will play the notification sound if the settings allow for it.
+		 *
+		 * @param {string} title    - Notification title
+		 * @param {string} body     - Notification body
+		 * @return {Notification}   - The Notification object that was created
 		 */
-		create: n
+		create: n,
+
+		/**
+		 * Play the notification sound, regardless of settings.
+		 */
+		playSound: sound.play
 	}
 });
