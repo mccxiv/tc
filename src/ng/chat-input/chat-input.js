@@ -46,6 +46,15 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 
 			scope.message = '';
 		};
+
+		scope.change = function() {
+			console.log('change event "'+scope.message+'"');
+			if (scope.message === '/r ') {
+				console.log('YES');
+				if (lastWhisperer) scope.message = '/w '+lastWhisperer+' ';
+				else scope.message = '/w ';
+			}
+		};
 	}
 
 	return {
