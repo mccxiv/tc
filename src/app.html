@@ -49,6 +49,8 @@
 		<login ng-show="needLogin()"></login>
 
         <!-- build:js app.js -->
+        <script src="bower_components/nwjs-preserve-window-state/winstate.js"></script>
+
 		<script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/lodash/lodash.js"></script>
 		<script src="bower_components/angular/angular.js"></script>
@@ -65,6 +67,7 @@
         <script src="ng/on-load/prevent-default-click.js"></script>
         <script src="ng/on-load/eager-load-providers.run.js"></script>
         <script src="ng/on-load/window-behavior-setup.run.js"></script>
+
 
         <script src="ng/login/login.js"></script>
         <script src="ng/settings-panel/settings-panel.js"></script>
