@@ -5,6 +5,11 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 		scope.session = session;
 		scope.irc = irc;
 		var input = element.find('input')[0];
+		var lastWhisperer;
+
+		irc.on('whisper', function(from) {
+			lastWhisperer = from;
+		});
 
 		scope.getUsernames = function() {
 			var channel = settings.channels[settings.selectedTabIndex];

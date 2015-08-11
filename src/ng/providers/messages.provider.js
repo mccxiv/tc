@@ -1,7 +1,8 @@
 /**
  * @typedef {Object} MessagePart
- * @property {string} string - A piece of text that filters could act on
- * @property {isElement} boolean - Filters would probably ignore this message if it's an element
+ *
+ * @property {string} string      - A piece of text that filters could act on
+ * @property {isElement} boolean  - Filters would probably ignore this message part if it's an element
  *
  * @description
  * Chat message filters receive and return an array of these objects.
@@ -13,13 +14,25 @@
  */
 
 /**
- * Provides chat messages for outputting on screen
+ * Stores messages.
+ *
+ * Deals with storing chat messages, some come from the server,
+ * others are local (such as outgoing whispers) and some are system notifications.
+ * The factory returns a function that can be used to obtain messages, but
+ * this function object also has other methods attached.
  *
  * @ngdoc factory
  * @name messages
- * @kind function
- * @param {string} channel
- * @return {object[]} - List of message objects for this channel
+ * @type function
+ *
+ * @param {string} channel                     - Twitch channel
+ * @return {object[]}                          - List of message objects for this channel
+ *
+ * @property {function} addWhisper             - Adds a local whisper message (outgoing, most likely)
+ * @property {function} addNotification        - Adds a notification message to a chat channel (light gray)
+ * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
+ *
+ *
  */
 angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings, channels) {
 
@@ -49,20 +62,27 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	//=====================================================
 	// Public methods
 	//=====================================================
-	var factoryReturnValue = function getMessages(channel) {
+	var messagesReturn = function getMessages(channel) {
 		if (!messages[channel]) make(channel);
 		return messages[channel];
 	};
 
-	factoryReturnValue.addWhisper = addWhisperMessage;
+	messagesReturn.addWhisper = addWhisperMessage;
+	messagesReturn.addNotification = addNotificationMessage;
+	messagesReturn.addGlobalNotification = addGlobalNotificationMessage;
 
 	//=====================================================
 	// Private methods
 	//=====================================================
 	function setupIrcListeners() {
-		listenGlobal('connecting', 'Connecting...');
-		listenGlobal('disconnected', 'Disconnected from the server.');
-		listenGlobal('crash', 'IRC crashed! You may need to restart the application. Sorry :(');
+
+		irc.on('connecting', function() {
+			addGlobalNotificationMessage('Connecting...');
+		});
+
+		irc.on('disconnected', function() {
+			addGlobalNotificationMessage('Disconnected from the server.')
+		});
 
 		irc.on('chat', function(channel, user, message) {
 			addUserMessage('chat', channel, user, message);
@@ -118,16 +138,12 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	}
 
 	/**
-	 * Register a listener that will add an identical
-	 * notification message to every channel
-	 * @param {string} event
+	 * Shows a notification chat message in all channels
 	 * @param {string} message
 	 */
-	function listenGlobal(event, message) {
-		irc.on(event, function() {
-			settings.channels.forEach(function(channel) {
-				addNotificationMessage(channel, message);
-			});
+	function addGlobalNotificationMessage(message) {
+		settings.channels.forEach(function(channel) {
+			addNotificationMessage(channel, message);
 		});
 	}
 
@@ -248,5 +264,5 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		messages[channel].counter = 0;
 	}
 
-	return factoryReturnValue;
+	return messagesReturn;
 });
