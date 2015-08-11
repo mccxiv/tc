@@ -4,11 +4,14 @@
     </span>
     <div class="stats">
         <span class="followers">
-            <i class="mdi mdi-favorite"></i> {{m.channel.followers}}
+            <i class="zmdi zmdi-favorite"></i> {{m.channel.followers}}
         </span>
         <span class="viewers">
-            <i class="mdi mdi-person"></i> {{m.stream.viewers}}
+            <i class="zmdi zmdi-account"></i> {{m.stream.viewers}}
         </span>
+    </div>
+    <div class="hover-content" layout="column" layout-align="center center">
+        <i class="zmdi zmdi-play-circle-outline"></i>
     </div>
     <img class="preview" ng-src="{{m.img}}"></div>
 <md-divider ng-if="m.stream"></md-divider>

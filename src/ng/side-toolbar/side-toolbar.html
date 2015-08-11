@@ -3,21 +3,21 @@
 	<md-tooltip md-autohide md-direction="right">
 		Status: {{irc.ready? 'Connected' : 'Connecting'}}
 	</md-tooltip>
-	<i class="mdi mdi-swap-vert"></i>
+	<i class="zmdi zmdi-swap-vertical"></i>
 </md-button>
 
 <md-button ng-click="confirmLogout($event)" aria-label="Sign out">
     <md-tooltip md-autohide md-direction="right">
         {{settings.identity.username | capitalize}}: Sign out
     </md-tooltip>
-    <i class="mdi mdi-person"></i>
+    <i class="zmdi zmdi-account"></i>
 </md-button>
 
 <md-button ng-click="settingsGui.show($event)" aria-label="Settings">
     <md-tooltip md-autohide md-direction="right">
         Settings
     </md-tooltip>
-    <i class="mdi mdi-settings"></i>
+    <i class="zmdi zmdi-settings"></i>
 </md-button>
 
 <md-divider class="vertical"></md-divider>
@@ -28,19 +28,19 @@
 	<md-tooltip md-autohide>
 		Leave Channel
 	</md-tooltip>
-	<i class="mdi mdi-close"></i>
+	<i class="zmdi zmdi-close"></i>
 </md-button>
 
 <md-button ng-click="openStream()" aria-label="Stream popout" ng-if="channel()">
 	<md-tooltip md-autohide>
 		Stream Popout
 	</md-tooltip>
-	<i class="mdi mdi-slideshow"></i>
+	<i class="zmdi zmdi-slideshow"></i>
 </md-button>
 
 <md-button ng-click="openChannel()" aria-label="Go to channel" ng-if="channel()">
 	<md-tooltip md-autohide>
 		Go to Channel
 	</md-tooltip>
-	<i class="mdi mdi-open-in-new"></i>
+	<i class="zmdi zmdi-open-in-new"></i>
 </md-button>

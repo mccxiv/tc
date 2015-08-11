@@ -29,10 +29,20 @@ angular.module('tc').directive('streamPanel', function(settings, channels, gui, 
 			api.stream(channel).success(function(data) {
 				scope.m.stream = data.stream;
 				if (data.stream) {
-					scope.m.img = data.stream.preview.medium + '?' + new Date().getTime();
-					console.log('STREAM-PANEL: new image is ', scope.m.img);
+					var url = data.stream.preview.medium + '?' + new Date().getTime();
+					preLoadImage(url, function() {
+						scope.m.img = url;
+						scope.$apply();
+						console.log('STREAM-PANEL: new image is ', scope.m.img);
+					});
 				}
 			})
+		}
+
+		function preLoadImage(url, cb) {
+			var img = new Image();
+			img.src = url;
+			img.addEventListener('load', cb);
 		}
 	}
 
