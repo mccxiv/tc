@@ -9,6 +9,7 @@
 }
 
 .dark md-content {
+    color: inherit;
     background-color: inherit;
 }
 
@@ -43,4 +44,8 @@
 
 .dark md-input-container .md-input {
     border-color: rgba(255, 255, 255, 0.30);
+}
+
+.dark settings-panel {
+    border: 1px solid rgba(255,255,255,0.15);
 }
