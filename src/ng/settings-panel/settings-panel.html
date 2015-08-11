@@ -1,9 +1,9 @@
-<!-- TODO refactor this awful repetition -->
-
-<md-sidenav class="md-sidenav-left md-whiteframe-z2 menu" md-is-locked-open="true">
+<md-sidenav class="settings-sidebar md-sidenav-left md-whiteframe-z2 menu" md-is-locked-open="true">
 
     <md-list>
         <md-subheader class="md-no-sticky">Settings</md-subheader>
+
+        <!-- TODO refactor this awful repetition -->
 
         <md-list-item class="menu-item" ng-click="m.selected = 'highlights'" ng-class="{selected: m.selected === 'highlights'}">
             <p>Highlights</p>
@@ -27,55 +27,58 @@
 
 </md-sidenav>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'highlights'">
-    <highlights-options></highlights-options>
-</md-content>
+<div flex class="settings-content" ng-switch on="m.selected" layout="column">
 
-<md-content flex class="settings-content" ng-if="m.selected === 'notifications'">
-    <notification-options></notification-options>
-</md-content>
+    <md-content ng-switch-when="highlights">
+        <highlights-options></highlights-options>
+    </md-content>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'chat'">
-    <chat-options></chat-options>
-</md-content>
+    <md-content ng-switch-when="notifications">
+        <notification-options></notification-options>
+    </md-content>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'appearance'">
-    <h1 class="md-headline">Theme Options</h1>
+    <md-content ng-switch-when="chat">
+        <chat-options></chat-options>
+    </md-content>
 
-    <md-switch ng-model="settings.theme.dark">
-        Use dark theme
-    </md-switch>
+    <md-content ng-switch-when="appearance">
+        <h1 class="md-headline">Theme Options</h1>
 
-    <md-divider></md-divider>
+        <md-switch ng-model="settings.theme.dark">
+            Use dark theme
+        </md-switch>
 
-    <h1 class="md-headline">Zoom Level</h1>
+        <md-divider></md-divider>
 
-    <div layout>
-        <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
-        <md-slider flex md-discrete ng-model="settings.appearance.zoom" min="100" max="175" step="5"></md-slider>
-    </div>
-</md-content>
+        <h1 class="md-headline">Zoom Level</h1>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'window'">
-    <h1 class="md-headline">Tray Icon Options</h1>
+        <div layout>
+            <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
+            <md-slider flex md-discrete ng-model="settings.appearance.zoom" min="100" max="175" step="5"></md-slider>
+        </div>
+    </md-content>
 
-    <p>You may always click the tray icon to hide the window.</p>
+    <md-content ng-switch-when="window">
+        <h1 class="md-headline">Tray Icon Options</h1>
 
-    <md-switch ng-model="settings.tray.minimizeToTray">
-        Minimize to tray area
-    </md-switch>
+        <p>You may always click the tray icon to hide the window.</p>
 
-    <md-switch ng-model="settings.tray.closeToTray">
-        Close to tray area
-    </md-switch>
-</md-content>
+        <md-switch ng-model="settings.tray.minimizeToTray">
+            Minimize to tray area
+        </md-switch>
 
-<md-content flex class="settings-content" ng-if="m.selected === 'about'" layout="column" layout-align="center center">
-    <img  style="width: 150px;" src="assets/icon256.png">
+        <md-switch ng-model="settings.tray.closeToTray">
+            Close to tray area
+        </md-switch>
+    </md-content>
 
-    <h1 class="md-headline">Tc, the chat client for Twitch</h1>
-    <p>
-        <span>Version: {{m.version}}</span> |
-        <a href-external="http://mccxiv.github.io/tc/">Website link</a>
-    </p>
-</md-content>
+    <md-content flex ng-switch-when="about" layout="column" layout-align="center center">
+        <img  style="width: 150px;" src="assets/icon256.png">
+
+        <h1 class="md-headline">Tc, the chat client for Twitch</h1>
+        <p>
+            <span>Version: {{m.version}}</span> |
+            <a href-external="http://mccxiv.github.io/tc/">Website link</a>
+        </p>
+    </md-content>
+</div>

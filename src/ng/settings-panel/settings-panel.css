@@ -4,7 +4,7 @@ settings-panel .menu {
     max-width: none;
 }
 
-settings-panel .settings-content {
+settings-panel .settings-content > * {
     overflow-y: auto;
     padding: 15px;
 }
