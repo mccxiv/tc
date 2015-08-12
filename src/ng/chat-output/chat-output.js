@@ -35,6 +35,10 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 			}
 		);
 
+		window.addEventListener('resize', function() {
+			if (scope.autoScroll) scrollDown();
+		});
+
 		window.dfb = distanceFromBottom;
 
 		//===============================================================
