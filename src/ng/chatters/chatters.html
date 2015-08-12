@@ -7,15 +7,16 @@
                 <span class="chatter" ng-click="selectUser(username)">{{username}}</span>
             </div>
         </div>
-		<div ng-if="key === 'viewers'">
+		<div ng-if="key === 'viewers' && !tooManyNotDoable()">
             <div ng-repeat="username in value | limitTo: showViewers()? Infinity : 0">
                 <span class="chatter" ng-click="selectUser(username)">{{username}}</span>
             </div>
         </div>
-		<div ng-if="key === 'viewers' && !showViewers()" >
+		<div ng-if="key === 'viewers' && !tooManyNotDoable() && !showViewers()" >
 			<md-button class="show-more-button" ng-click="showViewers(true)">
 				Too many, show all? <i class="zmdi zmdi-expand-more"></i>
 			</md-button>
 		</div>
+        <div ng-if="key === 'viewers' && tooManyNotDoable()">Too Many!</div>
 	</div>
 </div>

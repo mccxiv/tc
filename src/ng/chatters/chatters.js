@@ -10,6 +10,7 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
 		setInterval(function() {fetchList();}, 120000);
 
 		channels.on('change', function() {
+			forceShowViewers = false;
 			if (!scope.api) timeoutFetch(200);
 			else timeoutFetch(2000);
 		});
@@ -19,6 +20,10 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
 			if (!scope.api) return false;
 			if (scope.api.chatters.viewers.length < 201) return true;
 			else return forceShowViewers;
+		};
+
+		scope.tooManyNotDoable = function() {
+			return scope.api && scope.api.chatters.viewers.length > 10000;
 		};
 
 		// TODO not DRY (same function in different files)
