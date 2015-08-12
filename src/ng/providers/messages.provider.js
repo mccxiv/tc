@@ -48,6 +48,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var bttvmotes = $filter('bttvmotes');
 	var messageLimit = 500;
 	var messages = {};
+	var lowerCaseUsername = settings.identity.username.toLowerCase();
 	var throttledApplySlow = _.throttle(applyLate, 3000);
 	var throttledApplyFast = _.throttle(applyLate, 100);
 
@@ -169,7 +170,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		addMessage(channel, {
 			user: user,
 			type: type,
-			highlighted: highlights.test(message),
+			highlighted: highlights.test(message) && user.username != settings.identity.username.toLowerCase()? true : false,
 			message: combine(escape(linkify(bttvmotes(ffzfy(channel, emotify(message, user.emotes)))))),
 			style: type === 'action'? 'color: '+user.color : ''
 		});

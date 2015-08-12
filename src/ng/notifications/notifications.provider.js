@@ -41,7 +41,7 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 	function fromUser(channel, user, message) {
 		if (settings.notifications.onMention) {
 			// TODO inefficient, runs test twice: here and in messages
-			if (highlights.test(message)) {
+			if (highlights.test(message) && settings.identity.username.toLowerCase() != user.username) {
 				channel = channel.substring(1);
 				n('Mentioned on '+channel, user['display-name']+': '+message);
 				if (settings.notifications.soundOnMention) {
