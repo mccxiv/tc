@@ -25,6 +25,7 @@ chatters .show-more-button {
 chatters .chatter {
     cursor: pointer;
     outline: none;
+    color: rgba(0,0,0,0.54);
 }
 
 chatters .chatter:hover {
