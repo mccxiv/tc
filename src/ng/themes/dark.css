@@ -5,7 +5,7 @@
 }
 
 .dark :hover::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, .35);
+    background-color: rgba(255, 255, 255, 0.35);
 }
 
 .dark md-content {
@@ -47,5 +47,9 @@
 }
 
 .dark settings-panel {
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dark chatters .chatter {
+    color: rgba(255, 255, 255, 0.54);
 }
