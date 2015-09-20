@@ -26,12 +26,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
 	var clients = {read: null, write: null, whisper: null};
-	var tmi = (function() {
-		// if tmi.js detects a window object, require() doesn't
-		// properly return a constructor. Band aid hack
-		require('tmi.js');
-		return window.irc;
-	})();
+	var tmi = window.irc;
 
 	//===============================================================
 	// Public members
