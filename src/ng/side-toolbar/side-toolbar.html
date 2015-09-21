@@ -38,7 +38,8 @@
     <i class="zmdi zmdi-open-in-new"></i>
 </md-button>
 
-<md-button class="collapse-button" ng-click="toggleCollapsed()" aria-label="Small sidebar">
+<md-button class="collapse-button" ng-click="toggleCollapsed()" aria-label="Small sidebar"
+        ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
     <md-tooltip md-autohide ng-if="!settings.appearance.sidebarCollapsed">
         Collapse sidebar
     </md-tooltip>
@@ -46,6 +47,5 @@
         Expand sidebar
     </md-tooltip>
 
-    <i class="zmdi zmdi-chevron-left" ng-if="!settings.appearance.sidebarCollapsed"></i>
-    <i class="zmdi zmdi-chevron-right" ng-if="settings.appearance.sidebarCollapsed"></i>
+    <i class="zmdi zmdi-chevron-left"></i>
 </md-button>

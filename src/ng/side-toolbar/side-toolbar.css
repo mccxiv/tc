@@ -30,3 +30,11 @@ side-toolbar .connection.not-ready {
 side-toolbar .collapse-button {
     margin-left: 10px;
 }
+
+side-toolbar .collapse-button i {
+    transition: transform 350ms 300ms ease-out;
+}
+
+side-toolbar .collapse-button.collapsed i {
+    transform: rotate(180deg);
+}
