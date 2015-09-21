@@ -13,8 +13,4 @@ angular.module('tc').controller('main', ['$scope', 'settings', 'session', 'irc',
 	$scope.showingThumbnail = function() {
 		return $scope.expanded() && settings.appearance.thumbnail;
 	};
-
-	$scope.showingChatters = function() {
-		return $scope.expanded() && settings.appearance.chatters;
-	}
 }]);

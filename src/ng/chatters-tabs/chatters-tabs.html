@@ -1,4 +1,4 @@
-<md-tabs md-selected="settings.selectedTabIndex" md-no-bar md-no-pagination md-dynamic-height>
+<md-tabs md-selected="settings.selectedTabIndex" md-no-bar md-no-pagination md-dynamic-height ng-show="settings.appearance.chatters">
 	<md-tab ng-repeat="channel in settings.channels" label="...">
 		<chatters channel="channel"></chatters>
 	</md-tab>
@@ -7,3 +7,19 @@
 		&nbsp;
 	</md-tab>
 </md-tabs>
+
+<md-button ng-click="settings.appearance.chatters = false" aria-label="Hide list"
+           class="toggle-button hide-button" ng-if="settings.appearance.chatters">
+    <md-tooltip md-autohide>
+        Hide list
+    </md-tooltip>
+    <i class="zmdi zmdi-chevron-up"></i>
+</md-button>
+
+<md-button ng-click="settings.appearance.chatters = true" aria-label="Hide list"
+           class="toggle-button" ng-if="!settings.appearance.chatters">
+    <md-tooltip md-autohide>
+        Show viewer list
+    </md-tooltip>
+    <i class="zmdi zmdi-chevron-down"></i>
+</md-button>

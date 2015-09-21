@@ -1,5 +1,16 @@
 chatters-tabs {
 	overflow-y: auto;
+    position: relative;
+}
+
+chatters-tabs.collapsed {
+    overflow: hidden;
+    flex: none;
+    height: 24px;
+}
+
+chatters-tabs.collapsed > *:not(.toggle-button) {
+    opacity: 0;
 }
 
 chatters-tabs md-tabs-wrapper {
@@ -17,4 +28,25 @@ chatters-tabs md-tab-content {
 chatters-tabs md-tabs:not(.md-no-tab-content) {
 	min-height: 0 !important;
 	height: auto !important;
+}
+
+chatters-tabs .toggle-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 6px;
+    min-width: 0;
+    min-height: 0 !important;
+    margin: 0;
+    border-radius: 0;
+    line-height: 24px;
+    transition: opacity 250ms ease-out;
+}
+
+chatters-tabs .hide-button {
+    opacity: 0;
+}
+
+chatters-tabs:hover .hide-button {
+    opacity: 1;
 }

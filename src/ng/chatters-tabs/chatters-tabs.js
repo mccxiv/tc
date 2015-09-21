@@ -4,6 +4,11 @@ angular.module('tc').directive('chattersTabs', ['settings', function(settings) {
 		templateUrl: 'ng/chatters-tabs/chatters-tabs.html',
 		link: function(scope, element) {
 			scope.settings = settings;
+
+			scope.hideChatters = function() {
+
+			}
+
 		}
 	}
 }]);
