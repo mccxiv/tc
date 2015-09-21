@@ -21,7 +21,7 @@
 		<link rel="stylesheet" href="ng/chat-input/chat-input.css">
 		<link rel="stylesheet" href="ng/add-channel/add-channel.css">
         <link rel="stylesheet" href="ng/user-panel/user-panel.css">
-        <link rel="stylesheet" href="ng/stream-panel/stream-panel.css">
+        <link rel="stylesheet" href="ng/thumbnail/stream-panel.css">
         <link rel="stylesheet" href="ng/highlights/highlights-options.directive.css">
         <link rel="stylesheet" href="ng/settings-panel/settings-panel.css">
         <link rel="stylesheet" href="ng/settings-panel/settings-gui-dialog.css">
@@ -33,7 +33,8 @@
 			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
-                <stream-panel></stream-panel>
+                <thumbnail ng-if="settings.appearance.thumbnail"></thumbnail>
+                <viewer-count ng-if="settings.appearance.thumbnail"></viewer-count>
                 <user-panel></user-panel>
 				<chatters-tabs flex></chatters-tabs>
 			</md-sidenav>
@@ -80,7 +81,7 @@
 		<script src="ng/chat-tabs/chat-tabs.js"></script>
 
         <script src="ng/user-panel/user-panel.js"></script>
-        <script src="ng/stream-panel/stream-panel.js"></script>
+        <script src="ng/thumbnail/stream-panel.js"></script>
 
 		<script src="ng/chatters/chatters.js"></script>
 		<script src="ng/chatters-tabs/chatters-tabs.js"></script>
@@ -89,6 +90,7 @@
 
         <script src="ng/providers/settings.provider.js"></script>
         <script src="ng/providers/session.provider.js"></script>
+        <script src="ng/providers/tmi.provider.js"></script>
 		<script src="ng/providers/irc.provider.js"></script>
         <script src="ng/providers/gui.provider.js"></script>
         <script src="ng/providers/api.provider.js"></script>

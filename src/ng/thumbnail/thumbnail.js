@@ -33,7 +33,7 @@ angular.module('tc').directive('streamPanel', function(settings, channels, gui, 
 					preLoadImage(url, function() {
 						scope.m.img = url;
 						scope.$apply();
-						console.log('STREAM-PANEL: new image is ', scope.m.img);
+						console.log('Thumbnail: new image is ', scope.m.img);
 					});
 				}
 			})
@@ -48,7 +48,7 @@ angular.module('tc').directive('streamPanel', function(settings, channels, gui, 
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/stream-panel/stream-panel.html',
+		templateUrl: 'ng/thumbnail/thumbnail.html',
 		link: link
 	}
 });

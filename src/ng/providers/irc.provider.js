@@ -18,7 +18,7 @@
  * @property {function} isMod             - Check if a user is a mode in a channel
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, _) {
+angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, tmi, _) {
 
 	//===============================================================
 	// Variables
@@ -26,7 +26,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	var Emitter = require('events').EventEmitter;
 	var ee = new Emitter();
 	var clients = {read: null, write: null, whisper: null};
-	var tmi = window.irc;
 
 	//===============================================================
 	// Public members
@@ -67,6 +66,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 
 	function create() {
+		console.log('IRC: Creating clients.');
 		destroy();
 		ee.badLogin = false;
 
@@ -80,8 +80,10 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		var clientSettings = {
 			options: {debug: false},
 			connection: {random: 'chat', timeout: 10000, reconnect: true},
-			identity: settings.identity,
-			channels: settings.channels
+			identity: angular.copy(settings.identity),
+			channels: settings.channels.map(function(channel) {
+				return '#'+channel;
+			})
 		};
 
 		_.forEach(clients, function(v, key) {
@@ -91,7 +93,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				setts.channels = [];
 			}
 			clients[key] = new tmi.client(setts);
-			if (setts.channels) clients[key].tcCurrentChannels = angular.copy(setts.channels);
 			clients[key].connect();
 		});
 
@@ -130,6 +131,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	}
 
 	function destroy() {
+		console.log('IRC: destroy');
 		_.forEach(clients, function(client, key) {
 			if (client) {
 				client.removeAllListeners();
@@ -146,6 +148,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	 * @param {String[]} events    - The events to listen for on `emitter`
 	 */
 	function forwardEvents(emitter, reEmitter, events) {
+		console.log('IRC: Forwarding events:', events);
 		events.forEach(function(event) {
 			emitter.addListener(event, function() {
 				var args = Array.prototype.slice.call(arguments);
@@ -160,10 +163,11 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	 * correct channels, the ones in the settings.
 	 */
 	function syncChannels() {
+		console.log('IRC: Syncing channels:');
 		[clients.read, clients.write].forEach(function(client) {
 			joinChannels(client);
 			leaveChannels(client);
-		})
+		});
 	}
 
 	/**
@@ -171,11 +175,14 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	 * that haven't been joined yet.
 	 */
 	function joinChannels(client) {
+		console.log('IRC: Joining channels:');
 		settings.channels.forEach(function(channel) {
-			console.log('checking if need to join '+channel);
-			if (client.tcCurrentChannels.indexOf(channel) === -1) {
+			var joined = client.getChannels();
+			joined = joined.map(stripHash);
+			console.log('IRC: joined channels:', joined);
+			console.log('IRC: checking if need to join '+channel);
+			if (joined.indexOf(channel) === -1) {
 				client.join(channel);
-				client.tcCurrentChannels.push(channel);
 			}
 		});
 	}
@@ -185,15 +192,14 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	 * appear in settings.channels.
 	 */
 	function leaveChannels(client) {
-		// Need for loop for the index.
-		// Backwards so that array changes don't affect the loop
-		for (var i = client.tcCurrentChannels.length - 1; i > -1; i--) {
-			var channel = client.tcCurrentChannels[i];
+		console.log('IRC: Leaving channels:');
+		var joined = client.getChannels();
+		joined = joined.map(stripHash);
+		joined.forEach(function(channel) {
 			if (settings.channels.indexOf(channel) === -1) {
 				client.part(channel);
-				client.tcCurrentChannels.splice(i, 1);
 			}
-		}
+		});
 	}
 
 	/**
@@ -226,6 +232,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	}
 
 	function onChannelsChange(cb) {
+		console.log('IRC: onChannelsChange');
 		$rootScope.$watchCollection(
 			function watchVal() {return settings.channels;},
 			function handler(newV, oldV) {
@@ -235,23 +242,31 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	}
 
 	function onInvalidCredentials(cb) {
+		console.log('IRC: onInvalidCredentials');
 		onCredentialsValidChange(function(valid) {
 			if (!valid) cb();
-		})
+		});
 	}
 
 	function onValidCredentials(cb) {
+		console.log('IRC: onValidCredentials');
 		onCredentialsValidChange(function(valid) {
+			console.log('IRC: Checking if credentials are valid: ', valid);
 			if (valid) cb();
-		})
+		});
 	}
 
 	function onCredentialsValidChange(cb) {
+		console.log('IRC: onCredentialsValidChange');
 		// TODO change this so it doesn't run for each call
 		$rootScope.$watch(credentialsValid, function(newv, oldv) {
 				if (oldv !== newv) cb(newv);
-			}
-		);
+		});
+	}
+
+	function stripHash(string) {
+		if (string.charAt(0) !== '#') return string;
+		else return string.substring(1);
 	}
 
 	function credentialsValid() {

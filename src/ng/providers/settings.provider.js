@@ -38,6 +38,7 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 			dark: false
 		},
 		appearance: {
+			thumbnail: true,
 			zoom: 100
 		},
 		selectedTabIndex: 0,
@@ -52,9 +53,10 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 	try {settings = fse.readJsonSync(filename);}
 	catch (e) {console.info('No saved settings found.');}
 
-	// Watch before applying fixes so that they are saved.
+	settings = makeValid(settings);
+	saveSettings();
+
 	$rootScope.$watch(watchVal, watchListener, true);
-	makeValid(settings);
 
 	//===============================================================
 	// Functions
@@ -92,6 +94,7 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 		if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
+		//s.channels = s.channels.map(addHash);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);
 		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
 
@@ -111,8 +114,12 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 	function watchListener(newV, oldV) {
 		if (newV !== oldV) {
 			console.log('Settings changed, saving.', settings);
-			fse.outputJson(filename, settings, function() {});
+			saveSettings();
 		}
+	}
+
+	function saveSettings() {
+		fse.outputJson(filename, settings, function() {});
 	}
 
 	return settings;

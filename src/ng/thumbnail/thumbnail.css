@@ -1,18 +1,18 @@
-stream-panel {
+thumbnail {
     color: #e1e1e1;
 }
 
-stream-panel img {
+thumbnail img {
     display: block;
 }
 
-stream-panel .content {
+thumbnail .content {
     position: relative;
     min-height: 100px;
     cursor: pointer;
 }
 
-stream-panel .hover-content {
+thumbnail .hover-content {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -21,19 +21,19 @@ stream-panel .hover-content {
     transition: all 250ms ease-out;
 }
 
-stream-panel .hover-content .zmdi {
+thumbnail .hover-content .zmdi {
     font-size: 55px;
 }
 
-stream-panel:hover .hover-content {
+thumbnail:hover .hover-content {
     opacity: 1;
 }
 
-stream-panel i {
+thumbnail i {
     vertical-align: -1px;
 }
 
-stream-panel .title {
+thumbnail .title {
     font-size: 1.2rem;
     white-space: nowrap;
     width: 100%;
@@ -45,7 +45,7 @@ stream-panel .title {
 
 }
 
-stream-panel .stats {
+thumbnail .stats {
     font-size: 1.1rem;
     position: absolute;
     bottom: 8px;
@@ -54,10 +54,10 @@ stream-panel .stats {
     background-color: rgba(0, 0, 0, .5);
 }
 
-stream-panel .viewers i {
+thumbnail .viewers i {
     color: red;
 }
 
-stream-panel .preview {
+thumbnail .preview {
     width: 100%;
 }
