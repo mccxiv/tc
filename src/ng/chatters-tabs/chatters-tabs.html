@@ -8,18 +8,13 @@
 	</md-tab>
 </md-tabs>
 
-<md-button ng-click="settings.appearance.chatters = false" aria-label="Hide list"
-           class="toggle-button hide-button" ng-if="settings.appearance.chatters">
-    <md-tooltip md-autohide>
+<md-button ng-click="settings.appearance.chatters = !settings.appearance.chatters" aria-label="Hide list" class="toggle-button"
+           ng-class="{'hide-button': settings.appearance.chatters, collapsed: !settings.appearance.chatters}">
+    <md-tooltip md-autohide ng-if="settings.appearance.chatters">
         Hide list
     </md-tooltip>
-    <i class="zmdi zmdi-chevron-up"></i>
-</md-button>
-
-<md-button ng-click="settings.appearance.chatters = true" aria-label="Hide list"
-           class="toggle-button" ng-if="!settings.appearance.chatters">
-    <md-tooltip md-autohide>
+    <md-tooltip md-autohide ng-if="!settings.appearance.chatters">
         Show viewer list
     </md-tooltip>
-    <i class="zmdi zmdi-chevron-down"></i>
+    <i class="zmdi zmdi-chevron-up"></i>
 </md-button>

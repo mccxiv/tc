@@ -50,3 +50,11 @@ chatters-tabs .hide-button {
 chatters-tabs:hover .hide-button {
     opacity: 1;
 }
+
+chatters-tabs .toggle-button i {
+    transition: transform 350ms 300ms ease-out;
+}
+
+chatters-tabs .toggle-button.collapsed i {
+    transform: rotate(180deg);
+}
