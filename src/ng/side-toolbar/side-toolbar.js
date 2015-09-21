@@ -32,10 +32,6 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 			// TODO call $apply?
 		};
 
-		scope.openStream = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel()+'/popout');
-		};
-
 		scope.openChannel = function() {
 			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel());
 		};
