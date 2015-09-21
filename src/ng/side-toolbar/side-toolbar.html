@@ -32,8 +32,20 @@
 </md-button>
 
 <md-button ng-click="openChannel()" aria-label="Go to channel" ng-if="channel()">
-	<md-tooltip md-autohide>
-		Go to Channel
-	</md-tooltip>
-	<i class="zmdi zmdi-open-in-new"></i>
+    <md-tooltip md-autohide>
+        Go to Channel
+    </md-tooltip>
+    <i class="zmdi zmdi-open-in-new"></i>
+</md-button>
+
+<md-button class="collapse-button" ng-click="toggleCollapsed()" aria-label="Small sidebar">
+    <md-tooltip md-autohide ng-if="!settings.appearance.sidebarCollapsed">
+        Collapse sidebar
+    </md-tooltip>
+    <md-tooltip md-autohide ng-if="settings.appearance.sidebarCollapsed">
+        Expand sidebar
+    </md-tooltip>
+
+    <i class="zmdi zmdi-chevron-left" ng-if="!settings.appearance.sidebarCollapsed"></i>
+    <i class="zmdi zmdi-chevron-right" ng-if="settings.appearance.sidebarCollapsed"></i>
 </md-button>

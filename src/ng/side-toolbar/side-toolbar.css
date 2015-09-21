@@ -26,3 +26,7 @@ side-toolbar .connection {
 side-toolbar .connection.not-ready {
 	color: #c6a600;
 }
+
+side-toolbar .collapse-button {
+    margin-left: 10px;
+}

@@ -40,6 +40,11 @@ a {
 
 md-sidenav {
     background-color: transparent;
+    transition: margin-left 250ms ease-out;
+}
+
+md-sidenav.collapsed {
+    margin-left: -174px;
 }
 
 md-toast {
@@ -57,7 +62,7 @@ md-toast {
 
 /* The starting CSS styles for the enter animation */
 .slide.ng-enter {
-    transition: 1000ms linear all;
+    transition: 1000ms ease-out all;
     opacity: 0;
 }
 

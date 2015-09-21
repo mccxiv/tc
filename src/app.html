@@ -30,13 +30,16 @@
 	<body layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
 
 		<section layout="row" flex>
-			<md-sidenav md-is-locked-open="true" class="side-bar md-sidenav-left md-whiteframe-z2" layout="column">
+			<md-sidenav layout="column"
+                        md-is-locked-open="true"
+                        class="side-bar md-sidenav-left md-whiteframe-z2"
+                        ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
-                <thumbnail ng-if="settings.appearance.thumbnail"></thumbnail>
+                <thumbnail ng-if="showingThumbnail()" ng-if="!settings.appearance.sidebarCollapsed && settings.appearance.thumbnail"></thumbnail>
                 <simple-viewer-count ng-if="settings.appearance.simpleViewerCount"></simple-viewer-count>
-                <user-panel></user-panel>
-				<chatters-tabs flex></chatters-tabs>
+                <user-panel ng-if="expanded()"></user-panel>
+				<chatters-tabs flex ng-if="showingChatters()"></chatters-tabs>
 			</md-sidenav>
 
 			<section layout="column" flex>

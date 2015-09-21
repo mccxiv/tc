@@ -35,6 +35,10 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		scope.openChannel = function() {
 			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel());
 		};
+
+		scope.toggleCollapsed = function() {
+			settings.appearance.sidebarCollapsed = !settings.appearance.sidebarCollapsed;
+		}
 	}
 	
 	return {

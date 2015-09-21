@@ -40,6 +40,8 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 		appearance: {
 			thumbnail: true,
 			simpleViewerCount: false,
+			sidebarCollapsed: false,
+			chatters: true,
 			zoom: 100
 		},
 		selectedTabIndex: 0,
@@ -105,6 +107,8 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 		if (!angular.isNumber(s.appearance.zoom)) s.appearance.zoom = defaults.appearance.zoom;
 		if (typeof s.appearance.thumbnail !== 'boolean') s.appearance.thumbnail = defaults.appearance.thumbnail;
 		if (typeof s.appearance.simpleViewerCount !== 'boolean') s.appearance.simpleViewerCount = defaults.appearance.simpleViewerCount;
+		if (typeof s.appearance.sidebarCollapsed !== 'boolean') s.appearance.sidebarCollapsed = defaults.appearance.sidebarCollapsed;
+		if (typeof s.appearance.chatters !== 'boolean') s.appearance.chatters = defaults.appearance.chatters;
 
 		return s;
 	}
