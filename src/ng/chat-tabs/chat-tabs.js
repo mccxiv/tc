@@ -75,7 +75,7 @@ angular.module('tc').directive('chatTabs', function($timeout, settings, messages
 					if (currChannel() === channel && !show) return;
 					if (show) scope.loaded[channel] = true;
 					else delete scope.loaded[channel];
-				}, show? 1300 : 3000);
+				}, show? 1000 : 3000);
 			}
 
 			/**
