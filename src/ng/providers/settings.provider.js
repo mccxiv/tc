@@ -39,6 +39,7 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 		},
 		appearance: {
 			thumbnail: true,
+			simpleViewerCount: false,
 			zoom: 100
 		},
 		selectedTabIndex: 0,
@@ -94,7 +95,6 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 		if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
 		if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
-		//s.channels = s.channels.map(addHash);
 		if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);
 		if (typeof s.highlightMe !== 'boolean') s.highlightMe = defaults.highlightMe;
 
@@ -103,6 +103,8 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 
 		if (!angular.isObject(s.appearance)) s.appearance = angular.copy(defaults.appearance);
 		if (!angular.isNumber(s.appearance.zoom)) s.appearance.zoom = defaults.appearance.zoom;
+		if (typeof s.appearance.thumbnail !== 'boolean') s.appearance.thumbnail = defaults.appearance.thumbnail;
+		if (typeof s.appearance.simpleViewerCount !== 'boolean') s.appearance.simpleViewerCount = defaults.appearance.simpleViewerCount;
 
 		return s;
 	}
