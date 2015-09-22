@@ -38,7 +38,11 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 
 		scope.toggleCollapsed = function() {
 			settings.appearance.sidebarCollapsed = !settings.appearance.sidebarCollapsed;
-		}
+		};
+
+		scope.showingThumbnailButton = function() {
+			return scope.channel() && !settings.appearance.thumbnail;
+		};
 	}
 	
 	return {

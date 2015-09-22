@@ -24,11 +24,11 @@
 
 <span flex></span>
 
-<md-button ng-click="leave()" aria-label="Leave channel" ng-if="channel()">
-	<md-tooltip md-autohide>
-		Leave Channel
-	</md-tooltip>
-	<i class="zmdi zmdi-close"></i>
+<md-button ng-click="settings.appearance.thumbnail = true" aria-label="Show thumbnail" ng-if="showingThumbnailButton()">
+    <md-tooltip md-autohide>
+        Show thumbnail
+    </md-tooltip>
+    <i class="zmdi zmdi-tv-play"></i>
 </md-button>
 
 <md-button ng-click="openChannel()" aria-label="Go to channel" ng-if="channel()">
@@ -36,6 +36,13 @@
         Go to Channel
     </md-tooltip>
     <i class="zmdi zmdi-open-in-new"></i>
+</md-button>
+
+<md-button ng-click="leave()" aria-label="Leave channel" ng-if="channel()">
+    <md-tooltip md-autohide>
+        Leave Channel
+    </md-tooltip>
+    <i class="zmdi zmdi-close"></i>
 </md-button>
 
 <md-button class="collapse-button" ng-click="toggleCollapsed()" aria-label="Small sidebar"
