@@ -1,4 +1,4 @@
-<div class="content slide" ng-if="m.stream" ng-click="openStream()">
+<div class="content slide" ng-if="m.stream" >
     <span class="title" title="{{m.channel.status}}">
         {{m.channel.status}}
     </span>
@@ -11,7 +11,15 @@
         </span>
     </div>
     <div class="hover-content" layout="column" layout-align="center center">
-        <i class="zmdi zmdi-play-circle-outline"></i>
+        <i class="zmdi zmdi-play-circle-outline play-button" ng-click="openStream()"></i>
+
+        <md-button ng-click="settings.appearance.thumbnail = false" aria-label="Hide thumbnail" class="hide-button">
+            <md-tooltip md-autohide>
+                Hide thumbnail
+            </md-tooltip>
+            <i class="zmdi zmdi-close"></i>
+        </md-button>
+
     </div>
     <img class="preview" ng-src="{{m.img}}"></div>
 <md-divider ng-if="m.stream"></md-divider>

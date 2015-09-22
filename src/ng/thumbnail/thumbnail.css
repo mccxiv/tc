@@ -6,6 +6,10 @@ thumbnail img {
     display: block;
 }
 
+thumbnail i {
+    outline: none;
+}
+
 thumbnail .content {
     position: relative;
     min-height: 100px;
@@ -21,7 +25,7 @@ thumbnail .hover-content {
     transition: all 250ms ease-out;
 }
 
-thumbnail .hover-content .zmdi {
+thumbnail .hover-content .play-button {
     font-size: 55px;
 }
 
@@ -60,4 +64,21 @@ thumbnail .viewers i {
 
 thumbnail .preview {
     width: 100%;
+}
+
+thumbnail .hide-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0 6px;
+    min-width: 0;
+    min-height: 0 !important;
+    margin: 0;
+    border-radius: 0;
+    line-height: 24px;
+    transition: opacity 250ms ease-out;
+}
+
+thumbnail:hover .hide-button {
+    opacity: 1;
 }

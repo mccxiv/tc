@@ -7,6 +7,10 @@ angular.module('tc').directive('thumbnail', function(settings, channels, gui, ir
 			stream: null
 		};
 
+		scope.openStream = function() {
+			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel()+'/popout');
+		};
+
 		load();
 		setInterval(load, 60000);
 		element.attr('layout', 'column');
