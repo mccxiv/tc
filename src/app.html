@@ -37,7 +37,6 @@
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
                 <thumbnail ng-if="showingThumbnail()" ng-if="!settings.appearance.sidebarCollapsed && settings.appearance.thumbnail"></thumbnail>
-                <simple-viewer-count ng-if="settings.appearance.simpleViewerCount"></simple-viewer-count>
                 <user-panel ng-if="expanded()"></user-panel>
 				<chatters-tabs ng-class="{collapsed: !settings.appearance.chatters}" flex ng-show="expanded()"></chatters-tabs>
 			</md-sidenav>
@@ -63,7 +62,6 @@
 		<script src="bower_components/angular-material/angular-material.js"></script>
         <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
         <script src="bower_components/frosty/dist/js/frosty.min.js"></script>
-        <script src="assets-embed/tmi.js-0.0.23.js"></script>
 
 		<script src="ng/app.js"></script>
         <script src="ng/global/main.controller.js"></script>
