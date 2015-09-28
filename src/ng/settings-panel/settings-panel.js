@@ -13,7 +13,7 @@ angular.module('tc').directive('settingsPanel', function(settings, gui, updateCh
 			selected: 'highlights'
 		};
 
-		updateChecker.show();
+		updateChecker.check();
 
 		scope.zoomLabel = function() {
 			if (settings.appearance.zoom === 100) return 'Normal';
