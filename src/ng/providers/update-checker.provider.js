@@ -27,8 +27,8 @@ angular.module('tc').factory('updateChecker', function($http, $mdToast, notifica
 					.hideDelay(25000)
 					.action('DOWNLOAD')
 			);
-			toast.then(function() {
-				gui.Shell.openExternal('http://mccxiv.github.io/tc/#download');
+			toast.then(function(response) {
+				if (response === 'ok') gui.Shell.openExternal('http://mccxiv.github.io/tc/#download');
 			});
 			notifications.create('New version of Tc!', latest+' is available for download.');
 		}
