@@ -36,7 +36,7 @@
                         ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
 				<side-toolbar></side-toolbar>
 				<md-divider></md-divider>
-                <thumbnail ng-if="showingThumbnail()" ng-if="!settings.appearance.sidebarCollapsed && settings.appearance.thumbnail"></thumbnail>
+                <thumbnail ng-if="showingThumbnail() && !settings.appearance.sidebarCollapsed && settings.appearance.thumbnail"></thumbnail>
                 <user-panel ng-if="expanded()"></user-panel>
 				<chatters-tabs ng-class="{collapsed: !settings.appearance.chatters}" flex ng-show="expanded()"></chatters-tabs>
 			</md-sidenav>
