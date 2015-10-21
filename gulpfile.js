@@ -1,11 +1,12 @@
 var fs =              require('fs');
 var del =             require('del');
-var rimraf =          require('rimraf');
 var zip =             require('gulp-zip');
 var exec =            require('child_process').exec;
 var gulp =            require('gulp');
+var path =            require('path');
 var inno =            require("innosetup-compiler");
 var shell =           require('gulp-shell');
+var rimraf =          require('rimraf');
 var useref =          require('gulp-useref');
 var uglify =          require('gulp-uglify');
 var gulpif =          require('gulp-if');
@@ -34,7 +35,8 @@ gulp.task('run-production-win32', function(cb) {
 });
 
 gulp.task('run-development', function(cb) {
-	exec('node_modules\\.bin\\nw .\\src', cb);
+	//exec('node_modules\\.bin\\nw .\\src', cb);
+	exec(path.normalize('node_modules/.bin/nw ./src'), cb);
 });
 
 gulp.task('make-dist', function(cb) {
