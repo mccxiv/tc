@@ -35,7 +35,6 @@ gulp.task('run-production-win32', function(cb) {
 });
 
 gulp.task('run-development', function(cb) {
-	//exec('node_modules\\.bin\\nw .\\src', cb);
 	exec(path.normalize('node_modules/.bin/nw ./src'), cb);
 });
 
