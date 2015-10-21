@@ -5,6 +5,6 @@
  * @name tmi
  */
 angular.module('tc').factory('tmi', function() {
-	require('tmi.js');
-	return window.irc; // tmi.js thinks this is a browser
+	//require('tmi.js'); Using browser version for now...
+	return window.irc;
 });
