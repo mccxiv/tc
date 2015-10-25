@@ -4,7 +4,7 @@
  * @ngdoc factory
  * @name zoomManager
  */
-angular.module('tc').factory('zoomManager', function($rootScope, $document, settings, gui) {
+angular.module('tc').factory('zoomManager', function($rootScope, $document, settings) {
 
 	updateZoom();
 
@@ -44,7 +44,7 @@ angular.module('tc').factory('zoomManager', function($rootScope, $document, sett
 	}
 
 	function updateZoom() {
-		gui.Window.get().zoomLevel = Math.log(settings.appearance.zoom / 100) / Math.log(1.2);
+		nw.Window.get().zoomLevel = Math.log(settings.appearance.zoom / 100) / Math.log(1.2);
 	}
 
 	return null;

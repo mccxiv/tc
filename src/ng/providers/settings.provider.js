@@ -5,13 +5,13 @@
  * @ngdoc factory
  * @name settings
  */
-angular.module('tc').factory('settings', function(gui, $rootScope) {
+angular.module('tc').factory('settings', function($rootScope) {
 	//===============================================================
 	// Variables
 	//===============================================================
-	var fse = require('fs-extra');
-	var path = require('path');
-	var appData = gui.App.dataPath;
+	var fse = nw.require('fs-extra');
+	var path = nw.require('path');
+	var appData = nw.App.dataPath;
 	var filename = path.join(appData, 'settings/', 'settings.json');
 	var settings = {};
 	var defaults = {

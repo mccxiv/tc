@@ -140,7 +140,7 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 				event.preventDefault();
 				event.stopPropagation();
 				console.log('CHAT-OUTPUT: Clicked on a link', event.target.getAttribute('href'));
-				gui.Shell.openExternal(event.target.getAttribute('href'));
+				nw.Shell.openExternal(event.target.getAttribute('href'));
 				return false;
 			})
 		}

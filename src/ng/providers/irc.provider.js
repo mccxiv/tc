@@ -23,7 +23,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	//===============================================================
 	// Variables
 	//===============================================================
-	var Emitter = require('events').EventEmitter;
+	var Emitter = nw.require('events').EventEmitter;
 	var ee = new Emitter();
 	var clients = {read: null, write: null, whisper: null};
 

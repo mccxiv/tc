@@ -9,7 +9,7 @@ angular.module('tc').directive('settingsPanel', function(settings, gui, updateCh
 		element.attr('layout', 'row');
 		scope.settings = settings;
 		scope.m = {
-			version: gui.App.manifest.version,
+			version: nw.App.manifest.version,
 			selected: 'highlights'
 		};
 

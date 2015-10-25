@@ -1,9 +1,9 @@
 {
-  "main": "app.html",
+  "main": "test.html",
   "name": "Tc",
   "version": "1.0.0-beta.17",
   "window": {
-    "show": false,
+    "show": true,
     "toolbar": true,
     "frame": true,
     "width": 800,
@@ -12,6 +12,7 @@
     "min_height": 390,
     "icon": "assets/icon256.png"
   },
+  "node-remote": "http://localhost",
   "maintainers": [
     {
       "name": "Andrea Stella",
@@ -25,5 +26,4 @@
     "semver-diff": "^2.0.0"
   },
   "chromium-args" : "--enable-spell-checking"
-
 }

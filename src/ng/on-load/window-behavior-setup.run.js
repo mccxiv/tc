@@ -2,20 +2,20 @@
  * This piece of code gets executed when loading the application.
  * It contains nwjs setup and behavior.
  */
-angular.module('tc').run(function(gui, settings) {
-	var win = gui.Window.get();
-	var tray = new gui.Tray({ title: 'Tray', icon: 'assets/icon16.png' });
-	var menu = new gui.Menu();
+angular.module('tc').run(function(settings) {
+	var win = nw.Window.get();
+	var tray = new nw.Tray({ title: 'Tray', icon: 'assets/icon16.png' });
+	var menu = new nw.Menu();
 	var shown = true;
 
-	menu.append(new gui.MenuItem({
+	menu.append(new nw.MenuItem({
 		label: "Exit",
 		click: forceClose
 	}));
 	tray.menu = menu;
 	
 	if (process.platform === 'darwin') {
-		var osxbar = new gui.Menu({type: 'menubar'});
+		var osxbar = new nw.Menu({type: 'menubar'});
 		osxbar.createMacBuiltin('Tc');
 		win.menu = osxbar;
 	}

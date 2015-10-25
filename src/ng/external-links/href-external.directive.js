@@ -15,7 +15,7 @@ angular.module('tc').directive('hrefExternal', function(gui) {
 				if (!href.startsWith('http://') && !href.startsWith('https://')) {
 					href = 'http://'+href;
 				}
-				gui.Shell.openExternal(href);
+				nw.Shell.openExternal(href);
 			});
 		}
 	};

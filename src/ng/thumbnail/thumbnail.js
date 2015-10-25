@@ -8,7 +8,7 @@ angular.module('tc').directive('thumbnail', function(settings, channels, gui, ir
 		};
 
 		scope.openStream = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel()+'/popout');
+			nw.Shell.openExternal('http://www.twitch.tv/'+scope.channel()+'/popout');
 		};
 
 		load();

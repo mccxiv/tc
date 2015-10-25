@@ -9,7 +9,7 @@
     "jquery": "~2.1.3",
     "lodash": "~3.8.0",
     "material-design-iconic-font": "~2.1.2",
-    "nwjs-preserve-window-state": "mccxiv/nwjs-preserve-window-state#~1.1.0"
+    "nwjs-preserve-window-state": "mccxiv/nwjs-preserve-window-state#2.0.0"
   },
   "devDependencies": {}
 }

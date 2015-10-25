@@ -15,7 +15,7 @@ angular.module('tc').directive('login', function(settings, irc, gui) {
 			};
 
 			scope.generate = function() {
-				gui.Shell.openExternal('http://twitchapps.com/tmi/');
+				nw.Shell.openExternal('http://twitchapps.com/tmi/');
 			};
 
 			// These values should NOT update the settings object or
