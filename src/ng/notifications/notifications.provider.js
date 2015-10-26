@@ -51,24 +51,24 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 		}
 	}
 
+	/**
+	 * Create notifications.
+	 * Will play the notification sound if the settings allow for it.
+	 *
+	 * @param {string} title     - Notification title
+	 * @param {string} body      - Notification body
+	 * @param {number} [timeout] - Hide after this many ms
+	 * @return {Notification}    - The Notification object that was created
+	 */
 	function n(title, body, timeout) {
 		timeout = timeout || 5000;
 		console.log('NOTIFICATIONS: firing notification', title, body);
 		var notification = new Notification(title, {body: body});
-		setTimeout(function() {notification.close();}, timeout);
+		setTimeout(notification.close.bind(notification), timeout);
 		return notification;
 	}
 
 	return {
-		/**
-		 * Create notifications.
-		 * Will play the notification sound if the settings allow for it.
-		 *
-		 * @param {string} title    - Notification title
-		 * @param {string} body     - Notification body
-		 * @param {number} timeout  - Hide after this many ms
-		 * @return {Notification}   - The Notification object that was created
-		 */
 		create: n,
 
 		/**
