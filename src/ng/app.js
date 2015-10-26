@@ -6,10 +6,10 @@ angular.module('tc', ['ngMaterial', 'ngSanitize']);
 
 setTimeout(function() {
 
-	//angular.bootstrap(document.querySelector('html'), ['tc']);
+	angular.bootstrap(document.querySelector('html'), ['tc']);
 
-}, 2000)
+}, 500)
 
 function load() {
-	angular.bootstrap(document.querySelector('html'), ['tc']);
+	//angular.bootstrap(document.querySelector('html'), ['tc']);
 }

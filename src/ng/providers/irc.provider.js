@@ -113,7 +113,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		clients.read.on('connected', function() {
 			console.log('IRC: connected event fired');
 			ee.ready = true;
-			process.nextTick(function() {$rootScope.$apply();});
+			nw.process.nextTick(function() {$rootScope.$apply();});
 		});
 
 		// Disconnected event gets spammed on every connection

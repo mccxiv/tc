@@ -1,4 +1,4 @@
-angular.module('tc').directive('userPanel', function($document, settings, session, gui, irc, api) {
+angular.module('tc').directive('userPanel', function($document, settings, session, irc, api) {
 
 	function link(scope) {
 		scope.m = {

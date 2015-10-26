@@ -5,7 +5,7 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, messages, session, irc, gui, api) {
+angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, messages, session, irc, api) {
 	
 	function link(scope, element) {
 		//===============================================================

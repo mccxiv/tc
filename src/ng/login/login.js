@@ -1,4 +1,4 @@
-angular.module('tc').directive('login', function(settings, irc, gui) {
+angular.module('tc').directive('login', function(settings, irc) {
 	return {
 		restrict: 'E',
 		templateUrl: 'ng/login/login.html',

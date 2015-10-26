@@ -1,4 +1,4 @@
-angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gui, $filter, $mdDialog, irc) {
+angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $filter, $mdDialog, irc) {
 	
 	function link(scope, element) {
 		scope.irc = irc;
