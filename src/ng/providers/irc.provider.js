@@ -19,6 +19,7 @@
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
 angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, tmi, _) {
+	console.log('LOAD: irc');
 
 	//===============================================================
 	// Variables
@@ -233,6 +234,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 	function onChannelsChange(cb) {
 		console.log('IRC: onChannelsChange');
+		window.test = "!!!";
 		$rootScope.$watchCollection(
 			function watchVal() {return settings.channels;},
 			function handler(newV, oldV) {

@@ -35,6 +35,7 @@
  *
  */
 angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings, channels) {
+	console.log('LOAD: messages');
 
 	//=====================================================
 	// Variables | TODO dry

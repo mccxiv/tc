@@ -35,7 +35,7 @@ gulp.task('run-production-win32', function(cb) {
 });
 
 gulp.task('run-development', function(cb) {
-	exec(path.normalize('cache/nwjs13.4/nw.exe ./src --enable-logging'), cb);
+	exec(path.normalize('cache/nwjs13.4/nw.exe ./src'), cb);
 });
 
 gulp.task('make-dist', function(cb) {

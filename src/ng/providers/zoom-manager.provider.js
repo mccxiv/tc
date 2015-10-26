@@ -5,6 +5,7 @@
  * @name zoomManager
  */
 angular.module('tc').factory('zoomManager', function($rootScope, $document, settings) {
+	console.log('LOAD: zoomManager');
 
 	updateZoom();
 

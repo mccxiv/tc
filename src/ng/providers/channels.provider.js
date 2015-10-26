@@ -10,6 +10,7 @@
  * @fires channels#remove - Passes the channel that was removed
  */
 angular.module('tc').factory('channels', function($rootScope, settings) {
+	console.log('LOAD: channels');
 	var Ee = nw.require('events').EventEmitter;
 	var ee = new Ee();
 	ee.setMaxListeners(0);
