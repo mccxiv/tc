@@ -14,7 +14,7 @@ angular.module('tc').run(function(settings) {
 	}));
 	tray.menu = menu;
 	
-	if (process.platform === 'darwin') {
+	if (nw.process.platform === 'darwin') {
 		var osxbar = new nw.Menu({type: 'menubar'});
 		osxbar.createMacBuiltin('Tc');
 		win.menu = osxbar;

@@ -106,7 +106,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				settings.identity.password = '';
 			}
 			ee.ready = false;
-			process.nextTick(function() {$rootScope.$apply();});
+			nw.process.nextTick(function() {$rootScope.$apply();});
 		});
 
 		console.log('IRC: registering connected event');
@@ -225,7 +225,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				if (reason === 'Login unsuccessful.') {
 					ee.badLogin = reason;
 					settings.identity.password = '';
-					process.nextTick(function() {$rootScope.$apply();});
+					nw.process.nextTick(function() {$rootScope.$apply();});
 					cb();
 				}
 			});

@@ -12,11 +12,9 @@
  */
 angular.module('tc').factory('ffz', function($http, channels) {
 	console.log('LOAD: ffz');
-	// Using node instead of browser requests to avoid red 404 errors in the console
+
 	var globalEmotes = [];
 	var channelEmotes = {};
-	//var request = nw.require('request');
-	console.log('request required!');
 
 	cacheGlobal();
 	channels.on('add', cache);

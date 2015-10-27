@@ -4,15 +4,11 @@
  * @ngdoc factory
  * @name updateChecker
  */
-angular.module('tc').factory('updateChecker', function($http, $mdToast, notifications) {
+angular.module('tc').factory('updateChecker', function($http, $mdToast, notifications, manifest) {
 	console.log('LOAD: updateChecker');
 
 	var semverDiff = nw.require('semver-diff');
-
-	// TODO temporary, until 0.13.x provides an API
-	var version = nw.require('./package.json').version;
-	//var version = nw.App.manifest.version;
-
+	var version = manifest.version;
 	var url = 'https://api.github.com/repos/mccxiv/tc/releases?callback=JSON_CALLBACK';
 
 	function check() {

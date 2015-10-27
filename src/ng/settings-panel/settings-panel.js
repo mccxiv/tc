@@ -4,14 +4,12 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settings, updateChecker) {
+angular.module('tc').directive('settingsPanel', function(settings, updateChecker, manifest) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
 		scope.m = {
-			// TODO fix for 0.13.x
-			//version: nw.App.manifest.version,
-			version: nw.require('./package.json').version,
+			version: manifest.version,
 			selected: 'highlights'
 		};
 
