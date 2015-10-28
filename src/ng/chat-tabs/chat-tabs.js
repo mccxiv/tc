@@ -28,7 +28,7 @@ angular.module('tc').directive('chatTabs', function($timeout, settings, messages
 
 						setTimeout(function() {
 							clickTab(settings.channels.length-1);
-						}, 20);
+						}, 200);
 					}
 				}
 			);
