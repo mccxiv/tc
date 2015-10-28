@@ -1,7 +1,7 @@
 {
   "name": "app-ui",
   "dependencies": {
-    "angular": "1.4.3",
+    "angular": "1.4.7",
     "angular-animate": "1.4",
     "angular-material": "0.10.1",
     "angular-sanitize": "1.4",
@@ -11,5 +11,7 @@
     "material-design-iconic-font": "~2.1.2",
     "nwjs-preserve-window-state": "mccxiv/nwjs-preserve-window-state#2.0.0"
   },
-  "devDependencies": {}
+  "resolutions": {
+    "angular": "1.4.7"
+  }
 }
