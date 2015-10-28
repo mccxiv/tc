@@ -62,13 +62,6 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 				else scope.message = '/w ';
 			}
 		};
-
-		scope.isReady = function() {
-			console.log('scope.isReady', !!irc.ready);
-			return !!irc.ready;
-		};
-
-		window.ci = scope;
 	}
 
 	return {
