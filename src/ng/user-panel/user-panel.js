@@ -1,4 +1,4 @@
-angular.module('tc').directive('userPanel', function($document, settings, session, gui, irc, api) {
+angular.module('tc').directive('userPanel', function($document, settings, session, irc, api) {
 
 	function link(scope) {
 		scope.m = {
@@ -36,11 +36,11 @@ angular.module('tc').directive('userPanel', function($document, settings, sessio
 		};
 
 		scope.goToChannel = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+session.selectedUser);
+			nw.Shell.openExternal('http://www.twitch.tv/'+session.selectedUser);
 		};
 
 		scope.sendMessage = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/message/compose?to='+session.selectedUser);
+			nw.Shell.openExternal('http://www.twitch.tv/message/compose?to='+session.selectedUser);
 		};
 
 		scope.timeout = function(seconds) {

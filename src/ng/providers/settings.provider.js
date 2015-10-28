@@ -5,13 +5,25 @@
  * @ngdoc factory
  * @name settings
  */
-angular.module('tc').factory('settings', function(gui, $rootScope) {
+angular.module('tc').factory('settings', function($rootScope) {
+	console.log('LOAD: settings');
+
 	//===============================================================
 	// Variables
 	//===============================================================
-	var fse = require('fs-extra');
-	var path = require('path');
-	var appData = gui.App.dataPath;
+	var fse = nw.require('fs-extra');
+	var path = nw.require('path');
+
+	// TODO Temporary patch, only works on Windows!
+	if (nw.process.platform !== 'win32') {
+		throw Error('Only works on windows, until dataPath is fixed.');
+	}
+
+	// TODO remove
+	console.warn('Using hardcoded appdata path! Fix me asap.');
+	var appData = nw.App.dataPath;
+	appData = path.join(nw.process.env.LOCALAPPDATA, 'Tc'); // TODO remove
+
 	var filename = path.join(appData, 'settings/', 'settings.json');
 	var settings = {};
 	var defaults = {
@@ -53,6 +65,7 @@ angular.module('tc').factory('settings', function(gui, $rootScope) {
 	//===============================================================
 	// Initialization
 	//===============================================================
+	console.log('SETTINGS: loading settings file')
 	try {settings = fse.readJsonSync(filename);}
 	catch (e) {console.info('No saved settings found.');}
 

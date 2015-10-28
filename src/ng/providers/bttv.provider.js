@@ -9,6 +9,7 @@
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('bttv', function($http) {
+	console.log('LOAD: bttv');
 	var emotes = [];
 
 	getEmotes();

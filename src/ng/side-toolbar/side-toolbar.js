@@ -1,11 +1,19 @@
-angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gui, $filter, $mdDialog, irc) {
+angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $filter, $mdDialog, irc) {
 	
 	function link(scope, element) {
 		scope.irc = irc;
 		scope.settings = settings;
 		scope.settingsGui = settingsGui;
 		element.attr('layout', 'row');
-		
+
+		// Monkey patch for broken ng-class.
+		// See issue #174
+		scope.$watch(function() {return irc.ready;}, function() {
+			var el = element[0].querySelector('.connection');
+			if (!irc.ready) el.classList.add('not-ready');
+			else el.classList.remove('not-ready');
+		});
+
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]
 		};
@@ -33,7 +41,7 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, gu
 		};
 
 		scope.openChannel = function() {
-			gui.Shell.openExternal('http://www.twitch.tv/'+scope.channel());
+			nw.Shell.openExternal('http://www.twitch.tv/'+scope.channel());
 		};
 
 		scope.toggleCollapsed = function() {

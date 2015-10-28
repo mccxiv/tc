@@ -1,4 +1,4 @@
-angular.module('tc').controller('main', ['$scope', 'settings', 'session', 'irc', function($scope, settings, session, irc) {
+angular.module('tc').controller('main', function($scope, settings, session, irc) {
 	$scope.session = session;
 	$scope.settings = settings;
 
@@ -13,4 +13,4 @@ angular.module('tc').controller('main', ['$scope', 'settings', 'session', 'irc',
 	$scope.showingThumbnail = function() {
 		return $scope.expanded() && settings.appearance.thumbnail;
 	};
-}]);
+});

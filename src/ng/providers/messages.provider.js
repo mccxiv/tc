@@ -31,10 +31,9 @@
  * @property {function} addWhisper             - Adds a local whisper message (outgoing, most likely)
  * @property {function} addNotification        - Adds a notification message to a chat channel (light gray)
  * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
- *
- *
  */
 angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings, channels) {
+	console.log('LOAD: messages');
 
 	//=====================================================
 	// Variables | TODO dry
@@ -71,6 +70,9 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	messagesReturn.addWhisper = addWhisperMessage;
 	messagesReturn.addNotification = addNotificationMessage;
 	messagesReturn.addGlobalNotification = addGlobalNotificationMessage;
+
+	// TODO remove
+	window.messages = messagesReturn;
 
 	//=====================================================
 	// Private methods
@@ -170,7 +172,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		addMessage(channel, {
 			user: user,
 			type: type,
-			highlighted: highlights.test(message) && user.username != settings.identity.username.toLowerCase()? true : false,
+			highlighted: highlights.test(message) && user.username != lowerCaseUsername? true : false,
 			message: combine(escape(linkify(bttvmotes(ffzfy(channel, emotify(message, user.emotes)))))),
 			style: type === 'action'? 'color: '+user.color : ''
 		});

@@ -4,12 +4,12 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settings, gui, updateChecker) {
+angular.module('tc').directive('settingsPanel', function(settings, updateChecker, manifest) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
 		scope.m = {
-			version: gui.App.manifest.version,
+			version: manifest.version,
 			selected: 'highlights'
 		};
 

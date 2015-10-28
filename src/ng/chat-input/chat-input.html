@@ -1,7 +1,7 @@
 <form ng-submit="input()">
 	<md-input-container class="input-container" ng-class="{disabled: !irc.ready}">
 		<label>Send a message</label>
-		<input spellcheck
+		<input spellcheck="true"
                ng-disabled="!irc.ready"
                ng-model="message"
                ng-trim="false"

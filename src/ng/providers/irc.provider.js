@@ -19,11 +19,12 @@
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
 angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, tmi, _) {
+	console.log('LOAD: irc');
 
 	//===============================================================
 	// Variables
 	//===============================================================
-	var Emitter = require('events').EventEmitter;
+	var Emitter = nw.require('events').EventEmitter;
 	var ee = new Emitter();
 	var clients = {read: null, write: null, whisper: null};
 
@@ -105,14 +106,14 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				settings.identity.password = '';
 			}
 			ee.ready = false;
-			process.nextTick(function() {$rootScope.$apply();});
+			nw.process.nextTick(function() {$rootScope.$apply();});
 		});
 
 		console.log('IRC: registering connected event');
 		clients.read.on('connected', function() {
 			console.log('IRC: connected event fired');
 			ee.ready = true;
-			process.nextTick(function() {$rootScope.$apply();});
+			nw.process.nextTick(function() {$rootScope.$apply();});
 		});
 
 		// Disconnected event gets spammed on every connection
@@ -224,7 +225,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				if (reason === 'Login unsuccessful.') {
 					ee.badLogin = reason;
 					settings.identity.password = '';
-					process.nextTick(function() {$rootScope.$apply();});
+					nw.process.nextTick(function() {$rootScope.$apply();});
 					cb();
 				}
 			});
@@ -233,6 +234,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 	function onChannelsChange(cb) {
 		console.log('IRC: onChannelsChange');
+		window.test = "!!!";
 		$rootScope.$watchCollection(
 			function watchVal() {return settings.channels;},
 			function handler(newV, oldV) {

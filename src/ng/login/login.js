@@ -1,4 +1,4 @@
-angular.module('tc').directive('login', function(settings, irc, gui) {
+angular.module('tc').directive('login', function(settings, irc) {
 	return {
 		restrict: 'E',
 		templateUrl: 'ng/login/login.html',
@@ -15,7 +15,7 @@ angular.module('tc').directive('login', function(settings, irc, gui) {
 			};
 
 			scope.generate = function() {
-				gui.Shell.openExternal('http://twitchapps.com/tmi/');
+				nw.Shell.openExternal('http://twitchapps.com/tmi/');
 			};
 
 			// These values should NOT update the settings object or

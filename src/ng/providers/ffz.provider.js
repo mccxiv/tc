@@ -11,10 +11,10 @@
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('ffz', function($http, channels) {
-	// Using node instead of browser requests to avoid red 404 errors in the console
+	console.log('LOAD: ffz');
+
 	var globalEmotes = [];
 	var channelEmotes = {};
-	var request = require('request');
 
 	cacheGlobal();
 	channels.on('add', cache);
@@ -50,7 +50,7 @@ angular.module('tc').factory('ffz', function($http, channels) {
 
 	function cache(channel) {
 		channelEmotes[channel] = [];
-		request('http://api.frankerfacez.com/v1/room/'+channel, function(err, response, body) {
+		$http.get('http://api.frankerfacez.com/v1/room/'+channel).success(function(err, response, body) {
 			try {
 				var data = JSON.parse(body);
 				if (data.error) return; // This channel doesn't have emotes
@@ -73,6 +73,8 @@ angular.module('tc').factory('ffz', function($http, channels) {
 	function get(channel) {
 		return globalEmotes.concat(channelEmotes[channel] || []);
 	}
+
+	console.log('LOADED: ffz');
 
 	return get;
 });
