@@ -11,6 +11,14 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 			lastWhisperer = from;
 		});
 
+		// Monkey patch for broken ng-class.
+		// See issue #174
+		scope.$watch(function() {return irc.ready;}, function() {
+			var inputContainer = element.find('md-input-container')[0];
+			if (!irc.ready) inputContainer.classList.add('disabled');
+			else inputContainer.classList.remove('disabled');
+		});
+
 		scope.getUsernames = function() {
 			var channel = settings.channels[settings.selectedTabIndex];
 
@@ -54,6 +62,13 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 				else scope.message = '/w ';
 			}
 		};
+
+		scope.isReady = function() {
+			console.log('scope.isReady', !!irc.ready);
+			return !!irc.ready;
+		};
+
+		window.ci = scope;
 	}
 
 	return {
