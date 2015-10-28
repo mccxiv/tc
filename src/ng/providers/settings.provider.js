@@ -19,8 +19,8 @@ angular.module('tc').factory('settings', function($rootScope) {
 		throw Error('Only works on windows, until dataPath is fixed.');
 	}
 
+	// TODO remove
 	console.warn('Using hardcoded appdata path! Fix me asap.');
-
 	var appData = nw.App.dataPath;
 	appData = path.join(nw.process.env.LOCALAPPDATA, 'Tc'); // TODO remove
 

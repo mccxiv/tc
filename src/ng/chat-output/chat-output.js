@@ -26,6 +26,9 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 		handleAnchorClicks();
 		hideUnscrolledLines();
 		handleEmoteHover();
+		delayedScroll();
+
+		console.log('CHAT-OUTPUT: loading ' + scope.channel);
 
 		scope.$watch(
 			function() {return scope.messages[scope.messages.length-1]},
@@ -35,9 +38,7 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 			}
 		);
 
-		window.addEventListener('resize', function() {
-			if (scope.autoScroll) scrollDown();
-		});
+		window.addEventListener('resize', scrollIfEnabled);
 
 		window.dfb = distanceFromBottom;
 
@@ -63,8 +64,14 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 		//===============================================================
 		// Functions
 		//===============================================================
-		function handleEmoteHover() {
+		function delayedScroll() {
+			setTimeout(scrollIfEnabled, 300);
+			setTimeout(scrollIfEnabled, 600);
+			setTimeout(scrollIfEnabled, 1200);
+			setTimeout(scrollIfEnabled, 2400);
+		}
 
+		function handleEmoteHover() {
 			element.on('mouseenter', '.emoticon', function(e) {
 				var emoticon = $(e.target);
 				var tooltip = emoticon.data('emote-name');
@@ -109,6 +116,10 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 					element[0].scrollTop = element[0].scrollHeight - (originalBottomDistance + element[0].offsetHeight);
 				});
 			}, 30);
+		}
+
+		function scrollIfEnabled() {
+			if (scope.autoScroll) scrollDown();
 		}
 
 		function scrollDown() {
