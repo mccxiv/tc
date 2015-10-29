@@ -64,18 +64,27 @@ angular.module('tc').directive('chatTabs', function($timeout, settings, messages
 
 			/**
 			 * The chat-output directive should not be shown and hidden immediately
-			 * because they it's a very CPU intensive operation, let the animations
+			 * because it's a very CPU intensive operation, let the animations
 			 * run first then do the heavy DOM manipulation.
 			 * @param {string} channel
 			 * @param {boolean} show
 			 */
 			function load(channel, show) {
-				$timeout(function() {
+				//$timeout(loadSync, show? 1000 : 3000);
+				loadSync();
+
+				function loadSync() {
 					// Abort unload operation if the tab to be hidden is selected again
 					if (currChannel() === channel && !show) return;
 					if (show) scope.loaded[channel] = true;
-					else delete scope.loaded[channel];
-				}, show? 1000 : 3000);
+					else {
+						setTimeout(function() {
+							if (currChannel() !== channel) {
+								delete scope.loaded[channel];
+							}
+						}, 3000);
+					}
+				}
 			}
 
 			/**
