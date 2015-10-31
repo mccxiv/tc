@@ -7,9 +7,5 @@
  */
 angular.module('tc').factory('session', function() {
 	console.log('LOAD: session');
-	return {
-		selectedUser: null,
-		selectedUserChannel: null,
-		inputFocused: null
-	};
+	return sessionStorage;
 });
