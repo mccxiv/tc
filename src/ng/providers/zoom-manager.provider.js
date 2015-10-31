@@ -7,13 +7,14 @@
 angular.module('tc').factory('zoomManager', function($rootScope, $document, settings) {
 	console.log('LOAD: zoomManager');
 
+	var remote = require('remote');
+	var webFrame = remote.require('web-frame');
+
 	updateZoom();
 
 	$rootScope.$watch(
 		function() {return settings.appearance.zoom},
-		function(newV, oldV) {
-			if (newV !== oldV) updateZoom();
-		}
+		function(newV, oldV) {if (newV !== oldV) updateZoom();}
 	);
 
 	$document.bind('keyup', function(e) {
@@ -45,7 +46,7 @@ angular.module('tc').factory('zoomManager', function($rootScope, $document, sett
 	}
 
 	function updateZoom() {
-		nw.Window.get().zoomLevel = Math.log(settings.appearance.zoom / 100) / Math.log(1.2);
+		webFrame.setZoomFactor(settings.appearance.zoom / 100);
 	}
 
 	return null;
