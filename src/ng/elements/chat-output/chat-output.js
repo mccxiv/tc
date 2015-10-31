@@ -142,7 +142,6 @@ angular.module('tc').directive('chatOutput', function(
 		}
 		
 		function distanceFromBottom() {
-			var e = e;
 			var distance = e.scrollHeight - e.scrollTop - e.offsetHeight;
 			return Math.floor(Math.abs(distance));
 		}

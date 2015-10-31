@@ -12,7 +12,8 @@ app.on('ready', function() {
 		width: 800,
 		height: 450,
 		'min-width': 500,
-		'min-height': 390
+		'min-height': 390,
+		icon: __dirname + '/assets/icon256.png'
 	});
 
 	main.loadUrl('file://' + __dirname + '/index.html');
