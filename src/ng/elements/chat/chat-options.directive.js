@@ -24,7 +24,7 @@ angular.module('tc').directive('chatOptions', function(settings) {
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/chat/chat-options.directive.html',
+		templateUrl: 'ng/elements/chat/chat-options.directive.html',
 		link: link
 	}
 });

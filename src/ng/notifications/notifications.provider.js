@@ -10,10 +10,11 @@
  *
  * @type {object}
  * @property {function} create     - Creates and displays desktop notifications
- * @property {function} playSound  - Plays the notification sound, regardless of settings
+ * @property {function} playSound  - Plays notification sound, despite settings
  *
  */
-angular.module('tc').factory('notifications', function(irc, settings, highlights) {
+angular.module('tc').factory('notifications', function(
+	irc, settings, highlights) {
 
 	var sound = new Audio('assets/notification.ogg');
 
@@ -21,11 +22,6 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 		if (settings.notifications.onConnect) {
 			n('Disconnected', 'The connection to the chat server has ended.');
 		}
-	});
-
-	irc.on('crash', function() {
-		// TODO do something more helpful than just report
-		n('Crashed', 'Sorry, the IRC client has crashed. Please restart the application.');
 	});
 
 	irc.on('whisper', function(from, message) {
@@ -41,7 +37,8 @@ angular.module('tc').factory('notifications', function(irc, settings, highlights
 	function fromUser(channel, user, message) {
 		if (settings.notifications.onMention) {
 			// TODO inefficient, runs test twice: here and in messages
-			if (highlights.test(message) && settings.identity.username.toLowerCase() != user.username) {
+			if (highlights.test(message) &&
+				settings.identity.username.toLowerCase() != user.username) {
 				channel = channel.substring(1);
 				n('Mentioned on '+channel, user['display-name']+': '+message);
 				if (settings.notifications.soundOnMention) {

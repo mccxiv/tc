@@ -58,7 +58,7 @@ angular.module('tc').directive('sideToolbar', function(
 	
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/side-toolbar/side-toolbar.html',
+		templateUrl: 'ng/elements/side-toolbar/side-toolbar.html',
 		link: link
 	}
 });

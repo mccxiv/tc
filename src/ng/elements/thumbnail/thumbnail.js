@@ -54,7 +54,7 @@ angular.module('tc').directive('thumbnail', function(
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/thumbnail/thumbnail.html',
+		templateUrl: 'ng/elements/thumbnail/thumbnail.html',
 		link: link
 	}
 });

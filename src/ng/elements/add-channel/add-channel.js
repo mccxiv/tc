@@ -18,7 +18,7 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/add-channel/add-channel.html',
+		templateUrl: 'ng/elements/add-channel/add-channel.html',
 		link: link
 	}
 }]);

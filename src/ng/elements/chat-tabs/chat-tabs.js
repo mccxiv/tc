@@ -1,7 +1,7 @@
 angular.module('tc').directive('chatTabs', function($timeout, settings, messages) {
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/chat-tabs/chat-tabs.html',
+		templateUrl: 'ng/elements/chat-tabs/chat-tabs.html',
 		link: function(scope, element) {
 			scope.settings = settings;
 			scope.hidden = {};

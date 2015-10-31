@@ -1,7 +1,7 @@
 angular.module('tc').directive('login', function(settings, irc, openExternal) {
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/login/login.html',
+		templateUrl: 'ng/elements/login/login.html',
 		link: function(scope) {
 			scope.irc = irc;
 			scope.settings = settings;

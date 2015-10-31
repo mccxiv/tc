@@ -23,7 +23,7 @@ angular.module('tc').directive('settingsPanel', function(settings, updateChecker
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/settings-panel/settings-panel.html',
+		templateUrl: 'ng/elements/settings-panel/settings-panel.html',
 		link: link
 	}
 });

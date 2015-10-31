@@ -66,7 +66,7 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/chat-input/chat-input.html',
+		templateUrl: 'ng/elements/chat-input/chat-input.html',
 		link: link
 	}
 });

@@ -79,7 +79,7 @@ angular.module('tc').directive('userPanel', function(
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/user-panel/user-panel.html',
+		templateUrl: 'ng/elements/user-panel/user-panel.html',
 		link: link
 	}
 });

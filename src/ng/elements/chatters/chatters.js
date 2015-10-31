@@ -70,7 +70,7 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
 
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/chatters/chatters.html',
+		templateUrl: 'ng/elements/chatters/chatters.html',
 		scope: {channel: '='},
 		link: link
 	}

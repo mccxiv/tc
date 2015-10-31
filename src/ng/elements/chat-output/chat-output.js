@@ -169,7 +169,7 @@ angular.module('tc').directive('chatOutput', function(
 	
 	return {
 		restrict: 'E',
-		templateUrl: 'ng/chat-output/chat-output.html',
+		templateUrl: 'ng/elements/chat-output/chat-output.html',
 		scope: {channel: '='},
 		link: link
 	} 
