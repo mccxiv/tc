@@ -8,8 +8,7 @@ angular.module('tc').factory('zoomManager', function(
 	$rootScope, $document, settings) {
 	console.log('LOAD: zoomManager');
 
-	var remote = require('remote');
-	var webFrame = remote.require('web-frame');
+	var webFrame = require('web-frame');
 
 	updateZoom();
 

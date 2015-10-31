@@ -35,7 +35,7 @@ angular.module('tc').directive('thumbnail', function(
 				scope.m.stream = data.stream;
 				if (data.stream) {
 					var url = data.stream.preview.medium +
-						'?' + Date().getTime();
+						'?' + new Date().getTime();
 					preLoadImage(url, function() {
 						scope.m.img = url;
 						scope.$apply();

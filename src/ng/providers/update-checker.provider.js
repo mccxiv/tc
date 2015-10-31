@@ -8,7 +8,7 @@ angular.module('tc').factory('updateChecker', function(
 	$http, $mdToast, notifications, manifest, openExternal) {
 	console.log('LOAD: updateChecker');
 
-	var semverDiff = nw.require('semver-diff');
+	var semverDiff = require('semver-diff');
 	var version = manifest.version;
 	var url = 'https://api.github.com/repos/mccxiv/tc/releases' +
 		'?callback=JSON_CALLBACK';
