@@ -6,7 +6,7 @@
  * Reads the href-external attribute and opens the
  * url in the system's default web browser
  */
-angular.module('tc').directive('hrefExternal', function() {
+angular.module('tc').directive('hrefExternal', function(openExternal) {
 	return {
 		restrict: 'A',
 		link: function (scope, element, attrs) {
@@ -15,7 +15,7 @@ angular.module('tc').directive('hrefExternal', function() {
 				if (!href.startsWith('http://') && !href.startsWith('https://')) {
 					href = 'http://'+href;
 				}
-				nw.Shell.openExternal(href);
+				openExternal(href);
 			});
 		}
 	};

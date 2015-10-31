@@ -4,12 +4,14 @@
  * @ngdoc factory
  * @name updateChecker
  */
-angular.module('tc').factory('updateChecker', function($http, $mdToast, notifications, manifest) {
+angular.module('tc').factory('updateChecker', function(
+	$http, $mdToast, notifications, manifest, openExternal) {
 	console.log('LOAD: updateChecker');
 
 	var semverDiff = nw.require('semver-diff');
 	var version = manifest.version;
-	var url = 'https://api.github.com/repos/mccxiv/tc/releases?callback=JSON_CALLBACK';
+	var url = 'https://api.github.com/repos/mccxiv/tc/releases' +
+		'?callback=JSON_CALLBACK';
 
 	function check() {
 		$http.jsonp(url).success(function(response) {
@@ -29,9 +31,12 @@ angular.module('tc').factory('updateChecker', function($http, $mdToast, notifica
 					.action('DOWNLOAD')
 			);
 			toast.then(function(response) {
-				if (response === 'ok') nw.Shell.openExternal('http://mccxiv.github.io/tc/#download');
+				if (response === 'ok') {
+					openExternal('http://mccxiv.github.io/tc/#download');
+				}
 			});
-			notifications.create('New version of Tc!', latest+' is available for download.');
+			notifications.create('New version of Tc!',
+				latest+' is available for download.');
 		}
 	}
 
