@@ -16,7 +16,7 @@ var rename =          require('gulp-rename');
 var base64 =          require('gulp-css-base64');
 var jeditor =         require("gulp-json-editor");
 var minifyCss =       require('gulp-minify-css');
-var NwBuilder =       require('node-webkit-builder');
+var NwBuilder =       require('nw-builder');
 var stripDebug =      require('gulp-strip-debug');
 var ngAnnotate =      require('gulp-ng-annotate');
 var runSequence =     require('run-sequence');
@@ -116,7 +116,7 @@ gulp.task('build', function() {
 	var nw = new NwBuilder({
 		files: 'build-temp/**/**',
 		platforms: ['osx32', 'win32', 'linux32'],
-		version: '0.12.1',
+		version: '0.13.0-alpha4',
 		winIco: 'src/assets-embed/win.ico',
 		macIcns: 'src/assets-embed/osx.icns'
 	});
