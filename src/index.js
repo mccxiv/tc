@@ -8,7 +8,12 @@ app.on('window-all-closed', function() {
 });
 
 app.on('ready', function() {
-	main = new BrowserWindow({width: 800, height: 600});
+	main = new BrowserWindow({
+		width: 800,
+		height: 600,
+		"node-integration": false
+	});
+
 	main.loadUrl('file://' + __dirname + '/index.html');
 
 	main.webContents.openDevTools();

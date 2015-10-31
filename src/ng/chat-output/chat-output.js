@@ -5,13 +5,15 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, messages, session, irc, api) {
+angular.module('tc').directive('chatOutput', function(
+	$sce, $timeout, settings, messages, session, irc, api, openExternal) {
 	
 	function link(scope, element) {
 		//===============================================================
 		// Variables
 		//===============================================================
 		var latestScrollWasAutomatic = false;
+		var e = element[0];
 		scope.opts = settings.chat;
 		scope.badges = null;
 		scope.messages = messages(scope.channel);
@@ -40,7 +42,6 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 
 		window.addEventListener('resize', scrollIfEnabled);
 
-		window.dfb = distanceFromBottom;
 
 		//===============================================================
 		// Directive methods
@@ -110,10 +111,10 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 		 */
 		function showAllLines() {
 			$timeout(function() {
+				var dfb = distanceFromBottom();
 				scope.chatLimit = Infinity;
-				var originalBottomDistance = distanceFromBottom();
 				$timeout(function() {
-					element[0].scrollTop = element[0].scrollHeight - (originalBottomDistance + element[0].offsetHeight);
+					e.scrollTop = e.scrollHeight - (dfb + e.offsetHeight);
 				});
 			}, 30);
 		}
@@ -127,7 +128,7 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 			latestScrollWasAutomatic = true;
 			setTimeout(function() {
 				console.log('CHAT-OUTPUT: scrolling down automatically');
-				element[0].scrollTop = element[0].scrollHeight;
+				e.scrollTop = e.scrollHeight;
 			}, 0);
 		}
 
@@ -137,11 +138,12 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 		}
 
 		function distanceFromTop() {
-			return Math.floor(element[0].scrollTop);
+			return Math.floor(e.scrollTop);
 		}
 		
 		function distanceFromBottom() {
-			var distance = element[0].scrollHeight - element[0].scrollTop - element[0].offsetHeight;
+			var e = e;
+			var distance = e.scrollHeight - e.scrollTop - e.offsetHeight;
 			return Math.floor(Math.abs(distance));
 		}
 
@@ -150,10 +152,9 @@ angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, 
 			element.on('click', 'a', function(event) {
 				event.preventDefault();
 				event.stopPropagation();
-				console.log('CHAT-OUTPUT: Clicked on a link', event.target.getAttribute('href'));
-				nw.Shell.openExternal(event.target.getAttribute('href'));
+				openExternal(event.target.getAttribute('href'));
 				return false;
-			})
+			});
 		}
 
 		function fetchBadges(timeout) {
