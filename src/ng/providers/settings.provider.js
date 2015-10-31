@@ -114,9 +114,14 @@ angular.module('tc').factory('settings', function($rootScope) {
 	}
 
 	function loadSettings() {
-		var s = {};
-		try {s = JSON.parse(localStorage.settings);}
-		catch (e) {console.error('Exception trying to parse settings', e);}
+		var s = localStorage.settings || {};
+		if (typeof s === 'string') {
+			try {s = JSON.parse(s);}
+			catch (e) {
+				console.error('Exception trying to parse settings', e);
+				s = {};
+			}
+		}
 		return s;
 	}
 
