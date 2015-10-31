@@ -1,4 +1,5 @@
-angular.module('tc').directive('userPanel', function($document, settings, session, irc, api) {
+angular.module('tc').directive('userPanel', function(
+	$document, settings, session, irc, api, openExternal) {
 
 	function link(scope) {
 		scope.m = {
@@ -23,7 +24,8 @@ angular.module('tc').directive('userPanel', function($document, settings, sessio
 		);
 
 		scope.amMod = function() {
-			return irc.isMod(settings.channels[settings.selectedTabIndex], settings.identity.username);
+			var channel = settings.channels[settings.selectedTabIndex];
+			return irc.isMod(channel, settings.identity.username);
 		};
 
 		/**
@@ -32,20 +34,23 @@ angular.module('tc').directive('userPanel', function($document, settings, sessio
 		 */
 		scope.shouldDisplay = function() {
 			var selectedChannel = settings.channels[settings.selectedTabIndex];
-			return session.selectedUser && session.selectedUserChannel === selectedChannel;
+			var onThatChannel = session.selectedUserChannel === selectedChannel;
+			return session.selectedUser && onThatChannel;
 		};
 
 		scope.goToChannel = function() {
-			nw.Shell.openExternal('http://www.twitch.tv/'+session.selectedUser);
+			openExternal('http://www.twitch.tv/'+session.selectedUser);
 		};
 
 		scope.sendMessage = function() {
-			nw.Shell.openExternal('http://www.twitch.tv/message/compose?to='+session.selectedUser);
+			var composeUrl = 'http://www.twitch.tv/message/compose?to=';
+			openExternal(composeUrl + session.selectedUser);
 		};
 
 		scope.timeout = function(seconds) {
 			seconds = seconds || 600;
-			irc.say(session.selectedUserChannel, '.timeout ' + session.selectedUser + ' ' + seconds);
+			var toMsg = '.timeout ' + session.selectedUser + ' ' + seconds;
+			irc.say(session.selectedUserChannel, toMsg);
 			scope.close();
 		};
 
@@ -54,7 +59,8 @@ angular.module('tc').directive('userPanel', function($document, settings, sessio
 		};
 
 		scope.ban = function() {
-			irc.say(session.selectedUserChannel, '.ban ' + session.selectedUser);
+			var banMsg = '.ban ' + session.selectedUser;
+			irc.say(session.selectedUserChannel, banMsg);
 			scope.close();
 		};
 

@@ -1,4 +1,5 @@
-angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $filter, $mdDialog, irc) {
+angular.module('tc').directive('sideToolbar', function(
+	settings, settingsGui, $filter, $mdDialog, irc, openExternal) {
 	
 	function link(scope, element) {
 		scope.irc = irc;
@@ -21,7 +22,8 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $f
 		scope.confirmLogout = function(event) {
 			var confirm = $mdDialog.confirm()
 				.parent(angular.element(document.body))
-				.content('Are you sure you want to log out? You will need to re-enter your password.')
+				.content('Are you sure you want to log out? ' +
+				'You will need to re-enter your password.')
 				.ok('OK')
 				.cancel('Cancel')
 				.targetEvent(event);
@@ -41,11 +43,12 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $f
 		};
 
 		scope.openChannel = function() {
-			nw.Shell.openExternal('http://www.twitch.tv/'+scope.channel());
+			openExternal('http://www.twitch.tv/'+scope.channel());
 		};
 
 		scope.toggleCollapsed = function() {
-			settings.appearance.sidebarCollapsed = !settings.appearance.sidebarCollapsed;
+			settings.appearance.sidebarCollapsed =
+				!settings.appearance.sidebarCollapsed;
 		};
 
 		scope.showingThumbnailButton = function() {
