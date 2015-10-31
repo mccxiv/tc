@@ -11,20 +11,7 @@ angular.module('tc').factory('settings', function($rootScope) {
 	//===============================================================
 	// Variables
 	//===============================================================
-	var fse = nw.require('fs-extra');
-	var path = nw.require('path');
 
-	// TODO Temporary patch, only works on Windows!
-	if (nw.process.platform !== 'win32') {
-		throw Error('Only works on windows, until dataPath is fixed.');
-	}
-
-	// TODO remove
-	console.warn('Using hardcoded appdata path! Fix me asap.');
-	var appData = nw.App.dataPath;
-	appData = path.join(nw.process.env.LOCALAPPDATA, 'Tc'); // TODO remove
-
-	var filename = path.join(appData, 'settings/', 'settings.json');
 	var settings = {};
 	var defaults = {
 		identity: {
@@ -37,8 +24,7 @@ angular.module('tc').factory('settings', function($rootScope) {
 			ignored: []
 		},
 		tray: {
-			minimizeToTray: false,
-			closeToTray: false
+			enabled: true,
 		},
 		notifications: {
 			onConnect: false,
@@ -63,16 +49,12 @@ angular.module('tc').factory('settings', function($rootScope) {
 	};
 
 	//===============================================================
-	// Initialization
+	// Execution
 	//===============================================================
-	console.log('SETTINGS: loading settings file')
-	try {settings = fse.readJsonSync(filename);}
-	catch (e) {console.info('No saved settings found.');}
-
-	settings = makeValid(settings);
+	settings = makeValid(loadSettings());
 	saveSettings();
-
-	$rootScope.$watch(watchVal, watchListener, true);
+	$rootScope.$watch(function() {return settings;}, settingsChanged, true);
+	return settings;
 
 	//===============================================================
 	// Functions
@@ -85,7 +67,6 @@ angular.module('tc').factory('settings', function($rootScope) {
 	function makeValid(s) {
 		// TODO this whole thing is dumb, needs refactor
 
-		// TODO this line seems pointless/broken
 		if (!angular.isObject(s)) s = angular.copy(defaults);
 
 		if (!angular.isObject(s.identity)) s.identity = angular.copy(defaults.identity);
@@ -104,8 +85,7 @@ angular.module('tc').factory('settings', function($rootScope) {
 		if (!angular.isArray(s.chat.ignored)) s.chat.ignored = defaults.chat.ignored;
 
 		if (!angular.isObject(s.tray)) s.tray = angular.copy(defaults.tray);
-		if (typeof s.tray.minimizeToTray !== 'boolean') s.tray.minimizeToTray = defaults.tray.minimizeToTray;
-		if (typeof s.tray.closeToTray !== 'boolean') s.tray.closeToTray = defaults.tray.closeToTray;
+		if (typeof s.tray.enabled !== 'boolean') s.tray.enabled = defaults.tray.enabled;
 
 		if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
@@ -126,20 +106,21 @@ angular.module('tc').factory('settings', function($rootScope) {
 		return s;
 	}
 
-	function watchVal() {
-		return settings;
-	}
-
-	function watchListener(newV, oldV) {
+	function settingsChanged(newV, oldV) {
 		if (newV !== oldV) {
 			console.log('Settings changed, saving.', settings);
 			saveSettings();
 		}
 	}
 
-	function saveSettings() {
-		fse.outputJson(filename, settings, function() {});
+	function loadSettings() {
+		var s = {};
+		try {s = JSON.parse(localStorage.settings);}
+		catch (e) {console.error('Exception trying to parse settings', e);}
+		return s;
 	}
 
-	return settings;
+	function saveSettings() {
+		localStorage.settings = JSON.stringify(settings);
+	}
 });

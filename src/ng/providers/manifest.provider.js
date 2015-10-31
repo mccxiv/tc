@@ -1,3 +1,3 @@
 angular.module('tc').factory('manifest', function() {
-	return nw.require('./package.json');
+	return require('remote').require('./package.json');
 });

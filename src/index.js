@@ -11,7 +11,7 @@ app.on('ready', function() {
 	main = new BrowserWindow({
 		width: 800,
 		height: 600,
-		"node-integration": false
+		"node-integration": true
 	});
 
 	main.loadUrl('file://' + __dirname + '/index.html');

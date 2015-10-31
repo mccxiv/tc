@@ -106,14 +106,14 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				settings.identity.password = '';
 			}
 			ee.ready = false;
-			nw.process.nextTick(function() {$rootScope.$apply();});
+			setTimeout(function() {$rootScope.$apply();}, 0);
 		});
 
 		console.log('IRC: registering connected event');
 		clients.read.on('connected', function() {
 			console.log('IRC: connected event fired');
 			ee.ready = true;
-			nw.process.nextTick(function() {$rootScope.$apply();});
+			setTimeout(function() {$rootScope.$apply();}, 0);
 		});
 
 		// Disconnected event gets spammed on every connection
@@ -225,7 +225,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				if (reason === 'Login unsuccessful.') {
 					ee.badLogin = reason;
 					settings.identity.password = '';
-					nw.process.nextTick(function() {$rootScope.$apply();});
+					setTimeout(function() {$rootScope.$apply();}, 0);
 					cb();
 				}
 			});
