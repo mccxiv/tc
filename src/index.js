@@ -10,8 +10,9 @@ app.on('window-all-closed', function() {
 app.on('ready', function() {
 	main = new BrowserWindow({
 		width: 800,
-		height: 600,
-		"node-integration": true
+		height: 450,
+		'min-width': 500,
+		'min-height': 390
 	});
 
 	main.loadUrl('file://' + __dirname + '/index.html');
