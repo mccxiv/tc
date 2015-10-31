@@ -2,15 +2,6 @@
   "main": "app.html",
   "name": "Tc",
   "version": "1.0.0-beta.18",
-  "window": {
-    "show": false,
-    "frame": true,
-    "width": 800,
-    "height": 450,
-    "min_width": 500,
-    "min_height": 390,
-    "icon": "assets/icon256.png"
-  },
   "node-remote": "http://localhost",
   "dependencies": {
     "fs-extra": "^0.18.1",
