@@ -15,7 +15,7 @@ angular.module('tc').factory('settingsGui', function($mdDialog, $document) {
 			$mdDialog.show({
 				parent: $document[0].body,
 				targetEvent: $event,
-				templateUrl: 'ng/settings-panel/settings-gui-dialog.html',
+				templateUrl: 'ng/elements/settings-panel/settings-gui-dialog.html',
 				clickOutsideToClose: true,
 				controller: function(scope, $mdDialog) {
 					scope.close = $mdDialog.hide;
