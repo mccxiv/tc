@@ -16,6 +16,8 @@ app.on('ready', function() {
 		icon: __dirname + '/assets/icon256.png'
 	});
 
+	main.setMenu(null);
+
 	main.loadUrl('file://' + __dirname + '/index.html');
 
 	main.webContents.openDevTools();
