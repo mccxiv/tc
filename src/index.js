@@ -1,13 +1,14 @@
 var app = require('app');
+var ipc = require('ipc');
 var BrowserWindow = require('browser-window');
 
 var main;
 
-app.on('window-all-closed', function() {
-	app.quit();
-});
+app.on('ready', ready);
+ipc.on('open-dev-tools', devTools);
+app.on('window-all-closed', app.quit.bind(app));
 
-app.on('ready', function() {
+function ready() {
 	main = new BrowserWindow({
 		width: 800,
 		height: 450,
@@ -17,12 +18,12 @@ app.on('ready', function() {
 	});
 
 	main.setMenu(null);
-
 	main.loadUrl('file://' + __dirname + '/index.html');
-
-	main.webContents.openDevTools();
-
 	main.on('closed', function() {
 		main = null;
 	});
-});
+}
+
+function devTools() {
+	main.openDevTools();
+}
