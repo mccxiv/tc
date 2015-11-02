@@ -2,6 +2,7 @@ var app = require('app');
 var ipc = require('ipc');
 var path = require('path');
 var Tray = require('tray');
+var Menu = require('menu');
 var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
 var startup = require('./assets/squirrel-startup.js');
@@ -10,6 +11,7 @@ var DATA_PATH = path.resolve(argv.data || path.resolve(__dirname, './settings'))
 
 var main;
 var tray;
+var quitting;
 
 if (startup()) return;
 app.setPath('userData', DATA_PATH);
@@ -17,7 +19,6 @@ app.on('ready', makeWindow);
 app.on('ready', makeTray);
 ipc.on('open-dev-tools', devTools);
 ipc.on('notification', notification);
-app.on('window-all-closed', app.quit.bind(app));
 
 function makeWindow() {
 	main = new BrowserWindow({
@@ -30,13 +31,22 @@ function makeWindow() {
 
 	main.setMenu(null);
 	main.loadUrl('file://' + __dirname + '/index.html');
-	main.on('closed', function() {
-		main = null;
+	//main.on('closed', function() {main = null;});
+	main.on('close', function(e) {
+		if (!quitting) e.preventDefault();
+		main.hide();
 	});
 }
 
 function makeTray() {
 	tray = new Tray(__dirname + '/assets/icon16.png');
+	tray.on('clicked', main.show.bind(main));
+	tray.setContextMenu(Menu.buildFromTemplate([
+		{label:'Quit Tc', click: function() {
+			quitting = true;
+			app.quit();
+		}}
+	]));
 }
 
 function notification(e, obj) {
