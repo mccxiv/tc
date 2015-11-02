@@ -29,7 +29,7 @@
 	</head>
 	<body layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
 
-		<section layout="row" flex>
+		<section ng-if="!needLogin()" layout="row" flex>
 			<md-sidenav layout="column"
                         md-is-locked-open="true"
                         class="side-bar md-sidenav-left md-whiteframe-z2"
