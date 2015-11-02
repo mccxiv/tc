@@ -101,6 +101,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		forwardEvents(clients.whisper, ee, ['whisper']);
 
 		clients.read.on('disconnected', function(reason) {
+			console.log('IRC: disconnected:', reason);
 			if (reason === 'Login unsuccessful.') {
 				ee.badLogin = reason;
 				settings.identity.password = '';
@@ -221,6 +222,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		}, ['update']);
 
 		function attachBadLoginCheck() {
+			if (!clients.read) return;
 			clients.read.on('disconnected', function(reason) {
 				if (reason === 'Login unsuccessful.') {
 					ee.badLogin = reason;
