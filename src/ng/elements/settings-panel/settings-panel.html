@@ -17,9 +17,6 @@
         <md-list-item class="menu-item" ng-click="m.selected = 'appearance'" ng-class="{selected: m.selected === 'appearance'}">
             <p>Appearance</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'window'" ng-class="{selected: m.selected === 'window'}">
-            <p>Window</p>
-        </md-list-item>
         <md-list-item class="menu-item" ng-click="m.selected = 'about'" ng-class="{selected: m.selected === 'about'}">
             <p>About</p>
         </md-list-item>
@@ -56,20 +53,6 @@
             <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
             <md-slider flex md-discrete ng-model="settings.appearance.zoom" min="100" max="175" step="5"></md-slider>
         </div>
-    </md-content>
-
-    <md-content ng-switch-when="window">
-        <h1 class="md-headline">Tray Icon Options</h1>
-
-        <p>You may always click the tray icon to hide the window.</p>
-
-        <md-switch ng-model="settings.tray.minimizeToTray">
-            Minimize to tray area
-        </md-switch>
-
-        <md-switch ng-model="settings.tray.closeToTray">
-            Close to tray area
-        </md-switch>
     </md-content>
 
     <md-content flex ng-switch-when="about" layout="column" layout-align="center center">

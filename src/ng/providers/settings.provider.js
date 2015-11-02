@@ -23,9 +23,6 @@ angular.module('tc').factory('settings', function($rootScope) {
 			timestamps: false,
 			ignored: []
 		},
-		tray: {
-			enabled: true,
-		},
 		notifications: {
 			onConnect: false,
 			onMention: true,
@@ -83,9 +80,6 @@ angular.module('tc').factory('settings', function($rootScope) {
 		if (typeof s.chat.timestamps !== 'boolean') s.chat.timestamps = defaults.chat.timestamps;
 		if (!angular.isNumber(s.chat.maxChatLines)) s.chat.maxChatLines = defaults.chat.maxChatLines;
 		if (!angular.isArray(s.chat.ignored)) s.chat.ignored = defaults.chat.ignored;
-
-		if (!angular.isObject(s.tray)) s.tray = angular.copy(defaults.tray);
-		if (typeof s.tray.enabled !== 'boolean') s.tray.enabled = defaults.tray.enabled;
 
 		if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
 		if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
