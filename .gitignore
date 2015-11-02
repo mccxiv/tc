@@ -2,3 +2,8 @@
 !/.gitignore
 node_modules
 bower_components
+
+# By default the app creates a settings folder in cwd
+# Prevent accidentally committing this,even though it
+# shouldn't ever be created when run via gulp.
+/src/settings

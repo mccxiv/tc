@@ -1,11 +1,16 @@
 var app = require('app');
 var ipc = require('ipc');
+var path = require('path');
+var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
 var startup = require('./assets/squirrel-startup.js');
+
+var DATA_PATH = path.resolve(argv.data || path.resolve(__dirname, './settings'));
 
 var main;
 
 if (startup()) return;
+app.setPath('userData', DATA_PATH);
 app.on('ready', ready);
 ipc.on('open-dev-tools', devTools);
 app.on('window-all-closed', app.quit.bind(app));

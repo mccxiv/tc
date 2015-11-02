@@ -31,7 +31,11 @@ if (typeof VERSION !== 'string' || VERSION.length < 6) {
 gulp.task('default', ['make-dist']);
 
 
-gulp.task('run-development', function(cb) {
+gulp.task('run-dev', function(cb) {
+	exec(path.normalize('./node_modules/.bin/electron ./src --data .settings'), cb);
+});
+
+gulp.task('run-dev-no-args', function(cb) {
 	exec(path.normalize('./node_modules/.bin/electron ./src'), cb);
 });
 
