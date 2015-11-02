@@ -4,9 +4,6 @@ var zip =             require('gulp-zip');
 var exec =            require('child_process').exec;
 var gulp =            require('gulp');
 var path =            require('path');
-var inno =            require('innosetup-compiler');
-var shell =           require('gulp-shell');
-var rimraf =          require('rimraf');
 var useref =          require('gulp-useref');
 var uglify =          require('gulp-uglify');
 var gulpif =          require('gulp-if');
@@ -14,16 +11,20 @@ var concat =          require('gulp-concat');
 var addsrc =          require('gulp-add-src');
 var rename =          require('gulp-rename');
 var base64 =          require('gulp-css-base64');
-var jeditor =         require("gulp-json-editor");
+var packager =        require('electron-packager');
 var minifyCss =       require('gulp-minify-css');
 var stripDebug =      require('gulp-strip-debug');
 var ngAnnotate =      require('gulp-ng-annotate');
 var runSequence =     require('run-sequence');
+var winInstaller =    require('electron-windows-installer');
 var templateCache =   require('gulp-angular-templatecache');
 
-var version = require('root-require')('src/package.json').version;
+var VERSION = require('root-require')('src/package.json').version;
+var BUILD_DIR = '.build';
+var PACKAGED_DIR = '.packaged';
+var DIST_DIR = '.dist';
 
-if (typeof version !== 'string' || version.length < 6) {
+if (typeof VERSION !== 'string' || VERSION.length < 6) {
 	throw new Error('Invalid version from package.json');
 }
 
@@ -42,59 +43,52 @@ gulp.task('make-dist', function(cb) {
 		'clean-before',
 		[
 			'copy-assets',
-			'copy-package-json',
+			'copy-electron-files',
 			'copy-node-modules'
 		],
 		'cache-templates',
-		'concat-minify-replace',
+		'build-html',
 		'clean-cached-templates',
-		'build',
-		[
+		'package',
+		/*[
 			'make-windows-installer',
-			'windows-zip',
-			'mac-zip',
-			'linux-tarball'
+			'make-windows-zip'
 		],
-		'rename-windows-installer',
-		'clean-after',
-		cb);
+		'clean-after',*/
+		cb
+	);
 });
 
 gulp.task('clean-before', function(cb) {
-	del(['build-temp/', 'build/', 'dist/'], cb);
+	del([BUILD_DIR, PACKAGED_DIR, DIST_DIR], cb);
 });
 
 gulp.task('copy-assets', function() {
 	return gulp.src('src/assets/**/*')
-		.pipe(gulp.dest('build-temp/assets/'));
+		.pipe(gulp.dest(BUILD_DIR + '/assets/'));
 });
 
-gulp.task('copy-package-json', function() {
-	return gulp.src('src/package.json')
-		.pipe(jeditor(function(json) {
-			delete json.dependencies;
-			json.window.toolbar = false;
-			return json;
-		}))
-		.pipe(gulp.dest('build-temp/'));
+gulp.task('copy-electron-files', function() {
+	return gulp.src(['src/index.js', 'src/package.json'])
+		.pipe(gulp.dest(BUILD_DIR));
 });
 
 gulp.task('copy-node-modules', function () {
 	return gulp.src(['src/node_modules/**/*', '!src/node_modules/.bin'], {base: 'src/node_modules'})
-		.pipe(gulp.dest('build-temp/node_modules/'));
+		.pipe(gulp.dest(BUILD_DIR + '/node_modules/'));
 });
 
 gulp.task('cache-templates', function() {
 	return gulp.src('src/ng/**/*.html')
 		.pipe(templateCache({module: 'tc', root: 'ng'}))
-		.pipe(gulp.dest('build-temp/temp/'));
+		.pipe(gulp.dest(BUILD_DIR + '/temp/'));
 });
 
-gulp.task('concat-minify-replace', function() {
+gulp.task('build-html', function() {
 	var assets = useref.assets({noconcat: true});
-	return gulp.src('src/app.html')
+	return gulp.src('src/index.html')
 		.pipe(assets)
-		.pipe(addsrc.append('build-temp/temp/templates.js'))
+		.pipe(addsrc.append(BUILD_DIR + '/temp/templates.js'))
 		.pipe(gulpif('*.js', concat('app.js')))
 		.pipe(gulpif('*.js', ngAnnotate()))
 		.pipe(gulpif('*.js', stripDebug()))
@@ -104,48 +98,72 @@ gulp.task('concat-minify-replace', function() {
 		.pipe(gulpif('*.css', minifyCss()))
 		.pipe(assets.restore())
 		.pipe(useref())
-		.pipe(gulp.dest('build-temp/'));
+		.pipe(gulp.dest(BUILD_DIR));
 });
 
 gulp.task('clean-cached-templates', function(cb) {
-	del(['build-temp/temp/**'], cb);
+	del([BUILD_DIR + '/temp/**'], cb);
 });
 
-gulp.task('build', function() {
-	var nw = new NwBuilder({
-		files: 'build-temp/**/**',
-		platforms: ['osx32', 'win32', 'linux32'],
-		version: '0.13.0-alpha4',
-		winIco: 'src/assets-embed/win.ico',
-		macIcns: 'src/assets-embed/osx.icns'
+gulp.task('package', function(cb) {
+	var opts = {
+		dir: BUILD_DIR,
+		name: 'Tc',
+		platform: 'all',
+		arch: 'ia32',
+		version: '0.34.2',
+		'app-version': VERSION,
+		icon: 'src/assets-embed/win.ico',
+		'version-string': {
+			CompanyName: 'Mccxiv Software',
+			LegalCopyright: 'Copyright 2015 Andrea Stella. All rights reserved',
+			ProductVersion: VERSION,
+			FileVersion: VERSION,
+			FileDescription: 'Tc, the chat client for Twitch',
+			ProductName: 'Tc'
+		},
+		out: PACKAGED_DIR
+	};
+	packager(opts, cb);
+});
+
+gulp.task('make-windows-installer', function() {
+	return winInstaller({
+		appDirectory: PACKAGED_DIR + '/AutoShutdown-win32-ia32',
+		outputDirectory: DIST_DIR,
+		iconUrl: __dirname + '/build-assets/logo-gray.ico',
+		exe: 'AutoShutdown.exe',
+		setupExe: 'AutoShutdown-Setup-'+VERSION+'.exe',
+		authors: 'Mccxiv Software',
+		title: 'Auto Shutdown',
+		setupIcon: __dirname + '/build-assets/logo-gray.ico'
 	});
-	return nw.build();
 });
 
-gulp.task('make-windows-installer', function(cb) {
+/*gulp.task('make-windows-installer', function(cb) {
 	inno('tc-inno-setup.iss', {gui: false, verbose: false}, cb);
-});
+});*/
 
 gulp.task('windows-zip', function() {
 	return gulp.src('build/tc/win32/**/*')
 		.pipe(rename(function(path) {
 			path.dirname = path.dirname === '.'? 'tc' : 'tc/'+path.dirname;
 		}))
-		.pipe(zip('tc-windows-'+version+'.zip'))
+		.pipe(zip('tc-windows-'+VERSION+'.zip'))
 		.pipe(gulp.dest('dist/'));
 });
 
-gulp.task('mac-zip', function() {
-	return gulp.src('build/tc/osx32/**/*')
+/*gulp.task('mac-zip', function() {
+	return gulp.src('build/tc/osx32/!**!/!*')
 		.pipe(zip('tc-osx-'+version+'.zip'))
 		.pipe(gulp.dest('dist/'));
 });
 
 gulp.task('linux-tarball', function() {
-	return gulp.src('build/tc/linux32/**/*')
+	return gulp.src('build/tc/linux32/!**!/!*')
 		.pipe(zip('tc-linux-'+version+'.zip'))
 		.pipe(gulp.dest('dist/'));
-});
+});*/
 
 gulp.task('rename-windows-installer', function(cb) {
 	fs.rename('dist/tc-setup.exe', 'dist/tc-setup-'+version+'.exe', cb);

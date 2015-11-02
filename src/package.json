@@ -1,10 +1,10 @@
 {
-  "main": "app.html",
   "name": "Tc",
   "version": "1.0.0-beta.18",
   "node-remote": "http://localhost",
   "dependencies": {
     "fs-extra": "^0.18.1",
+    "jquery": "^2.1.4",
     "semver-diff": "^2.0.0",
     "tmi.js": "github:schmoopiie/tmi.js"
   }

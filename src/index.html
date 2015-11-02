@@ -51,8 +51,10 @@
         <!-- TODO ng-if causes error with animation -->
 		<login ng-show="needLogin()"></login>
 
+        <!-- TODO use the browser version instead, but no work with electron -->
+        <script>window.$ = window.jQuery = require('jquery');</script>
+
         <!-- build:js app.js -->
-		<script src="bower_components/jquery/dist/jquery.js" onload="window.$ = window.jQuery = module.exports;"></script>
         <script src="bower_components/lodash/lodash.js"></script>
 		<script src="bower_components/angular/angular.js"></script>
 		<script src="bower_components/angular-aria/angular-aria.js"></script>

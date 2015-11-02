@@ -1,9 +1,4 @@
-.idea
-/art
-/cache
-/build
-/tc.iml
-/dist
-/build-temp
+/.*
+!/.gitignore
 node_modules
 bower_components
