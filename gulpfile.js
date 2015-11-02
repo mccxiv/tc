@@ -30,9 +30,6 @@ if (typeof VERSION !== 'string' || VERSION.length < 6) {
 
 gulp.task('default', ['make-dist']);
 
-gulp.task('run-production-win32', function(cb) {
-	exec('"build/tc/win32/tc.exe"', cb);
-});
 
 gulp.task('run-development', function(cb) {
 	exec(path.normalize('./node_modules/.bin/electron ./src'), cb);
@@ -50,12 +47,12 @@ gulp.task('make-dist', function(cb) {
 		'build-html',
 		'clean-cached-templates',
 		'package',
-		'make-windows-installer',
-		/*[
+		'remove-unnecessary-package-files',
+		[
 			'make-windows-installer',
-			'make-windows-zip'
+			'windows-zip'
 		],
-		'clean-after',*/
+		'clean-after',
 		cb
 	);
 });
@@ -128,6 +125,15 @@ gulp.task('package', function(cb) {
 	packager(opts, cb);
 });
 
+gulp.task('remove-unnecessary-package-files', function(cb) {
+	var dir = PACKAGED_DIR + '/Tc-win32-ia32/';
+	del([
+		dir + 'd3dcompiler_47.dll',
+		dir + 'pdf.dll',
+		dir + 'xinput1_3.dll'
+	], cb);
+});
+
 gulp.task('make-windows-installer', function() {
 	return winInstaller({
 		appDirectory: PACKAGED_DIR + '/Tc-win32-ia32',
@@ -143,35 +149,20 @@ gulp.task('make-windows-installer', function() {
 	});
 });
 
-/*gulp.task('make-windows-installer', function(cb) {
-	inno('tc-inno-setup.iss', {gui: false, verbose: false}, cb);
-});*/
-
 gulp.task('windows-zip', function() {
-	return gulp.src('build/tc/win32/**/*')
+	return gulp.src(PACKAGED_DIR + '/Tc-win32-ia32/**/*')
 		.pipe(rename(function(path) {
 			path.dirname = path.dirname === '.'? 'tc' : 'tc/'+path.dirname;
 		}))
 		.pipe(zip('tc-windows-'+VERSION+'.zip'))
-		.pipe(gulp.dest('dist/'));
-});
-
-/*gulp.task('mac-zip', function() {
-	return gulp.src('build/tc/osx32/!**!/!*')
-		.pipe(zip('tc-osx-'+version+'.zip'))
-		.pipe(gulp.dest('dist/'));
-});
-
-gulp.task('linux-tarball', function() {
-	return gulp.src('build/tc/linux32/!**!/!*')
-		.pipe(zip('tc-linux-'+version+'.zip'))
-		.pipe(gulp.dest('dist/'));
-});*/
-
-gulp.task('rename-windows-installer', function(cb) {
-	fs.rename('dist/tc-setup.exe', 'dist/tc-setup-'+version+'.exe', cb);
+		.pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('clean-after', function(cb) {
-	del(['build-temp/'], cb);
+	del([
+		BUILD_DIR,
+		PACKAGED_DIR,
+		DIST_DIR + '/RELEASES',
+		DIST_DIR + '/*.nupkg'
+	], cb);
 });
