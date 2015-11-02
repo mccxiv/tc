@@ -134,7 +134,7 @@ gulp.task('make-windows-installer', function() {
 		outputDirectory: DIST_DIR,
 		iconUrl: path.resolve('src/assets-embed/win.ico'),
 		exe: 'Tc.exe',
-		version: '1.0.0',
+		version: VERSION,
 		setupExe: 'tc-setup-'+VERSION+'.exe',
 		authors: 'Mccxiv Software',
 		description: 'Tc, the chat client for Twitch',

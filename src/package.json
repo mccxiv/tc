@@ -1,6 +1,6 @@
 {
   "name": "Tc",
-  "version": "1.0.0-beta.18",
+  "version": "1.0.0-beta18",
   "node-remote": "http://localhost",
   "dependencies": {
     "jquery": "^2.1.4",
