@@ -1,9 +1,11 @@
 var app = require('app');
 var ipc = require('ipc');
 var BrowserWindow = require('browser-window');
+var startup = require('./assets/squirrel-startup.js');
 
 var main;
 
+if (startup()) return;
 app.on('ready', ready);
 ipc.on('open-dev-tools', devTools);
 app.on('window-all-closed', app.quit.bind(app));

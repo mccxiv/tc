@@ -50,6 +50,7 @@ gulp.task('make-dist', function(cb) {
 		'build-html',
 		'clean-cached-templates',
 		'package',
+		'make-windows-installer',
 		/*[
 			'make-windows-installer',
 			'make-windows-zip'
@@ -109,7 +110,7 @@ gulp.task('package', function(cb) {
 	var opts = {
 		dir: BUILD_DIR,
 		name: 'Tc',
-		platform: 'all',
+		platform: 'win32',
 		arch: 'ia32',
 		version: '0.34.2',
 		'app-version': VERSION,
@@ -129,14 +130,16 @@ gulp.task('package', function(cb) {
 
 gulp.task('make-windows-installer', function() {
 	return winInstaller({
-		appDirectory: PACKAGED_DIR + '/AutoShutdown-win32-ia32',
+		appDirectory: PACKAGED_DIR + '/Tc-win32-ia32',
 		outputDirectory: DIST_DIR,
-		iconUrl: __dirname + '/build-assets/logo-gray.ico',
-		exe: 'AutoShutdown.exe',
-		setupExe: 'AutoShutdown-Setup-'+VERSION+'.exe',
+		iconUrl: path.resolve('src/assets-embed/win.ico'),
+		exe: 'Tc.exe',
+		version: '1.0.0',
+		setupExe: 'tc-setup-'+VERSION+'.exe',
 		authors: 'Mccxiv Software',
-		title: 'Auto Shutdown',
-		setupIcon: __dirname + '/build-assets/logo-gray.ico'
+		description: 'Tc, the chat client for Twitch',
+		title: 'Tc, the chat client for Twitch',
+		setupIcon: path.resolve('src/assets-embed/win.ico')
 	});
 });
 
