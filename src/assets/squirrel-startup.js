@@ -9,23 +9,32 @@ module.exports = function() {
 		var path = require('path');
 		var execSync = require('child_process').execSync;
 		var target = path.basename(process.execPath);
-		var updateDotExe = path.resolve(path.dirname(process.execPath), '..', 'update.exe');
+		var updateDotExe = path.resolve(
+			path.dirname(process.execPath),
+			'..',
+			'update.exe'
+		);
 
 		switch (squirrelCommand) {
 			case '--squirrel-install':
-				createShortcut = updateDotExe + ' --createShortcut="' + target + '" --shortcut-locations=Desktop,StartMenu';
-				console.log (createShortcut);
+			case '--squirrel-updated':
+				createShortcut = updateDotExe + ' --createShortcut="' +
+					target + '" --shortcut-locations=Desktop,StartMenu';
+				console.log(squirrelCommand);
+				console.log(createShortcut);
 				execSync(createShortcut);
 				app.quit();
 				return true;
 			case '--squirrel-uninstall':
-				createShortcut = updateDotExe + ' --removeShortcut="' + target + '"';
-				console.log (createShortcut);
+				createShortcut = updateDotExe +
+					' --removeShortcut="' + target + '"';
+				console.log(squirrelCommand);
+				console.log(createShortcut);
 				execSync(createShortcut);
 				app.quit();
 				return true;
-			case '--squirrel-updated':
 			case '--squirrel-obsolete':
+				console.log(squirrelCommand);
 				app.quit();
 				return true;
 		}
