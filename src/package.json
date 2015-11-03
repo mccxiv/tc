@@ -5,6 +5,7 @@
   "dependencies": {
     "jquery": "^2.1.4",
     "semver-diff": "^2.0.0",
+    "spellchecker": "^3.1.2",
     "tmi.js": "github:schmoopiie/tmi.js",
     "yargs": "^3.29.0"
   }

@@ -2,11 +2,16 @@
   "private": true,
   "name": "tc-project",
   "version": "0.0.0",
-  "devDependencies": {
+  "scripts": {
+    "postinstall": "bower install && cd src && npm install && cd .. && gulp rebuild-spellchecker"
+  },
+  "dependencies": {
+    "bower": "1.6.5",
     "del": "1.2.0",
-    "electron-packager": "^5.1.1",
-    "electron-prebuilt": "^0.34.2",
-    "electron-windows-installer": "^1.1.0",
+    "electron-packager": "5.1.1",
+    "electron-prebuilt": "0.34.2",
+    "electron-rebuild": "1.0.2",
+    "electron-windows-installer": "1.1.0",
     "gulp": "3.8.11",
     "gulp-add-src": "0.2.0",
     "gulp-angular-templatecache": "1.6.0",
@@ -21,7 +26,7 @@
     "gulp-uglify": "1.2.0",
     "gulp-useref": "1.1.2",
     "gulp-zip": "3.0.2",
-    "root-require": "^0.3.1",
+    "root-require": "0.3.1",
     "run-sequence": "1.1.0",
     "tmi.js": "git://github.com/Schmoopiie/tmi.js.git"
   }

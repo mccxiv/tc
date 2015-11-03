@@ -30,7 +30,6 @@ if (typeof VERSION !== 'string' || VERSION.length < 6) {
 
 gulp.task('default', ['make-dist']);
 
-
 gulp.task('run-dev', function(cb) {
 	exec(path.normalize('./node_modules/.bin/electron ./src --data .settings'), cb);
 });
@@ -42,6 +41,7 @@ gulp.task('run-dev-no-args', function(cb) {
 gulp.task('make-dist', function(cb) {
 	runSequence(
 		'clean-before',
+		'rebuild-spellchecker-ia32',
 		[
 			'copy-assets',
 			'copy-electron-files',
@@ -57,12 +57,28 @@ gulp.task('make-dist', function(cb) {
 			'windows-zip'
 		],
 		'clean-after',
+		'rebuild-spellchecker',
 		cb
 	);
 });
 
 gulp.task('clean-before', function(cb) {
 	del([BUILD_DIR, PACKAGED_DIR, DIST_DIR], cb);
+});
+
+gulp.task('rebuild-spellchecker-ia32', function(cb) {
+	exec(path.normalize('./node_modules/.bin/electron-rebuild ' +
+		'--module-dir src/node_modules ' +
+		'--which-module spellchecker ' +
+		'--arch ia32 '
+	), cb);
+});
+
+gulp.task('rebuild-spellchecker', function(cb) {
+	exec(path.normalize('./node_modules/.bin/electron-rebuild ' +
+		'--module-dir src/node_modules ' +
+		'--which-module spellchecker '
+	), cb);
 });
 
 gulp.task('copy-assets', function() {
