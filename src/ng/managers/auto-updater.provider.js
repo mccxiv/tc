@@ -15,7 +15,7 @@ angular.module('tc').factory('autoUpdater', function() {
 	var autoUpdater = require('remote').require('auto-updater');
 	window.autoUpdater = autoUpdater; // TODO remove debugging stuff
 
-	autoUpdater.setFeedUrl('http://auto-update.gettc.xyz');
+	autoUpdater.setFeedUrl('http://gettc.xyz/update');
 
 	autoUpdater.on('checking-for-update', function() {
 		console.log("checking-for-update");
