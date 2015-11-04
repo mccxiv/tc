@@ -1,6 +1,4 @@
-var fs =              require('fs');
 var del =             require('del');
-var zip =             require('gulp-zip');
 var exec =            require('child_process').exec;
 var gulp =            require('gulp');
 var path =            require('path');
@@ -9,7 +7,6 @@ var uglify =          require('gulp-uglify');
 var gulpif =          require('gulp-if');
 var concat =          require('gulp-concat');
 var addsrc =          require('gulp-add-src');
-var rename =          require('gulp-rename');
 var base64 =          require('gulp-css-base64');
 var packager =        require('electron-packager');
 var minifyCss =       require('gulp-minify-css');
@@ -31,7 +28,7 @@ if (typeof VERSION !== 'string' || VERSION.length < 6) {
 gulp.task('default', ['make-dist']);
 
 gulp.task('run-dev', function(cb) {
-	exec(path.normalize('./node_modules/.bin/electron ./src --data .settings --dev-tools'), cb);
+	exec(path.normalize('./node_modules/.bin/electron ./src --dev-tools'), cb);
 });
 
 gulp.task('run-dev-no-args', function(cb) {
