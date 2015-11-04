@@ -7,10 +7,10 @@
  * - The application will restart on the new version
  *
  * @ngdoc factory
- * @name updateChecker
+ * @name autoUpdater
  */
-angular.module('tc').factory('updateChecker', function() {
-	console.log('LOAD: updateChecker');
+angular.module('tc').factory('autoUpdater', function() {
+	console.log('LOAD: autoUpdater');
 
 	var autoUpdater = require('remote').require('auto-updater');
 	window.autoUpdater = autoUpdater; // TODO remove debugging stuff
@@ -33,13 +33,16 @@ angular.module('tc').factory('updateChecker', function() {
 		console.log(" update-downloaded");
 	});
 
-	setTimeout(autoUpdater.checkForUpdates.bind(autoUpdater), 15000);
-	setInterval(autoUpdater.checkForUpdates.bind(autoUpdater), 82800000);
+	setTimeout(check, 15000);
+	setInterval(check, 82800000);
 
 	function check() {
-		try {autoUpdater.checkForUpdates();}
-		catch (e) {console.warn('Could not check for updates');}
+		autoUpdater.checkForUpdates();
 	}
+
+	autoUpdater.on('error', function() {
+		console.warn('Error when checking for updates.');
+	});
 
 	return autoUpdater;
 });

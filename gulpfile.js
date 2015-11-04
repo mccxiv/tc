@@ -21,7 +21,7 @@ var BUILD_DIR = '.build';
 var PACKAGED_DIR = '.packaged';
 var DIST_DIR = '.dist';
 
-if (typeof VERSION !== 'string' || VERSION.length < 6) {
+if (typeof VERSION !== 'string' || VERSION.length < 5) {
 	throw new Error('Invalid version from package.json');
 }
 
@@ -155,6 +155,7 @@ gulp.task('make-windows-installer', function() {
 		appDirectory: PACKAGED_DIR + '/Tc-win32-ia32',
 		outputDirectory: DIST_DIR,
 		iconUrl: path.resolve('src/assets-embed/win.ico'),
+		loadingGif: path.resolve('src/assets-embed/install.gif'),
 		exe: 'Tc.exe',
 		version: VERSION,
 		setupExe: 'tc-setup-'+VERSION+'.exe',

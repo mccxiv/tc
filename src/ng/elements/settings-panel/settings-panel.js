@@ -4,7 +4,7 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settings, updateChecker, manifest) {
+angular.module('tc').directive('settingsPanel', function(settings, autoUpdater, manifest) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
@@ -13,7 +13,7 @@ angular.module('tc').directive('settingsPanel', function(settings, updateChecker
 			selected: 'highlights'
 		};
 
-		updateChecker.check();
+		autoUpdater.checkForUpdates();
 
 		scope.zoomLabel = function() {
 			if (settings.appearance.zoom === 100) return 'Normal';
