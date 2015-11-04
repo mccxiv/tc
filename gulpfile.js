@@ -31,7 +31,7 @@ if (typeof VERSION !== 'string' || VERSION.length < 6) {
 gulp.task('default', ['make-dist']);
 
 gulp.task('run-dev', function(cb) {
-	exec(path.normalize('./node_modules/.bin/electron ./src --data .settings'), cb);
+	exec(path.normalize('./node_modules/.bin/electron ./src --data .settings --dev-tools'), cb);
 });
 
 gulp.task('run-dev-no-args', function(cb) {
@@ -52,10 +52,7 @@ gulp.task('make-dist', function(cb) {
 		'clean-cached-templates',
 		'package',
 		'remove-unnecessary-package-files',
-		[
-			'make-windows-installer',
-			'windows-zip'
-		],
+		'make-windows-installer',
 		'clean-after',
 		'rebuild-spellchecker',
 		cb
@@ -92,7 +89,9 @@ gulp.task('copy-electron-files', function() {
 });
 
 gulp.task('copy-node-modules', function () {
-	return gulp.src(['src/node_modules/**/*', '!src/node_modules/.bin'], {base: 'src/node_modules'})
+	return gulp.src(
+		['src/node_modules/**/*', '!src/node_modules/.bin'],
+		{base: 'src/node_modules'})
 		.pipe(gulp.dest(BUILD_DIR + '/node_modules/'));
 });
 
@@ -169,20 +168,6 @@ gulp.task('make-windows-installer', function() {
 	});
 });
 
-gulp.task('windows-zip', function() {
-	return gulp.src(PACKAGED_DIR + '/Tc-win32-ia32/**/*')
-		.pipe(rename(function(path) {
-			path.dirname = path.dirname === '.'? 'tc' : 'tc/'+path.dirname;
-		}))
-		.pipe(zip('tc-windows-'+VERSION+'.zip'))
-		.pipe(gulp.dest(DIST_DIR));
-});
-
 gulp.task('clean-after', function(cb) {
-	del([
-		BUILD_DIR,
-		PACKAGED_DIR,
-		DIST_DIR + '/RELEASES',
-		DIST_DIR + '/*.nupkg'
-	], cb);
+	del([BUILD_DIR, PACKAGED_DIR], cb);
 });

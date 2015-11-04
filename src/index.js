@@ -7,14 +7,13 @@ var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
 var startup = require('./assets/squirrel-startup.js');
 
-var DATA_PATH = path.resolve(argv.data || path.resolve(__dirname, './settings'));
-
 var main;
 var tray;
 var quitting;
 
 if (startup()) return;
-app.setPath('userData', DATA_PATH);
+if (argv['dev-tools']) setTimeout(devTools, 1000);
+if (argv.data) app.setPath('userData', path.resolve(argv.data));
 app.on('ready', makeWindow);
 app.on('ready', makeTray);
 ipc.on('open-dev-tools', devTools);
@@ -31,7 +30,6 @@ function makeWindow() {
 
 	main.setMenu(null);
 	main.loadUrl('file://' + __dirname + '/index.html');
-	//main.on('closed', function() {main = null;});
 	main.on('close', function(e) {
 		if (!quitting) e.preventDefault();
 		main.hide();
