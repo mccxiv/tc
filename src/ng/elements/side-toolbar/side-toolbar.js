@@ -1,7 +1,8 @@
 angular.module('tc').directive('sideToolbar', function(
-	settings, settingsGui, $filter, $mdDialog, irc, openExternal) {
+	settings, settingsGui, $filter, $mdDialog, irc, openExternal, autoUpdater) {
 	
 	function link(scope, element) {
+		scope.m = {};
 		scope.irc = irc;
 		scope.settings = settings;
 		scope.settingsGui = settingsGui;
@@ -14,6 +15,15 @@ angular.module('tc').directive('sideToolbar', function(
 			if (!irc.ready) el.classList.add('not-ready');
 			else el.classList.remove('not-ready');
 		});
+
+		autoUpdater.on('update-downloaded', function() {
+			scope.m.updateAvailable = true;
+			scope.$apply();
+		});
+
+		scope.update = function() {
+			autoUpdater.quitAndInstall();
+		};
 
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]

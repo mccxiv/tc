@@ -24,6 +24,13 @@
 
 <span flex></span>
 
+<md-button class="update-button" ng-click="update()" aria-label="Update" ng-if="m.updateAvailable">
+    <md-tooltip md-autohide>
+        Update and Restart
+    </md-tooltip>
+    <i class="zmdi zmdi-download"></i>
+</md-button>
+
 <md-button ng-click="settings.appearance.thumbnail = true" aria-label="Show thumbnail" ng-if="showingThumbnailButton()">
     <md-tooltip md-autohide>
         Show thumbnail

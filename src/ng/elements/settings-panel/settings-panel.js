@@ -4,7 +4,8 @@
  * @ngdoc directive
  * @restrict E
  */
-angular.module('tc').directive('settingsPanel', function(settings, autoUpdater, manifest) {
+angular.module('tc').directive('settingsPanel', function(
+	settings, autoUpdater, manifest) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
