@@ -80,7 +80,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 		var clientSettings = {
 			options: {debug: false},
-			connection: {random: 'chat', timeout: 10000, reconnect: true},
+			connection: {random: 'chat', timeout: 35000, reconnect: true},
 			identity: angular.copy(settings.identity),
 			channels: settings.channels.map(function(channel) {
 				return '#'+channel;
