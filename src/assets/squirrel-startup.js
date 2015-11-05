@@ -18,7 +18,7 @@ module.exports = function() {
 		switch (squirrelCommand) {
 			case '--squirrel-install':
 			case '--squirrel-updated':
-				createShortcut = updateDotExe + ' --createShortcut="' +
+				createShortcut = '"' + updateDotExe + '"' + ' --createShortcut="' +
 					target + '" --shortcut-locations=Desktop,StartMenu';
 				console.log(squirrelCommand);
 				console.log(createShortcut);
