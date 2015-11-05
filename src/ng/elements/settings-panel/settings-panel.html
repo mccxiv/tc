@@ -51,7 +51,8 @@
 
         <div layout>
             <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
-            <md-slider flex md-discrete ng-model="settings.appearance.zoom" min="100" max="175" step="5"></md-slider>
+            <md-slider flex md-discrete ng-model="settings.appearance.zoom"
+                       min="100" max="175" step="5" aria-label="Zoom"></md-slider>
         </div>
     </md-content>
 
