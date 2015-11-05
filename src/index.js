@@ -18,6 +18,7 @@ app.on('ready', makeWindow);
 app.on('ready', makeTray);
 ipc.on('open-dev-tools', devTools);
 ipc.on('notification', notification);
+app.on('window-all-closed', app.quit.bind(app));
 
 function makeWindow() {
 	main = new BrowserWindow({

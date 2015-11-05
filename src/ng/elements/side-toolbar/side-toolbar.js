@@ -21,10 +21,6 @@ angular.module('tc').directive('sideToolbar', function(
 			scope.$apply();
 		});
 
-		scope.update = function() {
-			autoUpdater.quitAndInstall();
-		};
-
 		scope.channel = function() {
 			return settings.channels[settings.selectedTabIndex]
 		};
