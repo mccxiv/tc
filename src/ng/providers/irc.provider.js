@@ -80,7 +80,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 		var clientSettings = {
 			options: {debug: false},
-			connection: {random: 'chat', timeout: 35000, reconnect: true},
+			connection: {random: 'chat', timeout: 20000, reconnect: true},
 			identity: angular.copy(settings.identity),
 			channels: settings.channels.map(function(channel) {
 				return '#'+channel;
@@ -110,6 +110,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			setTimeout(function() {$rootScope.$apply();}, 0);
 		});
 
+		// TODO should wait for write to be connected before being ready
 		console.log('IRC: registering connected event');
 		clients.read.on('connected', function() {
 			console.log('IRC: connected event fired');
@@ -129,6 +130,25 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 				ee.emit.apply(ee, args);
 				clients.read.once('connected', onlyEmitDisconnectedOnce);
 			});
+		}
+
+		// Temporary monkey patch for reconnect not working with group servers.
+		// Periodically check if it's disconnected and manually reconnect.
+		setTimeout(reconnectWhisperServer, 60000);
+		function reconnectWhisperServer() {
+			if (clients.whisper && clients.read) {
+				var whisperState = clients.whisper.readyState();
+				var readState = clients.read.readyState();
+				if (readState === 'OPEN' && whisperState === 'CLOSED') {
+					console.warn(
+							'Whisper server was disconnected even ' +
+							'though the read server is connected. ' +
+							'Reconnecting it...');
+					clients.whisper.disconnect();
+					clients.whisper.connect();
+				}
+				setTimeout(reconnectWhisperServer, 20000);
+			}
 		}
 	}
 
