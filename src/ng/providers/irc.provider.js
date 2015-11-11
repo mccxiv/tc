@@ -92,6 +92,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			if (key === 'whisper') {
 				setts.connection.random = 'group';
 				setts.channels = [];
+				setts.reconnect = false;
 			}
 			clients[key] = new tmi.client(setts);
 			clients[key].connect();
@@ -144,7 +145,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 							'Whisper server was disconnected even ' +
 							'though the read server is connected. ' +
 							'Reconnecting it...');
-					clients.whisper.disconnect();
 					clients.whisper.connect();
 				}
 				setTimeout(reconnectWhisperServer, 20000);
