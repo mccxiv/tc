@@ -145,7 +145,10 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 							'Whisper server was disconnected even ' +
 							'though the read server is connected. ' +
 							'Reconnecting it...');
-					clients.whisper.connect();
+					clients.whisper.disconnect().then(
+							clients.whisper.connect.bind(clients.whisper),
+							clients.whisper.connect.bind(clients.whisper)
+					);
 				}
 				setTimeout(reconnectWhisperServer, 20000);
 			}
