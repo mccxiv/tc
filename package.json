@@ -12,7 +12,7 @@
     "electron-prebuilt": "0.34.2",
     "electron-rebuild": "1.0.2",
     "electron-windows-installer": "1.1.0",
-    "gulp": "3.8.11",
+    "gulp": "3.9.0",
     "gulp-add-src": "0.2.0",
     "gulp-angular-templatecache": "1.6.0",
     "gulp-base64": "0.1.2",
