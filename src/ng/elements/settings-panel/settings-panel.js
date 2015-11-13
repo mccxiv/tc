@@ -5,7 +5,7 @@
  * @restrict E
  */
 angular.module('tc').directive('settingsPanel', function(
-	settings, autoUpdater, manifest, highlights) {
+	settings, autoUpdater, manifest, highlights, notifications) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
@@ -34,6 +34,14 @@ angular.module('tc').directive('settingsPanel', function(
 			},
 			save: function() {
 				highlights.set(this.list);
+			}
+		};
+
+		scope.notifications = {
+			playSound: function() {
+				if (settings.notifications.soundOnMention) {
+					notifications.playSound();
+				}
 			}
 		};
 

@@ -69,7 +69,26 @@
     </md-content>
 
     <md-content ng-switch-when="notifications">
-        <notification-options></notification-options>
+        <h1 class="md-headline">Desktop notifications</h1>
+
+        <md-switch ng-model="settings.notifications.onConnect">
+            On connection and disconnection
+        </md-switch>
+
+        <md-switch ng-model="settings.notifications.onMention">
+            On highlighted phrases
+        </md-switch>
+
+        <md-switch ng-model="settings.notifications.onWhisper">
+            On whispers
+        </md-switch>
+
+        <md-divider></md-divider>
+
+        <md-switch ng-model="settings.notifications.soundOnMention"
+                   ng-change="notifications.playSound()">
+            Also play a sound
+        </md-switch>
     </md-content>
 
     <md-content ng-switch-when="chat">
