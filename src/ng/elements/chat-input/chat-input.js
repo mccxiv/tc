@@ -1,4 +1,5 @@
-angular.module('tc').directive('chatInput', function(settings, session, irc, messages) {
+angular.module('tc').directive('chatInput', function(
+		settings, session, irc, messages) {
 
 	function link(scope, element) {
 		scope.message = '';
@@ -19,18 +20,24 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 			else inputContainer.classList.remove('disabled');
 		});
 
-		scope.getUsernames = function() {
+		scope.getAutoCompleteStrings = function() {
 			var channel = settings.channels[settings.selectedTabIndex];
 
 			if (!channel) return [];
-			else return _(messages(channel)).filter(hasUser).map(getNames).unique().value();
+			else return _(messages(channel))
+					.filter(hasUser)
+					.map(getNames)
+					.unique()
+					.value();
 
 			function hasUser(message) {
-				return !!message.user;
+				return !!message.user || !!message.from;
 			}
 
 			function getNames(message) {
-				return message.user['display-name'] || message.user.username;
+				return  message.from ||
+						message.user['display-name'] ||
+						message.user.username;
 			}
 		};
 		
@@ -44,10 +51,11 @@ angular.module('tc').directive('chatInput', function(settings, session, irc, mes
 
 			if (scope.message.indexOf('.w') === 0) {
 				var words =  scope.message.split(' ');
+				var me = settings.identity.username;
 				var username = words[1];
 				var message = words.slice(2).join(' ');
 				irc.whisper(username, message);
-				messages.addWhisper(settings.identity.username, username, message);
+				messages.addWhisper(me, username, message);
 			}
 
 			else irc.say(channel, scope.message);

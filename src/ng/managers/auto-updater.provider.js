@@ -16,6 +16,7 @@ angular.module('tc').factory('autoUpdater', function() {
 	window.autoUpdater = autoUpdater; // TODO remove debugging stuff
 
 	autoUpdater.setFeedUrl('http://gettc.xyz/update');
+	//autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
 
 	autoUpdater.on('checking-for-update', function() {
 		console.log("checking-for-update");
