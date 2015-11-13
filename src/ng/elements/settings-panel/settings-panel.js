@@ -5,13 +5,36 @@
  * @restrict E
  */
 angular.module('tc').directive('settingsPanel', function(
-	settings, autoUpdater, manifest) {
+	settings, autoUpdater, manifest, highlights) {
 	function link(scope, element) {
 		element.attr('layout', 'row');
 		scope.settings = settings;
 		scope.m = {
 			version: manifest.version,
 			selected: 'highlights'
+		};
+
+		scope.highlights = {
+			list: highlights.get(),
+			input: '',
+			highlightMe: highlights.highlightMe(),
+			add: function() {
+				if (this.input.length) {
+					this.list.push(this.input);
+					this.save();
+				}
+				this.input = '';
+			},
+			remove: function(index) {
+				this.list.splice(index, 1);
+				this.save();
+			},
+			changeHighlightMe: function() {
+				highlights.highlightMe(this.highlightMe);
+			},
+			save: function() {
+				highlights.set(this.list);
+			}
 		};
 
 		autoUpdater.checkForUpdates();

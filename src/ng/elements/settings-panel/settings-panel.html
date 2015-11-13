@@ -5,19 +5,29 @@
 
         <!-- TODO refactor this awful repetition -->
 
-        <md-list-item class="menu-item" ng-click="m.selected = 'highlights'" ng-class="{selected: m.selected === 'highlights'}">
+        <md-list-item class="menu-item"
+                      ng-click="m.selected = 'highlights'"
+                      ng-class="{selected: m.selected === 'highlights'}">
             <p>Highlights</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'notifications'" ng-class="{selected: m.selected === 'notifications'}">
+        <md-list-item class="menu-item"
+                      ng-click="m.selected = 'notifications'"
+                      ng-class="{selected: m.selected === 'notifications'}">
             <p>Notifications</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'chat'" ng-class="{selected: m.selected === 'chat'}">
+        <md-list-item class="menu-item"
+                      ng-click="m.selected = 'chat'"
+                      ng-class="{selected: m.selected === 'chat'}">
             <p>Chat</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'appearance'" ng-class="{selected: m.selected === 'appearance'}">
+        <md-list-item class="menu-item"
+                      ng-click="m.selected = 'appearance'"
+                      ng-class="{selected: m.selected === 'appearance'}">
             <p>Appearance</p>
         </md-list-item>
-        <md-list-item class="menu-item" ng-click="m.selected = 'about'" ng-class="{selected: m.selected === 'about'}">
+        <md-list-item class="menu-item"
+                      ng-click="m.selected = 'about'"
+                      ng-class="{selected: m.selected === 'about'}">
             <p>About</p>
         </md-list-item>
     </md-list>
@@ -26,8 +36,36 @@
 
 <div flex class="settings-content" ng-switch on="m.selected" layout="column">
 
-    <md-content ng-switch-when="highlights">
-        <highlights-options></highlights-options>
+    <md-content ng-switch-when="highlights" class="highlights">
+        <h1 class="md-headline">Highlighted phrases</h1>
+        <p>
+            You may add words and phrases to make them stand out in chat and
+            show up as desktop notifications. Matches are not case sensitive.
+        </p>
+
+        <form class="input-form" ng-submit="highlights.add()">
+            <md-input-container>
+                <label>Add a new phrase. Supports regex</label>
+                <input ng-model="highlights.input">
+            </md-input-container>
+        </form>
+
+        <md-list class="phrase-list">
+            <md-list-item class="item" ng-repeat="highlight in highlights.list track by $index">
+                <md-button class="close-button md-raised md-warn" ng-click="highlights.remove($index)">
+                    <md-tooltip md-autohide md-direction="right">
+                        Delete this phrase
+                    </md-tooltip>
+                    <i class="zmdi zmdi-close"></i>
+                </md-button>
+                <p>{{highlight}}</p>
+            </md-list-item>
+        </md-list>
+
+        <md-switch ng-model="highlights.highlightMe" aria-label="Highlight Self"
+                   ng-change="highlights.changeHighlightMe()">
+            Also highlight my own name
+        </md-switch>
     </md-content>
 
     <md-content ng-switch-when="notifications">
@@ -52,7 +90,8 @@
         <div layout>
             <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
             <md-slider flex md-discrete ng-model="settings.appearance.zoom"
-                       min="100" max="175" step="5" aria-label="Zoom"></md-slider>
+                       min="100" max="175" step="5"
+                       aria-label="Zoom"></md-slider>
         </div>
     </md-content>
 

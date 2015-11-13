@@ -24,3 +24,23 @@ settings-panel .selected .md-button {
 settings-panel .slider-label {
     padding-right: 10px;
 }
+
+settings-panel .highlights .item {
+    font-size: 1.4rem;
+    cursor: default;
+}
+
+settings-panel .highlights .close-button {
+    width: 26px;
+    min-width: 0;
+    line-height: 2.5rem;
+    height: 2.5rem;
+}
+
+settings-panel .highlights .input-form {
+    width: 300px;
+}
+
+settings-panel .highlights md-list-item.md-clickable:hover {
+    cursor: default;
+}
