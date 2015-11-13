@@ -5,13 +5,14 @@ var Tray = require('tray');
 var Menu = require('menu');
 var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
-var startup = require('./assets/squirrel-startup.js');
+var startup = require('electron-squirrel-startup');
+//var startup = require('./assets/squirrel-startup.js');
 
 var main;
 var tray;
 var quitting;
 
-if (startup()) return;
+if (startup) return;
 if (argv['dev-tools']) setTimeout(devTools, 1000);
 if (argv.data) app.setPath('userData', path.resolve(argv.data));
 app.on('ready', makeWindow);
