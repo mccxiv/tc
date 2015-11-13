@@ -17,24 +17,19 @@ module.exports = function() {
 
 		switch (squirrelCommand) {
 			case '--squirrel-install':
-			case '--squirrel-updated':
 				createShortcut = '"' + updateDotExe + '"' + ' --createShortcut="' +
 					target + '" --shortcut-locations=Desktop,StartMenu';
-				console.log(squirrelCommand);
-				console.log(createShortcut);
 				execSync(createShortcut);
 				app.quit();
 				return true;
 			case '--squirrel-uninstall':
 				createShortcut = updateDotExe +
 					' --removeShortcut="' + target + '"';
-				console.log(squirrelCommand);
-				console.log(createShortcut);
 				execSync(createShortcut);
 				app.quit();
 				return true;
 			case '--squirrel-obsolete':
-				console.log(squirrelCommand);
+			case '--squirrel-updated':
 				app.quit();
 				return true;
 		}

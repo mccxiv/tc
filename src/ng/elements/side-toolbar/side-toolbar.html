@@ -25,28 +25,28 @@
 <span flex></span>
 
 <md-button md-no-ink class="update" aria-label="Update" ng-if="m.updateAvailable">
-    <md-tooltip md-autohide>
+    <md-tooltip md-autohide md-direction="right">
         Update is ready. Restart Tc to install it.
     </md-tooltip>
     <i class="zmdi zmdi-download"></i>
 </md-button>
 
 <md-button ng-click="settings.appearance.thumbnail = true" aria-label="Show thumbnail" ng-if="showingThumbnailButton()">
-    <md-tooltip md-autohide>
+    <md-tooltip md-autohide md-direction="right">
         Show thumbnail
     </md-tooltip>
     <i class="zmdi zmdi-tv-play"></i>
 </md-button>
 
 <md-button ng-click="openChannel()" aria-label="Go to channel" ng-if="channel()">
-    <md-tooltip md-autohide>
+    <md-tooltip md-autohide md-direction="right">
         Go to Channel
     </md-tooltip>
     <i class="zmdi zmdi-open-in-new"></i>
 </md-button>
 
 <md-button ng-click="leave()" aria-label="Leave channel" ng-if="channel()">
-    <md-tooltip md-autohide>
+    <md-tooltip md-autohide md-direction="right">
         Leave Channel
     </md-tooltip>
     <i class="zmdi zmdi-close"></i>
@@ -54,7 +54,7 @@
 
 <md-button class="collapse-button" ng-click="toggleCollapsed()" aria-label="Small sidebar"
         ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
-    <md-tooltip md-autohide ng-if="!settings.appearance.sidebarCollapsed">
+    <md-tooltip md-autohide md-direction="right" ng-if="!settings.appearance.sidebarCollapsed">
         Collapse sidebar
     </md-tooltip>
     <md-tooltip md-autohide md-direction="right" ng-if="settings.appearance.sidebarCollapsed">

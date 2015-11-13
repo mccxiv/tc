@@ -3,7 +3,6 @@
   "version": "1.0.5",
   "node-remote": "http://localhost",
   "dependencies": {
-    "electron-squirrel-startup": "^0.1.4",
     "jquery": "^2.1.4",
     "spellchecker": "^3.1.2",
     "tmi.js": "github:schmoopiie/tmi.js",

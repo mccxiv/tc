@@ -18,22 +18,6 @@ angular.module('tc').factory('autoUpdater', function() {
 	autoUpdater.setFeedUrl('http://gettc.xyz/update');
 	//autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
 
-	autoUpdater.on('checking-for-update', function() {
-		console.log("checking-for-update");
-	});
-
-	autoUpdater.on('update-available', function() {
-		console.log("update-available");
-	});
-
-	autoUpdater.on('update-not-available', function() {
-		console.log("update-not-available");
-	});
-
-	autoUpdater.on('update-downloaded', function() {
-		console.log(" update-downloaded");
-	});
-
 	setTimeout(check, 15000);
 	setInterval(check, 82800000);
 
