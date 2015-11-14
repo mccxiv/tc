@@ -91,8 +91,8 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			var setts = angular.copy(clientSettings);
 			if (key === 'whisper') {
 				setts.connection.random = 'group';
-				setts.channels = [];
-				setts.reconnect = false;
+				setts.connection.reconnect = false;
+				delete setts.channels;
 			}
 			clients[key] = new tmi.client(setts);
 			clients[key].connect();
