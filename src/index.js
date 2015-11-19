@@ -5,13 +5,14 @@ var Tray = require('tray');
 var Menu = require('menu');
 var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
-var startup = require('./assets/squirrel-startup.js');
+var squirrelStartup = require('./assets/squirrel-startup.js');
 
 var main;
 var tray;
 var quitting;
 
-if (startup()) return;
+if (squirrelStartup()) return; // TODO Shouldn't this be app.quit instead?
+if (isSecondInstance()) app.quit();
 if (argv['dev-tools']) setTimeout(devTools, 1000);
 if (argv.data) app.setPath('userData', path.resolve(argv.data));
 app.on('ready', makeWindow);
@@ -55,4 +56,15 @@ function notification(e, obj) {
 
 function devTools() {
 	main.openDevTools();
+}
+
+function isSecondInstance() {
+	return app.makeSingleInstance(secondaryInstanceLaunched);
+}
+
+// Called when this is the main instance, and another is launched
+function secondaryInstanceLaunched() {
+	if (main.isMinimized()) main.restore();
+	if (!main.isVisible()) main.show();
+	if (!main.isFocused()) main.focus();
 }
