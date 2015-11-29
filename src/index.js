@@ -19,6 +19,8 @@ app.on('ready', makeWindow);
 app.on('ready', makeTray);
 ipc.on('open-dev-tools', devTools);
 ipc.on('notification', notification);
+ipc.on('enable-auto-start', enableAutoStart);
+ipc.on('disable-auto-start', disableAutoStart);
 app.on('window-all-closed', app.quit.bind(app));
 
 function makeWindow() {
@@ -67,4 +69,40 @@ function secondaryInstanceLaunched() {
 	if (main.isMinimized()) main.restore();
 	if (!main.isVisible()) main.show();
 	if (!main.isFocused()) main.focus();
+}
+
+function enableAutoStart() {
+	toggleAutostart(true);
+}
+
+function disableAutoStart() {
+	toggleAutostart(false);
+}
+
+function toggleAutostart(adding) {
+	if (process.platform === 'win32') {
+		var command = adding? 'createShortcut' : 'removeShortcut';
+
+		var fs = require('fs');
+		var path = require('path');
+		var execSync = require('child_process').execSync;
+		var target = path.basename(process.execPath);
+		var updateDotExe = path.resolve(
+				path.dirname(process.execPath),
+				'..',
+				'update.exe'
+		);
+
+		var createShortcut = '"' + updateDotExe + '"' +
+				' --'+command+'="' + target + '"' +
+				' --shortcut-locations=Startup';
+
+		// Check that Update.exe exists, otherwise we're in standalone mode
+		fs.stat(updateDotExe, function(err, stats) {
+			if (err || !stats.size) console.warn('Update.exe not found.');
+			else execSync(createShortcut);
+		});
+
+	}
+	else console.warn('There is no autostart option for this platform.');
 }
