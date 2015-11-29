@@ -40,6 +40,13 @@ angular.module('tc').directive('chatOutput', function(
 			}
 		);
 
+		scope.$watch(
+			function() {return settings.appearance.sidebarCollapsed},
+			function() {
+				setTimeout(scrollIfEnabled, 260);
+			}
+		);
+
 		window.addEventListener('resize', scrollIfEnabled);
 
 
