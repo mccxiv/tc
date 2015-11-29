@@ -8,7 +8,8 @@
     "frosty": "*",
     "jquery": "~2.1.3",
     "lodash": "~3.8.0",
-    "material-design-iconic-font": "~2.1.2"
+    "material-design-iconic-font": "~2.1.2",
+    "roboto-fontface": "choffmeister/roboto-fontface-bower#~0.4.3"
   },
   "resolutions": {
     "angular": "1.4.7"
