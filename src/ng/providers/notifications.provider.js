@@ -26,6 +26,7 @@ angular.module('tc').factory('notifications', function(
 
 	irc.on('whisper', function(from, message) {
 		if (settings.notifications.onWhisper) {
+			if (settings.chat.ignored.indexOf(from) >= 0) return;
 			n('Whisper from ' + from, message);
 			if (settings.notifications.soundOnMention) sound.play();
 		}
@@ -36,6 +37,7 @@ angular.module('tc').factory('notifications', function(
 
 	function fromUser(channel, user, message) {
 		if (settings.notifications.onMention) {
+			if (settings.chat.ignored.indexOf(user.username) >= 0) return;
 			// TODO inefficient, runs test twice: here and in messages
 			if (highlights.test(message) &&
 				settings.identity.username.toLowerCase() != user.username) {
