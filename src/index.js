@@ -1,14 +1,11 @@
 var app = require('app');
 var ipc = require('ipc');
 var path = require('path');
-var Tray = require('tray');
-var Menu = require('menu');
 var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
 var squirrelStartup = require('./assets/squirrel-startup.js');
 
 var main;
-var tray;
 var quitting;
 
 if (squirrelStartup()) return; // TODO Shouldn't this be app.quit instead?
@@ -16,10 +13,11 @@ if (isSecondInstance()) app.quit();
 if (argv['dev-tools']) setTimeout(devTools, 1000);
 if (argv.data) app.setPath('userData', path.resolve(argv.data));
 app.on('ready', makeWindow);
+app.on('will-quit', handleExit);
 ipc.on('open-dev-tools', devTools);
 ipc.on('enable-auto-start', enableAutoStart);
 ipc.on('disable-auto-start', disableAutoStart);
-app.on('window-all-closed', app.quit.bind(app));
+ipc.on('force-quit', forceQuit);
 
 function makeWindow() {
 	main = new BrowserWindow({
@@ -30,12 +28,13 @@ function makeWindow() {
 		icon: __dirname + '/assets/icon256.png'
 	});
 
-	main.setMenu(null);
-	main.loadUrl('file://' + __dirname + '/index.html');
 	main.on('close', function(e) {
-		//if (!quitting) e.preventDefault();
+		if (!quitting) e.preventDefault();
 		main.hide();
 	});
+
+	main.setMenu(null);
+	main.loadUrl('file://' + __dirname + '/index.html');
 }
 
 function devTools() {
@@ -87,4 +86,13 @@ function toggleAutostart(adding) {
 
 	}
 	else console.warn('There is no autostart option for this platform.');
+}
+
+function handleExit(e) {
+	if (!quitting) e.preventDefault();
+}
+
+function forceQuit() {
+	quitting = true;
+	app.quit();
 }
