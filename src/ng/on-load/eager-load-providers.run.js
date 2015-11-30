@@ -6,5 +6,6 @@ angular.module('tc').run(function(
 	notifications,
 	titleManager,
 	zoomManager,
-	autoUpdater
+	autoUpdater,
+	trayIcon
 ) {});

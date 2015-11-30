@@ -14,7 +14,7 @@
  *
  */
 angular.module('tc').factory('notifications', function(
-	irc, settings, highlights) {
+	irc, settings, highlights, trayIcon) {
 
 	var sound = new Audio('assets/notification.ogg');
 
@@ -59,15 +59,13 @@ angular.module('tc').factory('notifications', function(
 	 */
 	function n(title, body) {
 		console.log('NOTIFICATIONS: firing notification', title, body);
-		require('ipc').send('notification', {title: title, content: body});
+		trayIcon.displayBalloon({title: title, content: body});
 	}
 
 	return {
 		create: n,
 
-		/**
-		 * Play the notification sound, regardless of settings.
-		 */
+		// Play the notification sound, regardless of settings.
 		playSound: sound.play.bind(sound)
 	}
 });
