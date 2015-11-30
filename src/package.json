@@ -1,5 +1,6 @@
 {
   "name": "Tc",
+  "private": true,
   "version": "1.0.8",
   "node-remote": "http://localhost",
   "dependencies": {
