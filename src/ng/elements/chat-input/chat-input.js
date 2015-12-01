@@ -37,7 +37,7 @@ angular.module('tc').directive('chatInput', function(
 				ffzEmotes = _.pluck(emotesFfz(channel), 'emote');
 				twitchEmotes = _.pluck(emotesTwitch, 'emote');
 
-				return usernames.concat(bttvEmotes, ffzEmotes, twitchEmotes);
+				return usernames.concat(twitchEmotes, bttvEmotes, ffzEmotes);
 			}
 
 			function hasUser(message) {
