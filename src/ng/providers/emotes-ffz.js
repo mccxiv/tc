@@ -4,13 +4,13 @@
  * It's designed to be synchronous so that it can be used in filters.
  *
  * @ngdoc factory
- * @name ffz
+ * @name emotesFfz
  * @function
  *
  * @param {string} channel
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('ffz', function($http, channels) {
+angular.module('tc').factory('emotesFfz', function($http, channels) {
 	console.log('LOAD: ffz');
 
 	var globalEmotes = [];

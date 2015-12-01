@@ -1,5 +1,5 @@
 angular.module('tc').directive('chatInput', function(
-		_, settings, session, irc, messages, bttv, ffz) {
+		_, settings, session, irc, messages, emotesBttv, emotesFfz) {
 
 	function link(scope, element) {
 		scope.message = '';
@@ -33,8 +33,8 @@ angular.module('tc').directive('chatInput', function(
 						.unique()
 						.value();
 
-				bttvEmotes = _.pluck(bttv, 'emote');
-				ffzEmotes = _.pluck(ffz(channel), 'emote');
+				bttvEmotes = _.pluck(emotesBttv, 'emote');
+				ffzEmotes = _.pluck(emotesFfz(channel), 'emote');
 
 				return usernames;
 			}

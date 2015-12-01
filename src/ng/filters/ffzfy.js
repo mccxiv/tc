@@ -7,7 +7,7 @@
  * @param parts {MessagePart[]}
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('ffzfy', function(ffz) {
+angular.module('tc').filter('ffzfy', function(emotesFfz) {
 	var potentialEmoteRegex = /[a-zA-Z_]{3,}/g;
 
 	function makePart(string, isElement) {
@@ -24,7 +24,7 @@ angular.module('tc').filter('ffzfy', function(ffz) {
 
 	return function(channel, parts) {
 
-		var emotes = ffz(channel);
+		var emotes = emotesFfz(channel);
 		var newParts = [];
 
 		parts.forEach(function(part) {

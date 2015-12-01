@@ -3,12 +3,12 @@
  * It's designed to be synchronous so that it can be used in filters.
  *
  * @ngdoc factory
- * @name bttv
+ * @name emotesBttv
  * @function
  *
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('bttv', function($http) {
+angular.module('tc').factory('emotesBttv', function($http) {
 	console.log('LOAD: bttv');
 	var emotes = [];
 

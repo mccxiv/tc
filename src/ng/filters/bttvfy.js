@@ -1,13 +1,13 @@
 
 /**
  * @ngdoc filter
- * @name bttvmotes
+ * @name bttvfy
  * @type function
  *
  * @param parts {MessagePart[]}
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('bttvmotes', function(bttv) {
+angular.module('tc').filter('bttvfy', function(emotesBttv) {
 	var potentialEmoteRegex = /[^\s]+/g;
 
 	function makePart(string, isElement) {
@@ -24,7 +24,7 @@ angular.module('tc').filter('bttvmotes', function(bttv) {
 
 	return function(parts) {
 
-		var emotes = bttv;
+		var emotes = emotesBttv;
 		var newParts = [];
 
 		parts.forEach(function(part) {
