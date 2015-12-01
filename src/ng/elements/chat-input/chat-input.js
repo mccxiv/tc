@@ -1,5 +1,5 @@
 angular.module('tc').directive('chatInput', function(
-		settings, session, irc, messages) {
+		_, settings, session, irc, messages, bttv, ffz) {
 
 	function link(scope, element) {
 		scope.message = '';
@@ -24,11 +24,20 @@ angular.module('tc').directive('chatInput', function(
 			var channel = settings.channels[settings.selectedTabIndex];
 
 			if (!channel) return [];
-			else return _(messages(channel))
-					.filter(hasUser)
-					.map(getNames)
-					.unique()
-					.value();
+			else {
+				var usernames, bttvEmotes, ffzEmotes, twitchEmotes;
+
+				usernames = _(messages(channel))
+						.filter(hasUser)
+						.map(getNames)
+						.unique()
+						.value();
+
+				bttvEmotes = _.pluck(bttv, 'emote');
+				ffzEmotes = _.pluck(ffz(channel), 'emote');
+
+				return usernames;
+			}
 
 			function hasUser(message) {
 				return !!message.user || !!message.from;
