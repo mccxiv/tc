@@ -3,7 +3,8 @@ var ipc = require('ipc');
 var path = require('path');
 var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
-var squirrelStartup = require('./assets/squirrel-startup.js');
+var squirrelStartup = require('./lib/squirrel-startup.js');
+var windowState = require('electron-window-state');
 
 var main;
 var quitting;
@@ -20,13 +21,22 @@ ipc.on('disable-auto-start', disableAutoStart);
 ipc.on('force-quit', forceQuit);
 
 function makeWindow() {
+	var mainWinState = windowState({
+		defaultWidth: 800,
+		defaultHeight: 450
+	});
+
 	main = new BrowserWindow({
-		width: 800,
-		height: 450,
+		x: mainWinState.x,
+		y: mainWinState.y,
+		width: mainWinState.width,
+		height: mainWinState.height,
 		'min-width': 500,
 		'min-height': 390,
 		icon: __dirname + '/assets/icon256.png'
 	});
+
+	mainWinState.manage(main);
 
 	main.on('close', function(e) {
 		if (!quitting) e.preventDefault();

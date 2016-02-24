@@ -40,6 +40,7 @@ gulp.task('make-dist', function(cb) {
 		'clean-before',
 		'rebuild-spellchecker-ia32',
 		[
+			'copy-lib',
 			'copy-assets',
 			'copy-electron-files',
 			'copy-node-modules'
@@ -73,6 +74,11 @@ gulp.task('rebuild-spellchecker', function(cb) {
 		'--module-dir src/node_modules ' +
 		'--which-module spellchecker '
 	), cb);
+});
+
+gulp.task('copy-lib', function() {
+	return gulp.src('src/lib/**/*')
+		.pipe(gulp.dest(BUILD_DIR + '/lib/'));
 });
 
 gulp.task('copy-assets', function() {
