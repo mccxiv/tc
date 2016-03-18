@@ -103,7 +103,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 		clients.read.on('disconnected', function(reason) {
 			console.log('IRC: disconnected:', reason);
-			if (reason === 'Login unsuccessful.') {
+			if (reason === 'Error logging in.') {
 				ee.badLogin = reason;
 				settings.identity.password = '';
 			}
