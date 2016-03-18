@@ -1,7 +1,7 @@
 {
   "name": "Tc",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "node-remote": "http://localhost",
   "dependencies": {
     "electron-window-state": "^2.0.0",
