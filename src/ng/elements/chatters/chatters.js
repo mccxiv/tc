@@ -32,13 +32,18 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
 			session.selectedUserChannel = scope.channel;
 		};
 		
-		function fetchList() {
+		function fetchList(attemptNumber) {
 			if (!isChannelSelected()) return; // Abort
 			console.log('CHATTERS: Getting user list for channel '+scope.channel);
-			api.chatters(scope.channel).success(onList).error(onListError);
+			api.chatters(scope.channel).success(onList).error(function() {
+				attemptNumber = attemptNumber || 0;
+				attemptNumber++;
+				console.warn('CHATTERS: Failed to get user list #' + attemptNumber);
+				if (attemptNumber < 6) fetchList(attemptNumber);
+			});
 		}		
 		
-		function onList(result, status) {
+		function onList(result) {
 			if (result && result.data && result.data.chatters) {
 				scope.api = result.data;
 				var chatters = scope.api.chatters;
@@ -51,11 +56,7 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
 				};
 				console.log('CHATTERS: Got viewer list for '+scope.channel, result.data);
 			}
-			else onListError(result, status);
-		}
-		
-		function onListError(result, status) {
-			console.warn('NYI Error'); // TODO
+			else console.warn('CHATTERS: Could not parse chatter list.');
 		}
 		
 		function isChannelSelected() {
