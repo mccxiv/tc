@@ -19,24 +19,29 @@ angular.module('tc').factory('emotesTwitch', function($http, irc) {
 		var url = 'https://api.twitch.tv/kraken/chat/emoticon_images';
 		url += '?emotesets='+sets;
 
-		$http.get(url).success(onSuccess).error(onFail);
+		getEmotes();
 
-		function onSuccess(data) {
-			try {
-				_.each(data.emoticon_sets, function(set) {
-					set.forEach(function(emoteObject) {
-						// Don't include regex based emote codes.
-						// Currently all regex emotes have a / in them
-						if (contains(emoteObject.code, '/')) return;
-						emotes.push({emote: emoteObject.code})
+		function getEmotes() {
+			$http.get(url).success(onSuccess).error(onFail);
+
+			function onSuccess(data) {
+				try {
+					_.each(data.emoticon_sets, function(set) {
+						set.forEach(function(emoteObject) {
+							// Don't include regex based emote codes.
+							// Currently all regex emotes have a / in them
+							if (contains(emoteObject.code, '/')) return;
+							emotes.push({emote: emoteObject.code})
+						});
 					});
-				});
+				}
+				catch (e) {onFail();}
 			}
-			catch (e) {onFail();}
-		}
 
-		function onFail() {
-			console.warn('Error grabbing twitch emotes list from API!')
+			function onFail() {
+				console.warn('Error grabbing twitch emotes. Retrying in 1m.');
+				setTimeout(getEmotes, 60000);
+			}
 		}
 	});
 

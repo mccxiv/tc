@@ -74,13 +74,13 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		// Disconnected is handled elsewhere
 		var readEvents = [
 			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-			'emotesets', 'hosted', 'hosting', 'slowmode', 'subanniversary',
+			'emotesets', 'hosted', 'hosting', 'notice', 'slowmode', 'subanniversary',
 			'subscriber', 'subscription', 'timeout', 'unhost'
 		];
 
 		var clientSettings = {
 			options: {debug: false},
-			connection: {random: 'chat', timeout: 20000, reconnect: true},
+			connection: {cluster: 'aws', timeout: 20000, reconnect: true},
 			identity: angular.copy(settings.identity),
 			channels: settings.channels.map(function(channel) {
 				return '#'+channel;
@@ -90,7 +90,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		_.forEach(clients, function(v, key) {
 			var setts = angular.copy(clientSettings);
 			if (key === 'whisper') {
-				setts.connection.random = 'group';
+				setts.connection.cluster = 'group';
 				setts.connection.reconnect = false;
 				delete setts.channels;
 			}

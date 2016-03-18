@@ -109,6 +109,10 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			addNotificationMessage(channel, target + ' is hosting you with ' + viewers + ' viewers.');
 		});
 
+		irc.on('notice', function(channel, msgid, message) {
+			addNotificationMessage(channel, 'Message from server: ' + message);
+		});
+
 		irc.on('slowmode', function(channel, enabled, length) {
 			var msg;
 			if (!enabled) msg = 'This room is no longer in slow mode.';
@@ -139,6 +143,10 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			addWhisperMessage(from, settings.identity.username, message);
 		});
 	}
+
+	setTimeout(function() {
+		addGlobalNotificationMessage('Hi! Twitch is moving servers. Unfortunately we cannot connect to both old and new servers at the same time. This version of Tc connects to the new servers. If you notice that the channel isn\'t working then it\'s probably on the other cluster. All channels should work by "next week" according to Twitch. - March 18th 2016');
+	}, 5000);
 
 	/**
 	 * Shows a notification chat message in all channels
