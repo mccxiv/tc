@@ -33,7 +33,7 @@ angular.module('tc').directive('chatInput', function(
 						.unique()
 						.value();
 
-				bttvEmotes = _.pluck(emotesBttv, 'emote');
+				bttvEmotes = _.pluck(emotesBttv(channel), 'emote');
 				ffzEmotes = _.pluck(emotesFfz(channel), 'emote');
 				twitchEmotes = _.pluck(emotesTwitch, 'emote');
 

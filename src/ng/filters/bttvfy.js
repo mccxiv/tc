@@ -19,12 +19,12 @@ angular.module('tc').filter('bttvfy', function(emotesBttv) {
 	}
 
 	function makeEmote(url, emote) {
-		return '<img class="emoticon" data-emote-name="'+emote+'" data-emote-description="BTTV Global Emote" src="'+url+'">';
+		return '<img class="emoticon" data-emote-name="'+emote+'" data-emote-description="BTTV Emote" src="'+url+'">';
 	}
 
-	return function(parts) {
+	return function(channel, parts) {
 
-		var emotes = emotesBttv;
+		var emotes = emotesBttv(channel);
 		var newParts = [];
 
 		parts.forEach(function(part) {

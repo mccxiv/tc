@@ -260,7 +260,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	function processMessage(msg, channel, userEmotes) {
 		msg = emotify(msg, userEmotes);
 		msg = ffzfy(channel, msg);
-		msg = bttvfy(msg);
+		msg = bttvfy(channel, msg);
 		msg = linkify(msg);
 		msg = escape(msg);
 		msg = combine(msg);
