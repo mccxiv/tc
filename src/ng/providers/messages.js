@@ -71,9 +71,6 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	messagesReturn.addNotification = addNotificationMessage;
 	messagesReturn.addGlobalNotification = addGlobalNotificationMessage;
 
-	// TODO remove
-	window.messages = messagesReturn;
-
 	//=====================================================
 	// Private methods
 	//=====================================================
@@ -173,11 +170,13 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 			return;
 		}
 
+		var notSelf = user.username != lowerCaseUsername;
+
 		addMessage(channel, {
 			user: user,
 			type: type,
-			highlighted: highlights.test(message) && user.username != lowerCaseUsername? true : false,
-			message: combine(escape(linkify(bttvfy(ffzfy(channel, emotify(message, user.emotes)))))),
+			highlighted: highlights.test(message) && notSelf ? true : false,
+			message: processMessage(message, channel, user.emotes),
 			style: type === 'action'? 'color: '+user.color : ''
 		});
 	}
@@ -253,6 +252,19 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 				}
 			});
 		}
+	}
+
+	/**
+	 * Applies transforms and emotes to a string
+	 */
+	function processMessage(msg, channel, userEmotes) {
+		msg = emotify(msg, userEmotes);
+		msg = ffzfy(channel, msg);
+		msg = bttvfy(msg);
+		msg = linkify(msg);
+		msg = escape(msg);
+		msg = combine(msg);
+		return msg;
 	}
 
 	/**
