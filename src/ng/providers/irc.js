@@ -74,7 +74,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 		// Disconnected is handled elsewhere
 		var readEvents = [
 			'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-			'emotesets', 'hosted', 'hosting', 'notice', 'slowmode', 'subanniversary',
+			'emotesets', 'hosted', 'hosting', 'slowmode', 'subanniversary',
 			'subscriber', 'subscription', 'timeout', 'unhost'
 		];
 
