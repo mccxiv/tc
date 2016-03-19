@@ -80,7 +80,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 
 		var clientSettings = {
 			options: {debug: false},
-			connection: {cluster: 'main', timeout: 20000, reconnect: true},
+			connection: {cluster: 'aws', timeout: 20000, reconnect: true},
 			identity: angular.copy(settings.identity),
 			channels: settings.channels.map(function(channel) {
 				return '#'+channel;
