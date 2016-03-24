@@ -137,10 +137,6 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		});
 	}
 
-	setTimeout(function() {
-		addGlobalNotificationMessage('Hi! Twitch is moving servers. Unfortunately we cannot connect to both old and new servers at the same time. This version of Tc connects to the new servers. If you notice that the channel isn\'t working then it\'s probably on the other cluster. All channels should work by "next week" according to Twitch. - March 18th 2016');
-	}, 5000);
-
 	/**
 	 * Shows a notification chat message in all channels
 	 * @param {string} message
@@ -204,7 +200,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		settings.channels.forEach(function(channel) {
 			addMessage(channel, {
 				type: 'whisper',
-				from: capitalize(from),
+				from: capitalize(from['display-name'] || from.username),
 				to: capitalize(to),
 				message: escape(message),
 				style: 'color: #999999'

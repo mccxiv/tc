@@ -96,6 +96,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 			}
 			clients[key] = new tmi.client(setts);
 			clients[key].connect();
+			clients[key].on('whisper', console.log.bind(console, 'WHISPER'))
 		});
 
 		forwardEvents(clients.read, ee, readEvents);
