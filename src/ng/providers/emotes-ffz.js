@@ -16,8 +16,6 @@ angular.module('tc').factory('emotesFfz', function($http, channels) {
 	var globalEmotes = [];
 	var channelEmotes = {};
 
-	window.ffz = channelEmotes;
-
 	cacheGlobal();
 	channels.on('add', cache);
 	channels.on('remove', remove);
@@ -32,18 +30,15 @@ angular.module('tc').factory('emotesFfz', function($http, channels) {
 				.catch(onError);
 		}, delay);
 
-		function onSuccess(data) {
-			try {
-				data.default_sets.forEach(function(setKey) {
-					data.sets[setKey].emoticons.forEach(function(emote) {
-						globalEmotes.push({
-							emote: emote.name,
-							url: 'http:'+emote.urls['1']
-						});
+		function onSuccess(response) {
+			response.data.default_sets.forEach(function(setKey) {
+				response.data.sets[setKey].emoticons.forEach(function(emote) {
+					globalEmotes.push({
+						emote: emote.name,
+						url: 'http:'+emote.urls['1']
 					});
 				});
-			}
-			catch(e) {onError();}
+			});
 			console.log('FFZ: global emotes', globalEmotes);
 		}
 
