@@ -164,9 +164,9 @@ angular.module('tc').directive('chatOutput', function(
 		}
 
 		function fetchBadges(timeout) {
-			api.badges(scope.channel).success(function(badges) {
+			api.badges(scope.channel).then(function(badges) {
 				scope.badges = badges;
-			}).error(function() {
+			}).catch(function() {
 				var delay = (timeout || 1000) * 2;
 				setTimeout(function() {fetchBadges(delay)}, delay);
 			});

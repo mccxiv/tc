@@ -29,6 +29,10 @@ chat-output .badge {
 	display: inline-block;
 }
 
+chat-output .badge.ffz {
+  background-color: #755000;
+}
+
 chat-output .badge:last-child {
     margin-right: 3px;
 }
