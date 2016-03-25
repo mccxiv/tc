@@ -26,8 +26,8 @@ angular.module('tc').factory('notifications', function(
 
 	irc.on('whisper', function(from, message) {
 		if (settings.notifications.onWhisper) {
-			if (settings.chat.ignored.indexOf(from) >= 0) return;
-			n('Whisper from ' + from, message);
+			if (settings.chat.ignored.indexOf(from.username) >= 0) return;
+			n('Whisper from ' + from['display-name'] || from.username, message);
 			if (settings.notifications.soundOnMention) sound.play();
 		}
 	});

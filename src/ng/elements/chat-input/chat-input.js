@@ -9,7 +9,7 @@ angular.module('tc').directive('chatInput', function(
 		var lastWhisperer;
 
 		irc.on('whisper', function(from) {
-			lastWhisperer = from;
+			lastWhisperer = from.username;
 		});
 
 		// Monkey patch for broken ng-class.
