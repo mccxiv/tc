@@ -13,7 +13,6 @@ angular.module('tc').factory('autoUpdater', function() {
 	console.log('LOAD: autoUpdater');
 
 	var autoUpdater = require('remote').require('auto-updater');
-	window.autoUpdater = autoUpdater; // TODO remove debugging stuff
 
 	autoUpdater.setFeedUrl('http://gettc.xyz/update');
 	//autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing

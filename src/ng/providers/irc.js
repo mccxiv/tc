@@ -48,9 +48,7 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	};
 
 	// TODO debug stuff
-	window.ircFactory = ee;
 	window.clients = clients;
-	window.$rootScope = $rootScope;
 
 	//===============================================================
 	// Setup
@@ -259,8 +257,6 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
 	}
 
 	function onChannelsChange(cb) {
-		console.log('IRC: onChannelsChange');
-		window.test = "!!!";
 		$rootScope.$watchCollection(
 			function watchVal() {return settings.channels;},
 			function handler(newV, oldV) {
