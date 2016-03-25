@@ -32,7 +32,8 @@
  * @property {function} addNotification        - Adds a notification message to a chat channel (light gray)
  * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
  */
-angular.module('tc').factory('messages', function($rootScope, $filter, irc, api, highlights, settings, channels) {
+angular.module('tc').factory('messages', function(
+	$rootScope, $filter, $http, irc, api, highlights, settings, channels) {
 	console.log('LOAD: messages');
 
 	//=====================================================
@@ -45,6 +46,8 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	var combine = $filter('combine');
 	var ffzfy = $filter('ffzfy');
 	var bttvfy = $filter('bttvfy');
+	var ffzDonors = [];
+	window.ffzdonors = ffzDonors;
 	var messageLimit = 500;
 	var messages = {};
 	var lowerCaseUsername = settings.identity.username.toLowerCase();
@@ -54,6 +57,7 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	//=====================================================
 	// Setup
 	//=====================================================
+	fetchFfzDonors();
 	setupIrcListeners();
 	channels.on('remove', function(channel) {
 		delete messages[channel];
@@ -155,18 +159,13 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 	 * @param {string} message
 	 */
 	function addUserMessage(type, channel, user, message) {
-		//todo figure out the user.special situation
 		if (user.special) user.special.reverse();
 		channel = channel.substring(1);
-		if (!user['display-name']) {
-			user['display-name'] = user.username;
-		}
-
-		if(settings.chat.ignored.indexOf(user.username) >= 0) {
-			return;
-		}
+		if (!user['display-name']) user['display-name'] = user.username;
+		if(settings.chat.ignored.indexOf(user.username) >= 0) return;
 
 		var notSelf = user.username != lowerCaseUsername;
+		if (isFfzDonor(user.username)) user.ffz_donor = true;
 
 		addMessage(channel, {
 			user: user,
@@ -236,6 +235,22 @@ angular.module('tc').factory('messages', function($rootScope, $filter, irc, api,
 		else if (messageObject.user) {
 			throttledApplySlow();
 		}
+	}
+
+	//=====================================================
+	// Helper methods
+	//=====================================================
+	function fetchFfzDonors() {
+		var url = 'http://cdn.frankerfacez.com/script/donors.txt';
+		$http.get(url).then(function(result) {
+			ffzDonors.push.apply(ffzDonors, result.data.split('\n').map(function(s) {
+				return s.trim();
+			}));
+		});
+	}
+
+	function isFfzDonor(username) {
+		return ffzDonors.indexOf(username) > -1;
 	}
 
 	function timeout(channel, username) {
