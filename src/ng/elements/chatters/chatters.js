@@ -7,9 +7,7 @@ angular.module('tc').directive('chatters', function ($http, settings, session, a
     scope.api = null;
 
     fetchList();
-    setInterval(function () {
-      fetchList();
-    }, 120000);
+    setInterval(fetchList, 120000);
 
     channels.on('change', function () {
       forceShowViewers = false;
