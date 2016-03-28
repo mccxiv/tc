@@ -4,20 +4,19 @@
  * @ngdoc factory
  * @name titleManager
  */
-angular.module('tc').factory('titleManager', function(
-	$filter, channels, settings) {
-	console.log('LOAD: titleManager');
+angular.module('tc').factory('titleManager', function ($filter, channels, settings) {
+  console.log('LOAD: titleManager');
 
-	var capitalize = $filter('capitalize');
+  var capitalize = $filter('capitalize');
 
-	channels.on('change', function() {
-		var prefix;
-		var suffix = ' - Tc';
-		var channel = settings.channels[settings.selectedTabIndex];
-		if (channel) prefix = capitalize(channel);
-		else prefix = 'Join channel';
-		document.title = prefix + suffix;
-	});
+  channels.on('change', function () {
+    var prefix;
+    var suffix = ' - Tc';
+    var channel = settings.channels[settings.selectedTabIndex];
+    if (channel) prefix = capitalize(channel);
+    else prefix = 'Join channel';
+    document.title = prefix + suffix;
+  });
 
-	return null;
+  return null;
 });

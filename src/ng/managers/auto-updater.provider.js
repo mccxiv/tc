@@ -9,24 +9,24 @@
  * @ngdoc factory
  * @name autoUpdater
  */
-angular.module('tc').factory('autoUpdater', function() {
-	console.log('LOAD: autoUpdater');
+angular.module('tc').factory('autoUpdater', function () {
+  console.log('LOAD: autoUpdater');
 
-	var autoUpdater = require('remote').require('auto-updater');
+  var autoUpdater = require('remote').require('auto-updater');
 
-	autoUpdater.setFeedUrl('http://gettc.xyz/update');
-	//autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
+  autoUpdater.setFeedUrl('http://gettc.xyz/update');
+  //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
 
-	setTimeout(check, 15000);
-	setInterval(check, 82800000);
+  setTimeout(check, 15000);
+  setInterval(check, 82800000);
 
-	function check() {
-		autoUpdater.checkForUpdates();
-	}
+  function check() {
+    autoUpdater.checkForUpdates();
+  }
 
-	autoUpdater.on('error', function() {
-		console.warn('Error when checking for updates.');
-	});
+  autoUpdater.on('error', function () {
+    console.warn('Error when checking for updates.');
+  });
 
-	return autoUpdater;
+  return autoUpdater;
 });

@@ -1,55 +1,55 @@
 .dark,
 .dark md-dialog {
-    background-color: rgb(30, 30, 30);
-    color: #D3D3D3;
+  background-color: rgb(30, 30, 30);
+  color: #D3D3D3;
 }
 
 .dark :hover::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
 .dark md-content {
-    color: inherit;
-    background-color: inherit;
+  color: inherit;
+  background-color: inherit;
 }
 
 .dark .md-input {
-    color: inherit !important;
+  color: inherit !important;
 }
 
 .dark .md-subheader {
-    color: inherit;
-    background-color: inherit;
+  color: inherit;
+  background-color: inherit;
 }
 
 .dark md-list.md-default-theme md-list-item button {
-    background-color: inherit;
+  background-color: inherit;
 }
 
 .dark md-input-container label {
-    color: rgba(255, 255, 255, 0.46) !important;
+  color: rgba(255, 255, 255, 0.46) !important;
 }
 
 .dark md-tabs .md-tab {
-    color: rgba(255, 255, 255, 0.54);
+  color: rgba(255, 255, 255, 0.54);
 }
 
 .dark md-tabs .md-tab.md-active {
-    color: rgb(102, 125, 255);
+  color: rgb(102, 125, 255);
 }
 
 .dark md-tabs.md-default-theme md-ink-bar {
-    background: rgba(255, 64, 129, 0.45);
+  background: rgba(255, 64, 129, 0.45);
 }
 
 .dark md-input-container .md-input {
-    border-color: rgba(255, 255, 255, 0.30);
+  border-color: rgba(255, 255, 255, 0.30);
 }
 
 .dark settings-panel {
-    border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .dark chatters .chatter {
-    color: rgba(255, 255, 255, 0.54);
+  color: rgba(255, 255, 255, 0.54);
 }

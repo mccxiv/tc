@@ -10,64 +10,64 @@
  * @param {string} channel
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('emotesFfz', function($http, channels) {
-	console.log('LOAD: emotesFfz');
+angular.module('tc').factory('emotesFfz', function ($http, channels) {
+  console.log('LOAD: emotesFfz');
 
-	var globalEmotes = [];
-	var channelEmotes = {};
+  var globalEmotes = [];
+  var channelEmotes = {};
 
-	cacheGlobal();
-	channels.on('add', cache);
-	channels.on('remove', remove);
-	channels.channels.forEach(cache);
+  cacheGlobal();
+  channels.on('add', cache);
+  channels.on('remove', remove);
+  channels.channels.forEach(cache);
 
-	function cacheGlobal(delay) {
-		delay = delay || 0;
+  function cacheGlobal(delay) {
+    delay = delay || 0;
 
-		setTimeout(function() {
-			$http.get('http://api.frankerfacez.com/v1/set/global')
-				.then(onSuccess)
-				.catch(onError);
-		}, delay);
+    setTimeout(function () {
+      $http.get('http://api.frankerfacez.com/v1/set/global')
+        .then(onSuccess)
+        .catch(onError);
+    }, delay);
 
-		function onSuccess(response) {
-			response.data.default_sets.forEach(function(setKey) {
-				response.data.sets[setKey].emoticons.forEach(function(emote) {
-					globalEmotes.push({
-						emote: emote.name,
-						url: 'http:'+emote.urls['1']
-					});
-				});
-			});
-			console.log('FFZ: global emotes', globalEmotes);
-		}
+    function onSuccess(response) {
+      response.data.default_sets.forEach(function (setKey) {
+        response.data.sets[setKey].emoticons.forEach(function (emote) {
+          globalEmotes.push({
+            emote: emote.name,
+            url: 'http:' + emote.urls['1']
+          });
+        });
+      });
+      console.log('FFZ: global emotes', globalEmotes);
+    }
 
-		function onError() {
-			cacheGlobal((delay || 1000) * 2);
-		}
-	}
+    function onError() {
+      cacheGlobal((delay || 1000) * 2);
+    }
+  }
 
-	function cache(channel) {
-		channelEmotes[channel] = [];
-		var url = 'http://api.frankerfacez.com/v1/room/'+channel;
-		$http.get(url).then(function(response) {
-			var data = response.data;
-			data.sets[data.room.set].emoticons.forEach(function (emote) {
-				channelEmotes[channel].push({
-					emote: emote.name,
-					url: 'http:' + emote.urls['1']
-				});
-			});
-		});
-	}
+  function cache(channel) {
+    channelEmotes[channel] = [];
+    var url = 'http://api.frankerfacez.com/v1/room/' + channel;
+    $http.get(url).then(function (response) {
+      var data = response.data;
+      data.sets[data.room.set].emoticons.forEach(function (emote) {
+        channelEmotes[channel].push({
+          emote: emote.name,
+          url: 'http:' + emote.urls['1']
+        });
+      });
+    });
+  }
 
-	function remove(channel) {
-		delete channelEmotes[channel];
-	}
+  function remove(channel) {
+    delete channelEmotes[channel];
+  }
 
-	function get(channel) {
-		return globalEmotes.concat(channelEmotes[channel] || []);
-	}
+  function get(channel) {
+    return globalEmotes.concat(channelEmotes[channel] || []);
+  }
 
-	return get;
+  return get;
 });

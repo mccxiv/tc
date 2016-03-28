@@ -1,51 +1,51 @@
 chat-tabs {
-	display: block;
+  display: block;
 }
 
 chat-tabs md-pagination-wrapper {
-    height: 34px;
+  height: 34px;
 }
 
 chat-tabs md-tabs-canvas {
-    height: 34px;
+  height: 34px;
 }
 
 chat-tabs md-tabs-content-wrapper {
-    top: 34px !important;
+  top: 34px !important;
 }
 
 chat-tabs md-tab-content {
-	transition: transform 0s 0s !important;
-	-webkit-animation: none !important;
-	animation: none !important;
+  transition: transform 0s 0s !important;
+  -webkit-animation: none !important;
+  animation: none !important;
 }
 
 chat-tabs .md-tab.md-focused {
-    background: transparent;
+  background: transparent;
 }
 
 chat-tabs md-tab-content > * {
-    height: 100%;
+  height: 100%;
 }
 
 chat-tabs .chat-tabs {
-	height: 100%;
+  height: 100%;
 }
 
 chat-tabs .md-tab {
-    padding-top: 5px !important;
-    padding-bottom: 5px !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
 
 chat-tabs md-tab-label {
-    position: relative;
+  position: relative;
 }
 
 chat-tabs .counter {
-    top: 7px;
-    width: 0;
-    right: 20px;
-    font-size: 1.0rem;
-    position: absolute;
-    color: rgba(0,0,0,0.35);
+  top: 7px;
+  width: 0;
+  right: 20px;
+  font-size: 1.0rem;
+  position: absolute;
+  color: rgba(0, 0, 0, 0.35);
 }

@@ -1,46 +1,46 @@
 settings-panel .menu {
-    width: 150px;
-    min-width: 0;
-    max-width: none;
+  width: 150px;
+  min-width: 0;
+  max-width: none;
 }
 
 settings-panel .settings-content > * {
-    overflow-y: auto;
-    padding: 15px;
+  overflow-y: auto;
+  padding: 15px;
 }
 
 settings-panel .menu-item .md-button {
-    border-radius: 0 !important;
+  border-radius: 0 !important;
 }
 
 settings-panel .menu-item .md-button:hover {
-    background-color: rgba(0 ,0 ,0, 0.1) !important;
+  background-color: rgba(0, 0, 0, 0.1) !important;
 }
 
 settings-panel .selected .md-button {
-    background-color: rgba(0 ,0 ,0, 0.2) !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 settings-panel .slider-label {
-    padding-right: 10px;
+  padding-right: 10px;
 }
 
 settings-panel .highlights .item {
-    font-size: 1.4rem;
-    cursor: default;
+  font-size: 1.4rem;
+  cursor: default;
 }
 
 settings-panel .highlights .close-button {
-    width: 26px;
-    min-width: 0;
-    line-height: 2.5rem;
-    height: 2.5rem;
+  width: 26px;
+  min-width: 0;
+  line-height: 2.5rem;
+  height: 2.5rem;
 }
 
 settings-panel .highlights .input-form {
-    width: 300px;
+  width: 300px;
 }
 
 settings-panel .highlights md-list-item.md-clickable:hover {
-    cursor: default;
+  cursor: default;
 }

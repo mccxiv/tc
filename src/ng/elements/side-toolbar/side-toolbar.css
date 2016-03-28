@@ -1,45 +1,45 @@
 side-toolbar .zmdi {
-	vertical-align: -3px;
+  vertical-align: -3px;
 }
 
 side-toolbar md-divider.vertical {
-	display: inline;
-	border-top-style: none;
-	border-right: 1px solid rgba(0, 0, 0, 0.12);
+  display: inline;
+  border-top-style: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 side-toolbar .md-button {
-	min-width: 0;
-	border-radius: 0 !important;
-	margin: 0;
-	line-height: 35px;
+  min-width: 0;
+  border-radius: 0 !important;
+  margin: 0;
+  line-height: 35px;
 }
 
 side-toolbar {
-	line-height: 35px;
+  line-height: 35px;
 }
 
 side-toolbar .connection,
 side-toolbar .update {
-	cursor: default;
+  cursor: default;
 }
 
 side-toolbar .connection.not-ready {
-	color: #c6a600;
+  color: #c6a600;
 }
 
 side-toolbar .collapse-button {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 side-toolbar .collapse-button i {
-    transition: transform 350ms 300ms ease-out;
+  transition: transform 350ms 300ms ease-out;
 }
 
 side-toolbar .collapse-button.collapsed i {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 side-toolbar .update {
-    color: #FF9A40
+  color: #FF9A40
 }

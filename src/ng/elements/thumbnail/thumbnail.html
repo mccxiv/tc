@@ -1,25 +1,27 @@
-<div class="content slide" ng-if="m.stream" >
+<div class="content slide" ng-if="m.stream">
     <span class="title" title="{{m.channel.status}}">
         {{m.channel.status}}
     </span>
-    <div class="stats">
+  <div class="stats">
         <span class="followers">
             <i class="zmdi zmdi-favorite"></i> {{m.channel.followers}}
         </span>
         <span class="viewers">
             <i class="zmdi zmdi-account"></i> {{m.stream.viewers}}
         </span>
-    </div>
-    <div class="hover-content" layout="column" layout-align="center center">
-        <i class="zmdi zmdi-play-circle-outline play-button" ng-click="openStream()"></i>
+  </div>
+  <div class="hover-content" layout="column" layout-align="center center">
+    <i class="zmdi zmdi-play-circle-outline play-button"
+       ng-click="openStream()"></i>
 
-        <md-button ng-click="settings.appearance.thumbnail = false" aria-label="Hide thumbnail" class="hide-button">
-            <md-tooltip md-autohide>
-                Hide thumbnail
-            </md-tooltip>
-            <i class="zmdi zmdi-close"></i>
-        </md-button>
+    <md-button ng-click="settings.appearance.thumbnail = false"
+               aria-label="Hide thumbnail" class="hide-button">
+      <md-tooltip md-autohide>
+        Hide thumbnail
+      </md-tooltip>
+      <i class="zmdi zmdi-close"></i>
+    </md-button>
 
-    </div>
-    <img class="preview" ng-src="{{m.img}}"></div>
+  </div>
+  <img class="preview" ng-src="{{m.img}}"></div>
 <md-divider ng-if="m.stream"></md-divider>

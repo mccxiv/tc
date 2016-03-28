@@ -1,33 +1,33 @@
 chatters {
-    -webkit-user-select: text;
-    user-select: text;
-	display: block;
-	font-size: 1.2rem;
+  -webkit-user-select: text;
+  user-select: text;
+  display: block;
+  font-size: 1.2rem;
 }
 
 chatters .md-button {
-	font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 chatters h3 {
-	margin: 5px 0 0;
-	font-size: 1.4rem;
+  margin: 5px 0 0;
+  font-size: 1.4rem;
 }
 
 chatters .show-more-button {
-	width: 100%;
-	margin: 0;
-	text-align: left;
-	text-transform: none;
-	padding: 0;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  text-transform: none;
+  padding: 0;
 }
 
 chatters .chatter {
-    cursor: pointer;
-    outline: none;
-    color: rgba(0,0,0,0.54);
+  cursor: pointer;
+  outline: none;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 chatters .chatter:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

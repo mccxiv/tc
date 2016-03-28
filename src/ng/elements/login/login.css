@@ -1,47 +1,47 @@
 login {
-	
+
 }
 
 login .login-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 100;
-    background-size: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background-size: cover;
 }
 
 login .form {
-    width: 315px;
-    padding: 20px;
-	border-radius: 3px;
-	background-color: #ffffff;
-	position: relative;
-	border: 1px solid #ebebeb;
+  width: 315px;
+  padding: 20px;
+  border-radius: 3px;
+  background-color: #ffffff;
+  position: relative;
+  border: 1px solid #ebebeb;
 }
 
 login .login-button {
-	position: absolute;
-	bottom: -39px;
-	right: 9px;
+  position: absolute;
+  bottom: -39px;
+  right: 9px;
 }
 
 login .login-button i {
-	margin-top: 7px;
+  margin-top: 7px;
 }
 
 login .error {
-	color: rgb(244,67,54);
-	font-size: 12px;
-	line-height: 24px;
-	margin-bottom: 15px;
+  color: rgb(244, 67, 54);
+  font-size: 12px;
+  line-height: 24px;
+  margin-bottom: 15px;
 }
 
 login .generate-link {
-    display: block;
-    font-size: 1.4rem;
-    margin-bottom: 20px;
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
 }
 
 login .password-notice {
-    margin-top: 0;
+  margin-top: 0;
 }

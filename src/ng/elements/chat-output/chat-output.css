@@ -1,32 +1,32 @@
 chat-output::-webkit-scrollbar {
-    width: 4px;
+  width: 4px;
 }
 
 chat-output::-webkit-scrollbar-thumb {
-    border-radius: 2px;
-    background-color:rgba(0, 0, 0, .3);
+  border-radius: 2px;
+  background-color: rgba(0, 0, 0, .3);
 }
 
 chat-output {
-    height: 100%;
-	display: block;
-	overflow: auto;
-	font-size: 1.4rem;
-    user-select: text;
-    padding-left: 15px;
-    -webkit-user-select: text;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  height: 100%;
+  display: block;
+  overflow: auto;
+  font-size: 1.4rem;
+  user-select: text;
+  padding-left: 15px;
+  -webkit-user-select: text;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 chat-output .timestamp {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
-chat-output .emoticon, 
+chat-output .emoticon,
 chat-output .badge {
-    margin: -9px 0;
-    vertical-align: 5px;
-	display: inline-block;
+  margin: -9px 0;
+  vertical-align: 5px;
+  display: inline-block;
 }
 
 chat-output .badge.ffz {
@@ -34,72 +34,72 @@ chat-output .badge.ffz {
 }
 
 chat-output .badge:last-child {
-    margin-right: 3px;
+  margin-right: 3px;
 }
 
 chat-output .emoticon {
-    bottom: -8px;
-    max-height: 30px;
-    margin-top: -30px;
-    position: relative;
-    vertical-align: middle;
+  bottom: -8px;
+  max-height: 30px;
+  margin-top: -30px;
+  position: relative;
+  vertical-align: middle;
 }
 
 chat-output .badge:not(:first-child) {
-	margin-left: 3px;
+  margin-left: 3px;
 }
 
 chat-output .username {
-    outline: none;
-    cursor: pointer;
+  outline: none;
+  cursor: pointer;
 }
 
 chat-output .username:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 chat-output .chat-lines {
-	padding-top: 10px;
+  padding-top: 10px;
 }
 
 chat-output .chat-line {
-	padding: 4px 0;
-    line-height: 17px;
-	word-wrap: break-word;
+  padding: 4px 0;
+  line-height: 17px;
+  word-wrap: break-word;
 }
 
 chat-output .chat-line .separator {
-	margin-right: 2px;
+  margin-right: 2px;
 }
 
 chat-output .chat-line .username {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 chat-output .highlighted {
-    background-color: rgba(255, 0, 0, 0.15);
+  background-color: rgba(255, 0, 0, 0.15);
 }
 
 chat-output .whisper {
-    padding-left: 3px;
-    border-left: 2px solid #a68ed2;
-    background-color: rgba(255, 174, 0, 0.15);
+  padding-left: 3px;
+  border-left: 2px solid #a68ed2;
+  background-color: rgba(255, 174, 0, 0.15);
 }
 
 chat-output .auto-scroll-notice {
-    position: fixed;
-    bottom: 0;
-    width: calc(100% + 15px);
-    margin-left: -15px;
-    padding: 5px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.3);
-    text-align: center;
-    cursor: pointer;
-    outline: none;
+  position: fixed;
+  bottom: 0;
+  width: calc(100% + 15px);
+  margin-left: -15px;
+  padding: 5px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-align: center;
+  cursor: pointer;
+  outline: none;
 }
 
 chat-output .deleted .message {
-    text-decoration: line-through;
-    opacity: 0.5;
+  text-decoration: line-through;
+  opacity: 0.5;
 }

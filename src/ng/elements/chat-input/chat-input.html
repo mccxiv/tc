@@ -1,13 +1,13 @@
 <form ng-submit="input()">
-	<md-input-container class="input-container" ng-class="{disabled: !irc.ready}">
-		<label>Send a message</label>
-		<input spellcheck="true"
-               ng-disabled="!irc.ready"
-               ng-model="message"
-               ng-trim="false"
-               ng-focus="session.inputFocused = true"
-               ng-blur="session.inputFocused = false"
-               ng-change="change()"
-               tab-completion tab-completion-fn="getAutoCompleteStrings()">
-	</md-input-container>	
+  <md-input-container class="input-container" ng-class="{disabled: !irc.ready}">
+    <label>Send a message</label>
+    <input spellcheck="true"
+           ng-disabled="!irc.ready"
+           ng-model="message"
+           ng-trim="false"
+           ng-focus="session.inputFocused = true"
+           ng-blur="session.inputFocused = false"
+           ng-change="change()"
+           tab-completion tab-completion-fn="getAutoCompleteStrings()">
+  </md-input-container>
 </form>

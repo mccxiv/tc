@@ -1,21 +1,21 @@
 .settings-gui-dialog {
-    height: 100%;
-    width: 100%;
-    overflow: visible !important;
+  height: 100%;
+  width: 100%;
+  overflow: visible !important;
 }
 
 .settings-gui-dialog .settings-gui-dialog-content {
-    padding: 0;
+  padding: 0;
 }
 
 .settings-gui-dialog .settings-close-button {
-    position: absolute;
-    top: -24px;
-    right: -28px;
-    font-size: 2.5rem;
-    vertical-align: -6px;
+  position: absolute;
+  top: -24px;
+  right: -28px;
+  font-size: 2.5rem;
+  vertical-align: -6px;
 }
 
 .settings-gui-dialog .settings-close-button i {
-    vertical-align: -1px;
+  vertical-align: -1px;
 }

@@ -9,45 +9,53 @@
  * @fires channels#add - Passes the channel that was added
  * @fires channels#remove - Passes the channel that was removed
  */
-angular.module('tc').factory('channels', function($rootScope, settings) {
-	console.log('LOAD: channels');
-	var Ee = require('events').EventEmitter;
-	var ee = new Ee();
-	ee.setMaxListeners(0);
+angular.module('tc').factory('channels', function ($rootScope, settings) {
+  console.log('LOAD: channels');
+  var Ee = require('events').EventEmitter;
+  var ee = new Ee();
+  ee.setMaxListeners(0);
 
-	ee.channels = settings.channels;
-	ee.current = currentChannel;
+  ee.channels = settings.channels;
+  ee.current = currentChannel;
 
-	$rootScope.$watchGroup([
-		function() {return settings.channels.length},
-		function() {return settings.selectedTabIndex}
-	], function() {ee.emit('change');});
+  $rootScope.$watchGroup([
+    function () {
+      return settings.channels.length
+    },
+    function () {
+      return settings.selectedTabIndex
+    }
+  ], function () {
+    ee.emit('change');
+  });
 
-	$rootScope.$watchCollection(
-		function() {return settings.channels},
-		function(newValue, oldValue) {
-			var added = _.difference(newValue, oldValue);
-			var left = _.difference(oldValue, newValue);
+  $rootScope.$watchCollection(
+    function () {
+      return settings.channels
+    },
+    function (newValue, oldValue) {
+      var added = _.difference(newValue, oldValue);
+      var left = _.difference(oldValue, newValue);
 
-			if (added.length) {
-				added.forEach(function(channel) {
-					console.log('CHANNEL-WATCHER: add', channel);
-					ee.emit('add', channel);
-				});
-			}
+      if (added.length) {
+        added.forEach(function (channel) {
+          console.log('CHANNEL-WATCHER: add', channel);
+          ee.emit('add', channel);
+        });
+      }
 
-			if (left.length) {
-				left.forEach(function(channel) {
-					console.log('CHANNEL-WATCHER: remove', channel);
-					ee.emit('remove', channel);
-				});
-			}
-		}
-	);
+      if (left.length) {
+        left.forEach(function (channel) {
+          console.log('CHANNEL-WATCHER: remove', channel);
+          ee.emit('remove', channel);
+        });
+      }
+    }
+  );
 
-	function currentChannel() {
-		return settings.channels[settings.selectedTabIndex];
-	}
+  function currentChannel() {
+    return settings.channels[settings.selectedTabIndex];
+  }
 
-	return ee;
+  return ee;
 });

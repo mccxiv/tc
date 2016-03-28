@@ -2,26 +2,26 @@
          class="chat-tabs"
          md-selected="settings.selectedTabIndex"
          md-border-bottom>
-	<md-tab md-on-select="selected(channel)"
-            md-on-deselect="deselected(channel)"
-            ng-repeat="channel in settings.channels">
-        <md-tab-label>
-            {{channel}}
-            <span class="counter">{{unread(channel)}}</span>
-        </md-tab-label>
-        <md-tab-body>
-            <chat-output channel="channel"
-                         ng-hide="hidden[channel]"
-                         ng-if="loaded[channel]">
-            </chat-output>
-        </md-tab-body>
-	</md-tab>
-	<md-tab>
-		<md-tab-label>
-			<i class="zmdi zmdi-plus zmdi-lg"></i>
-		</md-tab-label>
-		<md-tab-body>
-			<add-channel ng-if="showingAddChannel()"></add-channel>
-		</md-tab-body>
-	</md-tab>
+  <md-tab md-on-select="selected(channel)"
+          md-on-deselect="deselected(channel)"
+          ng-repeat="channel in settings.channels">
+    <md-tab-label>
+      {{channel}}
+      <span class="counter">{{unread(channel)}}</span>
+    </md-tab-label>
+    <md-tab-body>
+      <chat-output channel="channel"
+                   ng-hide="hidden[channel]"
+                   ng-if="loaded[channel]">
+      </chat-output>
+    </md-tab-body>
+  </md-tab>
+  <md-tab>
+    <md-tab-label>
+      <i class="zmdi zmdi-plus zmdi-lg"></i>
+    </md-tab-label>
+    <md-tab-body>
+      <add-channel ng-if="showingAddChannel()"></add-channel>
+    </md-tab-body>
+  </md-tab>
 </md-tabs>
