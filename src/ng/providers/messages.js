@@ -46,7 +46,6 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
   var ffzfy = $filter('ffzfy');
   var bttvfy = $filter('bttvfy');
   var ffzDonors = [];
-  window.ffzdonors = ffzDonors;
   var messageLimit = 500;
   var messages = {};
   var lowerCaseUsername = settings.identity.username.toLowerCase();
