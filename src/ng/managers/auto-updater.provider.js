@@ -13,8 +13,11 @@ angular.module('tc').factory('autoUpdater', function () {
   console.log('LOAD: autoUpdater');
 
   var autoUpdater = require('remote').require('auto-updater');
+  var version = require('remote').require('app').getVersion();
+  var os = process.platform;
 
-  autoUpdater.setFeedUrl('http://gettc.xyz/update');
+  //autoUpdater.setFeedUrl('http://gettc.xyz/update');
+  autoUpdater.setFeedUrl('http://dl.gettc.xyz/update/' + os + '/' + version);
   //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
 
   setTimeout(check, 15000);

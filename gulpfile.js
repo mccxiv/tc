@@ -51,7 +51,7 @@ gulp.task('make-dist', function(cb) {
 		'package',
 		'remove-unnecessary-package-files',
 		'make-windows-installer',
-		'clean-after',
+		//'clean-after',
 		'rebuild-spellchecker',
 		cb
 	);
@@ -129,16 +129,15 @@ gulp.task('package', function(cb) {
 	var opts = {
 		dir: BUILD_DIR,
 		name: 'Tc',
-		platform: 'win32',
+		platform: 'all',
 		arch: 'ia32',
 		version: '0.34.2',
 		'app-version': VERSION,
-		icon: 'src/assets-embed/win.ico',
+		'build-version': VERSION,
+    'app-copyright': 'Copyright 2015 Andrea Stella. All rights reserved',
+		icon: 'src/assets-embed/icon',
 		'version-string': {
 			CompanyName: 'Mccxiv Software',
-			LegalCopyright: 'Copyright 2015 Andrea Stella. All rights reserved',
-			ProductVersion: VERSION,
-			FileVersion: VERSION,
 			FileDescription: 'Tc, the chat client for Twitch',
 			ProductName: 'Tc'
 		},
@@ -160,7 +159,7 @@ gulp.task('make-windows-installer', function() {
 	return winInstaller({
 		appDirectory: PACKAGED_DIR + '/Tc-win32-ia32',
 		outputDirectory: DIST_DIR,
-		iconUrl: path.resolve('src/assets-embed/win.ico'),
+		iconUrl: path.resolve('src/assets-embed/icon.ico'),
 		loadingGif: path.resolve('src/assets-embed/install.gif'),
 		exe: 'Tc.exe',
 		version: VERSION,
@@ -168,7 +167,7 @@ gulp.task('make-windows-installer', function() {
 		authors: 'Mccxiv Software',
 		description: 'Tc, the chat client for Twitch',
 		title: 'Tc, the chat client for Twitch',
-		setupIcon: path.resolve('src/assets-embed/win.ico')
+		setupIcon: path.resolve('src/assets-embed/icon.ico')
 	});
 });
 
