@@ -71,7 +71,7 @@ gulp.task('rebuild-spellchecker-ia32', function() {
 
   return rebuild.installNodeHeaders('v0.34.2', undefined, undefined, 'ia32')
       .then(function() {
-        rebuildNativeModules('v0.34.2', './src/node_modules')
+        rebuild.rebuildNativeModules('v0.34.2', './src/node_modules')
       });
 });
 
