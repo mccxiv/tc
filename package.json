@@ -3,7 +3,8 @@
   "name": "tc-project",
   "version": "0.0.0",
   "scripts": {
-    "postinstall": "bower install && cd src && npm install && cd .. && gulp rebuild-spellchecker"
+    "postinstall": "bower install && cd src && npm install && cd .. && gulp rebuild-spellchecker",
+    "build": "gulp make-dist"
   },
   "dependencies": {
     "bower": "1.6.5",
@@ -27,5 +28,8 @@
     "root-require": "0.3.1",
     "run-sequence": "1.1.0",
     "tmi.js": "git://github.com/Schmoopiie/tmi.js.git"
+  },
+  "devDependencies": {
+    "shelljs": "^0.6.0"
   }
 }

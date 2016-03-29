@@ -17,9 +17,9 @@ var winInstaller =    require('electron-windows-installer');
 var templateCache =   require('gulp-angular-templatecache');
 
 var VERSION = require('root-require')('src/package.json').version;
-var BUILD_DIR = '.build';
-var PACKAGED_DIR = '.packaged';
-var DIST_DIR = '.dist';
+var BUILD_DIR = '_build';
+var PACKAGED_DIR = '_packaged';
+var DIST_DIR = '_dist';
 
 if (typeof VERSION !== 'string' || VERSION.length < 5) {
 	throw new Error('Invalid version from package.json');
