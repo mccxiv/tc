@@ -6,6 +6,7 @@ var useref =          require('gulp-useref');
 var uglify =          require('gulp-uglify');
 var gulpif =          require('gulp-if');
 var concat =          require('gulp-concat');
+var rebuild =         require('electron-rebuild');
 var addsrc =          require('gulp-add-src');
 var base64 =          require('gulp-css-base64');
 var packager =        require('electron-packager');
@@ -61,12 +62,17 @@ gulp.task('clean-before', function(cb) {
 	del([BUILD_DIR, PACKAGED_DIR, DIST_DIR], cb);
 });
 
-gulp.task('rebuild-spellchecker-ia32', function(cb) {
-	exec(path.normalize('./node_modules/.bin/electron-rebuild ' +
+gulp.task('rebuild-spellchecker-ia32', function() {
+	/*exec(path.normalize('./node_modules/.bin/electron-rebuild ' +
 		'--module-dir src/node_modules ' +
 		'--which-module spellchecker ' +
 		'--arch ia32 '
-	), cb);
+	), cb);*/
+
+  return rebuild.installNodeHeaders('v0.34.2', undefined, undefined, 'ia32')
+      .then(function() {
+        rebuildNativeModules('v0.34.2', './src/node_modules')
+      });
 });
 
 gulp.task('rebuild-spellchecker', function(cb) {
