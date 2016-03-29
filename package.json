@@ -3,8 +3,8 @@
   "name": "tc-project",
   "version": "0.0.0",
   "scripts": {
-    "postinstall": "bower install && cd src && npm install && cd .. && gulp rebuild-spellchecker && npm run fix-gulp-header",
-    "fix-gulp-header": "cd node_modules/gulp-header && npm install && cd ../../",
+    "postinstall": "bower install --allow-root && cd src && npm install --unsafe-perm && cd .. && npm run fix-gulp-header",
+    "fix-gulp-header": "cd node_modules/gulp-header && npm install --unsafe-perm && cd ../../",
     "build": "gulp make-dist"
   },
   "dependencies": {
