@@ -135,7 +135,7 @@ gulp.task('package', function(cb) {
 	var opts = {
 		dir: BUILD_DIR,
 		name: 'Tc',
-		platform: 'all',
+		platform: 'darwin',
 		arch: 'ia32',
 		version: '0.34.2',
 		'app-version': VERSION,
