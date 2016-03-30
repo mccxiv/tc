@@ -210,3 +210,16 @@ gulp.task('make-darwin-installer', function() {
 gulp.task('clean-after', function(cb) {
 	del([BUILD_DIR, PACKAGED_DIR], cb);
 });
+
+gulp.task('postinstall', function(cb) {
+	exec('bower install --allow-root && ' +
+		'cd src && npm install --unsafe-perm && ' +
+		'cd .. && gulp fix-gulp-header && ' +
+		'gulp rebuild-spellchecker', cb);
+});
+
+gulp.task('fix-gulp-header', function(cb) {
+	exec('cd node_modules/gulp-header && ' +
+		'npm install --unsafe-perm && ' +
+		'cd ../../', cb);
+});
