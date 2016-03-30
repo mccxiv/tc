@@ -32,8 +32,5 @@
     "root-require": "0.3.1",
     "run-sequence": "1.1.0",
     "tmi.js": "git://github.com/Schmoopiie/tmi.js.git"
-  },
-  "devDependencies": {
-    "shelljs": "^0.6.0"
   }
 }
