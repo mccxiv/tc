@@ -2,7 +2,7 @@
   "name": "app-ui",
   "dependencies": {
     "angular": "1.4.7",
-    "angular-animate": "1.4",
+    "angular-animate": "1.4.7",
     "angular-material": "0.10.1",
     "angular-sanitize": "1.4",
     "frosty": "*",
@@ -12,6 +12,8 @@
     "roboto-fontface": "choffmeister/roboto-fontface-bower#~0.4.3"
   },
   "resolutions": {
-    "angular": "1.4.7"
+    "angular": "1.4.7",
+    "angular-animate": "1.4.7",
+    "angular-material": "0.10.1"
   }
 }
