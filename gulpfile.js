@@ -26,7 +26,7 @@ if (typeof VERSION !== 'string' || VERSION.length < 5) {
 	throw new Error('Invalid version from package.json');
 }
 
-gulp.task('default', ['make-dist']);
+gulp.task('default', ['make-dist-win32-linux']);
 
 gulp.task('run-dev', function(cb) {
 	exec(path.normalize('./node_modules/.bin/electron ./src --dev-tools'), cb);
@@ -36,7 +36,7 @@ gulp.task('run-dev-no-args', function(cb) {
 	exec(path.normalize('./node_modules/.bin/electron ./src'), cb);
 });
 
-gulp.task('make-dist', function(cb) {
+gulp.task('make-dist-win32-linux', function(cb) {
 	runSequence(
 		'clean-before',
 		'rebuild-spellchecker-ia32',
@@ -49,13 +49,33 @@ gulp.task('make-dist', function(cb) {
 		'cache-templates',
 		'build-html',
 		'clean-cached-templates',
-		'package',
+		'package-win32-linux',
 		'remove-unnecessary-package-files',
-		'make-windows-installer',
-		//'clean-after',
+		[
+      'make-windows-installer',
+      'make-linux-installer'
+    ],
+		'clean-after',
 		'rebuild-spellchecker',
 		cb
 	);
+});
+
+gulp.task('make-dist-darwin', function(cb) {
+  runSequence(
+    [
+      'copy-lib',
+      'copy-assets',
+      'copy-electron-files',
+      'copy-node-modules'
+    ],
+    'cache-templates',
+    'build-html',
+    'clean-cached-templates',
+    'package-darwin',
+    //'make-darwin-installer',
+    cb
+  );
 });
 
 gulp.task('clean-before', function(cb) {
@@ -63,16 +83,10 @@ gulp.task('clean-before', function(cb) {
 });
 
 gulp.task('rebuild-spellchecker-ia32', function() {
-	/*exec(path.normalize('./node_modules/.bin/electron-rebuild ' +
-		'--module-dir src/node_modules ' +
-		'--which-module spellchecker ' +
-		'--arch ia32 '
-	), cb);*/
-
   return rebuild.installNodeHeaders('v0.34.2', undefined, undefined, 'ia32')
-      .then(function() {
-        rebuild.rebuildNativeModules('v0.34.2', './src/node_modules')
-      });
+    .then(function() {
+      rebuild.rebuildNativeModules('v0.34.2', './src/node_modules')
+    });
 });
 
 gulp.task('rebuild-spellchecker', function(cb) {
@@ -131,11 +145,11 @@ gulp.task('clean-cached-templates', function(cb) {
 	del([BUILD_DIR + '/temp/**'], cb);
 });
 
-gulp.task('package', function(cb) {
+gulp.task('package-win32-linux', function(cb) {
 	var opts = {
 		dir: BUILD_DIR,
 		name: 'Tc',
-		platform: 'darwin',
+		platform: 'all',
 		arch: 'ia32',
 		version: '0.34.2',
 		'app-version': VERSION,
@@ -152,6 +166,12 @@ gulp.task('package', function(cb) {
 	packager(opts, cb);
 });
 
+gulp.task('package-darwin', function(cb) {
+  exec('npm run use-docker-to-package-mac-version', {
+    maxBuffer: 1024 * 5000
+  }, cb);
+});
+
 gulp.task('remove-unnecessary-package-files', function(cb) {
 	var dir = PACKAGED_DIR + '/Tc-win32-ia32/';
 	del([
@@ -164,7 +184,7 @@ gulp.task('remove-unnecessary-package-files', function(cb) {
 gulp.task('make-windows-installer', function() {
 	return winInstaller({
 		appDirectory: PACKAGED_DIR + '/Tc-win32-ia32',
-		outputDirectory: DIST_DIR,
+		outputDirectory: DIST_DIR + '/windows',
 		iconUrl: path.resolve('src/assets-embed/icon.ico'),
 		loadingGif: path.resolve('src/assets-embed/install.gif'),
 		exe: 'Tc.exe',
@@ -175,6 +195,16 @@ gulp.task('make-windows-installer', function() {
 		title: 'Tc, the chat client for Twitch',
 		setupIcon: path.resolve('src/assets-embed/icon.ico')
 	});
+});
+
+gulp.task('make-linux-installer', function() {
+  return gulp.src(PACKAGED_DIR + '/Tc-linux-ia32/**')
+    .pipe(gulp.dest(DIST_DIR + '/linux/'));
+});
+
+gulp.task('make-darwin-installer', function() {
+  return gulp.src(PACKAGED_DIR + '/**')
+    .pipe(gulp.dest(DIST_DIR + '/osx/'));
 });
 
 gulp.task('clean-after', function(cb) {
