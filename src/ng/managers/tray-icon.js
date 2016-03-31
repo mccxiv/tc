@@ -1,6 +1,7 @@
 angular.module('tc').factory('trayIcon', function (settings, $rootScope) {
   console.log('LOAD: tray-icon');
 
+  if (process.platform !== 'win32') return {dummy: 'Dummy object'};
   // This module uses lots of electron specific code
   var remote = require('remote').require;
   var Tray = remote('tray');
