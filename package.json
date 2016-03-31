@@ -5,7 +5,7 @@
   "scripts": {
     "start": "gulp run-dev",
     "postinstall": "gulp postinstall",
-    "build-win-and-mac": "gulp make-dist-win32-linux",
+    "build-win-and-linux": "gulp make-dist-win32-linux",
     "build-osx": "gulp make-dist-darwin",
     "use-docker-to-package-mac-version": "gulp rebuild-spellchecker && electron-packager _build Tc --out=_packaged --platform=darwin --arch=x64 && mkdir -p _dist/mac && mkdir -p /project/_dist/mac && zip -r -y _dist/mac/tc-osx.zip _packaged/Tc-darwin-x64/Tc.app"
   },
