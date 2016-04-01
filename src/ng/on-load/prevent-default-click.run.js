@@ -1,6 +1,6 @@
 /**
- * Middle mouse clicks on a tags cause nwjs to navigate
- * away from the app. Stop this behavior.
+ * Make sure unhandled clicks don't cause weird behaviors like
+ * navigating to a different page from inside the app.
  */
 angular.module('tc').run(function ($rootElement) {
   $rootElement.bind('click', function (e) {

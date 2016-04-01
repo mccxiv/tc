@@ -29,7 +29,7 @@ angular.module('tc').factory('autoUpdater', function (electron) {
     //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
 
     setTimeout(check, 15000);
-    setInterval(check, 82800000);
+    setInterval(check, 1000 * 60 * 60 * 23);
 
     function check() {
       autoUpdater.checkForUpdates();
