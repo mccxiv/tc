@@ -1,5 +1,5 @@
-var app = require('app');
-var ipc = require('ipc');
+var app = require('electron').app;
+var ipc = require('electron').ipcMain;
 var path = require('path');
 var argv = require('yargs').argv;
 var BrowserWindow = require('browser-window');
@@ -49,7 +49,7 @@ function makeWindow() {
   });
 
   main.setMenu(null);
-  main.loadUrl('file://' + __dirname + '/index.html');
+  main.loadURL('file://' + __dirname + '/index.html');
 }
 
 function devTools() {

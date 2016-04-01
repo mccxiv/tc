@@ -83,17 +83,17 @@ gulp.task('clean-before', function(cb) {
 });
 
 gulp.task('rebuild-spellchecker-ia32', function() {
-  return rebuild.installNodeHeaders('v0.34.2', undefined, undefined, 'ia32')
+  return rebuild.installNodeHeaders('v0.37.3', undefined, undefined, 'ia32')
     .then(function() {
-      rebuild.rebuildNativeModules('v0.34.2', './src/node_modules')
+      rebuild.rebuildNativeModules('v0.37.3', './src/node_modules')
     });
 });
 
-gulp.task('rebuild-spellchecker', function(cb) {
-	exec(path.normalize('./node_modules/.bin/electron-rebuild ' +
-		'--module-dir src/node_modules ' +
-		'--which-module spellchecker '
-	), cb);
+gulp.task('rebuild-spellchecker', function() {
+	return rebuild.installNodeHeaders('v0.37.3')
+		.then(function() {
+			rebuild.rebuildNativeModules('v0.37.3', './src/node_modules')
+		});
 });
 
 gulp.task('copy-lib', function() {
