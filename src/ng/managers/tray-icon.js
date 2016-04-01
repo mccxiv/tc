@@ -8,7 +8,7 @@ angular.module('tc').factory('trayIcon', function (
   var Menu = electron.remote.Menu;
   var app = electron.remote.app;
   var ipcRenderer = electron.local.ipcRenderer;
-  var browserWindow = electron.remote.browserWindow;
+  var browserWindow = electron.remote.BrowserWindow;
   var path = require('path');
 
   var tray = new Tray(path.join(__dirname, 'assets/icon16.png'));
