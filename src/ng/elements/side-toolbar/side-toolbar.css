@@ -17,6 +17,7 @@ side-toolbar .md-button {
 
 side-toolbar {
   line-height: 35px;
+  min-height: 36px;
 }
 
 side-toolbar .connection,
