@@ -62,7 +62,7 @@ angular.module('tc').directive('chatInput', function (_, settings, session, irc,
 
       if (scope.message.indexOf('.w') === 0) {
         var words = scope.message.split(' ');
-        var me = settings.identity.username;
+        var me = {username: settings.identity.username};
         var username = words[1];
         var message = words.slice(2).join(' ');
         irc.whisper(username, message);
