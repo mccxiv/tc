@@ -11,8 +11,6 @@ angular.module('tc').factory('trayIcon', function (
   var browserWindow = electron.remote.browserWindow;
   var path = require('path');
 
-  console.log('tray', Tray);
-
   var tray = new Tray(path.join(__dirname, 'assets/icon16.png'));
 
   tray.on('clicked', function () {
