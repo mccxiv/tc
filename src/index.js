@@ -6,19 +6,22 @@ var BrowserWindow = require('browser-window');
 var squirrelStartup = require('./lib/squirrel-startup.js');
 var windowState = require('electron-window-state');
 
-var main;
-var quitting;
+console.log('TC: Starting :D');
 
-if (squirrelStartup()) return; // TODO Shouldn't this be app.quit instead?
+var main;
+
+if (squirrelStartup()) return;
 if (isSecondInstance()) app.quit();
 if (argv['dev-tools']) setTimeout(devTools, 1000);
 if (argv.data) app.setPath('userData', path.resolve(argv.data));
+
 app.on('ready', makeWindow);
-app.on('will-quit', handleExit);
 ipc.on('open-dev-tools', devTools);
 ipc.on('enable-auto-start', enableAutoStart);
 ipc.on('disable-auto-start', disableAutoStart);
-ipc.on('force-quit', forceQuit);
+ipc.on('force-quit', app.exit);
+app.on('before-quit', app.exit); // Skip the 'close' event
+app.on('activate', unhideAppOnMac);
 
 function makeWindow() {
 	var mainWinState = windowState({
@@ -39,8 +42,10 @@ function makeWindow() {
 	mainWinState.manage(main);
 
 	main.on('close', function(e) {
-		if (!quitting) e.preventDefault();
-		main.hide();
+		console.log('TC: Window tried closing, hiding it instead.');
+		e.preventDefault();
+		if (process.platform === 'darwin') app.hide();
+		else main.hide();
 	});
 
 	main.setMenu(null);
@@ -90,19 +95,15 @@ function toggleAutostart(adding) {
 
 		// Check that Update.exe exists, otherwise we're in standalone mode
 		fs.stat(updateDotExe, function(err, stats) {
-			if (err || !stats.size) console.warn('Update.exe not found.');
+			if (err || !stats.size) console.warn('TC: Update.exe not found.');
 			else execSync(createShortcut);
 		});
 
 	}
-	else console.warn('There is no autostart option for this platform.');
+	else console.warn('TC: There is no autostart option for this platform.');
 }
 
-function handleExit(e) {
-	if (!quitting) e.preventDefault();
-}
-
-function forceQuit() {
-	quitting = true;
-	app.quit();
+function unhideAppOnMac()  {
+	console.log('TC: App activated, unhiding the window.');
+	app.show();
 }
