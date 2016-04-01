@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="tc">
+<html>
   <head lang="en">
     <meta charset="utf-8">
     <title>Tc</title>
@@ -28,108 +28,237 @@
     <link rel="stylesheet"
           href="ng/elements/settings-panel/settings-gui-dialog.css">
     <!-- endbuild -->
+
+    <style>
+      .thecube {
+        width: 75px;
+        height: 75px;
+        position: absolute;
+        top: calc(50% - 37px);
+        left: calc(50% - 37px);
+        -webkit-transform: rotateZ(45deg);
+        transform: rotateZ(45deg);
+      }
+      .thecube .cube {
+        position: relative;
+        -webkit-transform: rotateZ(45deg);
+        transform: rotateZ(45deg);
+      }
+      .thecube .cube {
+        float: left;
+        width: 50%;
+        height: 50%;
+        position: relative;
+        -webkit-transform: scale(1.1);
+        transform: scale(1.1);
+      }
+      .thecube .cube:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #2BA0C7;
+        -webkit-animation: foldthecube 2.4s 1 linear both;
+        animation: foldthecube 2.4s 1 linear both;
+        -webkit-transform-origin: 100% 100%;
+        transform-origin: 100% 100%;
+      }
+      .thecube .c2 {
+        -webkit-transform: scale(1.1) rotateZ(90deg);
+        transform: scale(1.1) rotateZ(90deg);
+      }
+      .thecube .c3 {
+        -webkit-transform: scale(1.1) rotateZ(180deg);
+        transform: scale(1.1) rotateZ(180deg);
+      }
+      .thecube .c4 {
+        -webkit-transform: scale(1.1) rotateZ(270deg);
+        transform: scale(1.1) rotateZ(270deg);
+      }
+      .thecube .c2:before {
+        -webkit-animation-delay: 0.3s;
+        animation-delay: 0.3s;
+      }
+      .thecube .c3:before {
+        -webkit-animation-delay: 0.6s;
+        animation-delay: 0.6s;
+      }
+      .thecube .c4:before {
+        -webkit-animation-delay: 0.9s;
+        animation-delay: 0.9s;
+      }
+      @-webkit-keyframes foldthecube {
+        0%, 10% {
+          -webkit-transform: perspective(140px) rotateX(-180deg);
+          transform: perspective(140px) rotateX(-180deg);
+          opacity: 0;
+        }
+        25%,
+        75% {
+          -webkit-transform: perspective(140px) rotateX(0deg);
+          transform: perspective(140px) rotateX(0deg);
+          opacity: 1;
+        }
+        90%,
+        100% {
+          -webkit-transform: perspective(140px) rotateY(180deg);
+          transform: perspective(140px) rotateY(180deg);
+          opacity: 0;
+        }
+      }
+      @keyframes foldthecube {
+        0%, 10% {
+          -webkit-transform: perspective(140px) rotateX(-180deg);
+          transform: perspective(140px) rotateX(-180deg);
+          opacity: 0;
+        }
+        25%,
+        75% {
+          -webkit-transform: perspective(140px) rotateX(0deg);
+          transform: perspective(140px) rotateX(0deg);
+          opacity: 1;
+        }
+        90%,
+        100% {
+          -webkit-transform: perspective(140px) rotateY(180deg);
+          transform: perspective(140px) rotateY(180deg);
+          opacity: 0;
+        }
+      }
+
+
+      .app {
+        opacity: 0;
+        height: 100vh;
+      }
+
+      .app > * {
+        height: 100vh;
+      }
+
+      .loader {
+        height: 100vh;
+        width: 100vw;
+        background-color: rgb(230, 243, 255);
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+
   </head>
-  <body layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
+  <body>
 
-  <section ng-if="!needLogin()" layout="row" flex>
-    <md-sidenav layout="column"
-                md-is-locked-open="true"
-                class="side-bar md-sidenav-left md-whiteframe-z2"
-                ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
-      <side-toolbar></side-toolbar>
-      <md-divider></md-divider>
-      <thumbnail ng-if="showingThumbnail()
-                     && !settings.appearance.sidebarCollapsed
-                     && settings.appearance.thumbnail">
-      </thumbnail>
-      <user-panel ng-if="expanded()"></user-panel>
-      <chatters-tabs
-        ng-class="{collapsed: !settings.appearance.chatters}"
-        flex ng-show="expanded()">
-      </chatters-tabs>
-    </md-sidenav>
+    <div class="app" layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
+      <section ng-if="!needLogin()" layout="row" flex>
+        <md-sidenav layout="column"
+                    md-is-locked-open="true"
+                    class="side-bar md-sidenav-left md-whiteframe-z2"
+                    ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
+          <side-toolbar></side-toolbar>
+          <md-divider></md-divider>
+          <thumbnail ng-if="showingThumbnail()
+                         && !settings.appearance.sidebarCollapsed
+                         && settings.appearance.thumbnail">
+          </thumbnail>
+          <user-panel ng-if="expanded()"></user-panel>
+          <chatters-tabs
+            ng-class="{collapsed: !settings.appearance.chatters}"
+            flex ng-show="expanded()">
+          </chatters-tabs>
+        </md-sidenav>
 
-    <section layout="column" flex>
-      <chat-tabs flex></chat-tabs>
-      <md-divider></md-divider>
-      <chat-input></chat-input>
-    </section>
-  </section>
+        <section layout="column" flex>
+          <chat-tabs flex></chat-tabs>
+          <md-divider></md-divider>
+          <chat-input></chat-input>
+        </section>
+      </section>
 
-  <!-- TODO ng-if causes error with animation -->
-  <login ng-show="needLogin()"></login>
+      <!-- TODO ng-if causes error with animation -->
+      <login ng-show="needLogin()"></login>
+    </div>
 
-  <!-- TODO use the browser version instead, but no work with electron -->
-  <script>window.$ = window.jQuery = require('jquery');</script>
+    <div class="loader">
+      <div class="thecube">
+        <div class="cube c1"></div>
+        <div class="cube c2"></div>
+        <div class="cube c4"></div>
+        <div class="cube c3"></div>
+      </div>
+    </div>
+    <!-- TODO use the browser version instead, but no work with electron -->
+    <script>window.$ = window.jQuery = require('jquery');</script>
 
-  <!-- build:js app.js -->
-  <script src="bower_components/lodash/lodash.js"></script>
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-aria/angular-aria.js"></script>
-  <script src="bower_components/angular-animate/angular-animate.js"></script>
-  <script src="bower_components/angular-material/angular-material.js"></script>
-  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-  <script src="bower_components/frosty/dist/js/frosty.min.js"></script>
+    <!-- build:js app.js -->
+    <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/frosty/dist/js/frosty.min.js"></script>
 
-  <script src="ng/app.js"></script>
-  <script src="ng/on-load/main.controller.js"></script>
+    <script src="ng/app.js"></script>
+    <script src="ng/on-load/main.controller.js"></script>
 
-  <script src="ng/on-load/prevent-default-click.run.js"></script>
-  <script src="ng/on-load/eager-load-providers.run.js"></script>
-  <script src="ng/on-load/enable-spellcheck.run.js"></script>
-  <script src="ng/on-load/dev-tools-hotkey.run.js"></script>
+    <script src="ng/on-load/prevent-default-click.run.js"></script>
+    <script src="ng/on-load/eager-load-providers.run.js"></script>
+    <script src="ng/on-load/enable-spellcheck.run.js"></script>
+    <script src="ng/on-load/dev-tools-hotkey.run.js"></script>
 
-  <script src="ng/elements/login/login.js"></script>
-  <script src="ng/elements/settings-panel/settings-panel.js"></script>
-  <script src="ng/elements/side-toolbar/side-toolbar.js"></script>
-  <script src="ng/elements/chat-input/chat-input.js"></script>
-  <script src="ng/elements/chat-output/chat-output.js"></script>
-  <script src="ng/elements/chat-tabs/chat-tabs.js"></script>
-  <script src="ng/elements/user-panel/user-panel.js"></script>
-  <script src="ng/elements/thumbnail/thumbnail.js"></script>
-  <script src="ng/elements/chatters/chatters.js"></script>
-  <script src="ng/elements/chatters-tabs/chatters-tabs.js"></script>
-  <script src="ng/elements/add-channel/add-channel.js"></script>
-  <script src="ng/elements/chat/chat-options.directive.js"></script>
+    <script src="ng/elements/login/login.js"></script>
+    <script src="ng/elements/settings-panel/settings-panel.js"></script>
+    <script src="ng/elements/side-toolbar/side-toolbar.js"></script>
+    <script src="ng/elements/chat-input/chat-input.js"></script>
+    <script src="ng/elements/chat-output/chat-output.js"></script>
+    <script src="ng/elements/chat-tabs/chat-tabs.js"></script>
+    <script src="ng/elements/user-panel/user-panel.js"></script>
+    <script src="ng/elements/thumbnail/thumbnail.js"></script>
+    <script src="ng/elements/chatters/chatters.js"></script>
+    <script src="ng/elements/chatters-tabs/chatters-tabs.js"></script>
+    <script src="ng/elements/add-channel/add-channel.js"></script>
+    <script src="ng/elements/chat/chat-options.directive.js"></script>
 
-  <script src="ng/providers/electron.js"></script>
-  <script src="ng/providers/settings.js"></script>
-  <script src="ng/providers/open-external.js"></script>
-  <script src="ng/providers/session.js"></script>
-  <script src="ng/providers/manifest.js"></script>
-  <script src="ng/providers/tmi.js"></script>
-  <script src="ng/providers/irc.js"></script>
-  <script src="ng/providers/api.js"></script>
-  <script src="ng/providers/emotes-ffz.js"></script>
-  <script src="ng/providers/emotes-bttv.js"></script>
-  <script src="ng/providers/emotes-twitch.js"></script>
-  <script src="ng/providers/lodash.js"></script>
-  <script src="ng/providers/channels.js"></script>
-  <script src="ng/providers/messages.js"></script>
-  <script src="ng/providers/highlights.js"></script>
-  <script src="ng/providers/notifications.js"></script>
-  <script src="ng/providers/settings-gui.js"></script>
+    <script src="ng/providers/electron.js"></script>
+    <script src="ng/providers/settings.js"></script>
+    <script src="ng/providers/open-external.js"></script>
+    <script src="ng/providers/session.js"></script>
+    <script src="ng/providers/manifest.js"></script>
+    <script src="ng/providers/tmi.js"></script>
+    <script src="ng/providers/irc.js"></script>
+    <script src="ng/providers/api.js"></script>
+    <script src="ng/providers/emotes-ffz.js"></script>
+    <script src="ng/providers/emotes-bttv.js"></script>
+    <script src="ng/providers/emotes-twitch.js"></script>
+    <script src="ng/providers/lodash.js"></script>
+    <script src="ng/providers/channels.js"></script>
+    <script src="ng/providers/messages.js"></script>
+    <script src="ng/providers/highlights.js"></script>
+    <script src="ng/providers/notifications.js"></script>
+    <script src="ng/providers/settings-gui.js"></script>
 
-  <script src="ng/managers/title-manager.provider.js"></script>
-  <script src="ng/managers/tray-icon.js"></script>
-  <script src="ng/managers/zoom-manager.provider.js"></script>
-  <script src="ng/managers/auto-updater.provider.js"></script>
+    <script src="ng/managers/title-manager.provider.js"></script>
+    <script src="ng/managers/tray-icon.js"></script>
+    <script src="ng/managers/zoom-manager.provider.js"></script>
+    <script src="ng/managers/auto-updater.provider.js"></script>
 
-  <script src="ng/filters/strip-hash.js"></script>
-  <script src="ng/filters/emotify.js"></script>
-  <script src="ng/filters/ffzfy.js"></script>
-  <script src="ng/filters/bttvfy.js"></script>
-  <script src="ng/filters/linkify.js"></script>
-  <script src="ng/filters/escape.js"></script>
-  <script src="ng/filters/combine.js"></script>
-  <script src="ng/filters/capitalize.js"></script>
-  <script src="ng/filters/pretty-chatter-type.js"></script>
+    <script src="ng/filters/strip-hash.js"></script>
+    <script src="ng/filters/emotify.js"></script>
+    <script src="ng/filters/ffzfy.js"></script>
+    <script src="ng/filters/bttvfy.js"></script>
+    <script src="ng/filters/linkify.js"></script>
+    <script src="ng/filters/escape.js"></script>
+    <script src="ng/filters/combine.js"></script>
+    <script src="ng/filters/capitalize.js"></script>
+    <script src="ng/filters/pretty-chatter-type.js"></script>
 
-  <script src="ng/attributes/tab-completion.directive.js"></script>
-  <script src="ng/attributes/href-external.directive.js"></script>
-  <script src="ng/attributes/auto-focus.directive.js"></script>
-  <script src="ng/attributes/bind-html-compile.directive.js"></script>
-  <!-- endbuild -->
-
+    <script src="ng/attributes/tab-completion.directive.js"></script>
+    <script src="ng/attributes/href-external.directive.js"></script>
+    <script src="ng/attributes/auto-focus.directive.js"></script>
+    <script src="ng/attributes/bind-html-compile.directive.js"></script>
+    <!-- endbuild -->
   </body>
 </html>
