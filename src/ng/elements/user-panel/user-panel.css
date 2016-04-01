@@ -12,7 +12,7 @@ user-panel .profile-picture-div {
   height: 53px;
   overflow: hidden;
   background-size: cover;
-  background-image: url(../../assets-embed/user404.png);
+  background-image: url(../../../assets-embed/user404.png);
 }
 
 user-panel .profile-picture {
@@ -54,6 +54,9 @@ user-panel .row {
 
 user-panel .username {
   margin-top: 3px;
+  max-width: 113px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 user-panel .creation-date {
