@@ -6,10 +6,8 @@
 
     <!-- build:css style.css -->
     <link rel="stylesheet" href="bower_components/frosty/dist/css/frosty.min.css">
-    <link rel="stylesheet"
-          href="bower_components/angular-material/angular-material.css">
-    <link rel="stylesheet"
-          href="bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css">
 
     <link rel="stylesheet" href="ng/app.css">
     <link rel="stylesheet" href="ng/themes/dark.css">
@@ -25,133 +23,13 @@
     <link rel="stylesheet" href="ng/elements/user-panel/user-panel.css">
     <link rel="stylesheet" href="ng/elements/thumbnail/thumbnail.css">
     <link rel="stylesheet" href="ng/elements/settings-panel/settings-panel.css">
-    <link rel="stylesheet"
-          href="ng/elements/settings-panel/settings-gui-dialog.css">
+    <link rel="stylesheet" href="ng/elements/settings-panel/settings-gui-dialog.css">
     <!-- endbuild -->
-
-    <style>
-      .thecube {
-        width: 75px;
-        height: 75px;
-        position: absolute;
-        top: calc(50% - 37px);
-        left: calc(50% - 37px);
-        -webkit-transform: rotateZ(45deg);
-        transform: rotateZ(45deg);
-      }
-      .thecube .cube {
-        position: relative;
-        -webkit-transform: rotateZ(45deg);
-        transform: rotateZ(45deg);
-      }
-      .thecube .cube {
-        float: left;
-        width: 50%;
-        height: 50%;
-        position: relative;
-        -webkit-transform: scale(1.1);
-        transform: scale(1.1);
-      }
-      .thecube .cube:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #2BA0C7;
-        -webkit-animation: foldthecube 2.4s 1 linear both;
-        animation: foldthecube 2.4s 1 linear both;
-        -webkit-transform-origin: 100% 100%;
-        transform-origin: 100% 100%;
-      }
-      .thecube .c2 {
-        -webkit-transform: scale(1.1) rotateZ(90deg);
-        transform: scale(1.1) rotateZ(90deg);
-      }
-      .thecube .c3 {
-        -webkit-transform: scale(1.1) rotateZ(180deg);
-        transform: scale(1.1) rotateZ(180deg);
-      }
-      .thecube .c4 {
-        -webkit-transform: scale(1.1) rotateZ(270deg);
-        transform: scale(1.1) rotateZ(270deg);
-      }
-      .thecube .c2:before {
-        -webkit-animation-delay: 0.3s;
-        animation-delay: 0.3s;
-      }
-      .thecube .c3:before {
-        -webkit-animation-delay: 0.6s;
-        animation-delay: 0.6s;
-      }
-      .thecube .c4:before {
-        -webkit-animation-delay: 0.9s;
-        animation-delay: 0.9s;
-      }
-      @-webkit-keyframes foldthecube {
-        0%, 10% {
-          -webkit-transform: perspective(140px) rotateX(-180deg);
-          transform: perspective(140px) rotateX(-180deg);
-          opacity: 0;
-        }
-        25%,
-        75% {
-          -webkit-transform: perspective(140px) rotateX(0deg);
-          transform: perspective(140px) rotateX(0deg);
-          opacity: 1;
-        }
-        90%,
-        100% {
-          -webkit-transform: perspective(140px) rotateY(180deg);
-          transform: perspective(140px) rotateY(180deg);
-          opacity: 0;
-        }
-      }
-      @keyframes foldthecube {
-        0%, 10% {
-          -webkit-transform: perspective(140px) rotateX(-180deg);
-          transform: perspective(140px) rotateX(-180deg);
-          opacity: 0;
-        }
-        25%,
-        75% {
-          -webkit-transform: perspective(140px) rotateX(0deg);
-          transform: perspective(140px) rotateX(0deg);
-          opacity: 1;
-        }
-        90%,
-        100% {
-          -webkit-transform: perspective(140px) rotateY(180deg);
-          transform: perspective(140px) rotateY(180deg);
-          opacity: 0;
-        }
-      }
-
-
-      .app {
-        opacity: 0;
-        height: 100vh;
-      }
-
-      .app > * {
-        height: 100vh;
-      }
-
-      .loader {
-        height: 100vh;
-        width: 100vw;
-        background-color: rgb(230, 243, 255);
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
-    </style>
 
   </head>
   <body>
 
-    <div class="app" layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
+    <div ng-app="tc" class="app" layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
       <section ng-if="!needLogin()" layout="row" flex>
         <md-sidenav layout="column"
                     md-is-locked-open="true"
@@ -177,18 +55,23 @@
         </section>
       </section>
 
-      <!-- TODO ng-if causes error with animation -->
       <login ng-show="needLogin()"></login>
     </div>
 
     <div class="loader">
-      <div class="thecube">
-        <div class="cube c1"></div>
-        <div class="cube c2"></div>
-        <div class="cube c4"></div>
-        <div class="cube c3"></div>
+      <div class="sk-cube-grid">
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
       </div>
     </div>
+
     <!-- TODO use the browser version instead, but no work with electron -->
     <script>window.$ = window.jQuery = require('jquery');</script>
 
