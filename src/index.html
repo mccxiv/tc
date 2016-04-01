@@ -30,7 +30,7 @@
   <body>
 
     <div ng-app="tc" class="app" layout="column" ng-controller="main" ng-class="{dark: settings.theme.dark}" ng-cloak>
-      <section ng-if="!needLogin()" layout="row" flex>
+      <section ng-if="!needLogin()" layout="row" flex class="main">
         <md-sidenav layout="column"
                     md-is-locked-open="true"
                     class="side-bar md-sidenav-left md-whiteframe-z2"
@@ -55,7 +55,7 @@
         </section>
       </section>
 
-      <login ng-show="needLogin()"></login>
+      <login ng-show="needLogin()" class="login"></login>
     </div>
 
     <div class="loader">

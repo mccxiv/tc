@@ -85,7 +85,7 @@ md-toast {
   height: 100vh;
 }
 
-.app > * {
+.app > .main, .app > .login {
   height: 100vh;
 }
 
