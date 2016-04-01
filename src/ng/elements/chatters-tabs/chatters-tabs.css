@@ -1,4 +1,5 @@
 chatters-tabs {
+  height: 10px; /* TODO. Without this, long user lists squish other content */
   overflow-y: auto;
   position: relative;
 }
