@@ -1,8 +1,8 @@
-var app = require('electron').app;
-var ipc = require('electron').ipcMain;
 var path = require('path');
 var argv = require('yargs').argv;
-var BrowserWindow = require('browser-window');
+var app = require('electron').app;
+var ipc = require('electron').ipcMain;
+var BrowserWindow = require('electron').BrowserWindow;
 var squirrelStartup = require('./lib/squirrel-startup.js');
 var windowState = require('electron-window-state');
 

@@ -9,7 +9,7 @@
  * @ngdoc factory
  * @name autoUpdater
  */
-angular.module('tc').factory('autoUpdater', function () {
+angular.module('tc').factory('autoUpdater', function (electron) {
   console.log('LOAD: autoUpdater');
   var autoUpdater;
   
@@ -20,8 +20,8 @@ angular.module('tc').factory('autoUpdater', function () {
   }
   
   else {
-    autoUpdater = require('remote').require('auto-updater');
-    var version = require('remote').require('app').getVersion();
+    autoUpdater = electron.remote.autoUpdater;
+    var version = electron.remote.app.getVersion();
     var os = process.platform;
 
     //autoUpdater.setFeedUrl('http://gettc.xyz/update');

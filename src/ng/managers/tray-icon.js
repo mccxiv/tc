@@ -1,20 +1,24 @@
-angular.module('tc').factory('trayIcon', function (settings, $rootScope) {
+angular.module('tc').factory('trayIcon', function (
+  settings, $rootScope, electron) {
   console.log('LOAD: tray-icon');
 
-  if (process.platform !== 'win32') return {dummy: 'Dummy object'};
+  if (process.platform !== 'win32') return null;
   // This module uses lots of electron specific code
-  var remote = require('remote').require;
-  var Tray = remote('tray');
-  var Menu = remote('menu');
-  var app = remote('app');
-  var path = remote('path');
+  var Tray = electron.remote.Tray;
+  var Menu = electron.remote.Menu;
+  var app = electron.remote.app;
+  var ipcRenderer = electron.local.ipcRenderer;
+  var browserWindow = electron.local.browserWindow;
+  var path = require('path');
+
+  console.log('tray', Tray);
 
   var tray = new Tray(path.join(__dirname, 'assets/icon16.png'));
 
   tray.on('clicked', function () {
     // Electron quirk: don't store this browser window in a local variable
     // or it will get garbage collected in some weird and unpredictable way
-    remote('browser-window').getAllWindows()[0].show();
+    browserWindow.getAllWindows()[0].show();
   });
 
   tray.setContextMenu(Menu.buildFromTemplate([
@@ -32,18 +36,15 @@ angular.module('tc').factory('trayIcon', function (settings, $rootScope) {
       type: 'separator'
     },
     {
-      label: 'Quit Tc', click: function () {
-      // remote callbacks are not synchronous so it's not possible to
-      // call e.preventDefault() from the browser side.
-      require('ipc').send('force-quit');
-    }
+      label: 'Quit Tc',
+      click: app.exit
     }
   ]));
 
   function setAutoStart() {
     var autoStart = settings.behavior.autoStart;
     var command = autoStart ? 'enable-auto-start' : 'disable-auto-start';
-    require('ipc').send(command);
+    ipcRenderer.send(command);
   }
 
   return tray;
