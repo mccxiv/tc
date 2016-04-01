@@ -8,7 +8,7 @@ angular.module('tc').factory('trayIcon', function (
   var Menu = electron.remote.Menu;
   var app = electron.remote.app;
   var ipcRenderer = electron.local.ipcRenderer;
-  var browserWindow = electron.local.browserWindow;
+  var browserWindow = electron.remote.browserWindow;
   var path = require('path');
 
   console.log('tray', Tray);
@@ -37,7 +37,7 @@ angular.module('tc').factory('trayIcon', function (
     },
     {
       label: 'Quit Tc',
-      click: app.exit
+      click: app.exit.bind(app, 0)
     }
   ]));
 
