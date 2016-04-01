@@ -40,7 +40,7 @@ function makeWindow() {
 
   mainWinState.manage(main);
 
-  if (argv['dev-tools']) main.on('page-title-updated', devTools);
+  if (argv['dev-tools']) main.on('page-title-updated', setTimeout(devTools, 1000));
   main.on('close', function (e) {
     console.log('TC: Window tried closing, hiding it instead.');
     e.preventDefault();
