@@ -12,7 +12,6 @@ var main;
 
 if (squirrelStartup()) return;
 if (isSecondInstance()) app.quit();
-if (argv['dev-tools']) setTimeout(devTools, 1000);
 if (argv.data) app.setPath('userData', path.resolve(argv.data));
 
 app.on('ready', makeWindow);
@@ -41,6 +40,7 @@ function makeWindow() {
 
   mainWinState.manage(main);
 
+  if (argv['dev-tools']) main.on('page-title-updated', devTools);
   main.on('close', function (e) {
     console.log('TC: Window tried closing, hiding it instead.');
     e.preventDefault();
