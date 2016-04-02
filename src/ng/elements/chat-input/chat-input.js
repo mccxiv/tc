@@ -1,4 +1,5 @@
-angular.module('tc').directive('chatInput', function (_, settings, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
+angular.module('tc').directive('chatInput', function (
+  _, settings, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
 
   function link(scope, element) {
     scope.message = '';
