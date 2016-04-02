@@ -18,8 +18,8 @@ app.on('ready', makeWindow);
 ipc.on('open-dev-tools', devTools);
 ipc.on('enable-auto-start', enableAutoStart);
 ipc.on('disable-auto-start', disableAutoStart);
-ipc.on('force-quit', app.exit);
-app.on('before-quit', app.exit); // Skip the 'close' event
+//ipc.on('force-quit', app.exit);
+app.on('before-quit', app.exit.bind(app, 0)); // Skip the 'close' event
 app.on('activate', unhideAppOnMac);
 
 function makeWindow() {
