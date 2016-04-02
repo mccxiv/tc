@@ -27,6 +27,11 @@
       <p>Appearance</p>
     </md-list-item>
     <md-list-item class="menu-item"
+                  ng-click="m.selected = 'ignore'"
+                  ng-class="{selected: m.selected === 'ignore'}">
+      <p>Ignore List</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
                   ng-click="m.selected = 'about'"
                   ng-class="{selected: m.selected === 'about'}">
       <p>About</p>
@@ -95,7 +100,40 @@
   </md-content>
 
   <md-content ng-switch-when="chat">
-    <chat-options></chat-options>
+    <h1 class="md-headline">Chat options</h1>
+
+    <md-switch ng-model="settings.chat.timestamps">
+      Show time stamps
+    </md-switch>
+  </md-content>
+
+  <md-content ng-switch-when="ignore">
+    <h1 class="md-headline">Ignore List</h1>
+
+    <form class="input-form" ng-submit="ignore.add()">
+      <md-input-container>
+        <label>Add a new user to ignore</label>
+        <input ng-model="ignore.input">
+      </md-input-container>
+    </form>
+
+    <md-list class="phrase-list">
+      <md-list-item
+        class="item"
+        ng-repeat="ignored in settings.chat.ignored track by $index"
+      >
+        <md-button
+          class="close-button md-raised md-warn"
+          ng-click="ignore.delete($index)"
+        >
+          <md-tooltip md-autohide md-direction="right">
+            Unblock this user
+          </md-tooltip>
+          <i class="zmdi zmdi-close"></i>
+        </md-button>
+        <p>{{ignored}}</p>
+      </md-list-item>
+    </md-list>
   </md-content>
 
   <md-content ng-switch-when="appearance">

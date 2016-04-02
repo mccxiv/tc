@@ -49,7 +49,21 @@ angular.module('tc').directive('settingsPanel', function (settings, autoUpdater,
     scope.zoomLabel = function () {
       if (settings.appearance.zoom === 100) return 'Normal';
       return settings.appearance.zoom + '%';
-    }
+    };
+
+    scope.ignore = {
+      input: '',
+      add: function () {
+        var username = this.input.trim().toLowerCase();
+        var isNotIgnored = settings.chat.ignored.indexOf(username) < 0;
+        var isNotBlank = this.input.length;
+        if (isNotBlank && isNotIgnored) settings.chat.ignored.push(username);
+        this.input = '';
+      },
+      delete: function (index) {
+        settings.chat.ignored.splice(index, 1);
+      }
+    };
   }
 
   return {
