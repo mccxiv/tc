@@ -1,10 +1,16 @@
 <!-- Awkward indentation to avoid any whitespace -->
 
 <div class="chat-lines">
-  <div class="chat-line"
-       ng-repeat="m in messages | limitTo: chatLimit"
-       ng-class="{highlighted: m.highlighted, deleted: m.deleted, whisper: m.type === 'whisper'}"
-       style="{{m.style}}"><!--
+  <div
+    class="chat-line"
+    ng-repeat="m in messages | limitTo: chatLimit"
+    ng-class="{
+      highlighted: m.highlighted,
+      deleted: m.deleted,
+      whisper: m.type === 'whisper'
+    }"
+    style="{{m.style}}"
+  ><!--
 	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.time | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="m.user"><!--
         ---><img class="badge" ng-if="isBroadcaster(m.user.username)"
@@ -20,7 +26,7 @@
     ---></span><!--
     ---><span class="username" ng-if="m.user"
               ng-click="selectUsername(m.user.username)"
-              style="color: {{m.user.color}}">{{m.user['display-name']}}</span><!--
+              style="color: {{calculateColor(m.user.color)}}">{{m.user['display-name']}}</span><!--
     ---><span class="username" ng-if="m.type === 'whisper'"
               ng-click="selectUsername(m.from)">{{m.from}}</span><!--
     --->

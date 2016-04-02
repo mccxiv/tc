@@ -5,7 +5,8 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function ($sce, $timeout, settings, messages, session, irc, api, openExternal) {
+angular.module('tc').directive('chatOutput', function (
+  $sce, $timeout, settings, messages, session, irc, api, openExternal, colors) {
 
   function link(scope, element) {
     //===============================================================
@@ -69,6 +70,8 @@ angular.module('tc').directive('chatOutput', function ($sce, $timeout, settings,
     scope.trusted = function (html) {
       return $sce.trustAsHtml(html);
     };
+
+    scope.calculateColor = calculateColor;
 
     scope.scrollDown = scrollDown;
 
@@ -177,6 +180,25 @@ angular.module('tc').directive('chatOutput', function ($sce, $timeout, settings,
           fetchBadges(delay)
         }, delay);
       });
+    }
+
+    function calculateColor(color) {
+      var lightness;
+      var colorRegex = /^#[0-9a-f]+$/i;
+      if (colorRegex.test(color)) {
+        while ((
+        (
+          colors.calculateColorBackground(color) === 'light' &&
+          settings.theme.dark
+        ) || (
+          colors.calculateColorBackground(color) === 'dark' &&
+          !settings.theme.dark
+        ))) {
+          lightness = colors.calculateColorBackground(color);
+          color = colors.calculateColorReplacement(color, lightness);
+        }
+      }
+      return color;
     }
   }
 
