@@ -22,10 +22,13 @@ angular.module('tc').factory('autoUpdater', function (electron) {
   else {
     autoUpdater = electron.remote.autoUpdater;
     var version = electron.remote.app.getVersion();
-    var os = process.platform;
+    var url = 'http://dl.gettc.xyz/update';
+    url += '?version=' + version;
+    url += '&platform=' + process.platform;
 
-    //autoUpdater.setFeedUrl('http://gettc.xyz/update');
-    autoUpdater.setFeedUrl('http://dl.gettc.xyz/update/' + os + '/' + version);
+    console.log('URL: ', url);
+
+    autoUpdater.setFeedUrl(url);
     //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
 
     setTimeout(check, 15000);
