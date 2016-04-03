@@ -4,7 +4,8 @@
   color: #D3D3D3;
 }
 
-.dark .md-whiteframe-z2 {
+/* Apparently people don't like this */
+/*.dark .md-whiteframe-z2 {
   box-shadow: 0 2px 4px -1px rgba(255, 255, 255, 0.14),
     0 4px 5px 0 rgba(255, 255, 255, 0.098),
     0 1px 10px 0 rgba(255, 255, 255, 0.084);
@@ -16,7 +17,7 @@
 
 .dark md-divider {
   border-top-color: rgba(255, 255, 255, 0.12);
-}
+}*/
 
 .dark :hover::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.35);
