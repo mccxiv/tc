@@ -133,10 +133,10 @@ gulp.task('build-html', function () {
     .pipe(gulpif('*.js', concat('app.js')))
     .pipe(gulpif('*.js', ngAnnotate()))
     .pipe(gulpif('*.js', stripDebug()))
-    //.pipe(gulpif('*.js', uglify())) TODO re-use
+    .pipe(gulpif('*.js', uglify()))
     .pipe(gulpif('*.css', base64({maxWeightResource: Infinity})))
     .pipe(gulpif('*.css', concat('style.css')))
-    //.pipe(gulpif('*.css', minifyCss()))
+    .pipe(gulpif('*.css', minifyCss()))
     .pipe(assets.restore())
     .pipe(useref())
     .pipe(gulp.dest(BUILD_DIR));
