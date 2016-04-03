@@ -44,8 +44,7 @@ html {
   -webkit-user-select: none;
   user-select: none;
   font-size: 10px;
-  height: calc(100vh + 1px);
-  overflow: hidden;
+  height: 100vh;
 }
 
 *, *:before, *:after {

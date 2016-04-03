@@ -25,6 +25,14 @@
     <link rel="stylesheet" href="ng/elements/settings-panel/settings-gui-dialog.css">
     <!-- endbuild -->
 
+    <script>
+      // TODO Investigate why this is necessary
+      if (process.platform === 'darwin') {
+        document.querySelector('html').style.marginTop = '-1px';
+        document.querySelector('html').style.height = 'calc(100vh + 1px)';
+      }
+    </script>
+
   </head>
   <body>
 
