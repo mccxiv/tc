@@ -47,5 +47,5 @@ chat-tabs .counter {
   right: 20px;
   font-size: 1.0rem;
   position: absolute;
-  color: rgba(0, 0, 0, 0.35);
+  opacity: 0.65;
 }
