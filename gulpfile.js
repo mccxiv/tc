@@ -150,9 +150,10 @@ gulp.task('package-win32-linux', function (cb) {
   var opts = {
     dir: BUILD_DIR,
     name: 'Tc',
+    asar: true,
     platform: 'all',
     arch: 'ia32',
-    version: '0.34.2',
+    version: '0.37.3',
     'app-version': VERSION,
     'build-version': VERSION,
     'app-copyright': 'Copyright 2015 Andrea Stella. All rights reserved',
@@ -168,9 +169,25 @@ gulp.task('package-win32-linux', function (cb) {
 });
 
 gulp.task('package-darwin', function (cb) {
-  exec('npm run package-osx', {
-    maxBuffer: 1024 * 5000
-  }, cb);
+  var opts = {
+    dir: BUILD_DIR,
+    name: 'Tc',
+    asar: true,
+    platform: 'darwin',
+    arch: 'x64',
+    version: '0.37.3',
+    'app-version': VERSION,
+    'build-version': VERSION,
+    'app-copyright': 'Copyright 2015 Andrea Stella. All rights reserved',
+    icon: 'src/assets-embed/icon.icns',
+    'version-string': {
+      CompanyName: 'Mccxiv Software',
+      FileDescription: 'Tc, the chat client for Twitch',
+      ProductName: 'Tc'
+    },
+    out: PACKAGED_DIR
+  };
+  packager(opts, cb);
 });
 
 gulp.task('remove-unnecessary-package-files', function (cb) {
