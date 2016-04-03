@@ -84,17 +84,16 @@ gulp.task('clean-before', function (cb) {
 });
 
 gulp.task('rebuild-spellchecker-ia32', function () {
-  return rebuild.installNodeHeaders('v0.37.3', undefined, undefined, 'ia32')
-    .then(function () {
-      rebuild.rebuildNativeModules('v0.37.3', './src/node_modules')
-    });
+  exec('./node_modules/.bin/electron-rebuild ' +
+    '--arch ia32' +
+    '--version 0.37.4 --force --module-dir ./src/node_modules ' +
+    '--which-module spellchecker', cb);
 });
 
-gulp.task('rebuild-spellchecker', function () {
-  return rebuild.installNodeHeaders('v0.37.3')
-    .then(function () {
-      rebuild.rebuildNativeModules('v0.37.3', './src/node_modules')
-    });
+gulp.task('rebuild-spellchecker', function (cb) {
+  exec('./node_modules/.bin/electron-rebuild ' +
+    '--version 0.37.4 --force --module-dir ./src/node_modules ' +
+    '--which-module spellchecker', cb);
 });
 
 gulp.task('copy-lib', function () {
@@ -153,7 +152,7 @@ gulp.task('package-win32-linux', function (cb) {
     asar: true,
     platform: 'all',
     arch: 'ia32',
-    version: '0.37.3',
+    version: '0.37.4',
     'app-version': VERSION,
     'build-version': VERSION,
     'app-copyright': 'Copyright 2015 Andrea Stella. All rights reserved',
@@ -175,7 +174,7 @@ gulp.task('package-darwin', function (cb) {
     asar: true,
     platform: 'darwin',
     arch: 'x64',
-    version: '0.37.3',
+    version: '0.37.4',
     'app-version': VERSION,
     'build-version': VERSION,
     'app-copyright': 'Copyright 2015 Andrea Stella. All rights reserved',
