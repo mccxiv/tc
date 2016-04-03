@@ -81,8 +81,8 @@ chat-output .highlighted {
 }
 
 chat-output .whisper {
-  padding-left: 3px;
-  border-left: 2px solid #a68ed2;
+  padding-left: 15px;
+  border-left: 2px solid rgba(166, 142, 210, 0.46);;
   background-color: rgba(255, 174, 0, 0.15);
 }
 
