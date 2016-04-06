@@ -12,13 +12,14 @@
 angular.module('tc').factory('autoUpdater', function (electron) {
   console.log('LOAD: autoUpdater');
   var autoUpdater;
-  
-  if (process.platform !== 'win32') {
+  var os = process.platform;
+
+  if (os !== 'win32' && os !== 'darwin') {
     autoUpdater = {};
     autoUpdater.checkForUpdates = function() {};
     autoUpdater.on = function() {};
   }
-  
+
   else {
     autoUpdater = electron.remote.autoUpdater;
     var version = electron.remote.app.getVersion();
