@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "electron ./src --dev-tools",
-    "postinstall": "gulp postinstall",
-    "k": "install-app-deps",
+    "postinstall": "gulp postinstall && npm run dist",
     "reinstall": "gulp reinstall",
     "pack": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\"",
     "dist": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\""

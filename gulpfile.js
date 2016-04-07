@@ -5,7 +5,6 @@ var gulp = require('gulp');
 gulp.task('postinstall', function() {
   shell.exec('bower install --allow-root');
   shell.exec('cd src && npm install --unsafe-perm');
-  shell.exec(path.normalize('./node_modules/.bin/install-app-deps'));
 });
 
 gulp.task('reinstall', function() {
