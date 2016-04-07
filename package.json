@@ -20,6 +20,9 @@
       "FileDescription": "Tc, the chat client for Twitch",
       "ProductName": "Tc"
     },
+    "osx": {
+      "background": "src/assets-embed/dmg-background.png"
+    },
     "win": {
       "loadingGif": "src/assets-embed/install.gif",
       "exe": "Tc.exe",
