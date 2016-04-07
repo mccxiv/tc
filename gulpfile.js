@@ -9,7 +9,6 @@ var concat = require('gulp-concat');
 var rebuild = require('electron-rebuild');
 var addsrc = require('gulp-add-src');
 var base64 = require('gulp-css-base64');
-var packager = require('electron-packager');
 var minifyCss = require('gulp-minify-css');
 var stripDebug = require('gulp-strip-debug');
 var ngAnnotate = require('gulp-ng-annotate');
@@ -34,6 +33,23 @@ gulp.task('run-dev', function (cb) {
 
 gulp.task('run-dev-no-args', function (cb) {
   exec(path.normalize('./node_modules/.bin/electron ./src'), cb);
+});
+
+gulp.task('make-dist', function (cb) {
+  runSequence(
+    'clean-before',
+    'rebuild-spellchecker',
+    [
+      'copy-lib',
+      'copy-assets',
+      'copy-electron-files',
+      'copy-node-modules'
+    ],
+    'cache-templates',
+    'build-html',
+    'clean-cached-templates',
+    cb
+  );
 });
 
 gulp.task('make-dist-win32-linux', function (cb) {
@@ -91,7 +107,7 @@ gulp.task('rebuild-spellchecker-ia32', function () {
 });
 
 gulp.task('rebuild-spellchecker', function (cb) {
-  exec('./node_modules/.bin/electron-rebuild ' +
+  exec('"./node_modules/.bin/electron-rebuild" ' +
     '--version 0.37.4 --force --module-dir ./src/node_modules ' +
     '--which-module spellchecker', cb);
 });

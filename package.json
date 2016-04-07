@@ -4,16 +4,40 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp run-dev",
-    "postinstall": "gulp postinstall",
-    "build-win-and-linux": "gulp make-dist-win32-linux",
-    "build-osx": "gulp make-dist-darwin",
-    "package-osx": "electron-packager _build Tc --out=_packaged --platform=darwin --arch=x64",
-    "use-docker-to-package-mac-version": "gulp rebuild-spellchecker && electron-packager _build Tc --out=_packaged --platform=darwin --arch=x64 && mkdir -p _dist/mac && mkdir -p /project/_dist/mac && zip -r -y _dist/mac/tc-osx.zip _packaged/Tc-darwin-x64/Tc.app"
+    "postinstall": "install-app-deps --appDir src",
+    "postpostinstall": "gulp postinstall",
+    "pack": "build --appDir src",
+    "dist": "build --appDir src"
+  },
+  "build": {
+    "app-bundle-id": "zyx.gettc.tc",
+    "app-category-type": "public.app-category.social-networking",
+    "name": "Tc",
+    "asar": true,
+    "app-copyright": "Copyright 2015 Andrea Stella. All rights reserved",
+    "version-string": {
+      "CompanyName": "Mccxiv Software",
+      "FileDescription": "Tc, the chat client for Twitch",
+      "ProductName": "Tc"
+    },
+    "win": {
+      "loadingGif": "src/assets-embed/install.gif",
+      "exe": "Tc.exe",
+      "setupExe": "tc-setup.exe",
+      "authors": "Mccxiv Software",
+      "description": "Tc, the chat client for Twitch",
+      "title": "Tc, the chat client for Twitch",
+      "setupIcon": "src/assets-embed/icon.ico",
+      "noMsi": true
+    }
+  },
+  "directories": {
+    "buildResources": "src/assets-embed"
   },
   "dependencies": {
     "bower": "1.6.5",
     "del": "1.2.0",
-    "electron-packager": "6.0.0",
+    "electron-builder": "3.3.0",
     "electron-prebuilt": "0.37.4",
     "electron-rebuild": "1.0.2",
     "electron-windows-installer": "1.2.5",
@@ -31,6 +55,6 @@
     "gulp-useref": "1.1.2",
     "root-require": "0.3.1",
     "run-sequence": "1.1.0",
-    "tmi.js": "git://github.com/Schmoopiie/tmi.js.git"
+    "shelljs": "^0.6.0"
   }
 }
