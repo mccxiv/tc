@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp run-dev",
-    "postinstall": "install-app-deps --appDir src",
-    "postpostinstall": "gulp postinstall",
-    "pack": "build --appDir src",
-    "dist": "build --appDir src"
+    "postinstall": "gulp postinstall",
+    "pack": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\"",
+    "dist": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\""
   },
   "build": {
     "app-bundle-id": "zyx.gettc.tc",
@@ -21,6 +20,7 @@
       "ProductName": "Tc"
     },
     "osx": {
+      "icon": "src/assets-embed/icon.icns",
       "background": "src/assets-embed/dmg-background.png"
     },
     "win": {
@@ -41,7 +41,7 @@
     "bower": "1.6.5",
     "del": "1.2.0",
     "electron-builder": "3.3.0",
-    "electron-prebuilt": "0.37.4",
+    "electron-prebuilt": "0.37.3",
     "electron-rebuild": "1.0.2",
     "electron-windows-installer": "1.2.5",
     "gulp": "3.9.0",
