@@ -26,7 +26,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   //===============================================================
   var Emitter = require('events').EventEmitter;
   var ee = new Emitter();
-  var clients = {read: null, write: null, whisper: null};
+  var clients = {read: null, write: null};
 
   //===============================================================
   // Public members
@@ -44,7 +44,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   };
 
   ee.whisper = function (username, message) {
-    clients.whisper.whisper(username, message);
+    clients.write.whisper(username, message);
   };
 
   // TODO debug stuff
@@ -73,7 +73,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
     var readEvents = [
       'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
       'emotesets', 'hosted', 'hosting', 'slowmode', 'subanniversary',
-      'subscriber', 'subscription', 'timeout', 'unhost'
+      'subscriber', 'subscription', 'timeout', 'unhost', 'whisper'
     ];
 
     var clientSettings = {
@@ -87,18 +87,11 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
 
     _.forEach(clients, function (v, key) {
       var setts = angular.copy(clientSettings);
-      if (key === 'whisper') {
-        setts.connection.cluster = 'group';
-        setts.connection.reconnect = false;
-        delete setts.channels;
-      }
       clients[key] = new tmi.client(setts);
       clients[key].connect();
-      clients[key].on('whisper', console.log.bind(console, 'WHISPER'))
     });
 
     forwardEvents(clients.read, ee, readEvents);
-    forwardEvents(clients.whisper, ee, ['whisper']);
 
     clients.read.on('disconnected', function (reason) {
       console.log('IRC: disconnected:', reason);
@@ -134,27 +127,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
         ee.emit.apply(ee, args);
         clients.read.once('connected', onlyEmitDisconnectedOnce);
       });
-    }
-
-    // Temporary monkey patch for reconnect not working with group servers.
-    // Periodically check if it's disconnected and manually reconnect.
-    setTimeout(reconnectWhisperServer, 60000);
-    function reconnectWhisperServer() {
-      if (clients.whisper && clients.read) {
-        var whisperState = clients.whisper.readyState();
-        var readState = clients.read.readyState();
-        if (readState === 'OPEN' && whisperState === 'CLOSED') {
-          console.warn(
-            'Whisper server was disconnected even ' +
-            'though the read server is connected. ' +
-            'Reconnecting it...');
-          clients.whisper.disconnect().then(
-            clients.whisper.connect.bind(clients.whisper),
-            clients.whisper.connect.bind(clients.whisper)
-          );
-        }
-        setTimeout(reconnectWhisperServer, 20000);
-      }
     }
   }
 
