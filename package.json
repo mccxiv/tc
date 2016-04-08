@@ -6,6 +6,7 @@
     "start": "electron ./src --dev-tools",
     "postinstall": "gulp postinstall && npm run dist",
     "reinstall": "gulp reinstall",
+    "build": "npm run dist && gulp cleanup",
     "pack": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\"",
     "dist": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\""
   },
@@ -27,7 +28,6 @@
     "win": {
       "loadingGif": "src/assets-embed/install.gif",
       "exe": "Tc.exe",
-      "setupExe": "tc-setup.exe",
       "authors": "Mccxiv Software",
       "description": "Tc, the chat client for Twitch",
       "title": "Tc, the chat client for Twitch",
