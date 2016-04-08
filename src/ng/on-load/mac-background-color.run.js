@@ -1,5 +1,5 @@
 angular.module('tc').run(function ($document) {
   if (process.platform === 'darwin') {
-    $document.body.style.backgroundColor = '#FDFCFD';
+    $document[0].body.style.backgroundColor = '#FDFCFD';
   }
 });
