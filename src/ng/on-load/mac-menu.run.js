@@ -4,6 +4,16 @@ angular.module('tc').run(function (electron) {
 
   var template = [
     {
+      label: 'Tc',
+      submenu: [
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click: function() {electron.remote.app.exit(0);}
+        }
+      ]
+    },
+    {
       label: 'Edit',
       submenu: [
         {
@@ -38,35 +48,6 @@ angular.module('tc').run(function (electron) {
           label: 'Select All',
           accelerator: 'CmdOrCtrl+A',
           role: 'selectall'
-        }
-      ]
-    },
-    {
-      label: 'View',
-      submenu: [
-        {
-          label: 'Toggle Full Screen',
-          accelerator: 'Ctrl+Command+F',
-          click: function(item, focusedWindow) {
-            if (focusedWindow)
-              focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-          }
-        }
-      ]
-    },
-    {
-      label: 'Window',
-      role: 'window',
-      submenu: [
-        {
-          label: 'Minimize',
-          accelerator: 'CmdOrCtrl+M',
-          role: 'minimize'
-        },
-        {
-          label: 'Close',
-          accelerator: 'CmdOrCtrl+W',
-          role: 'close'
         }
       ]
     }
