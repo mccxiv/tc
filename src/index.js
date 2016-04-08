@@ -18,7 +18,6 @@ app.on('ready', makeWindow);
 ipc.on('open-dev-tools', devTools);
 ipc.on('enable-auto-start', enableAutoStart);
 ipc.on('disable-auto-start', disableAutoStart);
-//ipc.on('force-quit', app.exit);
 app.on('before-quit', app.exit.bind(app, 0)); // Skip the 'close' event
 app.on('activate', unhideAppOnMac);
 
@@ -40,7 +39,7 @@ function makeWindow() {
 
   mainWinState.manage(main);
 
-  if (argv['dev-tools']) main.on('page-title-updated', devTools);
+  if (argv['dev-tools']) setTimeout(devTools, 1500);
   main.on('close', function (e) {
     console.log('TC: Window tried closing, hiding it instead.');
     e.preventDefault();
