@@ -79,15 +79,14 @@ angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings,
       options: {debug: false},
       connection: {cluster: 'aws', timeout: 20000, reconnect: true},
       identity: angular.copy(settings.identity),
-      channels: settings.channels.map(function(channel) {
-        return '#' + channel;
-      })
+      channels: []
     };
 
     _.forEach(clients, function(v, key) {
       var setts = angular.copy(clientSettings);
       clients[key] = new tmi.client(setts);
       clients[key].connect();
+      clients[key].on('connected', joinChannels.bind(this, clients[key]));
     });
 
     forwardEvents(clients.read, ee, readEvents);
