@@ -6,7 +6,7 @@
  * @restrict E
  */
 angular.module('tc').directive('chatOutput', function (
-  $sce, $timeout, settings, messages, session, irc, api, openExternal, colors) {
+  $sce, $timeout, settings, messages, session, api, openExternal, colors) {
 
   function link(scope, element) {
     //===============================================================
@@ -30,8 +30,6 @@ angular.module('tc').directive('chatOutput', function (
     handleEmoteHover();
     delayedScroll();
 
-    console.log('CHAT-OUTPUT: loading ' + scope.channel);
-
     scope.$watch(
       function () {
         return scope.messages[scope.messages.length - 1]
@@ -43,22 +41,20 @@ angular.module('tc').directive('chatOutput', function (
     );
 
     scope.$watch(
-      function () {
-        return settings.appearance.sidebarCollapsed
-      },
-      function () {
-        setTimeout(scrollIfEnabled, 260);
-      }
+      function () {return settings.appearance.sidebarCollapsed},
+      function () {setTimeout(scrollIfEnabled, 260);}
     );
 
     window.addEventListener('resize', scrollIfEnabled);
 
+    scope.$on('$destroy', function() {
+      window.removeEventListener('resize', scrollIfEnabled);
+    });
 
     //===============================================================
     // Directive methods
     //===============================================================
     scope.selectUsername = function (username) {
-      console.log('CHAT-OUTPUT: Username selected:', username);
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;
     };
@@ -96,7 +92,7 @@ angular.module('tc').directive('chatOutput', function (
         emoticon.frosty('show');
         emoticon.one('mouseleave', function () {
           emoticon.frosty('hide');
-        })
+        });
       });
     }
 
@@ -139,10 +135,7 @@ angular.module('tc').directive('chatOutput', function (
     function scrollDown() {
       scope.autoScroll = true;
       latestScrollWasAutomatic = true;
-      setTimeout(function () {
-        console.log('CHAT-OUTPUT: scrolling down automatically');
-        e.scrollTop = e.scrollHeight;
-      }, 0);
+      setTimeout(function () {e.scrollTop = e.scrollHeight;}, 0);
     }
 
     function hideUnscrolledLines() {
