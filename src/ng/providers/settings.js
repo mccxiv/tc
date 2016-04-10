@@ -6,7 +6,6 @@
  * @name settings
  */
 angular.module('tc').factory('settings', function ($rootScope) {
-  console.log('LOAD: settings');
 
   //===============================================================
   // Variables
@@ -109,10 +108,7 @@ angular.module('tc').factory('settings', function ($rootScope) {
   }
 
   function settingsChanged(newV, oldV) {
-    if (newV !== oldV) {
-      console.log('Settings changed, saving.', settings);
-      saveSettings();
-    }
+    if (newV !== oldV) {saveSettings();}
   }
 
   function loadSettings() {

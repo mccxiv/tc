@@ -57,7 +57,6 @@ angular.module('tc').factory('notifications', function (irc, settings, highlight
    * @return {Notification}    - The Notification object that was created
    */
   function n(title, body) {
-    console.log('NOTIFICATIONS: firing notification', title, body);
     if (process.platform !== 'win32') new Notification(title, {body: body});
     else trayIcon.displayBalloon({title: title, content: body});
   }  

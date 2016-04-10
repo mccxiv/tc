@@ -11,8 +11,6 @@
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('emotesFfz', function ($http, channels) {
-  console.log('LOAD: emotesFfz');
-
   var globalEmotes = [];
   var channelEmotes = {};
 
@@ -39,7 +37,6 @@ angular.module('tc').factory('emotesFfz', function ($http, channels) {
           });
         });
       });
-      console.log('FFZ: global emotes', globalEmotes);
     }
 
     function onError() {

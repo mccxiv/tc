@@ -34,7 +34,6 @@ angular.module('tc').directive('chatters', function ($http, settings, session, a
 
     function fetchList(attemptNumber) {
       if (!isChannelSelected()) return; // Abort
-      console.log('CHATTERS: Getting user list for channel ' + scope.channel);
       api.chatters(scope.channel).success(onList).error(function () {
         attemptNumber = attemptNumber || 0;
         attemptNumber++;
@@ -54,7 +53,6 @@ angular.module('tc').directive('chatters', function ($http, settings, session, a
           moderators: chatters.moderators,
           viewers: chatters.viewers
         };
-        console.log('CHATTERS: Got viewer list for ' + scope.channel, result.data);
       }
       else console.warn('CHATTERS: Could not parse chatter list.');
     }

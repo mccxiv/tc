@@ -36,8 +36,6 @@ angular.module('tc').directive('sideToolbar', function (settings, settingsGui, $
         .targetEvent(event);
       confirm._options.clickOutsideToClose = true;
 
-      console.log('confirm is ', confirm);
-
       $mdDialog.show(confirm).then(
         function () {
           settings.identity.password = '';

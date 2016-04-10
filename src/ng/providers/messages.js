@@ -33,8 +33,7 @@
  * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
  */
 angular.module('tc').factory('messages', function ($rootScope, $filter, $http, irc, api, highlights, settings, channels) {
-  console.log('LOAD: messages');
-
+  
   //=====================================================
   // Variables | TODO dry
   //=====================================================
@@ -255,7 +254,6 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
     channel = channel.substring(1);
     if (messages[channel]) {
       messages[channel].forEach(function (message) {
-        console.log('checking msg');
         if (message.user && message.user.username === username) {
           message.deleted = true;
         }

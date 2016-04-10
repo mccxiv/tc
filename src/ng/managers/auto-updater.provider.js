@@ -10,7 +10,6 @@
  * @name autoUpdater
  */
 angular.module('tc').factory('autoUpdater', function (electron) {
-  console.log('LOAD: autoUpdater');
   var autoUpdater;
   var os = process.platform;
 
@@ -26,8 +25,6 @@ angular.module('tc').factory('autoUpdater', function (electron) {
     var url = 'http://dl.gettc.xyz/update';
     url += '?version=' + version;
     url += '&platform=' + process.platform;
-
-    console.log('URL: ', url);
 
     autoUpdater.setFeedUrl(url);
     //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing

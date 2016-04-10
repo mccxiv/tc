@@ -5,7 +5,6 @@
  * @name settingsGui
  */
 angular.module('tc').factory('settingsGui', function ($mdDialog, $rootElement) {
-  console.log('LOAD: settingsGui');
   return {
     /**
      * Shows the options page.

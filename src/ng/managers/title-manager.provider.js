@@ -5,7 +5,6 @@
  * @name titleManager
  */
 angular.module('tc').factory('titleManager', function ($filter, channels, settings) {
-  console.log('LOAD: titleManager');
 
   var capitalize = $filter('capitalize');
 

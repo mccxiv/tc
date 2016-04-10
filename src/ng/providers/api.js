@@ -7,7 +7,6 @@
  * @property {function} user
  */
 angular.module('tc').factory('api', ['$http', function ($http) {
-  console.log('LOAD: api');
   return {
     /**
      * Get chat badges for a channel (subscriber icon, etc)

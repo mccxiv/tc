@@ -11,7 +11,6 @@ angular.module('tc').directive('login', function (settings, irc, openExternal) {
         if (!password.startsWith('oauth:')) password = 'oauth:' + password;
         settings.identity.username = scope.m.username;
         settings.identity.password = password;
-        console.log('LOGIN: User supplied credentials.', settings.identity.username, settings.identity.password);
       };
 
       scope.generate = function () {

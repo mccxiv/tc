@@ -19,7 +19,6 @@
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
 angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings, tmi, _) {
-  console.log('LOAD: irc');
 
   //===============================================================
   // Variables
@@ -65,7 +64,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   //===============================================================
 
   function create() {
-    console.log('IRC: Creating clients.');
     destroy();
     ee.badLogin = false;
 
@@ -94,7 +92,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
     forwardEvents(clients.read, ee, readEvents);
 
     clients.read.on('disconnected', function (reason) {
-      console.log('IRC: disconnected:', reason);
       if (reason === 'Error logging in.') {
         ee.badLogin = reason;
         settings.identity.password = '';
@@ -106,9 +103,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
     });
 
     // TODO should wait for write to be connected before being ready
-    console.log('IRC: registering connected event');
     clients.read.on('connected', function () {
-      console.log('IRC: connected event fired');
       ee.ready = true;
       setTimeout(function () {
         $rootScope.$apply();
@@ -131,7 +126,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   }
 
   function destroy() {
-    console.log('IRC: destroy');
     _.forEach(clients, function (client, key) {
       if (client) {
         client.removeAllListeners();
@@ -148,7 +142,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * @param {String[]} events    - The events to listen for on `emitter`
    */
   function forwardEvents(emitter, reEmitter, events) {
-    console.log('IRC: Forwarding events:', events);
     events.forEach(function (event) {
       emitter.addListener(event, function () {
         var args = Array.prototype.slice.call(arguments);
@@ -163,7 +156,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * correct channels, the ones in the settings.
    */
   function syncChannels() {
-    console.log('IRC: Syncing channels:');
     [clients.read, clients.write].forEach(function (client) {
       joinChannels(client);
       leaveChannels(client);
@@ -175,12 +167,9 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * that haven't been joined yet.
    */
   function joinChannels(client) {
-    console.log('IRC: Joining channels:');
     settings.channels.forEach(function (channel) {
       var joined = client.getChannels();
       joined = joined.map(stripHash);
-      console.log('IRC: joined channels:', joined);
-      console.log('IRC: checking if need to join ' + channel);
       if (joined.indexOf(channel) === -1) {
         client.join(channel);
       }
@@ -192,7 +181,6 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * appear in settings.channels.
    */
   function leaveChannels(client) {
-    console.log('IRC: Leaving channels:');
     var joined = client.getChannels();
     joined = joined.map(stripHash);
     joined.forEach(function (channel) {
@@ -246,22 +234,18 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   }
 
   function onInvalidCredentials(cb) {
-    console.log('IRC: onInvalidCredentials');
     onCredentialsValidChange(function (valid) {
       if (!valid) cb();
     });
   }
 
   function onValidCredentials(cb) {
-    console.log('IRC: onValidCredentials');
     onCredentialsValidChange(function (valid) {
-      console.log('IRC: Checking if credentials are valid: ', valid);
       if (valid) cb();
     });
   }
 
   function onCredentialsValidChange(cb) {
-    console.log('IRC: onCredentialsValidChange');
     // TODO change this so it doesn't run for each call
     $rootScope.$watch(credentialsValid, function (newv, oldv) {
       if (oldv !== newv) cb(newv);

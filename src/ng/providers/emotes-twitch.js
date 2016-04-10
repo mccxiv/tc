@@ -11,11 +11,9 @@
  * @return {{emote: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('emotesTwitch', function ($http, irc) {
-  console.log('LOAD: emotesTwitch');
   var emotes = [];
 
   irc.on('emotesets', function (sets) {
-    console.log('EMOTES-TWITCH: got emote-sets', sets);
     var url = 'https://api.twitch.tv/kraken/chat/emoticon_images';
     url += '?emotesets=' + sets;
 

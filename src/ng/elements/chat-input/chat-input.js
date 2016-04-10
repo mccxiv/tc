@@ -88,7 +88,6 @@ angular.module('tc').directive('chatInput', function (
     };
 
     scope.change = function () {
-      console.log('change event "' + scope.message + '"');
       if (scope.message === '/r ') {
         if (lastWhisperer) scope.message = '/w ' + lastWhisperer + ' ';
         else scope.message = '/w ';

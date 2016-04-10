@@ -38,7 +38,6 @@ angular.module('tc').directive('thumbnail', function (settings, channels, irc, a
           preLoadImage(url, function () {
             scope.m.img = url;
             scope.$apply();
-            console.log('Thumbnail: new image is ', scope.m.img);
           });
         }
       })

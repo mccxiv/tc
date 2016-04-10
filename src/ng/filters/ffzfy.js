@@ -44,8 +44,6 @@ angular.module('tc').filter('ffzfy', function (emotesFfz) {
 
         // if it's indeed an emote
         if (isEmote(match[0], emotes)) {
-          console.log('FFZFY: Emote found', match[0]);
-
           // Save previous bit as a non emote
           if (match.index > endIndexOfPreviousEmote) {
             var before = string.substring(endIndexOfPreviousEmote, match.index);

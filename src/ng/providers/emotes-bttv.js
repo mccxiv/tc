@@ -9,7 +9,6 @@
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('emotesBttv', function ($http, channels) {
-  console.log('LOAD: emotesBttv');
   var globalEmotes = [];
   var channelEmotes = {};
 
@@ -59,10 +58,7 @@ angular.module('tc').factory('emotesBttv', function ($http, channels) {
           });
         });
       }
-      catch (e) {
-        console.warn('BTTV: error parsing a API call', e);
-      }
-      console.log('BTTV: channel emotes for ' + channel, channelEmotes[channel]);
+      catch (e) {console.warn('BTTV: error parsing a API call', e);}
     });
   }
 
