@@ -32,7 +32,8 @@
  * @property {function} addNotification        - Adds a notification message to a chat channel (light gray)
  * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
  */
-angular.module('tc').factory('messages', function($rootScope, $filter, $http, irc, api, highlights, settings, channels) {
+angular.module('tc').factory('messages', function(
+  _, $rootScope, $filter, $http, irc, api, highlights, settings, channels) {
 
   //=====================================================
   // Variables | TODO dry
