@@ -9,7 +9,6 @@
     "electron-window-state": "^2.0.0",
     "jquery": "2.1.4",
     "spellchecker": "3.2.3",
-    "tmi.js": "0.0.29",
-    "yargs": "3.29.0"
+    "tmi.js": "0.0.29"
   }
 }

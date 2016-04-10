@@ -1,5 +1,4 @@
 var path = require('path');
-var argv = require('yargs').argv;
 var app = require('electron').app;
 var ipc = require('electron').ipcMain;
 var BrowserWindow = require('electron').BrowserWindow;
@@ -10,9 +9,9 @@ console.log('TC: Starting :D');
 
 var main;
 
-if (squirrelStartup()) return;
+if (squirrelStartup()) app.exit(0);
 if (isSecondInstance()) app.quit();
-if (argv.data) app.setPath('userData', path.resolve(argv.data));
+if (process.argv.indexOf('--dev-tools') > 0) setTimeout(devTools, 1500);
 
 app.on('ready', makeWindow);
 ipc.on('open-dev-tools', devTools);
@@ -39,7 +38,7 @@ function makeWindow() {
 
   mainWinState.manage(main);
 
-  if (argv['dev-tools']) setTimeout(devTools, 1500);
+
   main.on('close', function (e) {
     console.log('TC: Window tried closing, hiding it instead.');
     e.preventDefault();
