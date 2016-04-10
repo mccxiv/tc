@@ -76,27 +76,32 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
   // Private methods
   //=====================================================
   function setupIrcListeners() {
-
-    irc.on('connecting', function () {
-      addGlobalNotificationMessage('Connecting...');
-    });
-
-    irc.on('disconnected', function () {
-      addGlobalNotificationMessage('Disconnected from the server.')
+    irc.on('action', function (channel, user, message) {
+      addUserMessage('action', channel, user, message);
     });
 
     irc.on('chat', function (channel, user, message) {
       addUserMessage('chat', channel, user, message);
     });
 
-    irc.on('action', function (channel, user, message) {
-      addUserMessage('action', channel, user, message);
+    irc.on('connecting', function () {
+      addGlobalNotificationMessage('Connecting...');
     });
 
     irc.on('connected', function () {
       settings.channels.forEach(function (channel) {
         addNotificationMessage(channel, 'Welcome to ' + channel + '\'s chat.');
       });
+    });
+
+    irc.on('disconnected', function() {
+      addGlobalNotificationMessage('Disconnected from the server.')
+    });
+
+    irc.on('emoteonly', function(channel, on) {
+      var msg = 'Emote only mode has been disabled in the channel.';
+      if (on) msg = 'Emote only mode has been enabled in the channel.';
+      addNotificationMessage(channel, msg);
     });
 
     irc.on('hosting', function (channel, target) {
