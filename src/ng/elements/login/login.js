@@ -1,19 +1,19 @@
-angular.module('tc').directive('login', function (settings, irc, openExternal) {
+angular.module('tc').directive('login', function(settings, irc, openExternal) {
   return {
     restrict: 'E',
     templateUrl: 'ng/elements/login/login.html',
-    link: function (scope) {
+    link: function(scope) {
       scope.irc = irc;
       scope.settings = settings;
 
-      scope.login = function () {
+      scope.login = function() {
         var password = scope.m.password;
         if (!password.startsWith('oauth:')) password = 'oauth:' + password;
         settings.identity.username = scope.m.username;
         settings.identity.password = password;
       };
 
-      scope.generate = function () {
+      scope.generate = function() {
         openExternal('http://gettc.xyz/password/');
       };
 

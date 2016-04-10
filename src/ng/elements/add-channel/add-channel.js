@@ -1,9 +1,9 @@
-angular.module('tc').directive('addChannel', ['settings', function (settings) {
+angular.module('tc').directive('addChannel', ['settings', function(settings) {
 
   function link(scope) {
     scope.value = '';
 
-    scope.keypress = function (event) {
+    scope.keypress = function(event) {
       if (event.which === 13) {
         var channel = scope.value.trim();
         channel = channel.toLowerCase();

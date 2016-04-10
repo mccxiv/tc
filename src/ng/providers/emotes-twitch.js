@@ -10,10 +10,10 @@
  *
  * @return {{emote: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('emotesTwitch', function ($http, irc) {
+angular.module('tc').factory('emotesTwitch', function($http, irc) {
   var emotes = [];
 
-  irc.on('emotesets', function (sets) {
+  irc.on('emotesets', function(sets) {
     var url = 'https://api.twitch.tv/kraken/chat/emoticon_images';
     url += '?emotesets=' + sets;
 
@@ -24,8 +24,8 @@ angular.module('tc').factory('emotesTwitch', function ($http, irc) {
 
       function onSuccess(data) {
         try {
-          _.each(data.emoticon_sets, function (set) {
-            set.forEach(function (emoteObject) {
+          _.each(data.emoticon_sets, function(set) {
+            set.forEach(function(emoteObject) {
               // Don't include regex based emote codes.
               // Currently all regex emotes have a / in them
               if (contains(emoteObject.code, '/')) return;

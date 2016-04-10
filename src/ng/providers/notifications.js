@@ -13,17 +13,17 @@
  * @property {function} playSound  - Plays notification sound, despite settings
  *
  */
-angular.module('tc').factory('notifications', function (irc, settings, highlights, trayIcon) {
+angular.module('tc').factory('notifications', function(irc, settings, highlights, trayIcon) {
 
   var sound = new Audio('assets/notification.ogg');
 
-  irc.on('disconnected', function () {
+  irc.on('disconnected', function() {
     if (settings.notifications.onConnect) {
       n('Disconnected', 'The connection to the chat server has ended.');
     }
   });
 
-  irc.on('whisper', function (from, message) {
+  irc.on('whisper', function(from, message) {
     if (settings.notifications.onWhisper) {
       if (settings.chat.ignored.indexOf(from.username) >= 0) return;
       n('Whisper from ' + (from['display-name'] || from.username), message);
@@ -59,7 +59,7 @@ angular.module('tc').factory('notifications', function (irc, settings, highlight
   function n(title, body) {
     if (process.platform !== 'win32') new Notification(title, {body: body});
     else trayIcon.displayBalloon({title: title, content: body});
-  }  
+  }
 
   return {
     create: n,

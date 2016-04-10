@@ -3,7 +3,7 @@
  * @ngdoc directive
  * @name tabCompletion
  */
-angular.module('tc').directive('tabCompletion', function () {
+angular.module('tc').directive('tabCompletion', function() {
 
   function link(scope, element) {
     var previousKeyWasTab = false;
@@ -12,7 +12,7 @@ angular.module('tc').directive('tabCompletion', function () {
     var matchingItems;
     var currentItem;
 
-    element.bind('keydown', function (event) {
+    element.bind('keydown', function(event) {
       if (event.which === 9) tabPress();
       else previousKeyWasTab = false;
     });
@@ -42,7 +42,7 @@ angular.module('tc').directive('tabCompletion', function () {
     }
 
     function findMatches() {
-      return scope.tabCompletionFn().filter(function (item) {
+      return scope.tabCompletionFn().filter(function(item) {
         return item.toLowerCase().startsWith(userString.toLowerCase());
       });
     }

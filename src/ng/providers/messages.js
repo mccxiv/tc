@@ -32,8 +32,8 @@
  * @property {function} addNotification        - Adds a notification message to a chat channel (light gray)
  * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
  */
-angular.module('tc').factory('messages', function ($rootScope, $filter, $http, irc, api, highlights, settings, channels) {
-  
+angular.module('tc').factory('messages', function($rootScope, $filter, $http, irc, api, highlights, settings, channels) {
+
   //=====================================================
   // Variables | TODO dry
   //=====================================================
@@ -56,7 +56,7 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
   //=====================================================
   fetchFfzDonors();
   setupIrcListeners();
-  channels.on('remove', function (channel) {
+  channels.on('remove', function(channel) {
     delete messages[channel];
   });
 
@@ -76,20 +76,20 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
   // Private methods
   //=====================================================
   function setupIrcListeners() {
-    irc.on('action', function (channel, user, message) {
+    irc.on('action', function(channel, user, message) {
       addUserMessage('action', channel, user, message);
     });
 
-    irc.on('chat', function (channel, user, message) {
+    irc.on('chat', function(channel, user, message) {
       addUserMessage('chat', channel, user, message);
     });
 
-    irc.on('connecting', function () {
+    irc.on('connecting', function() {
       addGlobalNotificationMessage('Connecting...');
     });
 
-    irc.on('connected', function () {
-      settings.channels.forEach(function (channel) {
+    irc.on('connected', function() {
+      settings.channels.forEach(function(channel) {
         addNotificationMessage(channel, 'Welcome to ' + channel + '\'s chat.');
       });
     });
@@ -104,15 +104,15 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
       addNotificationMessage(channel, msg);
     });
 
-    irc.on('hosting', function (channel, target) {
+    irc.on('hosting', function(channel, target) {
       addNotificationMessage(channel, channel.substring(1) + ' is hosting ' + target);
     });
 
-    irc.on('hosted', function (channel, target, viewers) {
+    irc.on('hosted', function(channel, target, viewers) {
       addNotificationMessage(channel, target + ' is hosting you with ' + viewers + ' viewers.');
     });
 
-    irc.on('slowmode', function (channel, enabled, length) {
+    irc.on('slowmode', function(channel, enabled, length) {
       var msg;
       if (!enabled) msg = 'This room is no longer in slow mode.';
       // TODO length is currently missing from tmi.js, re-add it once it's back
@@ -121,24 +121,24 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
       addNotificationMessage(channel, msg);
     });
 
-    irc.on('subanniversary', function (channel, username, months) {
+    irc.on('subanniversary', function(channel, username, months) {
       addNotificationMessage(channel, username + ' subscribed for ' + months + ' months in a row!');
     });
 
-    irc.on('subscription', function (channel, username) {
+    irc.on('subscription', function(channel, username) {
       addNotificationMessage(channel, username + ' has just subscribed!');
     });
 
-    irc.on('timeout', function (channel, username) {
+    irc.on('timeout', function(channel, username) {
       timeout(channel, username);
       addNotificationMessage(channel, username + ' has been timed out.');
     });
 
-    irc.on('unhost', function (channel) {
+    irc.on('unhost', function(channel) {
       addNotificationMessage(channel, 'Stopped hosting.');
     });
 
-    irc.on('whisper', function (from, message) {
+    irc.on('whisper', function(from, message) {
       addWhisperMessage(from, settings.identity.username, message);
     });
   }
@@ -148,7 +148,7 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
    * @param {string} message
    */
   function addGlobalNotificationMessage(message) {
-    settings.channels.forEach(function (channel) {
+    settings.channels.forEach(function(channel) {
       addNotificationMessage(channel, message);
     });
   }
@@ -198,7 +198,7 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
    * @param {string} message
    */
   function addWhisperMessage(from, to, message) {
-    settings.channels.forEach(function (channel) {
+    settings.channels.forEach(function(channel) {
       addMessage(channel, {
         type: 'whisper',
         from: capitalize(from['display-name'] || from.username),
@@ -244,8 +244,8 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
   //=====================================================
   function fetchFfzDonors() {
     var url = 'http://cdn.frankerfacez.com/script/donors.txt';
-    $http.get(url).then(function (result) {
-      ffzDonors.push.apply(ffzDonors, result.data.split('\n').map(function (s) {
+    $http.get(url).then(function(result) {
+      ffzDonors.push.apply(ffzDonors, result.data.split('\n').map(function(s) {
         return s.trim();
       }));
     });
@@ -258,7 +258,7 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
   function timeout(channel, username) {
     channel = channel.substring(1);
     if (messages[channel]) {
-      messages[channel].forEach(function (message) {
+      messages[channel].forEach(function(message) {
         if (message.user && message.user.username === username) {
           message.deleted = true;
         }
@@ -285,7 +285,7 @@ angular.module('tc').factory('messages', function ($rootScope, $filter, $http, i
    * TODO see if this is a performance issue
    */
   function applyLate() {
-    setTimeout(function () {
+    setTimeout(function() {
       $rootScope.$apply();
     }, 0);
   }

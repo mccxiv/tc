@@ -1,4 +1,4 @@
-angular.module('tc').directive('userPanel', function ($document, settings, session, irc, api, openExternal) {
+angular.module('tc').directive('userPanel', function($document, settings, session, irc, api, openExternal) {
 
   function link(scope) {
     scope.m = {
@@ -6,7 +6,7 @@ angular.module('tc').directive('userPanel', function ($document, settings, sessi
       profilePicSrc: ''
     };
 
-    $document.bind('keypress', function (e) {
+    $document.bind('keypress', function(e) {
       if (!session.inputFocused && scope.shouldDisplay()) {
         var character = String.fromCharCode(e.which);
         switch (character) {
@@ -24,15 +24,15 @@ angular.module('tc').directive('userPanel', function ($document, settings, sessi
     });
 
     scope.$watch(
-      function () {
+      function() {
         return session.selectedUser;
       },
-      function () {
+      function() {
         if (session.selectedUser) fetchUser();
       }
     );
 
-    scope.amMod = function () {
+    scope.amMod = function() {
       var channel = settings.channels[settings.selectedTabIndex];
       return irc.isMod(channel, settings.identity.username);
     };
@@ -41,45 +41,45 @@ angular.module('tc').directive('userPanel', function ($document, settings, sessi
      * True when the user was selected in the currently active channel
      * @returns {boolean}
      */
-    scope.shouldDisplay = function () {
+    scope.shouldDisplay = function() {
       var selectedChannel = settings.channels[settings.selectedTabIndex];
       var onThatChannel = session.selectedUserChannel === selectedChannel;
       return session.selectedUser && onThatChannel;
     };
 
-    scope.goToChannel = function () {
+    scope.goToChannel = function() {
       openExternal('http://www.twitch.tv/' + session.selectedUser);
     };
 
-    scope.sendMessage = function () {
+    scope.sendMessage = function() {
       var composeUrl = 'http://www.twitch.tv/message/compose?to=';
       openExternal(composeUrl + session.selectedUser);
     };
 
-    scope.timeout = function (seconds) {
+    scope.timeout = function(seconds) {
       seconds = seconds || 600;
       var toMsg = '.timeout ' + session.selectedUser + ' ' + seconds;
       irc.say(session.selectedUserChannel, toMsg);
       scope.close();
     };
 
-    scope.purge = function () {
+    scope.purge = function() {
       scope.timeout(3);
     };
 
-    scope.ban = function () {
+    scope.ban = function() {
       var banMsg = '.ban ' + session.selectedUser;
       irc.say(session.selectedUserChannel, banMsg);
       scope.close();
     };
 
-    scope.close = function () {
+    scope.close = function() {
       session.selectedUser = null;
       session.selectedUserChannel = null;
     };
 
     function fetchUser() {
-      api.user(session.selectedUser).success(function (user) {
+      api.user(session.selectedUser).success(function(user) {
         scope.m.profilePicSrc = user.logo ? user.logo : '';
         scope.m.created = user.created_at;
       });

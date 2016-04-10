@@ -9,14 +9,16 @@
  * @ngdoc factory
  * @name autoUpdater
  */
-angular.module('tc').factory('autoUpdater', function (electron) {
+angular.module('tc').factory('autoUpdater', function(electron) {
   var autoUpdater;
   var os = process.platform;
 
   if (os !== 'win32' && os !== 'darwin') {
     autoUpdater = {};
-    autoUpdater.checkForUpdates = function() {};
-    autoUpdater.on = function() {};
+    autoUpdater.checkForUpdates = function() {
+    };
+    autoUpdater.on = function() {
+    };
   }
 
   else {
@@ -36,7 +38,7 @@ angular.module('tc').factory('autoUpdater', function (electron) {
       autoUpdater.checkForUpdates();
     }
 
-    autoUpdater.on('error', function () {
+    autoUpdater.on('error', function() {
       console.warn('Error when checking for updates.');
     });
   }

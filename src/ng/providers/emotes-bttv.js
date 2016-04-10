@@ -8,7 +8,7 @@
  *
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('emotesBttv', function ($http, channels) {
+angular.module('tc').factory('emotesBttv', function($http, channels) {
   var globalEmotes = [];
   var channelEmotes = {};
 
@@ -20,7 +20,7 @@ angular.module('tc').factory('emotesBttv', function ($http, channels) {
   function getGlobal(delay) {
     delay = delay || 0;
 
-    setTimeout(function () {
+    setTimeout(function() {
       $http.get('https://api.betterttv.net/emotes')
         .success(onSuccess)
         .error(onFail);
@@ -28,7 +28,7 @@ angular.module('tc').factory('emotesBttv', function ($http, channels) {
 
     function onSuccess(data) {
       try {
-        data.emotes.forEach(function (emote) {
+        data.emotes.forEach(function(emote) {
           globalEmotes.push({
             emote: emote.regex,
             url: 'http:' + emote.url
@@ -48,17 +48,19 @@ angular.module('tc').factory('emotesBttv', function ($http, channels) {
   function getChannelEmotes(channel) {
     channelEmotes[channel] = [];
     var url = 'https://api.betterttv.net/2/channels/' + channel;
-    $http.get(url).then(function (body) {
+    $http.get(url).then(function(body) {
       try {
         var data = body.data;
-        data.emotes.forEach(function (emote) {
+        data.emotes.forEach(function(emote) {
           channelEmotes[channel].push({
             emote: emote.code,
             url: 'http://cdn.betterttv.net/emote/' + emote.id + '/1x'
           });
         });
       }
-      catch (e) {console.warn('BTTV: error parsing a API call', e);}
+      catch (e) {
+        console.warn('BTTV: error parsing a API call', e);
+      }
     });
   }
 

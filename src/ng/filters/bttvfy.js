@@ -6,7 +6,7 @@
  * @param parts {MessagePart[]}
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('bttvfy', function (emotesBttv) {
+angular.module('tc').filter('bttvfy', function(emotesBttv) {
   var potentialEmoteRegex = /[^\s]+/g;
 
   function makePart(string, isElement) {
@@ -21,12 +21,12 @@ angular.module('tc').filter('bttvfy', function (emotesBttv) {
     return '<img class="emoticon" data-emote-name="' + emote + '" data-emote-description="BTTV Emote" src="' + url + '">';
   }
 
-  return function (channel, parts) {
+  return function(channel, parts) {
 
     var emotes = emotesBttv(channel);
     var newParts = [];
 
-    parts.forEach(function (part) {
+    parts.forEach(function(part) {
 
       // if it's not plain text, ignore this bit
       if (part.isElement) {

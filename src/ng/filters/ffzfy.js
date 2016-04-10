@@ -6,7 +6,7 @@
  * @param parts {MessagePart[]}
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('ffzfy', function (emotesFfz) {
+angular.module('tc').filter('ffzfy', function(emotesFfz) {
   var potentialEmoteRegex = /[a-zA-Z_]{3,}/g;
 
   function makePart(string, isElement) {
@@ -21,12 +21,12 @@ angular.module('tc').filter('ffzfy', function (emotesFfz) {
     return '<img class="emoticon" data-emote-name="' + emote + '" data-emote-description="FrankerFaceZ Emote" src="' + url + '">';
   }
 
-  return function (channel, parts) {
+  return function(channel, parts) {
 
     var emotes = emotesFfz(channel);
     var newParts = [];
 
-    parts.forEach(function (part) {
+    parts.forEach(function(part) {
 
       // if it's not plain text, ignore this bit
       if (part.isElement) {

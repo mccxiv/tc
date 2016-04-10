@@ -1,4 +1,4 @@
-angular.module('tc').directive('thumbnail', function (settings, channels, irc, api, openExternal) {
+angular.module('tc').directive('thumbnail', function(settings, channels, irc, api, openExternal) {
 
   function link(scope, element) {
     scope.m = {
@@ -7,7 +7,7 @@ angular.module('tc').directive('thumbnail', function (settings, channels, irc, a
       stream: null
     };
 
-    scope.openStream = function () {
+    scope.openStream = function() {
       openExternal('http://www.twitch.tv/' + scope.channel() + '/popout');
     };
 
@@ -15,7 +15,7 @@ angular.module('tc').directive('thumbnail', function (settings, channels, irc, a
     setInterval(load, 60000);
     element.attr('layout', 'column');
 
-    channels.on('change', function () {
+    channels.on('change', function() {
       scope.m.stream = null;
       scope.m.channel = null;
       load();
@@ -27,15 +27,15 @@ angular.module('tc').directive('thumbnail', function (settings, channels, irc, a
 
     function load() {
       var channel = getChannel();
-      api.channel(channel).success(function (data) {
+      api.channel(channel).success(function(data) {
         scope.m.channel = data;
       });
-      api.stream(channel).success(function (data) {
+      api.stream(channel).success(function(data) {
         scope.m.stream = data.stream;
         if (data.stream) {
           var url = data.stream.preview.medium +
             '?' + new Date().getTime();
-          preLoadImage(url, function () {
+          preLoadImage(url, function() {
             scope.m.img = url;
             scope.$apply();
           });

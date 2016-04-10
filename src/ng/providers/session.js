@@ -5,6 +5,6 @@
  * @ngdoc factory
  * @name session
  */
-angular.module('tc').factory('session', function () {
+angular.module('tc').factory('session', function() {
   return sessionStorage;
 });

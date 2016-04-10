@@ -1,5 +1,4 @@
-angular.module('tc').factory('trayIcon', function (
-  settings, $rootScope, electron) {
+angular.module('tc').factory('trayIcon', function(settings, $rootScope, electron) {
 
   if (process.platform !== 'win32') return null;
   // This module uses lots of electron specific code
@@ -12,7 +11,7 @@ angular.module('tc').factory('trayIcon', function (
 
   var tray = new Tray(path.join(__dirname, 'assets/icon16.png'));
 
-  tray.on('clicked', function () {
+  tray.on('clicked', function() {
     // Electron quirk: don't store this browser window in a local variable
     // or it will get garbage collected in some weird and unpredictable way
     browserWindow.getAllWindows()[0].show();
@@ -23,7 +22,7 @@ angular.module('tc').factory('trayIcon', function (
       label: 'Run Tc when my computer starts',
       type: 'checkbox',
       checked: settings.behavior.autoStart,
-      click: function () {
+      click: function() {
         settings.behavior.autoStart = !settings.behavior.autoStart;
         setAutoStart();
         $rootScope.$apply();

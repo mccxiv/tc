@@ -1,8 +1,8 @@
-angular.module('tc').directive('chatTabs', function ($timeout, settings, messages) {
+angular.module('tc').directive('chatTabs', function($timeout, settings, messages) {
   return {
     restrict: 'E',
     templateUrl: 'ng/elements/chat-tabs/chat-tabs.html',
-    link: function (scope, element) {
+    link: function(scope, element) {
       scope.settings = settings;
       scope.hidden = {};
       scope.loaded = {};
@@ -12,23 +12,23 @@ angular.module('tc').directive('chatTabs', function ($timeout, settings, message
       // Wait for chat-outputs to be rendered
       // and select the tab to scroll it into view
       // todo review this
-      setTimeout(function () {
+      setTimeout(function() {
         clickTab(settings.selectedTabIndex);
       }, 10);
 
       // TODO remove this hack once they fix md-on-select
       scope.$watch(
-        function () {
+        function() {
           return settings.channels.length
         },
-        function (newL, oldL) {
+        function(newL, oldL) {
           if (newL > oldL) {
             // New length is greater which means new channel was joined
-            setTimeout(function () {
+            setTimeout(function() {
               clickTab(settings.channels.length);
             }, 10);
 
-            setTimeout(function () {
+            setTimeout(function() {
               clickTab(settings.channels.length - 1);
             }, 200);
           }
@@ -37,11 +37,11 @@ angular.module('tc').directive('chatTabs', function ($timeout, settings, message
 
       if (currChannel()) scope.loaded[currChannel()] = true;
 
-      scope.selected = function (channel) {
+      scope.selected = function(channel) {
         load(channel, true);
       };
 
-      scope.deselected = function (channel) {
+      scope.deselected = function(channel) {
         load(channel, false);
         hideTemporarily(channel);
         scope.readUntil[channel] = messages(channel).counter;
@@ -52,7 +52,7 @@ angular.module('tc').directive('chatTabs', function ($timeout, settings, message
        * @param channel
        * @returns {string|number} View-ready string such as ' [42]'
        */
-      scope.unread = function (channel) {
+      scope.unread = function(channel) {
         if (currChannel() === channel) return '';
         var unread = messages(channel).counter - (scope.readUntil[channel] || 0);
         if (!unread) return '';
@@ -60,7 +60,7 @@ angular.module('tc').directive('chatTabs', function ($timeout, settings, message
         else return unread;
       };
 
-      scope.showingAddChannel = function () {
+      scope.showingAddChannel = function() {
         return settings.selectedTabIndex === settings.channels.length;
       };
 
@@ -80,7 +80,7 @@ angular.module('tc').directive('chatTabs', function ($timeout, settings, message
           if (currChannel() === channel && !show) return;
           if (show) scope.loaded[channel] = true;
           else {
-            setTimeout(function () {
+            setTimeout(function() {
               if (currChannel() !== channel) {
                 delete scope.loaded[channel];
               }
@@ -96,7 +96,7 @@ angular.module('tc').directive('chatTabs', function ($timeout, settings, message
        */
       function hideTemporarily(channel) {
         scope.hidden[channel] = true;
-        $timeout(function () {
+        $timeout(function() {
           delete scope.hidden[channel];
         }, 1500);
       }

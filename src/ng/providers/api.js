@@ -6,20 +6,20 @@
  * @property {function} badges
  * @property {function} user
  */
-angular.module('tc').factory('api', ['$http', function ($http) {
+angular.module('tc').factory('api', ['$http', function($http) {
   return {
     /**
      * Get chat badges for a channel (subscriber icon, etc)
      * @param {string} channel
      * @returns {Promise} As from GET /chat/:channel/badges
      */
-    badges: function (channel) {
+    badges: function(channel) {
       var FfzDonorBadge = 'https://cdn.frankerfacez.com/script/devicon.png';
       var jsonp = this._jsonp;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise(function(resolve, reject) {
         jsonp('https://api.twitch.tv/kraken/chat/' + channel + '/badges?callback=JSON_CALLBACK')
-          .then(function (result) {
+          .then(function(result) {
             result.data['ffz_donor'] = {image: FfzDonorBadge};
             resolve(result.data);
           })
@@ -32,7 +32,7 @@ angular.module('tc').factory('api', ['$http', function ($http) {
      * @param {string} channel
      * @returns {Promise} As from GET /users/:user
      */
-    user: function (channel) {
+    user: function(channel) {
       return this._jsonp('https://api.twitch.tv/kraken/users/' + channel + '?callback=JSON_CALLBACK');
     },
 
@@ -41,7 +41,7 @@ angular.module('tc').factory('api', ['$http', function ($http) {
      * @param {string} channel
      * @returns {Promise} As from GET /channels/:channel
      */
-    channel: function (channel) {
+    channel: function(channel) {
       return this._jsonp('https://api.twitch.tv/kraken/channels/' + channel + '?callback=JSON_CALLBACK');
     },
 
@@ -50,7 +50,7 @@ angular.module('tc').factory('api', ['$http', function ($http) {
      * @param {string} channel
      * @returns {Promise} As from GET /streams/:channel
      */
-    stream: function (channel) {
+    stream: function(channel) {
       return this._jsonp('https://api.twitch.tv/kraken/streams/' + channel + '?callback=JSON_CALLBACK');
     },
 
@@ -59,11 +59,11 @@ angular.module('tc').factory('api', ['$http', function ($http) {
      * @param {string} channel
      * @returns {Promise} As from GET /streams/:channel
      */
-    chatters: function (channel) {
+    chatters: function(channel) {
       return this._jsonp('https://tmi.twitch.tv/group/user/' + channel + '/chatters?callback=JSON_CALLBACK');
     },
 
-    _jsonp: function (url) {
+    _jsonp: function(url) {
       return $http.jsonp(url);
     }
   }

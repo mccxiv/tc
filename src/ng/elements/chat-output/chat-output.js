@@ -5,8 +5,7 @@
  * @name chatOutput
  * @restrict E
  */
-angular.module('tc').directive('chatOutput', function (
-  $sce, $timeout, settings, messages, session, api, openExternal, colors) {
+angular.module('tc').directive('chatOutput', function($sce, $timeout, settings, messages, session, api, openExternal, colors) {
 
   function link(scope, element) {
     //===============================================================
@@ -31,18 +30,22 @@ angular.module('tc').directive('chatOutput', function (
     delayedScroll();
 
     scope.$watch(
-      function () {
+      function() {
         return scope.messages[scope.messages.length - 1]
       },
-      function () {
+      function() {
         if (scope.autoScroll) scrollDown();
         else scope.chatLimit--; // ng-repeat uses negative
       }
     );
 
     scope.$watch(
-      function () {return settings.appearance.sidebarCollapsed},
-      function () {setTimeout(scrollIfEnabled, 260);}
+      function() {
+        return settings.appearance.sidebarCollapsed
+      },
+      function() {
+        setTimeout(scrollIfEnabled, 260);
+      }
     );
 
     window.addEventListener('resize', scrollIfEnabled);
@@ -54,16 +57,16 @@ angular.module('tc').directive('chatOutput', function (
     //===============================================================
     // Directive methods
     //===============================================================
-    scope.selectUsername = function (username) {
+    scope.selectUsername = function(username) {
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;
     };
 
-    scope.isBroadcaster = function (username) {
+    scope.isBroadcaster = function(username) {
       return username.toLowerCase() === scope.channel.toLowerCase();
     };
 
-    scope.trusted = function (html) {
+    scope.trusted = function(html) {
       return $sce.trustAsHtml(html);
     };
 
@@ -82,7 +85,7 @@ angular.module('tc').directive('chatOutput', function (
     }
 
     function handleEmoteHover() {
-      element.on('mouseenter', '.emoticon', function (e) {
+      element.on('mouseenter', '.emoticon', function(e) {
         var emoticon = $(e.target);
         var tooltip = emoticon.data('emote-name');
         var description = emoticon.data('emote-description');
@@ -90,7 +93,7 @@ angular.module('tc').directive('chatOutput', function (
         if (description) tooltip += '<br>' + description;
         emoticon.frosty({html: true, content: tooltip});
         emoticon.frosty('show');
-        emoticon.one('mouseleave', function () {
+        emoticon.one('mouseleave', function() {
           emoticon.frosty('hide');
         });
       });
@@ -102,7 +105,7 @@ angular.module('tc').directive('chatOutput', function (
      * shows all lines when scrolling up to the top (infinite scroll)
      */
     function watchScroll() {
-      element.on('scroll', function () {
+      element.on('scroll', function() {
         if (!latestScrollWasAutomatic) {
           scope.autoScroll = distanceFromBottom() === 0;
           scope.$apply();
@@ -119,10 +122,10 @@ angular.module('tc').directive('chatOutput', function (
      * top when the new lines are added.
      */
     function showAllLines() {
-      $timeout(function () {
+      $timeout(function() {
         var dfb = distanceFromBottom();
         scope.chatLimit = Infinity;
-        $timeout(function () {
+        $timeout(function() {
           e.scrollTop = e.scrollHeight - (dfb + e.offsetHeight);
         });
       }, 30);
@@ -135,12 +138,14 @@ angular.module('tc').directive('chatOutput', function (
     function scrollDown() {
       scope.autoScroll = true;
       latestScrollWasAutomatic = true;
-      setTimeout(function () {e.scrollTop = e.scrollHeight;}, 0);
+      setTimeout(function() {
+        e.scrollTop = e.scrollHeight;
+      }, 0);
     }
 
     function hideUnscrolledLines() {
       element.css({'opacity': 0});
-      setTimeout(function () {
+      setTimeout(function() {
         element.css({'opacity': 1});
       }, 0);
     }
@@ -156,7 +161,7 @@ angular.module('tc').directive('chatOutput', function (
 
     function handleAnchorClicks() {
       // TODO any way to get rid of jquery dependency? need event delegation though
-      element.on('click', 'a', function (event) {
+      element.on('click', 'a', function(event) {
         event.preventDefault();
         event.stopPropagation();
         openExternal(event.target.getAttribute('href'));
@@ -165,11 +170,11 @@ angular.module('tc').directive('chatOutput', function (
     }
 
     function fetchBadges(timeout) {
-      api.badges(scope.channel).then(function (badges) {
+      api.badges(scope.channel).then(function(badges) {
         scope.badges = badges;
-      }).catch(function () {
+      }).catch(function() {
         var delay = (timeout || 1000) * 2;
-        setTimeout(function () {
+        setTimeout(function() {
           fetchBadges(delay)
         }, delay);
       });
@@ -184,8 +189,7 @@ angular.module('tc').directive('chatOutput', function (
           colors.calculateColorBackground(color) === 'light' &&
           settings.theme.dark
         ) || (
-          colors.calculateColorBackground(color) === 'dark' &&
-          !settings.theme.dark
+          colors.calculateColorBackground(color) === 'dark' && !settings.theme.dark
         ))) {
           lightness = colors.calculateColorBackground(color);
           color = colors.calculateColorReplacement(color, lightness);

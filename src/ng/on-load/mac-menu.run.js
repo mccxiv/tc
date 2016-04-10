@@ -1,4 +1,4 @@
-angular.module('tc').run(function (electron) {
+angular.module('tc').run(function(electron) {
   if (process.platform !== 'darwin') return;
   var Menu = electron.remote.Menu;
 
@@ -9,7 +9,9 @@ angular.module('tc').run(function (electron) {
         {
           label: 'Quit',
           accelerator: 'Command+Q',
-          click: function() {electron.remote.app.exit(0);}
+          click: function() {
+            electron.remote.app.exit(0);
+          }
         }
       ]
     },

@@ -1,5 +1,4 @@
-angular.module('tc').directive('chatInput', function (
-  _, settings, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
+angular.module('tc').directive('chatInput', function(_, settings, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
 
   function link(scope, element) {
     scope.message = '';
@@ -8,21 +7,21 @@ angular.module('tc').directive('chatInput', function (
     var input = element.find('input')[0];
     var lastWhisperer;
 
-    irc.on('whisper', function (from) {
+    irc.on('whisper', function(from) {
       lastWhisperer = from.username;
     });
 
     // Monkey patch for broken ng-class.
     // See issue #174
-    scope.$watch(function () {
+    scope.$watch(function() {
       return irc.ready;
-    }, function () {
+    }, function() {
       var inputContainer = element.find('md-input-container')[0];
       if (!irc.ready) inputContainer.classList.add('disabled');
       else inputContainer.classList.remove('disabled');
     });
 
-    scope.getAutoCompleteStrings = function () {
+    scope.getAutoCompleteStrings = function() {
       var channel = settings.channels[settings.selectedTabIndex];
 
       if (!channel) return [];
@@ -53,7 +52,7 @@ angular.module('tc').directive('chatInput', function (
       }
     };
 
-    scope.input = function () {
+    scope.input = function() {
       var channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !scope.message.trim().length) return;
 
@@ -87,7 +86,7 @@ angular.module('tc').directive('chatInput', function (
       scope.message = '';
     };
 
-    scope.change = function () {
+    scope.change = function() {
       if (scope.message === '/r ') {
         if (lastWhisperer) scope.message = '/w ' + lastWhisperer + ' ';
         else scope.message = '/w ';

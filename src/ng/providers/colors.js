@@ -1,3 +1,3 @@
-angular.module('tc').factory('colors', function () {
+angular.module('tc').factory('colors', function() {
   return window.colors;
 });

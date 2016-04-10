@@ -5,7 +5,7 @@
  * @ngdoc factory
  * @name settings
  */
-angular.module('tc').factory('settings', function ($rootScope) {
+angular.module('tc').factory('settings', function($rootScope) {
 
   //===============================================================
   // Variables
@@ -52,7 +52,7 @@ angular.module('tc').factory('settings', function ($rootScope) {
   //===============================================================
   settings = makeValid(loadSettings());
   saveSettings();
-  $rootScope.$watch(function () {
+  $rootScope.$watch(function() {
     return settings;
   }, settingsChanged, true);
   return settings;
@@ -108,7 +108,9 @@ angular.module('tc').factory('settings', function ($rootScope) {
   }
 
   function settingsChanged(newV, oldV) {
-    if (newV !== oldV) {saveSettings();}
+    if (newV !== oldV) {
+      saveSettings();
+    }
   }
 
   function loadSettings() {

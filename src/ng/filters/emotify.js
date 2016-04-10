@@ -7,7 +7,7 @@
  * @param emotes {Object.<string, string[]>} The user.emote object, as provided by `twitch-irc`
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('emotify', function () {
+angular.module('tc').filter('emotify', function() {
 
   /**
    * Internal documentation
@@ -40,15 +40,15 @@ angular.module('tc').filter('emotify', function () {
     return {string: string, isElement: isElement};
   }
 
-  return function (message, emotes) {
+  return function(message, emotes) {
     emotes = emotes || {};
     var line = message || '';
     var occurrences = [];
     var output = [];
 
     // 1
-    Object.keys(emotes).forEach(function (emoteKey) {
-      emotes[emoteKey].forEach(function (occurrence) {
+    Object.keys(emotes).forEach(function(emoteKey) {
+      emotes[emoteKey].forEach(function(occurrence) {
         var indexes = occurrence.split('-');
         if (indexes.length === 2) {
           occurrences.push([emoteKey, Number(indexes[0]), Number(indexes[1])]);
@@ -57,7 +57,7 @@ angular.module('tc').filter('emotify', function () {
     });
 
     // 2
-    occurrences.sort(function (a, b) {
+    occurrences.sort(function(a, b) {
       if (a[1] < b[1]) return -1;
       if (a[1] > b[1]) return 1;
       return 0;
@@ -65,7 +65,7 @@ angular.module('tc').filter('emotify', function () {
     occurrences.reverse();
 
     // 3
-    occurrences.forEach(function (occurrence) {
+    occurrences.forEach(function(occurrence) {
       var prev, emote;
       // +1 because occurrence[2] is the position of the last character
       // not the position of the character after the last

@@ -7,11 +7,11 @@
  * @param parts {MessagePart[]}
  * @return string
  */
-angular.module('tc').filter('combine', function () {
+angular.module('tc').filter('combine', function() {
 
-  return function (parts) {
+  return function(parts) {
     var strings = [];
-    parts.forEach(function (part) {
+    parts.forEach(function(part) {
       strings.push(part.string);
     });
     return strings.join('');

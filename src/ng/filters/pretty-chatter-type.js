@@ -1,5 +1,5 @@
-angular.module('tc').filter('prettyChatterType', function () {
-  return function (input) {
+angular.module('tc').filter('prettyChatterType', function() {
+  return function(input) {
     switch (input) {
       case 'moderators':
         return 'Moderators';

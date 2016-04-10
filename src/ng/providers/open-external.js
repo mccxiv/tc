@@ -1,5 +1,5 @@
-angular.module('tc').factory('openExternal', function () {
-  return function (link) {
+angular.module('tc').factory('openExternal', function() {
+  return function(link) {
     const sh = require('shell');
     sh.openExternal(link);
   }

@@ -6,7 +6,7 @@
  * @param parts {MessagePart[]}
  * @return {MessagePart[]} The returned array will be longer if it contained urls
  */
-angular.module('tc').filter('linkify', function () {
+angular.module('tc').filter('linkify', function() {
 
   var regex = /\S*\w+\.[a-zA-Z]{2,63}\S*/;
 
@@ -34,11 +34,11 @@ angular.module('tc').filter('linkify', function () {
    *
    *         TODO improve algorithm, recursion maybe?
    */
-  return function (parts) {
+  return function(parts) {
 
     var newParts = [];
 
-    parts.forEach(function (part) {
+    parts.forEach(function(part) {
       if (part.isElement) {
         newParts.push(part);
         return;

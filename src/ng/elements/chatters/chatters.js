@@ -1,4 +1,4 @@
-angular.module('tc').directive('chatters', function ($http, settings, session, api, channels) {
+angular.module('tc').directive('chatters', function($http, settings, session, api, channels) {
 
   function link(scope) {
     var forceShowViewers = false;
@@ -9,32 +9,32 @@ angular.module('tc').directive('chatters', function ($http, settings, session, a
     fetchList();
     setInterval(fetchList, 120000);
 
-    channels.on('change', function () {
+    channels.on('change', function() {
       forceShowViewers = false;
       if (!scope.api) timeoutFetch(200);
       else timeoutFetch(2000);
     });
 
-    scope.showViewers = function (force) {
+    scope.showViewers = function(force) {
       if (typeof force === 'boolean') forceShowViewers = force;
       if (!scope.api) return false;
       if (scope.api.chatters.viewers.length < 201) return true;
       else return forceShowViewers;
     };
 
-    scope.tooManyNotDoable = function () {
+    scope.tooManyNotDoable = function() {
       return scope.api && scope.api.chatters.viewers.length > 10000;
     };
 
     // TODO not DRY (same function in different files)
-    scope.selectUser = function (username) {
+    scope.selectUser = function(username) {
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;
     };
 
     function fetchList(attemptNumber) {
       if (!isChannelSelected()) return; // Abort
-      api.chatters(scope.channel).success(onList).error(function () {
+      api.chatters(scope.channel).success(onList).error(function() {
         attemptNumber = attemptNumber || 0;
         attemptNumber++;
         console.warn('CHATTERS: Failed to get user list #' + attemptNumber);

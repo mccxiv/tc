@@ -10,7 +10,7 @@
  * @param {string} channel
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('emotesFfz', function ($http, channels) {
+angular.module('tc').factory('emotesFfz', function($http, channels) {
   var globalEmotes = [];
   var channelEmotes = {};
 
@@ -22,15 +22,15 @@ angular.module('tc').factory('emotesFfz', function ($http, channels) {
   function cacheGlobal(delay) {
     delay = delay || 0;
 
-    setTimeout(function () {
+    setTimeout(function() {
       $http.get('http://api.frankerfacez.com/v1/set/global')
         .then(onSuccess)
         .catch(onError);
     }, delay);
 
     function onSuccess(response) {
-      response.data.default_sets.forEach(function (setKey) {
-        response.data.sets[setKey].emoticons.forEach(function (emote) {
+      response.data.default_sets.forEach(function(setKey) {
+        response.data.sets[setKey].emoticons.forEach(function(emote) {
           globalEmotes.push({
             emote: emote.name,
             url: 'http:' + emote.urls['1']
@@ -47,9 +47,9 @@ angular.module('tc').factory('emotesFfz', function ($http, channels) {
   function cache(channel) {
     channelEmotes[channel] = [];
     var url = 'http://api.frankerfacez.com/v1/room/' + channel;
-    $http.get(url).then(function (response) {
+    $http.get(url).then(function(response) {
       var data = response.data;
-      data.sets[data.room.set].emoticons.forEach(function (emote) {
+      data.sets[data.room.set].emoticons.forEach(function(emote) {
         channelEmotes[channel].push({
           emote: emote.name,
           url: 'http:' + emote.urls['1']

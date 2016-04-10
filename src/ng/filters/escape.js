@@ -8,7 +8,7 @@
  * @param parts {string | MessagePart[]} Elements will not be escaped, only text strings
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('escape', function () {
+angular.module('tc').filter('escape', function() {
 
   function escape(html) {
     return String(html)
@@ -19,9 +19,9 @@ angular.module('tc').filter('escape', function () {
       .replace(/>/g, '&gt;');
   }
 
-  return function (parts) {
+  return function(parts) {
     if (typeof parts === 'string') return escape(parts);
-    parts.forEach(function (part) {
+    parts.forEach(function(part) {
       if (part.isElement) return;
       part.string = escape(part.string);
     });

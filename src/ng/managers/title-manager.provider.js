@@ -4,11 +4,11 @@
  * @ngdoc factory
  * @name titleManager
  */
-angular.module('tc').factory('titleManager', function ($filter, channels, settings) {
+angular.module('tc').factory('titleManager', function($filter, channels, settings) {
 
   var capitalize = $filter('capitalize');
 
-  channels.on('change', function () {
+  channels.on('change', function() {
     var prefix;
     var suffix = ' - Tc';
     var channel = settings.channels[settings.selectedTabIndex];

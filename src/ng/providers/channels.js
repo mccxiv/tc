@@ -9,7 +9,7 @@
  * @fires channels#add - Passes the channel that was added
  * @fires channels#remove - Passes the channel that was removed
  */
-angular.module('tc').factory('channels', function ($rootScope, settings) {
+angular.module('tc').factory('channels', function($rootScope, settings) {
   var Ee = require('events').EventEmitter;
   var ee = new Ee();
   ee.setMaxListeners(0);
@@ -18,32 +18,32 @@ angular.module('tc').factory('channels', function ($rootScope, settings) {
   ee.current = currentChannel;
 
   $rootScope.$watchGroup([
-    function () {
+    function() {
       return settings.channels.length
     },
-    function () {
+    function() {
       return settings.selectedTabIndex
     }
-  ], function () {
+  ], function() {
     ee.emit('change');
   });
 
   $rootScope.$watchCollection(
-    function () {
+    function() {
       return settings.channels
     },
-    function (newValue, oldValue) {
+    function(newValue, oldValue) {
       var added = _.difference(newValue, oldValue);
       var left = _.difference(oldValue, newValue);
 
       if (added.length) {
-        added.forEach(function (channel) {
+        added.forEach(function(channel) {
           ee.emit('add', channel);
         });
       }
 
       if (left.length) {
-        left.forEach(function (channel) {
+        left.forEach(function(channel) {
           ee.emit('remove', channel);
         });
       }

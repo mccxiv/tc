@@ -18,7 +18,7 @@
  * @property {function} isMod             - Check if a user is a mode in a channel
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings, tmi, _) {
+angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, tmi, _) {
 
   //===============================================================
   // Variables
@@ -34,15 +34,15 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   ee.badLogin = false;
   ee.credentialsValid = credentialsValid;
 
-  ee.isMod = function (channel, username) {
+  ee.isMod = function(channel, username) {
     return clients.write.isMod(channel, username);
   };
 
-  ee.say = function (channel, message) {
+  ee.say = function(channel, message) {
     clients.write.say(channel, message);
   };
 
-  ee.whisper = function (username, message) {
+  ee.whisper = function(username, message) {
     clients.write.whisper(username, message);
   };
 
@@ -78,12 +78,12 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
       options: {debug: false},
       connection: {cluster: 'aws', timeout: 20000, reconnect: true},
       identity: angular.copy(settings.identity),
-      channels: settings.channels.map(function (channel) {
+      channels: settings.channels.map(function(channel) {
         return '#' + channel;
       })
     };
 
-    _.forEach(clients, function (v, key) {
+    _.forEach(clients, function(v, key) {
       var setts = angular.copy(clientSettings);
       clients[key] = new tmi.client(setts);
       clients[key].connect();
@@ -91,21 +91,21 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
 
     forwardEvents(clients.read, ee, readEvents);
 
-    clients.read.on('disconnected', function (reason) {
+    clients.read.on('disconnected', function(reason) {
       if (reason === 'Error logging in.') {
         ee.badLogin = reason;
         settings.identity.password = '';
       }
       ee.ready = false;
-      setTimeout(function () {
+      setTimeout(function() {
         $rootScope.$apply();
       }, 0);
     });
 
     // TODO should wait for write to be connected before being ready
-    clients.read.on('connected', function () {
+    clients.read.on('connected', function() {
       ee.ready = true;
-      setTimeout(function () {
+      setTimeout(function() {
         $rootScope.$apply();
       }, 0);
     });
@@ -116,7 +116,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
     onlyEmitDisconnectedOnce();
 
     function onlyEmitDisconnectedOnce() {
-      clients.read.once('disconnected', function () {
+      clients.read.once('disconnected', function() {
         var args = Array.prototype.slice.call(arguments);
         args.unshift('disconnected');
         ee.emit.apply(ee, args);
@@ -126,7 +126,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   }
 
   function destroy() {
-    _.forEach(clients, function (client, key) {
+    _.forEach(clients, function(client, key) {
       if (client) {
         client.removeAllListeners();
         client.disconnect();
@@ -142,8 +142,8 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * @param {String[]} events    - The events to listen for on `emitter`
    */
   function forwardEvents(emitter, reEmitter, events) {
-    events.forEach(function (event) {
-      emitter.addListener(event, function () {
+    events.forEach(function(event) {
+      emitter.addListener(event, function() {
         var args = Array.prototype.slice.call(arguments);
         args.unshift(event);
         reEmitter.emit.apply(reEmitter, args);
@@ -156,7 +156,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * correct channels, the ones in the settings.
    */
   function syncChannels() {
-    [clients.read, clients.write].forEach(function (client) {
+    [clients.read, clients.write].forEach(function(client) {
       joinChannels(client);
       leaveChannels(client);
     });
@@ -167,7 +167,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
    * that haven't been joined yet.
    */
   function joinChannels(client) {
-    settings.channels.forEach(function (channel) {
+    settings.channels.forEach(function(channel) {
       var joined = client.getChannels();
       joined = joined.map(stripHash);
       if (joined.indexOf(channel) === -1) {
@@ -183,7 +183,7 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   function leaveChannels(client) {
     var joined = client.getChannels();
     joined = joined.map(stripHash);
-    joined.forEach(function (channel) {
+    joined.forEach(function(channel) {
       if (settings.channels.indexOf(channel) === -1) {
         client.part(channel);
       }
@@ -201,19 +201,19 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
     if (clients.read) attachBadLoginCheck();
 
     //noinspection JSCheckFunctionSignatures
-    Object.observe(clients, function (changes) {
-      changes.forEach(function (change) {
+    Object.observe(clients, function(changes) {
+      changes.forEach(function(change) {
         if (change.name === 'read') attachBadLoginCheck();
       });
     }, ['update']);
 
     function attachBadLoginCheck() {
       if (!clients.read) return;
-      clients.read.on('disconnected', function (reason) {
+      clients.read.on('disconnected', function(reason) {
         if (reason === 'Login unsuccessful.') {
           ee.badLogin = reason;
           settings.identity.password = '';
-          setTimeout(function () {
+          setTimeout(function() {
             $rootScope.$apply();
           }, 0);
           cb();
@@ -234,20 +234,20 @@ angular.module('tc').factory('irc', function ($rootScope, $timeout, $q, settings
   }
 
   function onInvalidCredentials(cb) {
-    onCredentialsValidChange(function (valid) {
+    onCredentialsValidChange(function(valid) {
       if (!valid) cb();
     });
   }
 
   function onValidCredentials(cb) {
-    onCredentialsValidChange(function (valid) {
+    onCredentialsValidChange(function(valid) {
       if (valid) cb();
     });
   }
 
   function onCredentialsValidChange(cb) {
     // TODO change this so it doesn't run for each call
-    $rootScope.$watch(credentialsValid, function (newv, oldv) {
+    $rootScope.$watch(credentialsValid, function(newv, oldv) {
       if (oldv !== newv) cb(newv);
     });
   }
