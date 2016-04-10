@@ -109,9 +109,10 @@ angular.module('tc').factory('messages', function($rootScope, $filter, $http, ir
       addNotificationMessage(channel, msg);
     });
 
-    irc.on('mods', function(channel, mods) {
+    // TODO enable this? doesn't seem to work
+    /*irc.on('mods', function(channel, mods) {
       addNotificationMessage(channel, 'The moderators are: ' + mods.join(', '));
-    });
+    });*/
 
     irc.on('hosting', function(channel, target) {
       addNotificationMessage(channel, channel.substring(1) + ' is hosting ' + target);
