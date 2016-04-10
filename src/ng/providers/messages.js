@@ -113,11 +113,11 @@ angular.module('tc').factory('messages', function($rootScope, $filter, $http, ir
     });
 
     irc.on('slowmode', function(channel, enabled, length) {
-      var msg;
-      if (!enabled) msg = 'This room is no longer in slow mode.';
-      // TODO length is currently missing from tmi.js, re-add it once it's back
-      //else msg = 'This room is now in slow mode. You may send messages every '+length+' seconds.';
-      else msg = 'This room is now in slow mode.';
+      var msg = 'This room is no longer in slow mode.';
+      if (enabled) {
+        msg = 'This room is now in slow mode. ' +
+          'You may send messages every '+length+' seconds.';
+      }
       addNotificationMessage(channel, msg);
     });
 
