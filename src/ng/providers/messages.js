@@ -84,6 +84,11 @@ angular.module('tc').factory('messages', function($rootScope, $filter, $http, ir
       addUserMessage('chat', channel, user, message);
     });
 
+    irc.on('clearchat', function(channel) {
+      var msg = 'Chat cleared by a moderator. (Prevented by Tc)';
+      addNotificationMessage(channel, msg);
+    });
+
     irc.on('connecting', function() {
       addGlobalNotificationMessage('Connecting...');
     });
@@ -104,12 +109,22 @@ angular.module('tc').factory('messages', function($rootScope, $filter, $http, ir
       addNotificationMessage(channel, msg);
     });
 
+    irc.on('mods', function(channel, mods) {
+      addNotificationMessage(channel, 'The moderators are: ' + mods.join(', '));
+    });
+
     irc.on('hosting', function(channel, target) {
       addNotificationMessage(channel, channel.substring(1) + ' is hosting ' + target);
     });
 
     irc.on('hosted', function(channel, target, viewers) {
       addNotificationMessage(channel, target + ' is hosting you with ' + viewers + ' viewers.');
+    });
+
+    irc.on('r9kbeta', function(channel, on) {
+      var msg = 'The channel is no longer in r9k mode.';
+      if (on) msg = 'The channel is now in r9k mode.';
+      addNotificationMessage(channel, msg);
     });
 
     irc.on('slowmode', function(channel, enabled, length) {
@@ -127,6 +142,12 @@ angular.module('tc').factory('messages', function($rootScope, $filter, $http, ir
 
     irc.on('subscription', function(channel, username) {
       addNotificationMessage(channel, username + ' has just subscribed!');
+    });
+
+    irc.on('subscribers', function(channel, on) {
+      var msg = 'The channel is no longer in subscriber-only mode';
+      if (on) msg = 'The channel is now in subscriber-only mode.';
+      addNotificationMessage(channel, msg);
     });
 
     irc.on('timeout', function(channel, username) {
