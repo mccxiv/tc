@@ -1,7 +1,7 @@
 {
   "name": "Tc",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "node-remote": "http://localhost",
   "author": "Andrea Stella <adr.stella@gmail.com>",
   "description": "The chat client for Twitch",
