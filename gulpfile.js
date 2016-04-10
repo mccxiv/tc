@@ -15,6 +15,7 @@ gulp.task('reinstall', function() {
 });
 
 gulp.task('cleanup', function() {
+  shell.rm('-rf', '_dist');
   shell.mkdir('-p', '_dist');
   shell.mv('dist/win-x64/**', '_dist/');
   shell.mv('dist/Tc-darwin-x64/*.dmg', '_dist/');

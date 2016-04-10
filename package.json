@@ -6,7 +6,7 @@
     "start": "electron ./src --dev-tools",
     "postinstall": "gulp postinstall && npm run dist",
     "reinstall": "gulp reinstall",
-    "build": "npm run dist && gulp cleanup",
+    "build": "gulp cleanup && npm run dist && gulp cleanup",
     "pack": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\"",
     "dist": "build --appDir src --sign \"Developer ID Application: Andrea Stella (42XGWVW434)\""
   },
