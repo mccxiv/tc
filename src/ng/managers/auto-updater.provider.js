@@ -15,10 +15,8 @@ angular.module('tc').factory('autoUpdater', function(electron) {
 
   if (os !== 'win32' && os !== 'darwin') {
     autoUpdater = {};
-    autoUpdater.checkForUpdates = function() {
-    };
-    autoUpdater.on = function() {
-    };
+    autoUpdater.checkForUpdates = function() {};
+    autoUpdater.on = function() {};
   }
 
   else {
