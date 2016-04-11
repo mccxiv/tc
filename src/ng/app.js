@@ -1,3 +1,5 @@
+//import 'app.css';
+
 console.log('Welcome to the Developer Console!');
 console.log('Technical info and error messages will be displayed here.');
 console.log('Red 404 messages can be safely ignored.');

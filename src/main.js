@@ -38,7 +38,6 @@ function makeWindow() {
 
   mainWinState.manage(main);
 
-
   main.on('close', function (e) {
     console.log('TC: Window tried closing, hiding it instead.');
     e.preventDefault();
@@ -47,6 +46,7 @@ function makeWindow() {
   });
 
   main.setMenu(null);
+  console.log('starting', __dirname);
   main.loadURL('file://' + __dirname + '/index.html');
 }
 

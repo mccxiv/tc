@@ -3,7 +3,7 @@
   "name": "tc-project",
   "version": "0.0.0",
   "scripts": {
-    "start": "electron --enable-logging ./src --dev-tools",
+    "start": "gulp launch",
     "postinstall": "gulp postinstall && npm run dist",
     "reinstall": "gulp reinstall",
     "build": "gulp cleanup && npm run dist && gulp cleanup",
@@ -54,6 +54,6 @@
     "shelljs": "^0.6.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.14"
+    "webpack": "^1.12.15"
   }
 }

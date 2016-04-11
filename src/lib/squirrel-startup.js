@@ -5,7 +5,7 @@ module.exports = function() {
 
 	if (squirrelCommand) {
 		var createShortcut;
-		var app = require('app');
+		var app = require('electron').app;
 		var path = require('path');
 		var execSync = require('child_process').execSync;
 		var target = path.basename(process.execPath);

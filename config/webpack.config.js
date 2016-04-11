@@ -1,14 +1,13 @@
 const path = require('path');
-
-module.exports = {
-  target: 'electron',
-  entry: {
-    'index': path.join(__dirname, '../src/index.js')
+const base = {
+  node: {
+    __filename: false,
+    __dirname: false
   },
+
   output: {
     path: path.join(__dirname, '../_build'),
-    publicPath: '/',
-    filename: '[name].js'
+    filename: '[name]'
   },
   module: {
     loaders: [
@@ -23,3 +22,19 @@ module.exports = {
     plugins: ['transform-runtime']
   }
 };
+
+const main = Object.assign({}, base, {
+  target: 'electron-main',
+  entry: {
+    'main.js': path.join(__dirname, '../src/main.js')
+  }
+});
+
+const renderer = Object.assign({}, base, {
+  target: 'electron-renderer',
+  entry: {
+    'renderer.js': path.join(__dirname, '../src/ng/app.js')
+  }
+});
+
+module.exports = [main, renderer];
