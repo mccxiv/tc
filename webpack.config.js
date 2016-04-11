@@ -13,11 +13,11 @@ const base = {
     loaders: [
       {test: /\.js$/, loader: 'babel', exclude: /node_modules/},
       {test: /\.css$/, loader: 'style!css'},
-      {test: /\.(ttf|woff|woff2)/, loader: 'url'},
+      {test: /\.(ttf|woff|woff2)/, loader: 'url'}, // Missing $ is intentional
       {test: /\.(png|ogg)$/, loader: 'url'},
       {test: /\.json$/, loader: 'json'},
-      {test: /\.node/, loader: 'node'},
-      {test: /\.html/, loader: 'html'}
+      {test: /\.node$/, loader: 'node'},
+      {test: /\.html$/, loader: 'html'}
     ]
   },
   babel: {
