@@ -1,9 +1,11 @@
 /**
  * Make sure unhandled clicks don't cause weird behaviors like
  * navigating to a different page from inside the app.
+ * 
+ * TODO test it again
  */
-angular.module('tc').run(function($rootElement) {
-  $rootElement.bind('click', function(e) {
+export default () => {
+  document.addEventListener('click', function(e) {
     e.preventDefault();
   });
-});
+};

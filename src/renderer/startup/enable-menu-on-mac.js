@@ -1,4 +1,6 @@
-angular.module('tc').run(function(electron) {
+import electron from 'electron';
+
+export default () => {
   if (process.platform !== 'darwin') return;
   var Menu = electron.remote.Menu;
 
@@ -57,4 +59,4 @@ angular.module('tc').run(function(electron) {
 
   var menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
-});
+};

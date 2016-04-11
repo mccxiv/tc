@@ -1,11 +1,10 @@
-/**
- * Forces providers to instantiate
- */
-angular.module('tc').run(function(electron) {
-  var checker = require('spellchecker');
+import electron from 'electron';
+import checker from 'spellchecker';
+
+export default () => {
   electron.local.webFrame.setSpellCheckProvider('en-US', false, {
     spellCheck: function(text) {
       return !checker.isMisspelled(text);
     }
   });
-});
+}

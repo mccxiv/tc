@@ -9,8 +9,8 @@ gulp.task('postinstall', function() {
 
 gulp.task('launch', function() {
   shell.rm('_build/**');
-  shell.exec('webpack --config config/webpack.config.js');
-  shell.cp('src/index.html', '_build/index.html');
+  shell.exec('webpack');
+  shell.cp('src/renderer/index.html', '_build/index.html');
   shell.cp('src/package.json', '_build/package.json');
   shell.exec(path.normalize('./node_modules/.bin/electron --enable-logging ./_build --dev-tools'));
 });

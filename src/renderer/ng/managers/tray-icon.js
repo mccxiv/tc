@@ -1,15 +1,19 @@
-angular.module('tc').factory('trayIcon', function(settings, $rootScope, electron) {
+import icon16 from '../../../assets/icon16.png';
+
+angular.module('tc').factory('trayIcon', function(
+  settings, $rootScope, electron) {
 
   if (process.platform !== 'win32') return null;
   // This module uses lots of electron specific code
   var Tray = electron.remote.Tray;
+  var nativeImage = electron.remote.nativeImage;
   var Menu = electron.remote.Menu;
   var app = electron.remote.app;
   var ipcRenderer = electron.local.ipcRenderer;
   var browserWindow = electron.remote.BrowserWindow;
   var path = require('path');
 
-  var tray = new Tray(path.join(__dirname, 'assets/icon16.png'));
+  var tray = new Tray(nativeImage.createFromDataURL(icon16));
 
   tray.on('clicked', function() {
     // Electron quirk: don't store this browser window in a local variable
