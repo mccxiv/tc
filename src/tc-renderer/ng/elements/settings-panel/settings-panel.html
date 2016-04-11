@@ -1,0 +1,168 @@
+<md-sidenav class="settings-sidebar md-sidenav-left md-whiteframe-z2 menu"
+            md-is-locked-open="true">
+
+  <md-list>
+    <md-subheader class="md-no-sticky">Settings</md-subheader>
+
+    <!-- TODO refactor this awful repetition -->
+
+    <md-list-item class="menu-item"
+                  ng-click="m.selected = 'highlights'"
+                  ng-class="{selected: m.selected === 'highlights'}">
+      <p>Highlights</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
+                  ng-click="m.selected = 'notifications'"
+                  ng-class="{selected: m.selected === 'notifications'}">
+      <p>Notifications</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
+                  ng-click="m.selected = 'chat'"
+                  ng-class="{selected: m.selected === 'chat'}">
+      <p>Chat</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
+                  ng-click="m.selected = 'appearance'"
+                  ng-class="{selected: m.selected === 'appearance'}">
+      <p>Appearance</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
+                  ng-click="m.selected = 'ignore'"
+                  ng-class="{selected: m.selected === 'ignore'}">
+      <p>Ignore List</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
+                  ng-click="m.selected = 'about'"
+                  ng-class="{selected: m.selected === 'about'}">
+      <p>About</p>
+    </md-list-item>
+  </md-list>
+
+</md-sidenav>
+
+<div flex class="settings-content" ng-switch on="m.selected" layout="column">
+
+  <md-content ng-switch-when="highlights" class="highlights">
+    <h1 class="md-headline">Highlighted phrases</h1>
+    <p>
+      You may add words and phrases to make them stand out in chat and
+      show up as desktop notifications. Matches are not case sensitive.
+    </p>
+
+    <form class="input-form" ng-submit="highlights.add()">
+      <md-input-container>
+        <label>Add a new phrase. Supports regex</label>
+        <input ng-model="highlights.input">
+      </md-input-container>
+    </form>
+
+    <md-list class="phrase-list">
+      <md-list-item class="item"
+                    ng-repeat="highlight in highlights.list track by $index">
+        <md-button class="close-button md-raised md-warn"
+                   ng-click="highlights.remove($index)">
+          <md-tooltip md-autohide md-direction="right">
+            Delete this phrase
+          </md-tooltip>
+          <i class="zmdi zmdi-close"></i>
+        </md-button>
+        <p>{{highlight}}</p>
+      </md-list-item>
+    </md-list>
+
+    <md-switch ng-model="highlights.highlightMe" aria-label="Highlight Self"
+               ng-change="highlights.changeHighlightMe()">
+      Also highlight my own name
+    </md-switch>
+  </md-content>
+
+  <md-content ng-switch-when="notifications">
+    <h1 class="md-headline">Desktop notifications</h1>
+
+    <md-switch ng-model="settings.notifications.onConnect">
+      On connection and disconnection
+    </md-switch>
+
+    <md-switch ng-model="settings.notifications.onMention">
+      On highlighted phrases
+    </md-switch>
+
+    <md-switch ng-model="settings.notifications.onWhisper">
+      On whispers
+    </md-switch>
+
+    <md-divider></md-divider>
+
+    <md-switch ng-model="settings.notifications.soundOnMention"
+               ng-change="notifications.playSound()">
+      Also play a sound
+    </md-switch>
+  </md-content>
+
+  <md-content ng-switch-when="chat">
+    <h1 class="md-headline">Chat options</h1>
+
+    <md-switch ng-model="settings.chat.timestamps">
+      Show time stamps
+    </md-switch>
+  </md-content>
+
+  <md-content ng-switch-when="ignore">
+    <h1 class="md-headline">Ignore List</h1>
+
+    <form class="input-form" ng-submit="ignore.add()">
+      <md-input-container>
+        <label>Add a new user to ignore</label>
+        <input ng-model="ignore.input">
+      </md-input-container>
+    </form>
+
+    <md-list class="phrase-list">
+      <md-list-item
+        class="item"
+        ng-repeat="ignored in settings.chat.ignored track by $index"
+      >
+        <md-button
+          class="close-button md-raised md-warn"
+          ng-click="ignore.delete($index)"
+        >
+          <md-tooltip md-autohide md-direction="right">
+            Unblock this user
+          </md-tooltip>
+          <i class="zmdi zmdi-close"></i>
+        </md-button>
+        <p>{{ignored}}</p>
+      </md-list-item>
+    </md-list>
+  </md-content>
+
+  <md-content ng-switch-when="appearance">
+    <h1 class="md-headline">Theme Options</h1>
+
+    <md-switch ng-model="settings.theme.dark">
+      Use dark theme
+    </md-switch>
+
+    <md-divider></md-divider>
+
+    <h1 class="md-headline">Zoom Level</h1>
+
+    <div layout>
+      <span class="slider-label" layout layout-align="center center">{{zoomLabel()}}</span>
+      <md-slider flex md-discrete ng-model="settings.appearance.zoom"
+                 min="100" max="175" step="5"
+                 aria-label="Zoom"></md-slider>
+    </div>
+  </md-content>
+
+  <md-content flex ng-switch-when="about" layout="column"
+              layout-align="center center">
+    <img style="width: 150px;" src="../../../../assets/icon256.png">
+
+    <h1 class="md-headline">Tc, the chat client for Twitch</h1>
+    <p>
+      <span>Version: {{m.version}}</span> |
+      <a href-external="http://gettc.xyz/">GetTc.xyz</a>
+    </p>
+  </md-content>
+</div>

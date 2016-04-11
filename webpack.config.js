@@ -13,9 +13,11 @@ const base = {
     loaders: [
       {test: /\.js$/, loader: 'babel', exclude: /node_modules/},
       {test: /\.css$/, loader: 'style!css'},
-      {test: /\.(ttf|woff|woff2|png)/, loader: 'url'},
+      {test: /\.(ttf|woff|woff2)/, loader: 'url'},
+      {test: /\.(png|ogg)$/, loader: 'url'},
       {test: /\.json$/, loader: 'json'},
-      {test: /\.node/, loader: 'node'}
+      {test: /\.node/, loader: 'node'},
+      {test: /\.html/, loader: 'html'}
     ]
   },
   babel: {
@@ -27,14 +29,14 @@ const base = {
 const main = Object.assign({}, base, {
   target: 'electron-main',
   entry: {
-    'main.js': path.join(__dirname, 'src/main/main.js')
+    'main.js': path.join(__dirname, 'src/tc-main/main.js')
   }
 });
 
 const renderer = Object.assign({}, base, {
   target: 'electron-renderer',
   entry: {
-    'renderer.js': path.join(__dirname, 'src/renderer/app.js')
+    'renderer.js': path.join(__dirname, 'src/tc-renderer/app.js')
   }
 });
 
