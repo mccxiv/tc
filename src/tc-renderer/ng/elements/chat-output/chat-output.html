@@ -29,11 +29,11 @@
               style="color: {{calculateColor(m.user.color)}}">{{m.user['display-name']}}</span><!--
     ---><span class="username" ng-if="m.type === 'whisper'"
               ng-click="selectUsername(m.from)">{{m.from}}</span><!--
-    --->
-    <svg class="svg-whisper-arrow" ng-if="m.type === 'whisper'" height="10px"
-         version="1.1" width="16px">
-      <polyline points="6 2, 10 6, 6 10, 6 2"></polyline>
-    </svg><!--
+    ---><svg class="svg-whisper-arrow"
+             ng-if="m.type === 'whisper'"
+             version="1.1" width="16px"
+             height="10px"
+        ><polyline points="6 2, 10 6, 6 10, 6 2"></polyline></svg><!--
     ---><span class="username" ng-if="m.type === 'whisper'"
               ng-click="selectUsername(m.to)">{{m.to}}</span><!--
     ---><span class="separator"
