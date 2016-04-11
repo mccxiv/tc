@@ -3,6 +3,9 @@ import $ from 'jquery';
 import angular from 'angular';
 import template from './chat-output.html';
 
+import 'frostyjs/dist/css/frosty.min.css';
+require('imports?jQuery=jquery!frostyjs/dist/js/frosty.min.js');
+
 angular.module('tc').directive('chatOutput', function(
   $sce, $timeout, settings, messages, session, api, openExternal, colors) {
 
