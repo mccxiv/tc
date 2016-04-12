@@ -1,30 +1,20 @@
-/**
- * Checks for updates and downloads them, but does not install them.
- *
- * How to use this module:
- * - Listen for `update-downloaded` event
- * - Then call .quitAndInstall() to install it.
- * - The application will restart on the new version
- *
- * @ngdoc factory
- * @name autoUpdater
- */
-angular.module('tc').factory('autoUpdater', function(electron) {
-  var autoUpdater;
-  var os = process.platform;
+import angular from 'angular';
+import electron from 'electron';
+
+angular.module('tc').factory('autoUpdater', () => {
+  let autoUpdater;
+  const os = process.platform;
 
   if (os !== 'win32' && os !== 'darwin') {
     autoUpdater = {};
-    autoUpdater.checkForUpdates = function() {};
-    autoUpdater.on = function() {};
+    autoUpdater.checkForUpdates = () => {};
+    autoUpdater.on = () => {};
   }
 
   else {
     autoUpdater = electron.remote.autoUpdater;
-    var version = electron.remote.app.getVersion();
-    var url = 'http://dl.gettc.xyz/update';
-    url += '?version=' + version;
-    url += '&platform=' + process.platform;
+    const version = electron.remote.app.getVersion();
+    const url = `http://dl.gettc.xyz/update/${os}/${version}`;
 
     autoUpdater.setFeedUrl(url);
     //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
@@ -36,9 +26,7 @@ angular.module('tc').factory('autoUpdater', function(electron) {
       autoUpdater.checkForUpdates();
     }
 
-    autoUpdater.on('error', function() {
-      console.warn('Error when checking for updates.');
-    });
+    autoUpdater.on('error', () => console.warn('Error checking for updates.'));
   }
 
   return autoUpdater;
