@@ -36,7 +36,7 @@ angular.module('tc').directive('tabCompletion', function() {
         words[words.length - 1] = matchingItems[currentItem];
         currentItem++;
         element.val(words.join(' ') + ' ');
-        element.trigger('input');
+        angular.element(element).triggerHandler('input');
       }
     }
 
