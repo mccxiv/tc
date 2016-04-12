@@ -1,9 +1,7 @@
-/**
- * Provides methods to register options pages and display them
- *
- * @ngdoc factory
- * @name settingsGui
- */
+import angular from 'angular';
+import template from '../elements/settings-panel/settings-gui-dialog.html';
+import '../elements/settings-panel/settings-gui-dialog.css';
+
 angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
   return {
     /**
@@ -14,7 +12,7 @@ angular.module('tc').factory('settingsGui', function($mdDialog, $rootElement) {
       $mdDialog.show({
         parent: $rootElement,
         targetEvent: $event,
-        templateUrl: 'ng/elements/settings-panel/settings-gui-dialog.html',
+        template: template,
         clickOutsideToClose: true,
         controller: function(scope, $mdDialog) {
           scope.close = $mdDialog.hide;
