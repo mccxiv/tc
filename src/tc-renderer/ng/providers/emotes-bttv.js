@@ -11,6 +11,9 @@
 angular.module('tc').factory('emotesBttv', function($http, channels) {
   var globalEmotes = [];
   var channelEmotes = {};
+  
+  window.g = globalEmotes;
+  window.c = channelEmotes;
 
   getGlobal();
   channels.on('add', getChannelEmotes);

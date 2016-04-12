@@ -1,3 +1,5 @@
+import angular from 'angular';
+
 /**
  * @ngdoc filter
  * @name ffzfy
@@ -6,15 +8,11 @@
  * @param parts {MessagePart[]}
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('ffzfy', function(emotesFfz) {
+angular.module('tc').filter('ffzfy', function(emotesFfz, _) {
   var potentialEmoteRegex = /[a-zA-Z_]{3,}/g;
 
-  function makePart(string, isElement) {
-    return {string: string, isElement: isElement};
-  }
-
   function isEmote(emote, emotes) {
-    return !!_.find(emotes, 'emote', emote);
+    return !!emotes.find((e) => e.emote === emote);
   }
 
   function makeEmote(url, emote) {
@@ -67,7 +65,7 @@ angular.module('tc').filter('ffzfy', function(emotesFfz) {
 
     /** Helper */
     function add(string, isElement) {
-      newParts.push(makePart(string, isElement));
+      newParts.push({string, isElement});
     }
 
     return newParts;

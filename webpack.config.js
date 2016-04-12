@@ -1,6 +1,6 @@
 const path = require('path');
 const base = {
-  devtool: 'source-map',
+  devtool: 'eval-cheap-source-map',
   node: {
     __filename: false,
     __dirname: false
