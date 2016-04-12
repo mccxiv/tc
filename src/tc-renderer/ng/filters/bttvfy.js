@@ -8,7 +8,7 @@ import angular from 'angular';
  * @param parts {MessagePart[]}
  * @return {MessagePart[]}
  */
-angular.module('tc').filter('bttvfy', (emotesBttv, _) => {
+angular.module('tc').filter('bttvfy', (emotesBttv) => {
   var potentialEmoteRegex = /[^\s]+/g;
 
   function isEmote(emote, emotes) {
@@ -50,7 +50,8 @@ angular.module('tc').filter('bttvfy', (emotesBttv, _) => {
           }
 
           // Save emote as tag element
-          const img = makeEmote(_.find(emotes, 'emote', match[0]).url, match[0]);
+          const url = emotes.find((e) => e.emote === match[0]).url;
+          const img = makeEmote(url, match[0]);
           add(img, true);
 
           // Track progress through string
