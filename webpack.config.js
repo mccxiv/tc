@@ -1,6 +1,7 @@
 const path = require('path');
+
 const base = {
-  devtool: 'eval-cheap-source-map',
+  devtool: false,
   node: {
     __filename: false,
     __dirname: false
@@ -11,7 +12,15 @@ const base = {
   },
   module: {
     loaders: [
-      {test: /\.js$/, loader: 'babel', exclude: /node_modules/},
+      {
+        test: /\.js$/,
+        loader: 'babel',
+        include: [
+          path.resolve(__dirname, 'src', 'tc-main'),
+          path.resolve(__dirname, 'src', 'tc-renderer'),
+          path.resolve(__dirname, 'src', 'node_modules', 'tmi.js')
+        ]
+      },
       {test: /\.css$/, loader: 'style!css'},
       {test: /\.(ttf|woff|woff2)/, loader: 'url'}, // Missing $ is intentional
       {test: /\.(png|ogg)$/, loader: 'url'},
