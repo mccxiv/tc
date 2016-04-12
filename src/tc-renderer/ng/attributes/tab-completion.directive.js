@@ -1,11 +1,10 @@
-/**
- * Lets a user tab through various items on an input field
- * @ngdoc directive
- * @name tabCompletion
- */
+import $ from 'jquery';
+
 angular.module('tc').directive('tabCompletion', function() {
 
   function link(scope, element) {
+    element = $(element[0]);
+
     var previousKeyWasTab = false;
     var words;
     var userString;

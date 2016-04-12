@@ -35,12 +35,12 @@ angular.module('tc').directive('chatInput', function(_, settings, session, irc, 
         usernames = _(messages(channel))
           .filter(hasUser)
           .map(getNames)
-          .unique()
+          .uniq()
           .value();
 
-        bttvEmotes = _.pluck(emotesBttv(channel), 'emote').sort();
-        ffzEmotes = _.pluck(emotesFfz(channel), 'emote').sort();
-        twitchEmotes = _.pluck(emotesTwitch, 'emote').sort();
+        bttvEmotes = _.map(emotesBttv(channel), 'emote').sort();
+        ffzEmotes = _.map(emotesFfz(channel), 'emote').sort();
+        twitchEmotes = _.map(emotesTwitch, 'emote').sort();
 
         return [].concat(twitchEmotes, bttvEmotes, ffzEmotes, usernames);
       }
