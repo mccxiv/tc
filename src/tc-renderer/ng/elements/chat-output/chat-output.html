@@ -1,0 +1,47 @@
+<!-- Awkward indentation to avoid any whitespace -->
+
+<div class="chat-lines">
+  <div
+    class="chat-line"
+    ng-repeat="m in messages | limitTo: chatLimit"
+    ng-class="{
+      highlighted: m.highlighted,
+      deleted: m.deleted,
+      whisper: m.type === 'whisper'
+    }"
+    style="{{m.style}}"
+  ><!--
+	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.time | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
+    ---><span class="badges" ng-if="m.user"><!--
+        ---><img class="badge" ng-if="isBroadcaster(m.user.username)"
+                 ng-src="{{badges['broadcaster'].image}}"><!--
+        ---><img class="badge" ng-if="m.user['user-type']"
+                 ng-src="{{badges[m.user['user-type']].image}}"><!--
+        ---><img class="badge" ng-if="m.user['subscriber']"
+                 ng-src="{{badges['subscriber'].image}}"><!--
+        ---><img class="badge ffz" ng-if="m.user['ffz_donor']"
+                 ng-src="{{badges['ffz_donor'].image}}"><!--
+        ---><img class="badge" ng-if="m.user['turbo']"
+                 ng-src="{{badges['turbo'].image}}"><!--
+    ---></span><!--
+    ---><span class="username" ng-if="m.user"
+              ng-click="selectUsername(m.user.username)"
+              style="color: {{calculateColor(m.user.color)}}">{{m.user['display-name']}}</span><!--
+    ---><span class="username" ng-if="m.type === 'whisper'"
+              ng-click="selectUsername(m.from)">{{m.from}}</span><!--
+    ---><svg class="svg-whisper-arrow"
+             ng-if="m.type === 'whisper'"
+             version="1.1" width="16px"
+             height="10px"
+        ><polyline points="6 2, 10 6, 6 10, 6 2"></polyline></svg><!--
+    ---><span class="username" ng-if="m.type === 'whisper'"
+              ng-click="selectUsername(m.to)">{{m.to}}</span><!--
+    ---><span class="separator"
+              ng-if="m.type === 'chat' || m.type === 'whisper'">:&nbsp;</span><!--
+    ---><span class="separator" ng-if="m.type === 'action'">&nbsp;</span><!--
+    ---><span class="message" ng-bind-html="trusted(m.message)"></span>
+  </div>
+  <div class="auto-scroll-notice" ng-if="!autoScroll" ng-click="scrollDown()">
+    More messages below
+  </div>
+</div>
