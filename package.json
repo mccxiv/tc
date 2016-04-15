@@ -23,21 +23,21 @@
       "ProductName": "Tc"
     },
     "osx": {
-      "icon": "src/assets-embed/icon.icns",
-      "background": "src/assets-embed/dmg-background.png"
+      "icon": "src/assets/icon.icns",
+      "background": "src/assets/dmg-background.png"
     },
     "win": {
-      "loadingGif": "src/assets-embed/install.gif",
+      "loadingGif": "src/assets/install.gif",
       "exe": "Tc.exe",
       "authors": "Mccxiv Software",
       "description": "Tc, the chat client for Twitch",
       "title": "Tc, the chat client for Twitch",
-      "setupIcon": "src/assets-embed/icon.ico",
+      "setupIcon": "src/assets/icon.ico",
       "noMsi": true
     }
   },
   "directories": {
-    "buildResources": "src/assets-embed"
+    "buildResources": "src/assets"
   },
   "dependencies": {
     "babel-core": "^6.7.6",
