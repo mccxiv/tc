@@ -1,4 +1,4 @@
-import r from 'request-promise';
+import r from 'axios';
 
 const kraken = 'https://api.twitch.tv/kraken/';
 
