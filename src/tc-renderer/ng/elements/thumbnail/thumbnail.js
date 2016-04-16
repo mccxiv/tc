@@ -1,62 +1,53 @@
 import './thumbnail.css';
 import angular from 'angular';
 import template from './thumbnail.html';
+import * as api from '../../../lib/api';
 
-angular.module('tc').directive('thumbnail', function(settings, channels, irc, api, openExternal) {
+angular.module('tc').directive('thumbnail',
+  (settings, channels, irc, openExternal) => {
 
   function link(scope, element) {
-    scope.m = {
-      img: '',
-      channel: null,
-      stream: null
-    };
-
-    scope.openStream = function() {
-      openExternal('http://www.twitch.tv/' + scope.channel() + '/popout');
-    };
+    const stop = setInterval(load, 60000);
+    scope.m = {img: '', channel: null, stream: null};
 
     load();
-    setInterval(load, 60000);
     element.attr('layout', 'column');
 
-    channels.on('change', function() {
+    channels.on('change', () => {
       scope.m.stream = null;
       scope.m.channel = null;
       load();
     });
 
+    scope.$on('$destroy', () => clearInterval(stop));
+
+    scope.openStream = () => {
+      openExternal(`http://www.twitch.tv/${scope.channel()}/popout`);
+    };
+
     function getChannel() {
       return settings.channels[settings.selectedTabIndex];
     }
 
-    function load() {
-      var channel = getChannel();
-      api.channel(channel).success(function(data) {
-        scope.m.channel = data;
+    async function load() {
+      const channel = getChannel();
+      scope.m.channel = await api.channel(channel);
+      scope.m.stream = await api.stream(channel);
+
+      const url = scope.m.stream.preview.medium + '?' + new Date().getTime();
+      await preLoadImage(url);
+      scope.m.img = url;
+      scope.$apply();
+    }
+
+    async function preLoadImage(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+        img.addEventListener('load', resolve);
       });
-      api.stream(channel).success(function(data) {
-        scope.m.stream = data.stream;
-        if (data.stream) {
-          var url = data.stream.preview.medium +
-            '?' + new Date().getTime();
-          preLoadImage(url, function() {
-            scope.m.img = url;
-            scope.$apply();
-          });
-        }
-      })
-    }
-
-    function preLoadImage(url, cb) {
-      var img = new Image();
-      img.src = url;
-      img.addEventListener('load', cb);
     }
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    link: link
-  }
+  return {restrict: 'E', template, link}
 });
