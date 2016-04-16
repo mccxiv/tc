@@ -32,7 +32,6 @@ import '../ng/providers/messages';
 import '../ng/providers/highlights';
 import '../ng/providers/notifications';
 import '../ng/providers/settings-gui';
-import '../ng/providers/colors';
 
 import '../ng/managers/title-manager.provider';
 import '../ng/managers/tray-icon';
