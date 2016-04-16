@@ -10,8 +10,8 @@ angular.module('tc').directive('hrefExternal', function(openExternal) {
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {
-      element.bind('click', function() {
-        var href = attrs.hrefExternal;
+      element.bind('click', () => {
+        let href = attrs.hrefExternal;
         if (!href.startsWith('http://') && !href.startsWith('https://')) {
           href = 'http://' + href;
         }

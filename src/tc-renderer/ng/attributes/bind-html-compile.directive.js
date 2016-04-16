@@ -1,13 +1,16 @@
-angular.module('tc').directive('bindHtmlCompile', function($compile) {
+import angular from 'angular';
+
+angular.module('tc').directive('bindHtmlCompile', ($compile) => {
   return {
     restrict: 'A',
-    link: function(scope, element, attrs) {
-      scope.$watch(function() {
-        return scope.$eval(attrs.bindHtmlCompile);
-      }, function(value) {
-        element.html(value);
-        $compile(element.contents())(scope);
-      });
+    link: (scope, element, attrs) => {
+      scope.$watch(
+        () => scope.$eval(attrs.bindHtmlCompile),
+        (value) => {
+          element.html(value);
+          $compile(element.contents())(scope);
+        }
+      );
     }
   };
 });

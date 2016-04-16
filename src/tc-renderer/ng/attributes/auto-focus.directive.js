@@ -1,19 +1,7 @@
-/**
- * @ngdoc directive
- * @name autoFocus
- *
- * @description
- * When set as an attribute on an input, it'll focus
- * it soon after being rendered
- */
-angular.module('tc').directive('autoFocus', function() {
+import angular from 'angular';
+
+angular.module('tc').directive('autoFocus', ($timeout) => {
   return {
-    link: {
-      post: function postLink(scope, element) {
-        setTimeout(function() {
-          element[0].focus();
-        }, 300);
-      }
-    }
+    link: (s, element) => $timeout(() => element[0].focus(), 300)
   }
 });
