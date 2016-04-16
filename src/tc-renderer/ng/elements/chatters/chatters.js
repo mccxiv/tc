@@ -44,6 +44,7 @@ angular.module('tc').directive('chatters',
         console.warn('CHATTERS: Failed to get user list. ' + attemptNumber, e);
         if (attemptNumber < 6) fetchList(attemptNumber + 1);
       }
+      scope.$apply();
     }
 
     function isChannelSelected() {

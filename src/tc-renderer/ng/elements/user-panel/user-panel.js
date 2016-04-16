@@ -79,6 +79,7 @@ angular.module('tc').directive('userPanel',
       const userData = await user(session.selectedUser);
       scope.m.profilePicSrc = userData.logo ? userData.logo : '';
       scope.m.created = userData.created_at;
+      scope.$apply();
     }
   }
 

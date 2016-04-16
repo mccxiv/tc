@@ -168,6 +168,7 @@ angular.module('tc').directive('chatOutput',
     async function fetchBadges(timeout) {
       try {scope.badges = await api.badges(scope.channel);}
       catch(e) {$timeout(() => fetchBadges(delay), (timeout || 1000) * 2);}
+      scope.$apply();
     }
 
     function calculateColor(color) {
