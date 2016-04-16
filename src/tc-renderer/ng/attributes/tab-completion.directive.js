@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import angular from 'angular';
 
-angular.module('tc').directive('tabCompletion', function() {
+angular.module('tc').directive('tabCompletion', () => {
 
   function link(scope, element) {
     element = $(element[0]); scope.$on('$destroy', () => element.off());
