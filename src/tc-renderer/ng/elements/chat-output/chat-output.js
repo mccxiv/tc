@@ -56,6 +56,7 @@ angular.module('tc').directive('chatOutput', function(
 
     scope.$on('$destroy', function() {
       window.removeEventListener('resize', scrollIfEnabled);
+      element.off();
     });
 
     //===============================================================
