@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import angular from 'angular';
 
 angular.module('tc').directive('tabCompletion', function() {
 
@@ -10,6 +11,8 @@ angular.module('tc').directive('tabCompletion', function() {
     var userString;
     var matchingItems;
     var currentItem;
+
+    scope.$on('$destroy', element.off.bind(element));
 
     element.bind('keydown', function(event) {
       if (event.which === 9) tabPress();
