@@ -32,8 +32,8 @@ angular.module('tc').directive('thumbnail',
     async function load() {
       const channel = getChannel();
       scope.m.channel = await api.channel(channel);
-      scope.m.stream = await api.stream(channel);
-
+      scope.m.stream = (await api.stream(channel)).stream;
+      if (!scope.m.stream) return;
       const url = scope.m.stream.preview.medium + '?' + new Date().getTime();
       await preLoadImage(url);
       scope.m.img = url;
