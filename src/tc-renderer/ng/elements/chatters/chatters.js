@@ -1,13 +1,14 @@
 import './chatters.css';
 import angular from 'angular';
 import template from './chatters.html';
+import {chatters} from '../../../lib/api';
 
-angular.module('tc').directive('chatters', function($http, settings, session, api, channels) {
+angular.module('tc').directive('chatters',
+  ($http, settings, session, channels) => {
 
   function link(scope) {
-    var forceShowViewers = false;
-    var timeout = null;
-
+    let forceShowViewers = false;
+    let timeout = null;
     scope.api = null;
 
     fetchList();
@@ -30,35 +31,19 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
       return scope.api && scope.api.chatters.viewers.length > 10000;
     };
 
-    // TODO not DRY (same function in different files)
     scope.selectUser = function(username) {
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;
     };
 
-    function fetchList(attemptNumber) {
-      if (!isChannelSelected()) return; // Abort
-      api.chatters(scope.channel).success(onList).error(function() {
-        attemptNumber = attemptNumber || 0;
-        attemptNumber++;
-        console.warn('CHATTERS: Failed to get user list #' + attemptNumber);
-        if (attemptNumber < 6) fetchList(attemptNumber);
-      });
-    }
-
-    function onList(result) {
-      if (result && result.data && result.data.chatters) {
-        scope.api = result.data;
-        var chatters = scope.api.chatters;
-        scope.api.chatters = {
-          staff: chatters.staff,
-          admins: chatters.admins,
-          global_mods: chatters.global_mods,
-          moderators: chatters.moderators,
-          viewers: chatters.viewers
-        };
+    async function fetchList(attemptNumber) {
+      if (!isChannelSelected()) return;
+      try {scope.api = await chatters(scope.channel);}
+      catch (e) {
+        attemptNumber = attemptNumber || 1;
+        console.warn('CHATTERS: Failed to get user list. ' + attemptNumber, e);
+        if (attemptNumber < 6) fetchList(attemptNumber + 1);
       }
-      else console.warn('CHATTERS: Could not parse chatter list.');
     }
 
     function isChannelSelected() {
@@ -71,10 +56,5 @@ angular.module('tc').directive('chatters', function($http, settings, session, ap
     }
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    scope: {channel: '='},
-    link: link
-  }
+  return {restrict: 'E', template, link, scope: {channel: '='}}
 });

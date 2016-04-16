@@ -1,7 +1,9 @@
 import './user-panel.css';
 import angular from 'angular';
 import template from './user-panel.html';
-import user from '../../../lib/api';
+import {user} from '../../../lib/api';
+
+console.log('u', user);
 
 angular.module('tc').directive('userPanel',
   ($document, settings, session, irc, openExternal) => {
@@ -74,9 +76,9 @@ angular.module('tc').directive('userPanel',
     };
 
     async function fetchUser() {
-      const user = await user(session.selectedUser);
-      scope.m.profilePicSrc = user.logo ? user.logo : '';
-      scope.m.created = user.created_at;
+      const userData = await user(session.selectedUser);
+      scope.m.profilePicSrc = userData.logo ? userData.logo : '';
+      scope.m.created = userData.created_at;
     }
   }
 
