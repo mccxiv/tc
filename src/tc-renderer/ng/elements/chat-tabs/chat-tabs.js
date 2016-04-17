@@ -21,6 +21,22 @@ angular.module('tc').directive('chatTabs', ($timeout, settings, messages) => {
 
     if (currChannel()) scope.loaded[currChannel()] = true;
 
+    // TODO remove hack. When joining a new channel it won't render unless...
+    scope.$watch(
+      () => settings.channels.length,
+      (newL, oldL) => {
+        if (newL > oldL) {
+          // New length is greater which means new channel was joined
+          setTimeout(() => clickTab(settings.channels.length), 10);
+          setTimeout(() => clickTab(settings.channels.length - 1), 200);
+        }
+      }
+    );
+
+    function clickTab(index) {
+      element.find('md-tab-item').eq(index).click();
+    }
+
     /**
      * Returns how many unread messages a channel has.
      * @param channel

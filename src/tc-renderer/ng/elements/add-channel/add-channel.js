@@ -2,12 +2,11 @@ import './add-channel.css';
 import angular from 'angular';
 import template from './add-channel.html';
 
-angular.module('tc').directive('addChannel', ['settings', function(settings) {
+angular.module('tc').directive('addChannel', (settings) => {
 
   function link(scope) {
     scope.value = '';
-
-    scope.keypress = function(event) {
+    scope.keypress = (event) => {
       if (event.which === 13) {
         var channel = scope.value.trim();
         channel = channel.toLowerCase();
@@ -20,9 +19,5 @@ angular.module('tc').directive('addChannel', ['settings', function(settings) {
     };
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    link: link
-  }
-}]);
+  return {restrict: 'E', template, link}
+});
