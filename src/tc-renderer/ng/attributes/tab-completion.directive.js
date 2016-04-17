@@ -1,17 +1,18 @@
 import $ from 'jquery';
+import angular from 'angular';
 
-angular.module('tc').directive('tabCompletion', function() {
+angular.module('tc').directive('tabCompletion', () => {
 
   function link(scope, element) {
-    element = $(element[0]);
+    element = $(element[0]); scope.$on('$destroy', () => element.off());
 
-    var previousKeyWasTab = false;
-    var words;
-    var userString;
-    var matchingItems;
-    var currentItem;
+    let previousKeyWasTab = false;
+    let words;
+    let userString;
+    let matchingItems;
+    let currentItem;
 
-    element.bind('keydown', function(event) {
+    element.on('keydown', (event) => {
       if (event.which === 9) tabPress();
       else previousKeyWasTab = false;
     });
@@ -41,7 +42,7 @@ angular.module('tc').directive('tabCompletion', function() {
     }
 
     function findMatches() {
-      return scope.tabCompletionFn().filter(function(item) {
+      return scope.tabCompletionFn().filter((item) => {
         return item.toLowerCase().startsWith(userString.toLowerCase());
       });
     }

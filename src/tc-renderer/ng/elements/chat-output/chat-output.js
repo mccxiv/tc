@@ -1,22 +1,22 @@
 import './chat-output.css';
+import 'frostyjs/dist/css/frosty.min.css';
+import 'imports?jQuery=jquery!frostyjs/dist/js/frosty.min.js';
 import $ from 'jquery';
 import angular from 'angular';
+import colors from '../../../lib/colors';
 import template from './chat-output.html';
 
-import 'frostyjs/dist/css/frosty.min.css';
-require('imports?jQuery=jquery!frostyjs/dist/js/frosty.min.js');
-
-angular.module('tc').directive('chatOutput', function(
-  $sce, $timeout, settings, messages, session, api, openExternal, colors) {
+angular.module('tc').directive('chatOutput',
+  ($sce, $timeout, settings, messages, session, api, openExternal) => {
 
   function link(scope, element) {
-    element = $(element[0]);
+    element = $(element[0]); scope.$on('$destroy', () => element.off());
 
     //===============================================================
     // Variables
     //===============================================================
-    var latestScrollWasAutomatic = false;
-    var e = element[0];
+    let latestScrollWasAutomatic = false;
+    const e = element[0];
     scope.opts = settings.chat;
     scope.badges = null;
     scope.messages = messages(scope.channel);
@@ -26,61 +26,37 @@ angular.module('tc').directive('chatOutput', function(
     //===============================================================
     // Setup
     //===============================================================
-    watchScroll();
+    watchUserScrolling();
+    scrollWhenTogglingSidebar();
+    scrollOnNewMessages();
+    scrollOnWindowResize();
     fetchBadges();
     handleAnchorClicks();
     hideUnscrolledLines();
     handleEmoteHover();
     delayedScroll();
 
-    scope.$watch(
-      function() {
-        return scope.messages[scope.messages.length - 1]
-      },
-      function() {
-        if (scope.autoScroll) scrollDown();
-        else scope.chatLimit--; // ng-repeat uses negative
-      }
-    );
-
-    scope.$watch(
-      function() {
-        return settings.appearance.sidebarCollapsed
-      },
-      function() {
-        setTimeout(scrollIfEnabled, 260);
-      }
-    );
-
-    window.addEventListener('resize', scrollIfEnabled);
-
-    scope.$on('$destroy', function() {
-      window.removeEventListener('resize', scrollIfEnabled);
-    });
-
     //===============================================================
     // Directive methods
     //===============================================================
-    scope.selectUsername = function(username) {
-      session.selectedUser = username;
-      session.selectedUserChannel = scope.channel;
-    };
-
-    scope.isBroadcaster = function(username) {
-      return username.toLowerCase() === scope.channel.toLowerCase();
-    };
-
-    scope.trusted = function(html) {
-      return $sce.trustAsHtml(html);
-    };
-
+    scope.selectUsername = selectUsername;
+    scope.isBroadcaster = isBroadcaster;
+    scope.trusted = (html) => $sce.trustAsHtml(html);
     scope.calculateColor = calculateColor;
-
     scope.scrollDown = scrollDown;
 
     //===============================================================
     // Functions
     //===============================================================
+    function selectUsername(username) {
+      session.selectedUser = username;
+      session.selectedUserChannel = scope.channel;
+    }
+
+    function isBroadcaster(username) {
+      return username.toLowerCase() === scope.channel.toLowerCase();
+    }
+
     function delayedScroll() {
       setTimeout(scrollIfEnabled, 300);
       setTimeout(scrollIfEnabled, 600);
@@ -89,17 +65,23 @@ angular.module('tc').directive('chatOutput', function(
     }
 
     function handleEmoteHover() {
-      element.on('mouseenter', '.emoticon', function(e) {
-        var emoticon = $(e.target);
-        var tooltip = emoticon.data('emote-name');
-        var description = emoticon.data('emote-description');
+      element.on('mouseenter', '.emoticon', (e) => {
+        const emoticon = $(e.target);
+        let tooltip = emoticon.data('emote-name');
+        const description = emoticon.data('emote-description');
 
         if (description) tooltip += '<br>' + description;
+        // TODO memory leak?
         emoticon.frosty({html: true, content: tooltip});
         emoticon.frosty('show');
-        emoticon.one('mouseleave', function() {
-          emoticon.frosty('hide');
-        });
+        emoticon.one('mouseleave', () => emoticon.frosty('hide'));
+      });
+    }
+
+    function scrollOnWindowResize() {
+      window.addEventListener('resize', scrollIfEnabled);
+      scope.$on('$destroy', () => {
+        window.removeEventListener('resize', scrollIfEnabled);
       });
     }
 
@@ -108,8 +90,8 @@ angular.module('tc').directive('chatOutput', function(
      * resets the max lines when autoscroll is turned back on,
      * shows all lines when scrolling up to the top (infinite scroll)
      */
-    function watchScroll() {
-      element.on('scroll', function() {
+    function watchUserScrolling() {
+      element.on('scroll', () => {
         if (!latestScrollWasAutomatic) {
           scope.autoScroll = distanceFromBottom() === 0;
           scope.$apply();
@@ -126,12 +108,10 @@ angular.module('tc').directive('chatOutput', function(
      * top when the new lines are added.
      */
     function showAllLines() {
-      $timeout(function() {
-        var dfb = distanceFromBottom();
+      $timeout(() => {
+        const dfb = distanceFromBottom();
         scope.chatLimit = Infinity;
-        $timeout(function() {
-          e.scrollTop = e.scrollHeight - (dfb + e.offsetHeight);
-        });
+        $timeout(() => e.scrollTop = e.scrollHeight - (dfb + e.offsetHeight));
       }, 30);
     }
 
@@ -142,16 +122,29 @@ angular.module('tc').directive('chatOutput', function(
     function scrollDown() {
       scope.autoScroll = true;
       latestScrollWasAutomatic = true;
-      setTimeout(function() {
-        e.scrollTop = e.scrollHeight;
-      }, 0);
+      $timeout(() => e.scrollTop = e.scrollHeight, 0);
+    }
+
+    function scrollWhenTogglingSidebar() {
+      scope.$watch(
+        () => settings.appearance.sidebarCollapsed,
+        () => $timeout(scrollIfEnabled, 260)
+      );
+    }
+
+    function scrollOnNewMessages() {
+      scope.$watch(
+        () => scope.messages[scope.messages.length - 1],
+        () => {
+          if (scope.autoScroll) scrollDown();
+          else scope.chatLimit--; // ng-repeat uses negative
+        }
+      );
     }
 
     function hideUnscrolledLines() {
       element.css({'opacity': 0});
-      setTimeout(function() {
-        element.css({'opacity': 1});
-      }, 0);
+      $timeout(() => element.css({'opacity': 1}), 0);
     }
 
     function distanceFromTop() {
@@ -159,13 +152,12 @@ angular.module('tc').directive('chatOutput', function(
     }
 
     function distanceFromBottom() {
-      var distance = e.scrollHeight - e.scrollTop - e.offsetHeight;
+      const distance = e.scrollHeight - e.scrollTop - e.offsetHeight;
       return Math.floor(Math.abs(distance));
     }
 
     function handleAnchorClicks() {
-      // TODO any way to get rid of jquery dependency? need event delegation though
-      element.on('click', 'a', function(event) {
+      element.on('click', 'a', (event) => {
         event.preventDefault();
         event.stopPropagation();
         openExternal(event.target.getAttribute('href'));
@@ -173,20 +165,15 @@ angular.module('tc').directive('chatOutput', function(
       });
     }
 
-    function fetchBadges(timeout) {
-      api.badges(scope.channel).then(function(badges) {
-        scope.badges = badges;
-      }).catch(function() {
-        var delay = (timeout || 1000) * 2;
-        setTimeout(function() {
-          fetchBadges(delay)
-        }, delay);
-      });
+    async function fetchBadges(timeout) {
+      try {scope.badges = await api.badges(scope.channel);}
+      catch(e) {$timeout(() => fetchBadges(delay), (timeout || 1000) * 2);}
+      scope.$apply();
     }
 
     function calculateColor(color) {
-      var lightness;
-      var colorRegex = /^#[0-9a-f]+$/i;
+      let lightness;
+      let colorRegex = /^#[0-9a-f]+$/i;
       if (colorRegex.test(color)) {
         while ((
         (
@@ -203,10 +190,5 @@ angular.module('tc').directive('chatOutput', function(
     }
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    scope: {channel: '='},
-    link: link
-  }
+  return {restrict: 'E', link, template, scope: {channel: '='}}
 });

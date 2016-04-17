@@ -3,118 +3,102 @@ import $ from 'jquery';
 import angular from 'angular';
 import template from './chat-tabs.html';
 
-angular.module('tc').directive('chatTabs', function($timeout, settings, messages) {
-  return {
-    restrict: 'E',
-    template: template,
-    link: function(scope, element) {
-      element = $(element[0]);
+angular.module('tc').directive('chatTabs', ($timeout, settings, messages) => {
 
-      scope.settings = settings;
-      scope.hidden = {};
-      scope.loaded = {};
-      scope.readUntil = {};
-      element.attr('layout', 'column');
+  function link(scope, element) {
+    element = $(element[0]);
 
-      // Wait for chat-outputs to be rendered
-      // and select the tab to scroll it into view
-      // todo review this
-      setTimeout(function() {
-        clickTab(settings.selectedTabIndex);
-      }, 10);
+    scope.settings = settings;
+    scope.hidden = {};
+    scope.loaded = {};
+    scope.readUntil = {};
+    element.attr('layout', 'column');
 
-      // TODO remove this hack once they fix md-on-select
-      scope.$watch(
-        function() {
-          return settings.channels.length
-        },
-        function(newL, oldL) {
-          if (newL > oldL) {
-            // New length is greater which means new channel was joined
-            setTimeout(function() {
-              clickTab(settings.channels.length);
-            }, 10);
+    scope.selected = (channel) => load(channel, true);
+    scope.deselected = handleChannelDeselected;
+    scope.unread = numberOfUnreadMessages;
+    scope.showingAddChannel = isAddTabSelected;
 
-            setTimeout(function() {
-              clickTab(settings.channels.length - 1);
-            }, 200);
-          }
-        }
-      );
+    if (currChannel()) scope.loaded[currChannel()] = true;
 
-      if (currChannel()) scope.loaded[currChannel()] = true;
-
-      scope.selected = function(channel) {
-        load(channel, true);
-      };
-
-      scope.deselected = function(channel) {
-        load(channel, false);
-        hideTemporarily(channel);
-        scope.readUntil[channel] = messages(channel).counter;
-      };
-
-      /**
-       * Returns how many unread messages a channel has.
-       * @param channel
-       * @returns {string|number} View-ready string such as ' [42]'
-       */
-      scope.unread = function(channel) {
-        if (currChannel() === channel) return '';
-        var unread = messages(channel).counter - (scope.readUntil[channel] || 0);
-        if (!unread) return '';
-        if (unread > 100) return '*';
-        else return unread;
-      };
-
-      scope.showingAddChannel = function() {
-        return settings.selectedTabIndex === settings.channels.length;
-      };
-
-      /**
-       * The chat-output directive should not be shown and hidden immediately
-       * because it's a very CPU intensive operation, let the animations
-       * run first then do the heavy DOM manipulation.
-       * @param {string} channel
-       * @param {boolean} show
-       */
-      function load(channel, show) {
-        //$timeout(loadSync, show? 1000 : 3000);
-        loadSync();
-
-        function loadSync() {
-          // Abort unload operation if the tab to be hidden is selected again
-          if (currChannel() === channel && !show) return;
-          if (show) scope.loaded[channel] = true;
-          else {
-            setTimeout(function() {
-              if (currChannel() !== channel) {
-                delete scope.loaded[channel];
-              }
-            }, 3000);
-          }
+    // TODO remove hack. When joining a new channel it won't render unless...
+    scope.$watch(
+      () => settings.channels.length,
+      (newL, oldL) => {
+        if (newL > oldL) {
+          // New length is greater which means new channel was joined
+          setTimeout(() => clickTab(settings.channels.length), 10);
+          setTimeout(() => clickTab(settings.channels.length - 1), 200);
         }
       }
+    );
 
-      /**
-       * Hide the exiting channel first, then remove it from DOM.
-       * Removing it immediately uses too much CPU
-       * @param {string} channel
-       */
-      function hideTemporarily(channel) {
-        scope.hidden[channel] = true;
-        $timeout(function() {
-          delete scope.hidden[channel];
-        }, 1500);
-      }
+    function clickTab(index) {
+      element.find('md-tab-item').eq(index).click();
+    }
 
-      function clickTab(index) {
-        element.find('md-tab-item').eq(index).click();
-      }
+    /**
+     * Returns how many unread messages a channel has.
+     * @param channel
+     * @returns {string|number}
+     */
+    function numberOfUnreadMessages(channel) {
+      if (currChannel() === channel) return '';
+      var unread = messages(channel).counter - (scope.readUntil[channel] || 0);
+      if (!unread) return '';
+      if (unread > 100) return '*';
+      else return unread;
+    }
 
-      function currChannel() {
-        return settings.channels[settings.selectedTabIndex];
+    function isAddTabSelected() {
+      return settings.selectedTabIndex === settings.channels.length;
+    }
+
+    function handleChannelDeselected(channel) {
+      load(channel, false);
+      hideTemporarily(channel);
+      scope.readUntil[channel] = messages(channel).counter;
+    }
+
+    /**
+     * The chat-output directive should not be shown and hidden immediately
+     * because it's a very CPU intensive operation, let the animations
+     * run first then do the heavy DOM manipulation.
+     * @param {string} channel
+     * @param {boolean} show
+     */
+    function load(channel, show) {
+      //$timeout(loadSync, show? 1000 : 3000);
+      loadSync();
+
+      function loadSync() {
+        // Abort unload operation if the tab to be hidden is selected again
+        if (currChannel() === channel && !show) return;
+        if (show) scope.loaded[channel] = true;
+        else {
+          $timeout(() => {
+            if (currChannel() !== channel) {
+              delete scope.loaded[channel];
+            }
+          }, 3000);
+        }
       }
     }
+
+    /**
+     * Hide the exiting channel first, then remove it from DOM.
+     * Removing it immediately uses too much CPU
+     * @param {string} channel
+     */
+    function hideTemporarily(channel) {
+      scope.hidden[channel] = true;
+      $timeout(() => delete scope.hidden[channel], 1500);
+    }
+
+    function currChannel() {
+      return settings.channels[settings.selectedTabIndex];
+    }
   }
+
+  return {restrict: 'E', template, link}
 });
