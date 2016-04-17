@@ -5,9 +5,10 @@ import $ from 'jquery';
 import angular from 'angular';
 import colors from '../../../lib/colors';
 import template from './chat-output.html';
+import {badges} from '../../../lib/api';
 
 angular.module('tc').directive('chatOutput',
-  ($sce, $timeout, settings, messages, session, api, openExternal) => {
+  ($sce, $timeout, settings, messages, session, openExternal) => {
 
   function link(scope, element) {
     element = $(element[0]); scope.$on('$destroy', () => element.off());
@@ -166,7 +167,7 @@ angular.module('tc').directive('chatOutput',
     }
 
     async function fetchBadges(timeout) {
-      try {scope.badges = await api.badges(scope.channel);}
+      try {scope.badges = await badges(scope.channel);}
       catch(e) {$timeout(() => fetchBadges(delay), (timeout || 1000) * 2);}
       scope.$apply();
     }

@@ -22,7 +22,6 @@ import '../ng/providers/session';
 import '../ng/providers/manifest';
 import '../ng/providers/tmi';
 import '../ng/providers/irc';
-import '../ng/providers/api';
 import '../ng/providers/emotes-ffz';
 import '../ng/providers/emotes-bttv';
 import '../ng/providers/emotes-twitch';
