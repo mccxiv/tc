@@ -3,6 +3,7 @@ import $ from 'jquery';
 import angular from 'angular';
 import template from './chat-tabs.html';
 import settings from '../../../lib/settings';
+import channels from '../../../lib/channels';
 
 angular.module('tc').directive('chatTabs', ($timeout, messages) => {
 
@@ -23,16 +24,10 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     if (currChannel()) scope.loaded[currChannel()] = true;
 
     // TODO remove hack. When joining a new channel it won't render unless...
-    scope.$watch(
-      () => settings.channels.length,
-      (newL, oldL) => {
-        if (newL > oldL) {
-          // New length is greater which means new channel was joined
-          setTimeout(() => clickTab(settings.channels.length), 10);
-          setTimeout(() => clickTab(settings.channels.length - 1), 200);
-        }
-      }
-    );
+    channels.on('add', () => {
+      setTimeout(() => clickTab(settings.channels.length), 10);
+      setTimeout(() => clickTab(settings.channels.length - 1), 200);
+    });
 
     function clickTab(index) {
       element.find('md-tab-item').eq(index).click();
@@ -56,9 +51,11 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     }
 
     function handleChannelDeselected(channel) {
+      const lines =  messages(channel);
       load(channel, false);
       hideTemporarily(channel);
-      scope.readUntil[channel] = messages(channel).counter;
+      if (lines) scope.readUntil[channel] = lines.counter;
+      else delete scope.readUntil[channel]; // Channel was left
     }
 
     /**

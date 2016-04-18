@@ -45,7 +45,6 @@ angular.module('tc').directive('sideToolbar',
 
     scope.leave = () => {
       settings.channels.splice(settings.selectedTabIndex, 1);
-      // TODO call $apply?
     };
 
     scope.openChannel = () => {
