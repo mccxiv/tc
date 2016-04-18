@@ -2,8 +2,9 @@ import './chat-tabs.css';
 import $ from 'jquery';
 import angular from 'angular';
 import template from './chat-tabs.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('chatTabs', ($timeout, settings, messages) => {
+angular.module('tc').directive('chatTabs', ($timeout, messages) => {
 
   function link(scope, element) {
     element = $(element[0]);

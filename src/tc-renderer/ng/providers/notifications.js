@@ -1,17 +1,18 @@
 import angular from 'angular';
 import notificationSound from '../../../assets/notification.ogg';
+import settings from '../../lib/settings';
 
-angular.module('tc').factory('notifications', function(irc, settings, highlights, trayIcon) {
+angular.module('tc').factory('notifications', (irc, highlights, trayIcon) => {
 
   var sound = new Audio(notificationSound);
 
-  irc.on('disconnected', function() {
+  irc.on('disconnected', () => {
     if (settings.notifications.onConnect) {
       n('Disconnected', 'The connection to the chat server has ended.');
     }
   });
 
-  irc.on('whisper', function(from, message) {
+  irc.on('whisper', (from, message) => {
     if (settings.notifications.onWhisper) {
       if (settings.chat.ignored.indexOf(from.username) >= 0) return;
       n('Whisper from ' + (from['display-name'] || from.username), message);

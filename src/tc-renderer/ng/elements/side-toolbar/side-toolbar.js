@@ -1,8 +1,10 @@
 import './side-toolbar.css';
 import angular from 'angular';
 import template from './side-toolbar.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $filter, $mdDialog, irc, openExternal, autoUpdater) {
+angular.module('tc').directive('sideToolbar',
+  (settingsGui, $filter, $mdDialog, irc, openExternal, autoUpdater) => {
 
   function link(scope, element) {
     scope.m = {};
@@ -13,24 +15,23 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $f
 
     // Monkey patch for broken ng-class.
     // See issue #174
-    scope.$watch(function() {
-      return irc.ready;
-    }, function() {
-      var el = element[0].querySelector('.connection');
-      if (!irc.ready) el.classList.add('not-ready');
-      else el.classList.remove('not-ready');
-    });
+    scope.$watch(
+      () => irc.ready,
+      () => {
+        var el = element[0].querySelector('.connection');
+        if (!irc.ready) el.classList.add('not-ready');
+        else el.classList.remove('not-ready');
+      }
+    );
 
-    autoUpdater.on('update-downloaded', function() {
+    autoUpdater.on('update-downloaded', () => {
       scope.m.updateAvailable = true;
       scope.$apply();
     });
 
-    scope.channel = function() {
-      return settings.channels[settings.selectedTabIndex]
-    };
+    scope.channel = () => settings.channels[settings.selectedTabIndex];
 
-    scope.confirmLogout = function(event) {
+    scope.confirmLogout = (event) => {
       var confirm = $mdDialog.confirm()
         .parent(angular.element(document.body))
         .content('Are you sure you want to log out? ' +
@@ -39,37 +40,26 @@ angular.module('tc').directive('sideToolbar', function(settings, settingsGui, $f
         .cancel('Cancel')
         .targetEvent(event);
       confirm._options.clickOutsideToClose = true;
-
-      $mdDialog.show(confirm).then(
-        function() {
-          settings.identity.password = '';
-        },
-        function() {
-        }
-      );
+      $mdDialog.show(confirm).then(() => settings.identity.password = '');
     };
 
-    scope.leave = function() {
+    scope.leave = () => {
       settings.channels.splice(settings.selectedTabIndex, 1);
       // TODO call $apply?
     };
 
-    scope.openChannel = function() {
+    scope.openChannel = () => {
       openExternal('http://www.twitch.tv/' + scope.channel());
     };
 
-    scope.toggleCollapsed = function() {
+    scope.toggleCollapsed = () => {
       settings.appearance.sidebarCollapsed = !settings.appearance.sidebarCollapsed;
     };
 
-    scope.showingThumbnailButton = function() {
+    scope.showingThumbnailButton = () => {
       return scope.channel() && !settings.appearance.thumbnail;
     };
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    link: link
-  }
+  return {restrict: 'E', template, link}
 });

@@ -1,14 +1,15 @@
 import './chatters-tabs.css';
 import angular from 'angular';
 import template from './chatters-tabs.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('chattersTabs', ['settings', function(settings) {
+angular.module('tc').directive('chattersTabs', () => {
   return {
     restrict: 'E',
     template: template,
-    link: function(scope) {
+    link: (scope) => {
       scope.settings = settings;
-      scope.hideChatters = function() {} // TODO why?
+      scope.hideChatters = () => {}; // TODO why?
     }
   }
-}]);
+});

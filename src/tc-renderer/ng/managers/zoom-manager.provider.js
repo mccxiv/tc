@@ -1,24 +1,24 @@
-angular.module('tc').factory('zoomManager', function($rootScope, $document, settings, electron) {
+import angular from 'angular';
+import electron from 'electron';
+import settings from '../../lib/settings';
+
+angular.module('tc').factory('zoomManager', ($rootScope, $document) => {
 
   updateZoom();
 
   $rootScope.$watch(
-    function() {
-      return settings.appearance.zoom;
-    },
-    function(newV, oldV) {
-      if (newV !== oldV) updateZoom();
-    }
+    () => settings.appearance.zoom,
+    (newV, oldV) => {if (newV !== oldV) updateZoom()}
   );
 
-  $document.bind('keyup', function(e) {
+  $document.bind('keyup', (e) => {
     if (e.ctrlKey) {
       if (e.which === 107 || e.which === 187) zoomIn();
       if (e.which === 109 || e.which === 189) zoomOut();
     }
   });
 
-  $document.bind('wheel', function(e) {
+  $document.bind('wheel', (e) => {
     if (e.ctrlKey) {
       if (e.originalEvent.deltaY > 0) zoomOut();
       else zoomIn();
@@ -40,7 +40,7 @@ angular.module('tc').factory('zoomManager', function($rootScope, $document, sett
   }
 
   function updateZoom() {
-    electron.local.webFrame.setZoomFactor(settings.appearance.zoom / 100);
+    electron.webFrame.setZoomFactor(settings.appearance.zoom / 100);
   }
 
   return null;

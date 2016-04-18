@@ -1,8 +1,9 @@
 import './add-channel.css';
 import angular from 'angular';
 import template from './add-channel.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('addChannel', (settings) => {
+angular.module('tc').directive('addChannel', () => {
 
   function link(scope) {
     scope.value = '';

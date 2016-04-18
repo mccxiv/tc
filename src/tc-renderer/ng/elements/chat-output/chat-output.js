@@ -6,9 +6,10 @@ import angular from 'angular';
 import colors from '../../../lib/colors';
 import template from './chat-output.html';
 import {badges} from '../../../lib/api';
+import settings from '../../../lib/settings';
 
 angular.module('tc').directive('chatOutput',
-  ($sce, $timeout, settings, messages, session, openExternal) => {
+  ($sce, $timeout, messages, session, openExternal) => {
 
   function link(scope, element) {
     element = $(element[0]); scope.$on('$destroy', () => element.off());

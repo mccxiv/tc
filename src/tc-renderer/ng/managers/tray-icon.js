@@ -1,25 +1,21 @@
 import icon16 from '../../../assets/icon16.png';
+import angular from 'angular';
+import settings from '../../lib/settings';
 
-angular.module('tc').factory('trayIcon', function(
-  settings, $rootScope, electron) {
+angular.module('tc').factory('trayIcon', ($rootScope, electron) => {
 
   if (process.platform !== 'win32') return null;
-  // This module uses lots of electron specific code
-  var Tray = electron.remote.Tray;
-  var nativeImage = electron.remote.nativeImage;
-  var Menu = electron.remote.Menu;
-  var app = electron.remote.app;
-  var ipcRenderer = electron.local.ipcRenderer;
-  var browserWindow = electron.remote.BrowserWindow;
-  var path = require('path');
+  const Tray = electron.remote.Tray;
+  const nativeImage = electron.remote.nativeImage;
+  const Menu = electron.remote.Menu;
+  const app = electron.remote.app;
+  const ipcRenderer = electron.local.ipcRenderer;
+  const browserWindow = electron.remote.BrowserWindow;
+  const path = require('path');
 
-  var tray = new Tray(nativeImage.createFromDataURL(icon16));
+  const tray = new Tray(nativeImage.createFromDataURL(icon16));
 
-  tray.on('clicked', function() {
-    // Electron quirk: don't store this browser window in a local variable
-    // or it will get garbage collected in some weird and unpredictable way
-    browserWindow.getAllWindows()[0].show();
-  });
+  tray.on('clicked', () => browserWindow.getAllWindows()[0].show());
 
   tray.setContextMenu(Menu.buildFromTemplate([
     {
@@ -42,8 +38,8 @@ angular.module('tc').factory('trayIcon', function(
   ]));
 
   function setAutoStart() {
-    var autoStart = settings.behavior.autoStart;
-    var command = autoStart ? 'enable-auto-start' : 'disable-auto-start';
+    const autoStart = settings.behavior.autoStart;
+    const command = autoStart ? 'enable-auto-start' : 'disable-auto-start';
     ipcRenderer.send(command);
   }
 

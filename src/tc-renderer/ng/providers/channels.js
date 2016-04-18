@@ -1,4 +1,8 @@
 import angular from 'angular';
+import settings from '../../lib/settings';
+import {EventEmitter} from 'events';
+
+const ee = new EventEmitter();
 
 /**
  * Provides and events for when channels get added
@@ -11,9 +15,7 @@ import angular from 'angular';
  * @fires channels#add - Passes the channel that was added
  * @fires channels#remove - Passes the channel that was removed
  */
-angular.module('tc').factory('channels', ($rootScope, settings) => {
-  const Ee = require('events').EventEmitter;
-  const ee = new Ee();
+angular.module('tc').factory('channels', ($rootScope) => {
   ee.setMaxListeners(0);
 
   ee.channels = settings.channels;

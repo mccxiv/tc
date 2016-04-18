@@ -1,8 +1,9 @@
 import './login.css';
 import angular from 'angular';
 import template from './login.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('login', function(settings, irc, openExternal) {
+angular.module('tc').directive('login', function(irc, openExternal) {
   return {
     restrict: 'E',
     template: template,

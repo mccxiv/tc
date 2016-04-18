@@ -2,9 +2,9 @@ import './chatters.css';
 import angular from 'angular';
 import template from './chatters.html';
 import {chatters} from '../../../lib/api';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('chatters',
-  ($http, settings, session, channels) => {
+angular.module('tc').directive('chatters', ($http, session, channels) => {
 
   function link(scope) {
     let forceShowViewers = false;

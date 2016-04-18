@@ -1,8 +1,9 @@
 import './chat-input.css';
 import angular from 'angular';
 import template from './chat-input.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('chatInput', function(_, settings, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
+angular.module('tc').directive('chatInput', function(_, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
 
   function link(scope, element) {
     scope.message = '';

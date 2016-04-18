@@ -2,9 +2,10 @@ import './thumbnail.css';
 import angular from 'angular';
 import template from './thumbnail.html';
 import * as api from '../../../lib/api';
+import settings from '../../../lib/settings';
 
 angular.module('tc').directive('thumbnail',
-  (settings, channels, irc, openExternal) => {
+  (channels, irc, openExternal) => {
 
   function link(scope, element) {
     const stop = setInterval(load, 60000);

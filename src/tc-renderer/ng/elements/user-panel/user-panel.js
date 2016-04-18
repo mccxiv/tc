@@ -2,9 +2,10 @@ import './user-panel.css';
 import angular from 'angular';
 import template from './user-panel.html';
 import {user} from '../../../lib/api';
+import settings from '../../../lib/settings';
 
 angular.module('tc').directive('userPanel',
-  ($document, settings, session, irc, openExternal) => {
+  ($document, session, irc, openExternal) => {
 
   function link(scope) {
     scope.m = {

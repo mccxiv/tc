@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const base = {
-  devtool: false,
+  devtool: 'eval',
   node: {
     __filename: false,
     __dirname: false

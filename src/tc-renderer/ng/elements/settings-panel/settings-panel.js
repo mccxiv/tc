@@ -1,8 +1,10 @@
 import './settings-panel.css';
 import angular from 'angular';
 import template from './settings-panel.html';
+import settings from '../../../lib/settings';
 
-angular.module('tc').directive('settingsPanel', function(settings, autoUpdater, manifest, highlights, notifications) {
+angular.module('tc').directive('settingsPanel',
+  (autoUpdater, manifest, highlights, notifications) => {
   function link(scope, element) {
     element.attr('layout', 'row');
     scope.settings = settings;
@@ -15,27 +17,27 @@ angular.module('tc').directive('settingsPanel', function(settings, autoUpdater, 
       list: highlights.get(),
       input: '',
       highlightMe: highlights.highlightMe(),
-      add: function() {
+      add() {
         if (this.input.length) {
           this.list.push(this.input);
           this.save();
         }
         this.input = '';
       },
-      remove: function(index) {
+      remove(index) {
         this.list.splice(index, 1);
         this.save();
       },
-      changeHighlightMe: function() {
+      changeHighlightMe() {
         highlights.highlightMe(this.highlightMe);
       },
-      save: function() {
+      save() {
         highlights.set(this.list);
       }
     };
 
     scope.notifications = {
-      playSound: function() {
+      playSound() {
         if (settings.notifications.soundOnMention) {
           notifications.playSound();
         }
@@ -44,29 +46,23 @@ angular.module('tc').directive('settingsPanel', function(settings, autoUpdater, 
 
     autoUpdater.checkForUpdates();
 
-    scope.zoomLabel = function() {
+    scope.zoomLabel = () => {
       if (settings.appearance.zoom === 100) return 'Normal';
       return settings.appearance.zoom + '%';
     };
 
     scope.ignore = {
       input: '',
-      add: function() {
+      add() {
         var username = this.input.trim().toLowerCase();
         var isNotIgnored = settings.chat.ignored.indexOf(username) < 0;
         var isNotBlank = this.input.length;
         if (isNotBlank && isNotIgnored) settings.chat.ignored.push(username);
         this.input = '';
       },
-      delete: function(index) {
-        settings.chat.ignored.splice(index, 1);
-      }
+      delete(index) {settings.chat.ignored.splice(index, 1)}
     };
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    link: link
-  }
+  return {restrict: 'E', template, link}
 });

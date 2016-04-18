@@ -19,6 +19,7 @@
     "jsonfile": "2.3.0",
     "lodash": "4.9.0",
     "material-design-iconic-font": "2.1.2",
+    "proxy-observe": "0.0.9",
     "roboto-fontface": "0.4.5",
     "spellchecker": "3.2.3",
     "tmi.js": "0.0.29"

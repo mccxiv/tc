@@ -16,7 +16,7 @@ import '../ng/elements/chatters-tabs/chatters-tabs';
 import '../ng/elements/add-channel/add-channel';
 
 import '../ng/providers/electron';
-import '../ng/providers/settings';
+import '../lib/settings';
 import '../ng/providers/open-external';
 import '../ng/providers/session';
 import '../ng/providers/manifest';

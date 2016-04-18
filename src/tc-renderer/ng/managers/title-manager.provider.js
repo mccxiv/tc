@@ -1,10 +1,13 @@
+import angular from 'angular';
+import settings from '../../lib/settings';
+
 /**
  * Manages the window title :)
  *
  * @ngdoc factory
  * @name titleManager
  */
-angular.module('tc').factory('titleManager', function($filter, channels, settings) {
+angular.module('tc').factory('titleManager', function($filter, channels) {
 
   var capitalize = $filter('capitalize');
 

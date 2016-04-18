@@ -1,3 +1,7 @@
+import angular from 'angular';
+import settings from '../../lib/settings';
+import {EventEmitter} from 'events';
+
 /**
  * Server I/O
  *
@@ -18,13 +22,12 @@
  * @property {function} isMod             - Check if a user is a mode in a channel
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', function($rootScope, $timeout, $q, settings, tmi, _) {
+angular.module('tc').factory('irc', ($rootScope, $timeout, tmi, _) => {
 
   //===============================================================
   // Variables
   //===============================================================
-  var Emitter = require('events').EventEmitter;
-  var ee = new Emitter();
+  var ee = new EventEmitter();
   var clients = {read: null, write: null};
 
   //===============================================================

@@ -1,10 +1,7 @@
-/**
- * Provides methods to get, set and test for highlight phrases.
- *
- * @ngdoc factory
- * @name highlights
- */
-angular.module('tc').factory('highlights', function(settings) {
+import angular from 'angular';
+import settings from '../../lib/settings';
+
+angular.module('tc').factory('highlights', function() {
   return {
     /**
      * Test if a string matches any of the saved highlighted phrases.
