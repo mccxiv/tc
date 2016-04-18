@@ -1,9 +1,10 @@
+import _ from 'lodash';
 import angular from 'angular';
 import axios from 'axios';
 import settings from '../../lib/settings';
 
 angular.module('tc').factory('messages', (
-  _, $rootScope, $filter, $http, irc, highlights, channels) => {
+  $rootScope, $filter, $http, irc, highlights, channels) => {
   
   //=====================================================
   // Variables | TODO dry

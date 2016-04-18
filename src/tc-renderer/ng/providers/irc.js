@@ -117,10 +117,10 @@ angular.module('tc').factory('irc', ($rootScope) => {
   }
 
   function destroy() {
-    Object.keys(clients).forEach((client, key) => {
-      if (client) {
-        client.removeAllListeners();
-        client.disconnect();
+    Object.keys(clients).forEach((key) => {
+      if (clients[key]) {
+        clients[key].removeAllListeners();
+        clients[key].disconnect();
         clients[key] = null;
       }
     });
@@ -134,7 +134,7 @@ angular.module('tc').factory('irc', ($rootScope) => {
    */
   function forwardEvents(emitter, reEmitter, events) {
     events.forEach((event) => {
-      emitter.addListener(event, () => {
+      emitter.addListener(event, function() {
         const args = Array.prototype.slice.call(arguments);
         args.unshift(event);
         reEmitter.emit.apply(reEmitter, args);

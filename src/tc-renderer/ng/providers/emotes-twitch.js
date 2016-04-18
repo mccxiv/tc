@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 /**
  * Provides an array of available Twitch emotes
  * It's designed to be synchronous so that it can be used in filters.
@@ -34,6 +36,7 @@ angular.module('tc').factory('emotesTwitch', function($http, irc) {
           });
         }
         catch (e) {
+          console.error(e);
           onFail();
         }
       }

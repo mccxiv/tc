@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const base = {
-  devtool: 'eval',
+  devtool: 'cheap-source-map',
   node: {
     __filename: false,
     __dirname: false

@@ -3,51 +3,50 @@ import angular from 'angular';
 import template from './chat-input.html';
 import settings from '../../../lib/settings';
 
-angular.module('tc').directive('chatInput', function(_, session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) {
+angular.module('tc').directive('chatInput',
+  (session, irc, messages, emotesBttv, emotesFfz, emotesTwitch) => {
 
   function link(scope, element) {
     scope.message = '';
     scope.session = session;
     scope.irc = irc;
-    var input = element.find('input')[0];
-    var lastWhisperer;
+    const input = element.find('input')[0];
+    let lastWhisperer;
 
-    irc.on('whisper', function(from) {
-      lastWhisperer = from.username;
-    });
+    irc.on('whisper', (from) => lastWhisperer = from.username);
 
     // Monkey patch for broken ng-class.
     // See issue #174
-    scope.$watch(function() {
-      return irc.ready;
-    }, function() {
-      var inputContainer = element.find('md-input-container')[0];
-      if (!irc.ready) inputContainer.classList.add('disabled');
-      else inputContainer.classList.remove('disabled');
-    });
+    scope.$watch(
+      () => irc.ready,
+      () => {
+        const inputContainer = element.find('md-input-container')[0];
+        if (!irc.ready) inputContainer.classList.add('disabled');
+        else inputContainer.classList.remove('disabled');
+      }
+    );
 
-    scope.getAutoCompleteStrings = function() {
+    scope.getAutoCompleteStrings = () => {
       var channel = settings.channels[settings.selectedTabIndex];
-
       if (!channel) return [];
       else {
-        var usernames, bttvEmotes, ffzEmotes, twitchEmotes;
-
-        usernames = _(messages(channel))
-          .filter(hasUser)
-          .map(getNames)
-          .uniq()
-          .value();
-
-        bttvEmotes = _.map(emotesBttv(channel), 'emote').sort();
-        ffzEmotes = _.map(emotesFfz(channel), 'emote').sort();
-        twitchEmotes = _.map(emotesTwitch, 'emote').sort();
-
+        const usernames = messages(channel).filter(hasUser).map(getNames).filter(dedupe);
+        const bttvEmotes = grabEmotes(emotesBttv(channel)).sort();
+        const ffzEmotes = grabEmotes(emotesFfz(channel)).sort();
+        const twitchEmotes = grabEmotes(emotesTwitch).sort();
         return [].concat(twitchEmotes, bttvEmotes, ffzEmotes, usernames);
+      }
+
+      function grabEmotes(arr) {
+        return arr.map((e) => e.emote);
       }
 
       function hasUser(message) {
         return !!message.user || !!message.from;
+      }
+
+      function dedupe(x, i, array) {
+        return array.indexOf(x) === i;
       }
 
       function getNames(message) {
@@ -57,7 +56,7 @@ angular.module('tc').directive('chatInput', function(_, session, irc, messages, 
       }
     };
 
-    scope.input = function() {
+    scope.input = () => {
       var channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !scope.message.trim().length) return;
 
@@ -99,9 +98,5 @@ angular.module('tc').directive('chatInput', function(_, session, irc, messages, 
     };
   }
 
-  return {
-    restrict: 'E',
-    template: template,
-    link: link
-  }
+  return {restrict: 'E', template, link}
 });
