@@ -3,8 +3,6 @@ import angular from 'angular';
 import template from './user-panel.html';
 import {user} from '../../../lib/api';
 
-console.log('u', user);
-
 angular.module('tc').directive('userPanel',
   ($document, settings, session, irc, openExternal) => {
 

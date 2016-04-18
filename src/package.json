@@ -16,6 +16,7 @@
     "electron-window-state": "2.0.0",
     "frostyjs": "github:mccxiv/frostyjs",
     "jquery": "2.1.4",
+    "jsonfile": "2.3.0",
     "lodash": "4.9.0",
     "material-design-iconic-font": "2.1.2",
     "roboto-fontface": "0.4.5",

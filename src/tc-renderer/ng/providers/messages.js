@@ -1,41 +1,9 @@
 import angular from 'angular';
+import axios from 'axios';
 
-/**
- * @typedef {Object} MessagePart
- *
- * @property {string} string      - A piece of text that filters could act on
- * @property {isElement} boolean  - Filters would probably ignore this message part if it's an element
- *
- * @description
- * Chat message filters receive and return an array of these objects.
- * It makes it easier to know which sections of the string should be filtered
- * and which should be left alone.
- * Examples of why this is important:
- * - Avoid converting an emoticon's url to a link
- * - Avoid escaping the html of emoticons and links
- */
+angular.module('tc').factory('messages', (
+  _, $rootScope, $filter, $http, irc, highlights, settings, channels) => {
 
-/**
- * Stores messages.
- *
- * Deals with storing chat messages, some come from the server,
- * others are local (such as outgoing whispers) and some are system notifications.
- * The factory returns a function that can be used to obtain messages, but
- * this function object also has other methods attached.
- *
- * @ngdoc factory
- * @name messages
- * @type function
- *
- * @param {string} channel                     - Twitch channel
- * @return {object[]}                          - List of message objects for this channel
- *
- * @property {function} addWhisper             - Adds a local whisper message (outgoing, most likely)
- * @property {function} addNotification        - Adds a notification message to a chat channel (light gray)
- * @property {function} addGlobalNotification  - Adds a notification message to all chat channels (light gray)
- */
-angular.module('tc').factory('messages',
-  (_, $rootScope, $filter, $http, irc, highlights, settings, channels) => {
 
   //=====================================================
   // Variables | TODO dry
@@ -59,112 +27,17 @@ angular.module('tc').factory('messages',
   //=====================================================
   fetchFfzDonors();
   setupIrcListeners();
-  channels.on('remove', function(channel) {
-    delete messages[channel];
-  });
-
-  //=====================================================
-  // Public methods
-  //=====================================================
-  var messagesReturn = function getMessages(channel) {
-    if (!messages[channel]) make(channel);
-    return messages[channel];
-  };
-
-  messagesReturn.addWhisper = addWhisperMessage;
-  messagesReturn.addNotification = addNotificationMessage;
-  messagesReturn.addGlobalNotification = addGlobalNotificationMessage;
+  channels.channels.forEach(make);
+  channels.on('add', make);
+  channels.on('remove', (channel) => delete messages[channel]);
 
   //=====================================================
   // Private methods
   //=====================================================
   function setupIrcListeners() {
-    irc.on('action', function(channel, user, message) {
-      addUserMessage('action', channel, user, message);
-    });
-
-    irc.on('chat', function(channel, user, message) {
-      addUserMessage('chat', channel, user, message);
-    });
-
-    irc.on('clearchat', function(channel) {
-      var msg = 'Chat cleared by a moderator. (Prevented by Tc)';
-      addNotificationMessage(channel, msg);
-    });
-
-    irc.on('connecting', function() {
-      addGlobalNotificationMessage('Connecting...');
-    });
-
-    irc.on('connected', function() {
-      settings.channels.forEach(function(channel) {
-        addNotificationMessage(channel, 'Welcome to ' + channel + '\'s chat.');
-      });
-    });
-
-    irc.on('disconnected', function() {
-      addGlobalNotificationMessage('Disconnected from the server.')
-    });
-
-    irc.on('emoteonly', function(channel, on) {
-      var msg = 'Emote only mode has been disabled in the channel.';
-      if (on) msg = 'Emote only mode has been enabled in the channel.';
-      addNotificationMessage(channel, msg);
-    });
-
-    // TODO enable this? doesn't seem to work
-    /*irc.on('mods', function(channel, mods) {
-      addNotificationMessage(channel, 'The moderators are: ' + mods.join(', '));
-    });*/
-
-    irc.on('hosting', function(channel, target) {
-      addNotificationMessage(channel, channel.substring(1) + ' is hosting ' + target);
-    });
-
-    irc.on('hosted', function(channel, target, viewers) {
-      addNotificationMessage(channel, target + ' is hosting you with ' + viewers + ' viewers.');
-    });
-
-    irc.on('r9kbeta', function(channel, on) {
-      var msg = 'The channel is no longer in r9k mode.';
-      if (on) msg = 'The channel is now in r9k mode.';
-      addNotificationMessage(channel, msg);
-    });
-
-    irc.on('slowmode', function(channel, enabled, length) {
-      var msg = 'This room is no longer in slow mode.';
-      if (enabled) {
-        msg = 'This room is now in slow mode. ' +
-          'You may send messages every '+length+' seconds.';
-      }
-      addNotificationMessage(channel, msg);
-    });
-
-    irc.on('subanniversary', function(channel, username, months) {
-      addNotificationMessage(channel, username + ' subscribed for ' + months + ' months in a row!');
-    });
-
-    irc.on('subscription', function(channel, username) {
-      addNotificationMessage(channel, username + ' has just subscribed!');
-    });
-
-    irc.on('subscribers', function(channel, on) {
-      var msg = 'The channel is no longer in subscriber-only mode';
-      if (on) msg = 'The channel is now in subscriber-only mode.';
-      addNotificationMessage(channel, msg);
-    });
-
-    irc.on('timeout', function(channel, username) {
-      timeout(channel, username);
-      addNotificationMessage(channel, username + ' has been timed out.');
-    });
-
-    irc.on('unhost', function(channel) {
-      addNotificationMessage(channel, 'Stopped hosting.');
-    });
-
-    irc.on('whisper', function(from, message) {
-      addWhisperMessage(from, settings.identity.username, message);
+    const listeners = getChatListeners();
+    Object.keys(listeners).forEach((key) => {
+      irc.on(key, listeners[key]);
     });
   }
 
@@ -172,17 +45,15 @@ angular.module('tc').factory('messages',
    * Shows a notification chat message in all channels
    * @param {string} message
    */
-  function addGlobalNotificationMessage(message) {
-    settings.channels.forEach(function(channel) {
-      addNotificationMessage(channel, message);
-    });
+  function addGlobalNotification(message) {
+    settings.channels.forEach((channel) => addNotification(channel, message));
   }
 
   /**
    * Add a user message, types are 'action' or 'chat'
    * @param {string} type - 'action' or 'chat'
    * @param {string} channel
-   * @param {object} user - As provided by twitch-irc
+   * @param {object} user - As provided by tmi.js
    * @param {string} message
    */
   function addUserMessage(type, channel, user, message) {
@@ -208,7 +79,7 @@ angular.module('tc').factory('messages',
    * @param {string} channel
    * @param {string} message
    */
-  function addNotificationMessage(channel, message) {
+  function addNotification(channel, message) {
     addMessage(channel, {
       type: 'notification',
       message: capitalize(escape(message)),
@@ -222,8 +93,8 @@ angular.module('tc').factory('messages',
    * @param {string} to
    * @param {string} message
    */
-  function addWhisperMessage(from, to, message) {
-    settings.channels.forEach(function(channel) {
+  function addWhisper(from, to, message) {
+    settings.channels.forEach((channel) => {
       addMessage(channel, {
         type: 'whisper',
         from: capitalize(from['display-name'] || from.username),
@@ -242,12 +113,12 @@ angular.module('tc').factory('messages',
    */
   function addMessage(channel, messageObject) {
     if (channel.charAt(0) === '#') channel = channel.substring(1);
-    if (!messages[channel]) make(channel);
     messageObject.time = new Date().getTime();
     messages[channel].push(messageObject);
     if (messageObject.user) messages[channel].counter++;
 
     // Too many messages in memory
+    // TODO unless autoscroll is off
     if (messages[channel].length > messageLimit) {
       messages[channel].shift();
     }
@@ -267,33 +138,27 @@ angular.module('tc').factory('messages',
   //=====================================================
   // Helper methods
   //=====================================================
-  function fetchFfzDonors() {
+  async function fetchFfzDonors() {
     var url = 'http://cdn.frankerfacez.com/script/donors.txt';
-    $http.get(url).then(function(result) {
-      ffzDonors.push.apply(ffzDonors, result.data.split('\n').map(function(s) {
-        return s.trim();
-      }));
-    });
+    const donors = (await axios(url)).data.split('\n').map((s) => s.trim());
+    ffzDonors.concat(donors);
   }
 
   function isFfzDonor(username) {
     return ffzDonors.indexOf(username) > -1;
   }
 
-  function timeout(channel, username) {
+  /** Mark previous messages from this user as deleted */
+  function timeoutFromChat(channel, username) {
     channel = channel.substring(1);
-    if (messages[channel]) {
-      messages[channel].forEach(function(message) {
-        if (message.user && message.user.username === username) {
-          message.deleted = true;
-        }
-      });
-    }
+    messages[channel].forEach((message) => {
+      if (message.user && message.user.username === username) {
+        message.deleted = true;
+      }
+    });
   }
 
-  /**
-   * Applies transforms and emotes to a string
-   */
+  /** Applies transforms and emotes to a string */
   function processMessage(msg, channel, userEmotes) {
     msg = emotify(msg, userEmotes);
     msg = ffzfy(channel, msg);
@@ -310,9 +175,7 @@ angular.module('tc').factory('messages',
    * TODO see if this is a performance issue
    */
   function applyLate() {
-    setTimeout(function() {
-      $rootScope.$apply();
-    }, 0);
+    setTimeout(() => $rootScope.$apply(), 0);
   }
 
   function make(channel) {
@@ -320,5 +183,80 @@ angular.module('tc').factory('messages',
     messages[channel].counter = 0;
   }
 
-  return messagesReturn;
+  function getChatListeners() {
+    return {
+      action: (channel, user, message) => {
+        addUserMessage('action', channel, user, message);
+      },
+      chat: (channel, user, message) => {
+        addUserMessage('chat', channel, user, message);
+      },
+      clearchat: (channel) => {
+        const msg = 'Chat cleared by a moderator. (Prevented by Tc)';
+        addNotification(channel, msg);
+      },
+      connecting: () => addGlobalNotification('Connecting...'),
+      connected: () => {
+        settings.channels.forEach((channel) => {
+          addNotification(channel, `Welcome to ${channel}'s chat.`);
+        });
+      },
+      disconnected: () => {
+        addGlobalNotification('Disconnected from the server.');
+      },
+      emoteonly: (channel, on) => {
+        const enabled = 'Emote only mode has been enabled in the channel.';
+        const disabled = 'Emote only mode has been disabled in the channel.';
+        addNotification(channel, on ? enabled : disabled);
+      },
+      hosting: (channel, target) => {
+        const msg = channel.substring(1) + ' is hosting ' + target;
+        addNotification(channel, msg);
+      },
+      hosted: (channel, target, viewers) => {
+        const msg = `${target} is hosting you with ${viewers} viewers.`;
+        addNotification(channel, msg);
+      },
+      r9kbeta: (channel, on) => {
+        const enabled = 'The channel is now in r9k mode.';
+        const disabled = 'The channel is no longer in r9k mode.';
+        addNotification(channel, on ? enabled : disabled);
+      },
+      slowmode: (channel, on, length) => {
+        const disabled = 'This room is no longer in slow mode.';
+        const enabled = 'This room is now in slow mode. ' +
+          'You may send messages every ' + length + ' seconds.';
+        addNotification(channel, on ? enabled : disabled);
+      },
+      subanniversary: (channel, username, months) => {
+        const msg = `${username} subscribed for ${months} months in a row!`;
+        addNotification(channel, msg);
+      },
+      subscription: (channel, username) => {
+        addNotification(channel, username + ' has just subscribed!');
+      },
+      subscribers: (channel, on) => {
+        let msg = 'The channel is no longer in subscriber-only mode';
+        if (on) msg = 'The channel is now in subscriber-only mode.';
+        addNotification(channel, msg);
+      },
+      timeout: (channel, username) => {
+        timeoutFromChat(channel, username);
+        addNotification(channel, username + ' has been timed out.');
+      },
+      unhost: (channel) => addNotification(channel, 'Stopped hosting.'),
+      whisper: (from, message) => {
+        addWhisper(from, settings.identity.username, message);
+      }
+    };
+  }
+
+  return Object.assign(
+    (channel) => messages[channel],
+    {
+      addWhisper,
+      addNotification,
+      addGlobalNotification
+    }
+  );
 });

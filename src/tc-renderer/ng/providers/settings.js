@@ -1,16 +1,12 @@
-/**
- * Provides an object whose json representation is automatically
- * saved to disk whenever its properties are modified.
- *
- * @ngdoc factory
- * @name settings
- */
-angular.module('tc').factory('settings', function($rootScope) {
+import path from 'path';
+import electron from 'electron';
+import angular from 'angular';
+import jsonFile from 'jsonfile';
 
+angular.module('tc').factory('settings', ($rootScope) => {
   //===============================================================
   // Variables
   //===============================================================
-
   var settings = {};
   var defaults = {
     identity: {
@@ -27,7 +23,7 @@ angular.module('tc').factory('settings', function($rootScope) {
       onMention: true,
       onWhisper: true,
       soundOnMention: true
-    }, // TODO refactor highlights to an object
+    },
     theme: {
       dark: false
     },
@@ -52,9 +48,7 @@ angular.module('tc').factory('settings', function($rootScope) {
   //===============================================================
   settings = makeValid(loadSettings());
   saveSettings();
-  $rootScope.$watch(function() {
-    return settings;
-  }, settingsChanged, true);
+  $rootScope.$watch(() => settings, settingsChanged, true);
   return settings;
 
   //===============================================================
@@ -108,26 +102,31 @@ angular.module('tc').factory('settings', function($rootScope) {
   }
 
   function settingsChanged(newV, oldV) {
-    if (newV !== oldV) {
-      saveSettings();
-    }
+    if (newV !== oldV) saveSettings();
   }
 
   function loadSettings() {
-    var s = localStorage.settings || {};
+    let s;
+    try {s = jsonFile.readFileSync(settingsFilePath())}
+    catch (e) {s = loadSettingsFromLocalstorageInstead()}
+    return s;
+  }
+
+  function loadSettingsFromLocalstorageInstead() {
+    let s = localStorage.settings || {};
     if (typeof s === 'string') {
-      try {
-        s = JSON.parse(s);
-      }
-      catch (e) {
-        console.error('Exception trying to parse settings', e);
-        s = {};
-      }
+      try {s = JSON.parse(s)}
+      catch (e) {s = {}}
     }
     return s;
   }
 
   function saveSettings() {
-    localStorage.settings = JSON.stringify(settings);
+    jsonFile.writeFileSync(settingsFilePath(), settings, {spaces: 2});
+  }
+
+  function settingsFilePath() {
+    const userData = electron.remote.app.getPath('userData');
+    return path.resolve(userData, 'settings.json');
   }
 });
