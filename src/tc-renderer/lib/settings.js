@@ -1,16 +1,11 @@
 import path from 'path';
 import electron from 'electron';
-import angular from 'angular';
 import jsonFile from 'jsonfile';
 import validateSettings from './validate-settings';
 import 'proxy-observe';
 
 const rawSettingsObject = validateSettings(loadSettings());
 const settings = Object.deepObserve(rawSettingsObject, saveSettings);
-
-/*angular.module('tc').factory('settings', () => {
-  return settings;
-});*/
 
 function loadSettings() {
   let s;

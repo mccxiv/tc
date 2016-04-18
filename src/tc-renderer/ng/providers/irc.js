@@ -107,8 +107,7 @@ angular.module('tc').factory('irc', ($rootScope) => {
     onlyEmitDisconnectedOnce();
 
     function onlyEmitDisconnectedOnce() {
-      clients.read.once('disconnected', () => {
-        const args = Array.prototype.slice.call(arguments);
+      clients.read.once('disconnected', (...args) => {
         args.unshift('disconnected');
         ee.emit.apply(ee, args);
         clients.read.once('connected', onlyEmitDisconnectedOnce);
@@ -134,8 +133,7 @@ angular.module('tc').factory('irc', ($rootScope) => {
    */
   function forwardEvents(emitter, reEmitter, events) {
     events.forEach((event) => {
-      emitter.addListener(event, function() {
-        const args = Array.prototype.slice.call(arguments);
+      emitter.addListener(event, (...args) => {
         args.unshift(event);
         reEmitter.emit.apply(reEmitter, args);
       });
