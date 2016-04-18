@@ -1,3 +1,4 @@
+import tmi from 'tmi.js';
 import angular from 'angular';
 import settings from '../../lib/settings';
 import {EventEmitter} from 'events';
@@ -22,7 +23,7 @@ import {EventEmitter} from 'events';
  * @property {function} isMod             - Check if a user is a mode in a channel
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', ($rootScope, $timeout, tmi, _) => {
+angular.module('tc').factory('irc', ($rootScope, $timeout, _) => {
 
   //===============================================================
   // Variables
