@@ -1,3 +1,5 @@
+import bttvEmotes from '../../lib/emotes/bttv';
+
 /**
  * Provides an array of global BTTV emotes.
  * It's designed to be synchronous so that it can be used in filters.
@@ -9,7 +11,7 @@
  * @return {{emote: string, url: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('emotesBttv', function($http, channels) {
-  var globalEmotes = [];
+  /*var globalEmotes = [];
   var channelEmotes = {};
   
   window.g = globalEmotes;
@@ -73,7 +75,7 @@ angular.module('tc').factory('emotesBttv', function($http, channels) {
 
   function get(channel) {
     return globalEmotes.concat(channelEmotes[channel] || []);
-  }
+  }*/
 
-  return get;
+  return bttvEmotes;
 });
