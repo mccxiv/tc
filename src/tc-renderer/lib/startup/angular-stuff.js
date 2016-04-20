@@ -1,7 +1,4 @@
 import '../../ng/app';
-import '../../ng/on-load/main.controller';
-
-import '../../ng/on-load/eager-load-providers.run';
 
 import '../../ng/elements/login/login';
 import '../../ng/elements/settings-panel/settings-panel';
