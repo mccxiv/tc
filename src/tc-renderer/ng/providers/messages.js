@@ -5,19 +5,10 @@ import settings from '../../lib/settings';
 import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
 
-angular.module('tc').factory('messages', (
-  $rootScope, $filter, $http, irc, highlights) => {
-  
+angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {  
   //=====================================================
   // Variables | TODO dry
   //=====================================================
-  /*var capitalize = $filter('capitalize');
-  var emotify = $filter('emotify');
-  var linkify = $filter('linkify');
-  var escape = $filter('escape');
-  var combine = $filter('combine');
-  var ffzfy = $filter('ffzfy');
-  var bttvfy = $filter('bttvfy');*/
   var ffzDonors = [];
   var messageLimit = 500;
   var messages = {};
@@ -44,10 +35,7 @@ angular.module('tc').factory('messages', (
     });
   }
 
-  /**
-   * Shows a notification chat message in all channels
-   * @param {string} message
-   */
+  /** Shows a notification chat message in all channels */
   function addGlobalNotification(message) {
     settings.channels.forEach((channel) => addNotification(channel, message));
   }
@@ -77,11 +65,7 @@ angular.module('tc').factory('messages', (
     });
   }
 
-  /**
-   * Adds a message with the 'notification' type
-   * @param {string} channel
-   * @param {string} message
-   */
+  /** Adds a message with the 'notification' type */
   function addNotification(channel, message) {
     addMessage(channel, {
       type: 'notification',
@@ -89,7 +73,8 @@ angular.module('tc').factory('messages', (
       style: 'color: #999999'
     });
   }
-
+  
+  /** Adds a message with the 'whisper' type */
   function addWhisper(user, message) {
     settings.channels.forEach((channel) => {
       addMessage(channel, {
@@ -162,17 +147,6 @@ angular.module('tc').factory('messages', (
       }
     });
   }
-/*
-  /!** Applies transforms and emotes to a string *!/
-  function processMessage(msg, channel, userEmotes) {
-    msg = emotify(msg, userEmotes);
-    msg = ffzfy(channel, msg);
-    msg = bttvfy(channel, msg);
-    msg = linkify(msg);
-    msg = escape(msg);
-    msg = combine(msg);
-    return msg;
-  }*/
 
   /**
    * Because of inconsistent sync/async APIs
