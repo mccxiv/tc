@@ -46,7 +46,7 @@ const main = Object.assign({}, base, {
 const renderer = Object.assign({}, base, {
   target: 'electron-renderer',
   entry: {
-    'renderer.js': path.join(__dirname, 'src/tc-renderer/app.js')
+    'renderer.js': path.join(__dirname, 'src/tc-renderer/renderer.js')
   }
 });
 

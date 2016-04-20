@@ -3,6 +3,7 @@ import './themes/dark.css';
 import './lib/startup/icon-font';
 import $ from 'jquery';
 //import enableSpellchecker from './startup/enable-spellchecker';
+import keepTitleUpdated from './lib/startup/keep-title-updated';
 import enableDevTools from './lib/startup/enable-dev-tools';
 import changeMacBackgroundColor from './lib/startup/change-mac-background-color';
 import enableMenuOnMac from './lib/startup/enable-menu-on-mac';
@@ -15,6 +16,7 @@ console.log('Technical info and error messages will be displayed here.');
 console.log('Red 404 messages can be safely ignored.');
 
 enableDevTools();
+keepTitleUpdated();
 //enableSpellchecker();
 changeMacBackgroundColor();
 enableMenuOnMac();

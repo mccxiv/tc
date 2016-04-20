@@ -9,7 +9,7 @@
   <div class="buttons-container" flex layout="column">
 
     <div class="row" layout="row">
-      <span class="username">{{session.selectedUser | capitalize}}</span>
+      <span class="username">{{capitalize(session.selectedUser)}}</span>
       <span flex></span>
       <md-button class="close-button" ng-click="close()" aria-label="Close">
         <md-tooltip md-autohide>Close</md-tooltip>

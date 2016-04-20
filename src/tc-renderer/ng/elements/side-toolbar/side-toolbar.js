@@ -2,9 +2,10 @@ import './side-toolbar.css';
 import angular from 'angular';
 import template from './side-toolbar.html';
 import settings from '../../../lib/settings/settings';
+import capitalize from '../../../lib/transforms/capitalize';
 
 angular.module('tc').directive('sideToolbar',
-  (settingsGui, $filter, $mdDialog, irc, openExternal, autoUpdater) => {
+  (settingsGui, $mdDialog, irc, openExternal, autoUpdater) => {
 
   function link(scope, element) {
     scope.m = {};
@@ -29,6 +30,8 @@ angular.module('tc').directive('sideToolbar',
       scope.$apply();
     });
 
+    scope.capitalize = capitalize;
+    
     scope.channel = () => settings.channels[settings.selectedTabIndex];
 
     scope.confirmLogout = (event) => {

@@ -4,6 +4,7 @@ import template from './chatters.html';
 import {chatters} from '../../../lib/api';
 import settings from '../../../lib/settings/settings';
 import channels from '../../../lib/channels';
+import prettyChatterNames from '../../../lib/transforms/pretty-chatter-names';
 
 angular.module('tc').directive('chatters', ($http, session) => {
 
@@ -20,6 +21,8 @@ angular.module('tc').directive('chatters', ($http, session) => {
       if (!scope.api) timeoutFetch(200);
       else timeoutFetch(2000);
     });
+
+    scope.prettyChatterNames = prettyChatterNames;
 
     scope.showViewers = function(force) {
       if (typeof force === 'boolean') forceShowViewers = force;

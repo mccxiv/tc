@@ -1,5 +1,5 @@
 <div ng-repeat="(key, value) in api.chatters">
-  <h3 ng-if="value.length">{{key | prettyChatterType}}</h3>
+  <h3 ng-if="value.length">{{prettyChatterNames(key)}}</h3>
   <div class="usernames">
     <!-- Not DRY because this has better performance -->
     <div ng-if="key !== 'viewers'">
