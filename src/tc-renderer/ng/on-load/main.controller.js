@@ -1,5 +1,5 @@
 import angular from 'angular';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 
 angular.module('tc').controller('main', ($scope, session, irc) => {
   $scope.session = session;

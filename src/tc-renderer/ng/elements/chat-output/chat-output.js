@@ -7,7 +7,7 @@ import colors from '../../../lib/colors';
 import template from './chat-output.html';
 import {sleep} from '../../../lib/util';
 import {badges} from '../../../lib/api';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('chatOutput',
   ($sce, $timeout, messages, session, openExternal) => {

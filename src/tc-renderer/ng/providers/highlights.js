@@ -1,5 +1,5 @@
 import angular from 'angular';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 
 angular.module('tc').factory('highlights', function() {
   return {

@@ -2,7 +2,7 @@ import './thumbnail.css';
 import angular from 'angular';
 import template from './thumbnail.html';
 import * as api from '../../../lib/api';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 import channels from '../../../lib/channels';
 
 angular.module('tc').directive('thumbnail', (irc, openExternal) => {

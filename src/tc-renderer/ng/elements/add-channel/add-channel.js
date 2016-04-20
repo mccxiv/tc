@@ -1,7 +1,7 @@
 import './add-channel.css';
 import angular from 'angular';
 import template from './add-channel.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('addChannel', () => {
 

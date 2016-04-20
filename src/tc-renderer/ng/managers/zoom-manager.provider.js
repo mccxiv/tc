@@ -1,6 +1,6 @@
 import angular from 'angular';
 import electron from 'electron';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 
 angular.module('tc').factory('zoomManager', ($rootScope, $document) => {
 

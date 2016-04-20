@@ -1,7 +1,7 @@
 import './settings-panel.css';
 import angular from 'angular';
 import template from './settings-panel.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('settingsPanel',
   (autoUpdater, manifest, highlights, notifications) => {

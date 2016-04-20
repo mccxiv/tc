@@ -1,7 +1,7 @@
 import './chat-input.css';
 import angular from 'angular';
 import template from './chat-input.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 import emotesFfz from '../../../lib/emotes/ffz';
 import emotesBttv from '../../../lib/emotes/bttv';
 

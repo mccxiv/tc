@@ -1,6 +1,6 @@
 import icon16 from '../../../assets/icon16.png';
 import angular from 'angular';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 import electron from 'electron';
 
 angular.module('tc').factory('trayIcon', ($rootScope) => {

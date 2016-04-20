@@ -1,6 +1,6 @@
 import angular from 'angular';
 import channels from '../../lib/channels';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 
 /**
  * Manages the window title :)

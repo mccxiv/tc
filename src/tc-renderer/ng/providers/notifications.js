@@ -1,6 +1,6 @@
 import angular from 'angular';
 import notificationSound from '../../../assets/notification.ogg';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 
 angular.module('tc').factory('notifications', (irc, highlights, trayIcon) => {
 

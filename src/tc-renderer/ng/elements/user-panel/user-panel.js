@@ -2,7 +2,7 @@ import './user-panel.css';
 import angular from 'angular';
 import template from './user-panel.html';
 import {user} from '../../../lib/api';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('userPanel',
   ($document, session, irc, openExternal) => {

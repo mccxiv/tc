@@ -1,6 +1,6 @@
 import tmi from 'tmi.js';
 import angular from 'angular';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 import {EventEmitter} from 'events';
 
 /**

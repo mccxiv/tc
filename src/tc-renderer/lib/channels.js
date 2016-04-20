@@ -1,5 +1,5 @@
 import 'proxy-observe';
-import settings from './settings';
+import settings from './settings/settings';
 import {EventEmitter} from 'events';
 
 const emitter = new EventEmitter();

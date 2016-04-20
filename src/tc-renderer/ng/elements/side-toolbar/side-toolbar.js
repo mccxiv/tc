@@ -1,7 +1,7 @@
 import './side-toolbar.css';
 import angular from 'angular';
 import template from './side-toolbar.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('sideToolbar',
   (settingsGui, $filter, $mdDialog, irc, openExternal, autoUpdater) => {

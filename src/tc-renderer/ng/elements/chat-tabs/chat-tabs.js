@@ -2,7 +2,7 @@ import './chat-tabs.css';
 import $ from 'jquery';
 import angular from 'angular';
 import template from './chat-tabs.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 import channels from '../../../lib/channels';
 
 angular.module('tc').directive('chatTabs', ($timeout, messages) => {

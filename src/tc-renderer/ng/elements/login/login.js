@@ -1,7 +1,7 @@
 import './login.css';
 import angular from 'angular';
 import template from './login.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('login', function(irc, openExternal) {
   return {

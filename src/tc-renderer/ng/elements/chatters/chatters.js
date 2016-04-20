@@ -2,7 +2,7 @@ import './chatters.css';
 import angular from 'angular';
 import template from './chatters.html';
 import {chatters} from '../../../lib/api';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 import channels from '../../../lib/channels';
 
 angular.module('tc').directive('chatters', ($http, session) => {

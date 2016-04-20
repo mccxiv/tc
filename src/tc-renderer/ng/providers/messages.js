@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import angular from 'angular';
 import axios from 'axios';
-import settings from '../../lib/settings';
+import settings from '../../lib/settings/settings';
 import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
 

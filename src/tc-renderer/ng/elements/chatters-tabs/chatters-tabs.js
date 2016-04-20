@@ -1,7 +1,7 @@
 import './chatters-tabs.css';
 import angular from 'angular';
 import template from './chatters-tabs.html';
-import settings from '../../../lib/settings';
+import settings from '../../../lib/settings/settings';
 
 angular.module('tc').directive('chattersTabs', () => {
   return {
