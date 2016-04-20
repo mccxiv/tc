@@ -21,14 +21,12 @@ import '../../ng/providers/open-external';
 import '../../ng/providers/session';
 import '../../ng/providers/manifest';
 import '../../ng/providers/irc';
-import '../../ng/providers/emotes-ffz';
-import '../../ng/providers/emotes-bttv';
-import '../../ng/providers/emotes-twitch';
 import '../../ng/providers/channels';
 import '../../ng/providers/messages';
 import '../../ng/providers/highlights';
 import '../../ng/providers/notifications';
 import '../../ng/providers/settings-gui';
+import '../../ng/providers/emotes-twitch';
 
 import '../../ng/managers/title-manager.provider';
 import '../../ng/managers/tray-icon';
@@ -36,12 +34,6 @@ import '../../ng/managers/zoom-manager.provider';
 import '../../ng/managers/auto-updater.provider';
 
 import '../../ng/filters/strip-hash';
-import '../../ng/filters/emotify';
-import '../../ng/filters/ffzfy';
-import '../../ng/filters/bttvfy';
-import '../../ng/filters/linkify';
-import '../../ng/filters/escape';
-import '../../ng/filters/combine';
 import '../../ng/filters/capitalize';
 import '../../ng/filters/pretty-chatter-type';
 

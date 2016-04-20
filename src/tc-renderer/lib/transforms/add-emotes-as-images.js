@@ -6,7 +6,6 @@ function makeImg(emote) {
 }
 
 export default function addEmotesAsImages(message, emotes) {
-  console.log('checking msg for emotes', message, emotes);
   emotes.forEach((e) => {
     const escaped = escapeRegex(e.emote);
     const regString = `(?<=(?:^| ))${escaped}(?=(?: |$))(?!(?:[^<]*>))`;
