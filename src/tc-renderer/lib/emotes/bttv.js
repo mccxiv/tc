@@ -5,6 +5,8 @@ import {sleep} from '../util';
 const globalEmotes = [];
 const channelEmotes = {};
 
+// TODO should retry for channel emotes too.
+
 getGlobal();
 channels.on('add', tryGrabbingChannel);
 channels.on('remove', (channel) => delete channelEmotes[channel]);
@@ -40,6 +42,6 @@ async function tryGrabbingChannel(channel) {
   catch(e) {}
 }
 
-export default function (channel) {
+export default function getBttvEmotes(channel) {
   return globalEmotes.concat(channelEmotes[channel] || []);
 }

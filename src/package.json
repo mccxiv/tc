@@ -18,6 +18,7 @@
     "jquery": "2.1.4",
     "jsonfile": "2.3.0",
     "lodash": "4.9.0",
+    "lodash.escaperegexp": "^4.1.1",
     "material-design-iconic-font": "2.1.2",
     "proxy-observe": "0.0.9",
     "roboto-fontface": "0.4.5",

@@ -8,6 +8,7 @@ var windowState = require('electron-window-state');
 console.log('TC: Starting :D');
 
 var main;
+app.commandLine.appendSwitch('js-flags', '--harmony');
 
 if (squirrelStartup()) app.exit(0);
 if (isSecondInstance()) app.quit();

@@ -2,6 +2,7 @@ import _ from 'lodash';
 import angular from 'angular';
 import axios from 'axios';
 import settings from '../../lib/settings';
+import processMessage from '../../lib/transforms/process-message';
 
 angular.module('tc').factory('messages', (
   $rootScope, $filter, $http, irc, highlights, channels) => {
@@ -9,13 +10,13 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Variables | TODO dry
   //=====================================================
-  var capitalize = $filter('capitalize');
+  /*var capitalize = $filter('capitalize');
   var emotify = $filter('emotify');
   var linkify = $filter('linkify');
   var escape = $filter('escape');
   var combine = $filter('combine');
   var ffzfy = $filter('ffzfy');
-  var bttvfy = $filter('bttvfy');
+  var bttvfy = $filter('bttvfy');*/
   var ffzDonors = [];
   var messageLimit = 500;
   var messages = {};
@@ -67,10 +68,10 @@ angular.module('tc').factory('messages', (
     if (isFfzDonor(user.username)) user.ffz_donor = true;
 
     addMessage(channel, {
-      user: user,
-      type: type,
+      user,
+      type,
+      message,
       highlighted: highlights.test(message) && notSelf ? true : false,
-      message: processMessage(message, channel, user.emotes),
       style: type === 'action' ? 'color: ' + user.color : ''
     });
   }
@@ -83,23 +84,17 @@ angular.module('tc').factory('messages', (
   function addNotification(channel, message) {
     addMessage(channel, {
       type: 'notification',
-      message: capitalize(escape(message)),
+      message,
       style: 'color: #999999'
     });
   }
 
-  /**
-   * Adds a message with the 'whisper' type
-   * @param {string} from
-   * @param {string} to
-   * @param {string} message
-   */
-  function addWhisper(from, to, message) {
+  function addWhisper(user, message) {
     settings.channels.forEach((channel) => {
       addMessage(channel, {
         type: 'whisper',
-        from: capitalize(from['display-name'] || from.username),
-        to: capitalize(to),
+        user,
+        to: 'Me',
         message: escape(message),
         style: 'color: #999999'
       });
@@ -115,8 +110,16 @@ angular.module('tc').factory('messages', (
   function addMessage(channel, messageObject) {
     if (channel.charAt(0) === '#') channel = channel.substring(1);
     messageObject.time = new Date().getTime();
+
+    const twitchEmotes = messageObject.user? messageObject.user.emotes : null;
+    const msg = processMessage(messageObject.message, channel, twitchEmotes);
+
+    messageObject.message = msg;
     messages[channel].push(messageObject);
-    if (messageObject.user) messages[channel].counter++;
+
+    if (messageObject.type === 'chat' || messageObject.type === 'action') {
+      messages[channel].counter++;
+    }
 
     // Too many messages in memory
     // TODO unless autoscroll is off
@@ -158,8 +161,8 @@ angular.module('tc').factory('messages', (
       }
     });
   }
-
-  /** Applies transforms and emotes to a string */
+/*
+  /!** Applies transforms and emotes to a string *!/
   function processMessage(msg, channel, userEmotes) {
     msg = emotify(msg, userEmotes);
     msg = ffzfy(channel, msg);
@@ -168,7 +171,7 @@ angular.module('tc').factory('messages', (
     msg = escape(msg);
     msg = combine(msg);
     return msg;
-  }
+  }*/
 
   /**
    * Because of inconsistent sync/async APIs
@@ -246,9 +249,7 @@ angular.module('tc').factory('messages', (
         addNotification(channel, username + ' has been timed out.');
       },
       unhost: (channel) => addNotification(channel, 'Stopped hosting.'),
-      whisper: (from, message) => {
-        addWhisper(from, settings.identity.username, message);
-      }
+      whisper: (from, message) => addWhisper(from, message)
     };
   }
 

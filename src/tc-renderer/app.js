@@ -1,14 +1,14 @@
 import './app.css';
 import './themes/dark.css';
-import './startup/icon-font';
+import './lib/startup/icon-font';
 import $ from 'jquery';
 //import enableSpellchecker from './startup/enable-spellchecker';
-import enableDevTools from './startup/enable-dev-tools';
-import changeMacBackgroundColor from './startup/change-mac-background-color';
-import enableMenuOnMac from './startup/enable-menu-on-mac';
-import preventPageNavigation from './startup/prevent-page-navigation';
+import enableDevTools from './lib/startup/enable-dev-tools';
+import changeMacBackgroundColor from './lib/startup/change-mac-background-color';
+import enableMenuOnMac from './lib/startup/enable-menu-on-mac';
+import preventPageNavigation from './lib/startup/prevent-page-navigation';
 
-import './startup/angular-stuff';
+import './lib/startup/angular-stuff';
 
 console.log('Welcome to the Developer Console!');
 console.log('Technical info and error messages will be displayed here.');
