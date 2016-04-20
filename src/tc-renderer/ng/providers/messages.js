@@ -2,10 +2,11 @@ import _ from 'lodash';
 import angular from 'angular';
 import axios from 'axios';
 import settings from '../../lib/settings';
+import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
 
 angular.module('tc').factory('messages', (
-  $rootScope, $filter, $http, irc, highlights, channels) => {
+  $rootScope, $filter, $http, irc, highlights) => {
   
   //=====================================================
   // Variables | TODO dry

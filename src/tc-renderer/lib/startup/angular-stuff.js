@@ -15,13 +15,11 @@ import '../../ng/elements/chatters/chatters';
 import '../../ng/elements/chatters-tabs/chatters-tabs';
 import '../../ng/elements/add-channel/add-channel';
 
-import '../../ng/providers/electron';
 import '../settings';
 import '../../ng/providers/open-external';
 import '../../ng/providers/session';
 import '../../ng/providers/manifest';
 import '../../ng/providers/irc';
-import '../../ng/providers/channels';
 import '../../ng/providers/messages';
 import '../../ng/providers/highlights';
 import '../../ng/providers/notifications';

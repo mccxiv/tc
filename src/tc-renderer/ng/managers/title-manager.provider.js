@@ -1,4 +1,5 @@
 import angular from 'angular';
+import channels from '../../lib/channels';
 import settings from '../../lib/settings';
 
 /**
@@ -7,7 +8,7 @@ import settings from '../../lib/settings';
  * @ngdoc factory
  * @name titleManager
  */
-angular.module('tc').factory('titleManager', function($filter, channels) {
+angular.module('tc').factory('titleManager', function($filter) {
 
   var capitalize = $filter('capitalize');
 

@@ -5,6 +5,7 @@ import $ from 'jquery';
 import angular from 'angular';
 import colors from '../../../lib/colors';
 import template from './chat-output.html';
+import {sleep} from '../../../lib/util';
 import {badges} from '../../../lib/api';
 import settings from '../../../lib/settings';
 
@@ -167,9 +168,10 @@ angular.module('tc').directive('chatOutput',
       });
     }
 
-    async function fetchBadges(timeout) {
-      try {scope.badges = await badges(scope.channel);}
-      catch(e) {$timeout(() => fetchBadges(delay), (timeout || 1000) * 2);}
+    async function fetchBadges(attempt) {
+      if (attempt) await sleep(2000);
+      try {scope.badges = await badges(scope.channel)}
+      catch(e) {if (attempt < 5) fetchBadges(attempt + 1)}
       scope.$apply();
     }
 

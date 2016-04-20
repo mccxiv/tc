@@ -1,6 +1,8 @@
 import channels from '../channels';
 import angular from 'angular';
 
+// TODO modernize this
+
 const $http = angular.injector(["ng"]).get("$http");
 
 var globalEmotes = [];
