@@ -23,7 +23,5 @@ angular.module('tc').controller('main', ($scope, session, irc) => {
   };
 });
 
-/** Load stuff */
-angular.module('tc').run(function(
-  messages, notifications, zoomManager) {
-});
+/** Eagerly load stuff */
+angular.module('tc').run((messages, notifications) => {});

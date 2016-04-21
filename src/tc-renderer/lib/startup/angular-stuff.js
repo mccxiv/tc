@@ -23,8 +23,6 @@ import '../../ng/providers/notifications';
 import '../../ng/providers/settings-gui';
 import '../../ng/providers/emotes-twitch';
 
-import '../../ng/managers/zoom-manager.provider';
-
 import '../../ng/attributes/tab-completion.directive';
 import '../../ng/attributes/href-external.directive';
 import '../../ng/attributes/auto-focus.directive';
