@@ -1,10 +1,10 @@
 import icon16 from '../../../assets/icon16.png';
-import angular from 'angular';
-import settings from '../../lib/settings/settings';
+import settings from './../settings/settings';
 import electron from 'electron';
 
-angular.module('tc').factory('trayIcon', ($rootScope) => {
+let tray;
 
+export default function makeTrayIconOnWindows() {
   if (process.platform !== 'win32') return null;
   const Tray = electron.remote.Tray;
   const nativeImage = electron.remote.nativeImage;
@@ -12,9 +12,7 @@ angular.module('tc').factory('trayIcon', ($rootScope) => {
   const app = electron.remote.app;
   const ipcRenderer = electron.ipcRenderer;
   const browserWindow = electron.remote.BrowserWindow;
-  const path = require('path');
-
-  const tray = new Tray(nativeImage.createFromDataURL(icon16));
+  tray = new Tray(nativeImage.createFromDataURL(icon16));
 
   tray.on('clicked', () => browserWindow.getAllWindows()[0].show());
 
@@ -26,7 +24,6 @@ angular.module('tc').factory('trayIcon', ($rootScope) => {
       click: function() {
         settings.behavior.autoStart = !settings.behavior.autoStart;
         setAutoStart();
-        $rootScope.$apply();
       }
     },
     {
@@ -43,6 +40,8 @@ angular.module('tc').factory('trayIcon', ($rootScope) => {
     const command = autoStart ? 'enable-auto-start' : 'disable-auto-start';
     ipcRenderer.send(command);
   }
+}
 
+export function getTray() {
   return tray;
-});
+}

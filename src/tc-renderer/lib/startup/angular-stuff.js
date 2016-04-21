@@ -23,9 +23,7 @@ import '../../ng/providers/notifications';
 import '../../ng/providers/settings-gui';
 import '../../ng/providers/emotes-twitch';
 
-import '../../ng/managers/tray-icon';
 import '../../ng/managers/zoom-manager.provider';
-import '../../ng/managers/auto-updater.provider';
 
 import '../../ng/attributes/tab-completion.directive';
 import '../../ng/attributes/href-external.directive';

@@ -3,9 +3,10 @@ import angular from 'angular';
 import template from './side-toolbar.html';
 import settings from '../../../lib/settings/settings';
 import capitalize from '../../../lib/transforms/capitalize';
+import autoUpdater from '../../../lib/auto-updater';
 
 angular.module('tc').directive('sideToolbar',
-  (settingsGui, $mdDialog, irc, openExternal, autoUpdater) => {
+  (settingsGui, $mdDialog, irc, openExternal) => {
 
   function link(scope, element) {
     scope.m = {};

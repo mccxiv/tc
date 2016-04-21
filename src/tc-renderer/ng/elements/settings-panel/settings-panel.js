@@ -1,15 +1,16 @@
 import './settings-panel.css';
 import angular from 'angular';
+import electron from 'electron';
 import template from './settings-panel.html';
 import settings from '../../../lib/settings/settings';
+import autoUpdater from '../../../lib/auto-updater';
 
-angular.module('tc').directive('settingsPanel',
-  (autoUpdater, manifest, highlights, notifications) => {
+angular.module('tc').directive('settingsPanel', (highlights, notifications) => {
   function link(scope, element) {
     element.attr('layout', 'row');
     scope.settings = settings;
     scope.m = {
-      version: manifest.version,
+      version: electron.remote.app.getVersion(),
       selected: 'highlights'
     };
 
@@ -28,19 +29,13 @@ angular.module('tc').directive('settingsPanel',
         this.list.splice(index, 1);
         this.save();
       },
-      changeHighlightMe() {
-        highlights.highlightMe(this.highlightMe);
-      },
-      save() {
-        highlights.set(this.list);
-      }
+      changeHighlightMe() {highlights.highlightMe(this.highlightMe)},
+      save() {highlights.set(this.list)}
     };
 
     scope.notifications = {
       playSound() {
-        if (settings.notifications.soundOnMention) {
-          notifications.playSound();
-        }
+        if (settings.notifications.soundOnMention) notifications.playSound();
       }
     };
 
