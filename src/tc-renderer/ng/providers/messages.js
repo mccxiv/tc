@@ -95,7 +95,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
    */
   function addMessage(channel, messageObject) {
     if (channel.charAt(0) === '#') channel = channel.substring(1);
-    messageObject.time = new Date().getTime();
+    messageObject.at = Math.floor(Date.now() / 1000);
 
     const twitchEmotes = messageObject.user? messageObject.user.emotes : null;
     const msg = processMessage(messageObject.message, channel, twitchEmotes);

@@ -11,7 +11,7 @@
     }"
     style="{{m.style}}"
   ><!--
-	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.time | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
+	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="m.user"><!--
         ---><img class="badge" ng-if="isBroadcaster(m.user.username)"
                  ng-src="{{badges['broadcaster'].image}}"><!--
