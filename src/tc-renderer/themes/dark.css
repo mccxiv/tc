@@ -1,5 +1,4 @@
-.dark,
-.dark md-dialog {
+.dark, .dark md-dialog, .dark md-sidenav {
   background-color: rgb(30, 30, 30);
   color: #D3D3D3;
 }

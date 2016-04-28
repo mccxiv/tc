@@ -56,7 +56,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   }
 
   async function getMoreBacklog(channel) {
-    getBacklog(channel, earliestMessageTimestamp(channel))
+    getBacklog(channel, earliestMessageTimestampInSec(channel))
   }
 
   //=====================================================
@@ -82,7 +82,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   }
 
   async function getMissingMessages(channel) {
-    getBacklog(channel, now(), mostRecentMessageTimestamp(channel));
+    getBacklog(channel, now(), mostRecentMessageTimestampInSec(channel));
   }
 
   function sortMessages(channel) {
@@ -158,20 +158,20 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     return Math.round(Date.now() / 1000);
   }
 
-  function earliestMessageTimestamp(channel) {
+  function earliestMessageTimestampInSec(channel) {
     const msgs = messages[channel];
     if (!msgs || !msgs.length) return now();
-    else return msgs[0].at;
+    else return Math.round(msgs[0].at / 1000);
   }
 
-  function mostRecentMessageTimestamp(channel) {
+  function mostRecentMessageTimestampInSec(channel) {
     const msgs = messages[channel];
     if (!msgs || !msgs.length) return 0;
     else {
       const recentMessage = msgs.slice().reverse().find((msg) => {
         return msg.type === 'chat' || msg.type === 'action';
       });
-      return recentMessage? recentMessage.at : 0;
+      return recentMessage? Math.round(recentMessage.at / 1000) : 0;
     }
   }
 
