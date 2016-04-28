@@ -3,7 +3,7 @@
 <div class="chat-lines">
   <div
     class="chat-line"
-    ng-repeat="m in messages | limitTo: chatLimit"
+    ng-repeat="m in messages"
     ng-class="{
       'from-backlog': m.fromBacklog,
       highlighted: m.highlighted,

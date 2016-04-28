@@ -23,7 +23,6 @@ angular.module('tc').directive('chatOutput',
     scope.opts = settings.chat;
     scope.badges = null;
     scope.messages = messages(scope.channel);
-    scope.chatLimit = -scope.opts.maxChatLines;
     scope.autoScroll = true;
 
     //===============================================================
@@ -96,12 +95,11 @@ angular.module('tc').directive('chatOutput',
     function watchUserScrolling() {
       element.on('scroll', () => {
         if (!latestScrollWasAutomatic) {
-          scope.autoScroll = distanceFromBottom() === 0;
+          scope.autoScroll = distanceFromBottom() < 10;
           scope.$apply();
         }
         latestScrollWasAutomatic = false; // Reset it
-        if (scope.autoScroll) scope.chatLimit = -scope.opts.maxChatLines;
-        else if (distanceFromTop() === 0) showAllLines();
+        if (!scope.autoScroll && distanceFromTop() === 0) getMoreBacklog();
       });
     }
 
@@ -110,12 +108,8 @@ angular.module('tc').directive('chatOutput',
      * Makes sure the scrollbar doesn't jump to the
      * top when the new lines are added.
      */
-    function showAllLines() {
-      $timeout(() => {
-        const dfb = distanceFromBottom();
-        scope.chatLimit = Infinity;
-        $timeout(() => e.scrollTop = e.scrollHeight - (dfb + e.offsetHeight));
-      }, 30);
+    function getMoreBacklog() {
+      console.log('LOADING MORE');
     }
 
     function scrollIfEnabled() {
@@ -136,13 +130,9 @@ angular.module('tc').directive('chatOutput',
     }
 
     function scrollOnNewMessages() {
-      scope.$watch(
-        () => scope.messages[scope.messages.length - 1],
-        () => {
-          if (scope.autoScroll) scrollDown();
-          else scope.chatLimit--; // ng-repeat uses negative
-        }
-      );
+      scope.$watchCollection('messages', () => {
+        if (scope.autoScroll) scrollDown();
+      });
     }
 
     function hideUnscrolledLines() {
