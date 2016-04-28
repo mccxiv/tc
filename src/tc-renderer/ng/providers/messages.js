@@ -56,16 +56,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   }
 
   async function getMoreBacklog(channel) {
-    const url = 'https://backlog.gettc.xyz/' + channel;
-    const params = {before: earliestMessageTimestamp(channel)};
-    const backlog = (await axios(url, {params})).data;
-    backlog.forEach((obj) => {
-      obj.type = obj.user['message-type'];
-      obj.fromBacklog = true;
-      obj.at *= 1000; // API gives seconds, need ms
-      addUserMessage(channel, obj);
-    });
-    sortMessages(channel);
+    getBacklog(channel, earliestMessageTimestamp(channel))
   }
 
   //=====================================================
@@ -78,8 +69,20 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     });
   }
 
-  function getMissingMessages(channel) {
-    getMoreBacklog(channel);
+  async function getBacklog(channel, before = now(), after = 0) {
+    const url = 'https://backlog.gettc.xyz/' + channel;
+    const backlog = (await axios(url, {params: {before, after}})).data;
+    backlog.forEach((obj) => {
+      obj.type = obj.user['message-type'];
+      obj.fromBacklog = true;
+      obj.at *= 1000; // API gives seconds, need ms
+      addUserMessage(channel, obj);
+    });
+    sortMessages(channel);
+  }
+
+  async function getMissingMessages(channel) {
+    getBacklog(channel, now(), mostRecentMessageTimestamp(channel));
   }
 
   function sortMessages(channel) {
@@ -151,10 +154,25 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   //=====================================================
   // Helper methods
   //=====================================================
+  function now() {
+    return Math.round(Date.now() / 1000);
+  }
+
   function earliestMessageTimestamp(channel) {
     const msgs = messages[channel];
-    if (!msgs || !msgs.length) return Math.round(Date.now() / 1000);
+    if (!msgs || !msgs.length) return now();
     else return msgs[0].at;
+  }
+
+  function mostRecentMessageTimestamp(channel) {
+    const msgs = messages[channel];
+    if (!msgs || !msgs.length) return 0;
+    else {
+      const recentMessage = msgs.slice().reverse().find((msg) => {
+        return msg.type === 'chat' || msg.type === 'action';
+      });
+      return recentMessage? recentMessage.at : 0;
+    }
   }
 
   async function fetchFfzDonors() {
