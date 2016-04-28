@@ -7,7 +7,7 @@ import processMessage from '../../lib/transforms/process-message';
 
 angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {  
   //=====================================================
-  // Variables | TODO dry
+  // Variables
   //=====================================================
   var ffzDonors = [];
   var messageLimit = 500;
@@ -26,43 +26,11 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   channels.on('remove', (channel) => delete messages[channel]);
 
   //=====================================================
-  // Private methods
+  // Public methods
   //=====================================================
-  function setupIrcListeners() {
-    const listeners = getChatListeners();
-    Object.keys(listeners).forEach((key) => {
-      irc.on(key, listeners[key]);
-    });
-  }
-
   /** Shows a notification chat message in all channels */
   function addGlobalNotification(message) {
     settings.channels.forEach((channel) => addNotification(channel, message));
-  }
-
-  /**
-   * Add a user message, types are 'action' or 'chat'
-   * @param {string} type - 'action' or 'chat'
-   * @param {string} channel
-   * @param {object} user - As provided by tmi.js
-   * @param {string} message
-   */
-  function addUserMessage(type, channel, user, message) {
-    if (user.special) user.special.reverse();
-    channel = channel.substring(1);
-    if (!user['display-name']) user['display-name'] = user.username;
-    if (settings.chat.ignored.indexOf(user.username) >= 0) return;
-
-    var notSelf = user.username != lowerCaseUsername;
-    if (isFfzDonor(user.username)) user.ffz_donor = true;
-
-    addMessage(channel, {
-      user,
-      type,
-      message,
-      highlighted: highlights.test(message) && notSelf ? true : false,
-      style: type === 'action' ? 'color: ' + user.color : ''
-    });
   }
 
   /** Adds a message with the 'notification' type */
@@ -87,6 +55,60 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     });
   }
 
+  async function getMoreBacklog(channel) {
+    const url = 'https://backlog.gettc.xyz/' + channel;
+    const params = {before: earliestMessageTimestamp(channel)};
+    const backlog = (await axios(url, {params})).data;
+    backlog.forEach((obj) => {
+      obj.type = obj.user['message-type'];
+      obj.fromBacklog = true;
+      obj.at *= 1000; // API gives seconds, need ms
+      addUserMessage(channel, obj);
+    });
+    sortMessages(channel);
+  }
+
+  //=====================================================
+  // Private methods
+  //=====================================================
+  function setupIrcListeners() {
+    const listeners = getChatListeners();
+    Object.keys(listeners).forEach((key) => {
+      irc.on(key, listeners[key]);
+    });
+  }
+
+  function getMissingMessages(channel) {
+    getMoreBacklog(channel);
+  }
+
+  function sortMessages(channel) {
+    messages[channel].sort((a, b) => a.at - b.at);
+  }
+
+  /**
+   * Add a user message.
+   * @property {string}  obj.type - 'action' or 'chat'
+   * @property {string}  obj.channel
+   * @property {object}  obj.user - As provided by tmi.js
+   * @property {string}  obj.message
+   * @property {boolean} obj.fromBacklog
+   * @property {number}  obj.at - Timestamp
+   */
+  function addUserMessage(channel, obj) {
+    const {type, user, message} = obj;
+    const notSelf = user.username != lowerCaseUsername;
+
+    if (settings.chat.ignored.indexOf(user.username) > -1) return;
+    if (user.special) user.special.reverse();
+    if (!user['display-name']) user['display-name'] = user.username;
+    if (isFfzDonor(user.username)) user.ffz_donor = true;
+    if (highlights.test(message) && notSelf) obj.highlighted = true;
+    if (type === 'action') obj.style = 'color: ' + user.color;
+
+    addMessage(channel, obj);
+  }
+
   /**
    * Adds a message object to the message list
    * Not used directly, but via helpers
@@ -94,8 +116,9 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
    * @param {object} messageObject
    */
   function addMessage(channel, messageObject) {
+    const {type, fromBacklog} = messageObject;
     if (channel.charAt(0) === '#') channel = channel.substring(1);
-    messageObject.at = Math.floor(Date.now() / 1000);
+    if (!messageObject.at) messageObject.at = Date.now();
 
     const twitchEmotes = messageObject.user? messageObject.user.emotes : null;
     const msg = processMessage(messageObject.message, channel, twitchEmotes);
@@ -103,7 +126,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     messageObject.message = msg;
     messages[channel].push(messageObject);
 
-    if (messageObject.type === 'chat' || messageObject.type === 'action') {
+    if ((type === 'chat' || type === 'action') && !fromBacklog) {
       messages[channel].counter++;
     }
 
@@ -128,9 +151,15 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   //=====================================================
   // Helper methods
   //=====================================================
+  function earliestMessageTimestamp(channel) {
+    const msgs = messages[channel];
+    if (!msgs || !msgs.length) return Math.round(Date.now() / 1000);
+    else return msgs[0].at;
+  }
+
   async function fetchFfzDonors() {
-    var url = 'http://cdn.frankerfacez.com/script/donors.txt';
-    const donors = (await axios(url)).data.split('\n').map((s) => s.trim());
+    const req = await axios('http://cdn.frankerfacez.com/script/donors.txt');
+    const donors = req.data.split('\n').map((s) => s.trim());
     ffzDonors.concat(donors);
   }
 
@@ -165,10 +194,10 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   function getChatListeners() {
     return {
       action: (channel, user, message) => {
-        addUserMessage('action', channel, user, message);
+        addUserMessage(channel, {type: 'action', user, message});
       },
       chat: (channel, user, message) => {
-        addUserMessage('chat', channel, user, message);
+        addUserMessage(channel, {type: 'chat', user, message});
       },
       clearchat: (channel) => {
         const msg = 'Chat cleared by a moderator. (Prevented by Tc)';
@@ -178,6 +207,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
       connected: () => {
         settings.channels.forEach((channel) => {
           addNotification(channel, `Welcome to ${channel}'s chat.`);
+          getMissingMessages(channel);
         });
       },
       disconnected: () => {
@@ -232,6 +262,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     (channel) => messages[channel],
     {
       addWhisper,
+      getMoreBacklog,
       addNotification,
       addGlobalNotification
     }
