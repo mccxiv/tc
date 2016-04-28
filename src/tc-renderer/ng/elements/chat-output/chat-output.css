@@ -86,6 +86,11 @@ chat-output .whisper {
   background-color: rgba(255, 174, 0, 0.15);
 }
 
+chat-output .from-backlog {
+  padding-left: 15px;
+  border-left: 2px solid rgba(140, 162, 207, 0.46);
+}
+
 chat-output .auto-scroll-notice {
   position: fixed;
   bottom: 0;

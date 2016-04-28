@@ -5,6 +5,7 @@
     class="chat-line"
     ng-repeat="m in messages | limitTo: chatLimit"
     ng-class="{
+      'from-backlog': m.fromBacklog,
       highlighted: m.highlighted,
       deleted: m.deleted,
       whisper: m.type === 'whisper'
