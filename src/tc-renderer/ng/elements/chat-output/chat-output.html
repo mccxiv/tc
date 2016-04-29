@@ -10,7 +10,7 @@
       deleted: m.deleted,
       whisper: m.type === 'whisper'
     }"
-    style="{{m.style}}"
+    ng-style="{'color': m.type === 'action'? calculateColor(m.user.color) : 'inherit'}"
   ><!--
 	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="m.user"><!--
