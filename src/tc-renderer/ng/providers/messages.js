@@ -51,7 +51,7 @@ angular.module('tc').factory('messages', (
         type: 'whisper',
         user,
         to: 'Me',
-        message: escape(message),
+        message,
         style: 'color: #999999'
       });
     });
