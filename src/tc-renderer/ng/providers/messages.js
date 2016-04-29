@@ -118,7 +118,7 @@ angular.module('tc').factory('messages', (
    * @property {number}  obj.at - Timestamp
    */
   function addUserMessage(channel, obj) {
-    const {type, user, message} = obj;
+    const {user, message} = obj;
     const notSelf = user.username != lowerCaseUsername;
 
     if (settings.chat.ignored.indexOf(user.username) > -1) return;
