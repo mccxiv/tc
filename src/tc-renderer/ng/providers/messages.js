@@ -45,12 +45,13 @@ angular.module('tc').factory('messages', (
   }
   
   /** Adds a message with the 'whisper' type */
-  function addWhisper(user, message) {
+  function addWhisper(from, to, message) {
     settings.channels.forEach((channel) => {
       addMessage(channel, {
         type: 'whisper',
-        user,
-        to: 'Me',
+        from: typeof from === 'string'? from : from.username,
+        user: typeof from === 'object'? from : undefined,
+        to,
         message,
         style: 'color: #999999'
       });
@@ -230,6 +231,10 @@ angular.module('tc').factory('messages', (
     messages[channel].counter = 0;
   }
 
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   function getChatListeners() {
     return {
       action: (channel, user, message) => {
@@ -293,7 +298,10 @@ angular.module('tc').factory('messages', (
         addNotification(channel, username + ' has been timed out.');
       },
       unhost: (channel) => addNotification(channel, 'Stopped hosting.'),
-      whisper: (from, message) => addWhisper(from, message)
+      whisper: (from, message) => {
+        const me = capitalize(lowerCaseUsername);
+        addWhisper(from, me, message)
+      }
     };
   }
 

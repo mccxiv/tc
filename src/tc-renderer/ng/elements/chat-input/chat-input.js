@@ -80,11 +80,10 @@ angular.module('tc').directive('chatInput',
 
       if (scope.message.indexOf('.w') === 0) {
         var words = scope.message.split(' ');
-        var me = {username: settings.identity.username};
         var username = words[1];
         var message = words.slice(2).join(' ');
         irc.whisper(username, message);
-        messages.addWhisper(me, username, message);
+        messages.addWhisper(settings.identity.username, username, message);
       }
 
       else irc.say(channel, scope.message);

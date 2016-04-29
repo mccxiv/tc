@@ -28,7 +28,7 @@
     ---><span class="username" ng-if="m.user"
               ng-click="selectUsername(m.user.username)"
               style="color: {{calculateColor(m.user.color)}}">{{m.user['display-name']}}</span><!--
-    ---><span class="username" ng-if="m.type === 'whisper'"
+    ---><span class="username" ng-if="!m.user && m.type === 'whisper'"
               ng-click="selectUsername(m.from)">{{m.from}}</span><!--
     ---><svg class="svg-whisper-arrow"
              ng-if="m.type === 'whisper'"
