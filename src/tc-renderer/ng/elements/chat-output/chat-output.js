@@ -120,6 +120,7 @@ angular.module('tc').directive('chatOutput',
       await messages.getMoreBacklog(scope.channel);
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
+          scrollIfEnabled();
           setTimeout(() => fetchingBacklog = false, 40); // Cooldown period
           e.scrollTop += distanceFromBottom() - old;
         });
