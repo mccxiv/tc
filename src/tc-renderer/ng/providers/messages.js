@@ -39,8 +39,7 @@ angular.module('tc').factory('messages', (
   function addNotification(channel, message) {
     addMessage(channel, {
       type: 'notification',
-      message,
-      style: 'color: #999999'
+      message
     });
   }
   
@@ -52,8 +51,7 @@ angular.module('tc').factory('messages', (
         from: typeof from === 'string'? from : from.username,
         user: typeof from === 'object'? from : undefined,
         to,
-        message,
-        style: 'color: #999999'
+        message
       });
     });
   }
@@ -128,7 +126,6 @@ angular.module('tc').factory('messages', (
     if (!user['display-name']) user['display-name'] = user.username;
     if (isFfzDonor(user.username)) user.ffz_donor = true;
     if (highlights.test(message) && notSelf) obj.highlighted = true;
-    if (type === 'action') obj.style = 'color: ' + user.color;
 
     addMessage(channel, obj);
   }
