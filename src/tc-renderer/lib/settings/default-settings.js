@@ -4,7 +4,6 @@ export default {
     password: ''
   },
   chat: {
-    maxChatLines: 120,
     timestamps: false,
     ignored: []
   },

@@ -5,12 +5,13 @@ import settings from '../../lib/settings/settings';
 import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
 
-angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {  
+angular.module('tc').factory('messages', (
+  $rootScope, irc, highlights, session) => {
   //=====================================================
   // Variables
   //=====================================================
   var ffzDonors = [];
-  var messageLimit = 500;
+  var messageLimit = 50;
   var messages = {};
   var lowerCaseUsername = settings.identity.username.toLowerCase();
   var throttledApplySlow = _.throttle(applyLate, 3000);
@@ -21,6 +22,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   //=====================================================
   fetchFfzDonors();
   setupIrcListeners();
+  deleteExtraMessagesOnAutoscrollEnabled();
   channels.channels.forEach(make);
   channels.on('add', make);
   channels.on('remove', (channel) => delete messages[channel]);
@@ -56,7 +58,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
   }
 
   async function getMoreBacklog(channel) {
-    getBacklog(channel, earliestMessageTimestampInSec(channel))
+    return getBacklog(channel, earliestMessageTimestampInSec(channel))
   }
 
   //=====================================================
@@ -69,9 +71,26 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     });
   }
 
+  function deleteExtraMessagesOnAutoscrollEnabled() {
+    $rootScope.$watch(
+      () => session.autoScroll,
+      () => {
+        if (session.autoScroll) {
+          channels.channels.forEach((channel) => {
+            const msgs = messages[channel];
+            if (msgs.length > messageLimit) {
+              msgs.splice(0, msgs.length - messageLimit);
+            }
+          });
+        }
+      }
+    );
+  }
+
   async function getBacklog(channel, before = now(), after = 0) {
     const url = 'https://backlog.gettc.xyz/' + channel;
-    const backlog = (await axios(url, {params: {before, after}})).data;
+    const req = await axios(url, {params: {before, after, limit: 100}});
+    const backlog = req.data;
     backlog.forEach((obj) => {
       obj.type = obj.user['message-type'];
       obj.fromBacklog = true;
@@ -79,6 +98,7 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
       addUserMessage(channel, obj);
     });
     sortMessages(channel);
+    return true;
   }
 
   async function getMissingMessages(channel) {
@@ -134,9 +154,10 @@ angular.module('tc').factory('messages', ($rootScope, irc, highlights) => {
     }
 
     // Too many messages in memory
-    // TODO unless autoscroll is off
-    if (messages[channel].length > messageLimit) {
-      messages[channel].shift();
+    if (session.autoScroll) {
+      if (messages[channel].length > messageLimit) {
+        messages[channel].shift();
+      }
     }
 
     // TODO get rid of this completely, refactor somehow.

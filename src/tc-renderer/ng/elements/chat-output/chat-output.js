@@ -1,6 +1,7 @@
 import './chat-output.css';
 import 'frostyjs/dist/css/frosty.min.css';
 import 'imports?jQuery=jquery!frostyjs/dist/js/frosty.min.js';
+import throttle from 'lodash.throttle';
 import $ from 'jquery';
 import angular from 'angular';
 import colors from '../../../lib/colors';
@@ -18,12 +19,13 @@ angular.module('tc').directive('chatOutput',
     //===============================================================
     // Variables
     //===============================================================
-    let latestScrollWasAutomatic = false;
     const e = element[0];
+    let fetchingBacklog = false;
     scope.opts = settings.chat;
     scope.badges = null;
     scope.messages = messages(scope.channel);
-    scope.autoScroll = true;
+    scope.autoScroll = () => session.autoScroll;
+    session.autoScroll = true;
 
     //===============================================================
     // Setup
@@ -93,14 +95,17 @@ angular.module('tc').directive('chatOutput',
      * shows all lines when scrolling up to the top (infinite scroll)
      */
     function watchUserScrolling() {
-      element.on('scroll', () => {
-        if (!latestScrollWasAutomatic) {
-          scope.autoScroll = distanceFromBottom() < 10;
-          scope.$apply();
-        }
-        latestScrollWasAutomatic = false; // Reset it
-        if (!scope.autoScroll && distanceFromTop() === 0) getMoreBacklog();
-      });
+      element.on('wheel', throttle(handler, 200));
+      window.dfb = distanceFromBottom;
+
+      function handler() {
+        setTimeout(() => {
+          const before = session.autoScroll;
+          session.autoScroll = distanceFromBottom() === 0;
+          if (before !== session.autoScroll) scope.$apply();
+          if (!session.autoScroll && distanceFromTop() === 0) getMoreBacklog();
+        }, 500); // Wait until the scroll has actually happened
+      }
     }
 
     /**
@@ -108,17 +113,25 @@ angular.module('tc').directive('chatOutput',
      * Makes sure the scrollbar doesn't jump to the
      * top when the new lines are added.
      */
-    function getMoreBacklog() {
-      console.log('LOADING MORE');
+    async function getMoreBacklog() {
+      if (fetchingBacklog) return;
+      fetchingBacklog = true;
+      const old = distanceFromBottom();
+      await messages.getMoreBacklog(scope.channel);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => fetchingBacklog = false, 40); // Cooldown period
+          e.scrollTop += distanceFromBottom() - old;
+        });
+      });
     }
 
     function scrollIfEnabled() {
-      if (scope.autoScroll) scrollDown();
+      if (session.autoScroll) scrollDown();
     }
 
     function scrollDown() {
-      scope.autoScroll = true;
-      latestScrollWasAutomatic = true;
+      session.autoScroll = true;
       $timeout(() => e.scrollTop = e.scrollHeight, 0);
     }
 
@@ -130,9 +143,7 @@ angular.module('tc').directive('chatOutput',
     }
 
     function scrollOnNewMessages() {
-      scope.$watchCollection('messages', () => {
-        if (scope.autoScroll) scrollDown();
-      });
+      scope.$watchCollection('messages', scrollIfEnabled);
     }
 
     function hideUnscrolledLines() {

@@ -19,10 +19,8 @@ export default (settings) => {
 
   if (!angular.isObject(s.chat)) s.chat = angular.copy(defaults.chat);
   if (typeof s.chat.timestamps !== 'boolean') s.chat.timestamps = defaults.chat.timestamps;
-  if (!angular.isNumber(s.chat.maxChatLines)) s.chat.maxChatLines = defaults.chat.maxChatLines;
   if (!angular.isArray(s.chat.ignored)) s.chat.ignored = defaults.chat.ignored;
 
-  if (!angular.isNumber(s.maxChatLines)) s.maxChatLines = defaults.maxChatLines;
   if (!angular.isNumber(s.selectedTabIndex)) s.selectedTabIndex = defaults.selectedTabIndex;
   if (!angular.isArray(s.channels)) s.channels = angular.copy(defaults.channels);
   if (!angular.isArray(s.highlights)) s.highlights = angular.copy(defaults.highlights);

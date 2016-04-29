@@ -6,5 +6,5 @@
  * @name session
  */
 angular.module('tc').factory('session', function() {
-  return sessionStorage;
+  return {};
 });
