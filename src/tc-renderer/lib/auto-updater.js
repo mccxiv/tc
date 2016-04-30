@@ -21,10 +21,11 @@ else {
   setInterval(check, 1000 * 60 * 60 * 23);
 
   function check() {
+    console.log('Checking for updates at ' + url);
     autoUpdater.checkForUpdates();
   }
 
-  autoUpdater.on('error', () => console.warn('Error checking for updates.'));
+  autoUpdater.on('error', (e) => console.warn('Error checking for updates.', e));
 }
 
 export default autoUpdater;
