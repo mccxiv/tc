@@ -10,7 +10,7 @@ gulp.task('postinstall', function() {
 });
 
 gulp.task('launch', function() {
-  shell.rm('_build/**');
+  shell.rm('-rf', '_build');
   shell.mkdir('-p', '_build/node_modules/');
   shell.cp('-r', 'src/node_modules/spellchecker/', '_build/node_modules/spellchecker/');
   shell.cp('-r', 'src/node_modules/nan/', '_build/node_modules/nan/');

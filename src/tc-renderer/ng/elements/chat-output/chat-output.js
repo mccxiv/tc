@@ -121,6 +121,7 @@ angular.module('tc').directive('chatOutput',
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           scrollIfEnabled();
+          setTimeout(scrollIfEnabled, 101);
           setTimeout(() => fetchingBacklog = false, 40); // Cooldown period
           e.scrollTop += distanceFromBottom() - old;
         });
@@ -134,6 +135,7 @@ angular.module('tc').directive('chatOutput',
     function scrollDown() {
       session.autoScroll = true;
       e.scrollTop = e.scrollHeight;
+      setTimeout(() => e.scrollTop = e.scrollHeight, 0);
     }
 
     function scrollWhenTogglingSidebar() {
