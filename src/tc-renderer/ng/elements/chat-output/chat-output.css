@@ -22,6 +22,11 @@ chat-output .timestamp {
   font-size: 1rem;
 }
 
+chat-output .badge {
+  width: 17px;
+  height: 17px;
+}
+
 chat-output .emoticon,
 chat-output .badge {
   margin: -9px 0;

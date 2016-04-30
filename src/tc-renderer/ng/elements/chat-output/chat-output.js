@@ -36,9 +36,9 @@ angular.module('tc').directive('chatOutput',
     scrollOnWindowResize();
     fetchBadges();
     handleAnchorClicks();
-    hideUnscrolledLines();
     handleEmoteHover();
-    delayedScroll();
+    requestAnimationFrame(scrollDown);
+    delayedScroll(); // Need to rescroll once emotes and badges are loaded
 
     //===============================================================
     // Directive methods
@@ -133,23 +133,18 @@ angular.module('tc').directive('chatOutput',
 
     function scrollDown() {
       session.autoScroll = true;
-      $timeout(() => e.scrollTop = e.scrollHeight, 0);
+      e.scrollTop = e.scrollHeight;
     }
 
     function scrollWhenTogglingSidebar() {
       scope.$watch(
         () => settings.appearance.sidebarCollapsed,
-        () => $timeout(scrollIfEnabled, 260)
+        (a, b) => {if (a !== b) $timeout(scrollIfEnabled, 260)} // Angular sux
       );
     }
 
     function scrollOnNewMessages() {
       scope.$watchCollection('messages', scrollIfEnabled);
-    }
-
-    function hideUnscrolledLines() {
-      element.css({'opacity': 0});
-      $timeout(() => element.css({'opacity': 1}), 0);
     }
 
     function distanceFromTop() {
