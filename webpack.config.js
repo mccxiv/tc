@@ -33,7 +33,11 @@ const base = {
   babel: {
     presets: ['es2015', 'stage-0'],
     plugins: ['transform-runtime']
-  }
+  },
+  externals: {'spellchecker': { // None of these work...
+    commonjs: 'spellchecker',
+    commonjs2: 'spellchecker'
+  }}
 };
 
 const main = Object.assign({}, base, {

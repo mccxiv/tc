@@ -2,7 +2,7 @@ import './app.css';
 import './themes/dark.css';
 import './lib/startup/icon-font';
 import $ from 'jquery';
-//import enableSpellchecker from './startup/enable-spellchecker';
+import enableSpellchecker from './lib/startup/enable-spellchecker';
 import keepTitleUpdated from './lib/startup/keep-title-updated';
 import enableDevTools from './lib/startup/enable-dev-tools';
 import changeMacBackgroundColor from './lib/startup/change-mac-background-color';
@@ -19,7 +19,7 @@ console.log('Red 404 messages can be safely ignored.');
 
 enableDevTools();
 keepTitleUpdated();
-//enableSpellchecker();
+enableSpellchecker();
 changeMacBackgroundColor();
 enableMenuOnMac();
 preventPageNavigation();

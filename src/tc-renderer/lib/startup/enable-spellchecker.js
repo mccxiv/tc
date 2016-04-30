@@ -1,8 +1,10 @@
 import electron from 'electron';
-import checker from 'spellchecker';
+
+let checker;
+eval('checker = require("spellchecker");');
 
 export default () => {
-  electron.local.webFrame.setSpellCheckProvider('en-US', false, {
+  electron.webFrame.setSpellCheckProvider('en-US', false, {
     spellCheck: function(text) {
       return !checker.isMisspelled(text);
     }
