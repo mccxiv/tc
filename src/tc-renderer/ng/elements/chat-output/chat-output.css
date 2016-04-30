@@ -91,6 +91,10 @@ chat-output .whisper {
   background-color: rgba(255, 174, 0, 0.15);
 }
 
+chat-output .notification {
+  color: #9D9D9D;
+}
+
 chat-output .from-backlog {
   padding-left: 5px;
   border-left: 2px solid rgba(140, 162, 207, 0.46);

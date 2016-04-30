@@ -127,7 +127,7 @@ angular.module('tc').directive('chatOutput',
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           scrollIfEnabled();
-          setTimeout(scrollIfEnabled, 101);
+          setTimeout(delayedScroll, 101);
           setTimeout(() => fetchingBacklog = false, 40); // Cooldown period
           e.scrollTop += distanceFromBottom() - old;
         });
