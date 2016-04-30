@@ -78,7 +78,13 @@ angular.module('tc').directive('chatOutput',
         // TODO memory leak?
         emoticon.frosty({html: true, content: tooltip});
         emoticon.frosty('show');
-        emoticon.one('mouseleave', () => emoticon.frosty('hide'));
+        emoticon.one('mouseleave', kill);
+        setTimeout(kill, 3000);
+
+        function kill() {
+          emoticon.frosty('hide');
+          emoticon.off();
+        }
       });
     }
 
