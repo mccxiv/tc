@@ -48,10 +48,16 @@ angular.module('tc').directive('chatOutput',
     scope.trusted = (html) => $sce.trustAsHtml(html);
     scope.calculateColor = calculateColor;
     scope.scrollDown = scrollDown;
+    scope.badgeBg = badgeBg;
 
     //===============================================================
     // Functions
     //===============================================================
+    function badgeBg(prop) {
+      if (!scope.badges) return undefined;
+      return {'background-image': `url(${scope.badges[prop].image})`};
+    }
+    
     function selectUsername(username) {
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;

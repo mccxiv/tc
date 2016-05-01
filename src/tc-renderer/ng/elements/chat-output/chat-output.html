@@ -4,44 +4,30 @@
   <div
     class="chat-line"
     ng-repeat="m in messages"
-    ng-class="{
+    ng-class="::{
       'from-backlog': m.fromBacklog,
       highlighted: m.highlighted,
       deleted: m.deleted,
       whisper: m.type === 'whisper',
       notification: m.type === 'notification'
     }"
-    ng-style="m.type === 'action'? {'color': calculateColor(m.user.color)} : {}"
+    ng-style="::m.type === 'action'? {'color': calculateColor(m.user.color)} : {}"
   ><!--
-	---><span class="timestamp lighter" ng-if="opts.timestamps">{{m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
-    ---><span class="badges" ng-if="m.user"><!--
-        ---><img class="badge" ng-if="isBroadcaster(m.user.username)"
-                 ng-src="{{badges['broadcaster'].image}}"><!--
-        ---><img class="badge" ng-if="m.user['user-type']"
-                 ng-src="{{badges[m.user['user-type']].image}}"><!--
-        ---><img class="badge" ng-if="m.user['subscriber']"
-                 ng-src="{{badges['subscriber'].image}}"><!--
-        ---><img class="badge ffz" ng-if="m.user['ffz_donor']"
-                 ng-src="{{badges['ffz_donor'].image}}"><!--
-        ---><img class="badge" ng-if="m.user['turbo']"
-                 ng-src="{{badges['turbo'].image}}"><!--
+	---><span class="timestamp lighter" ng-if="::opts.timestamps">{{::m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
+    ---><span class="badges" ng-if="::m.user"><!--
+        ---><span class="badge" ng-if="::isBroadcaster(m.user.username)" ng-style="::badgeBg('broadcaster')"></span><!--
+        ---><span class="badge" ng-if="::m.user['user-type']" ng-style="::badgeBg(m.user['user-type'])"></span><!--
+        ---><span class="badge" ng-if="::m.user['subscriber']" ng-style="::badgeBg('subscriber')"></span><!--
+        ---><span class="badge ffz" ng-if="::m.user['ffz_donor']" ng-style="::badgeBg('ffz_donor')"></span><!--
+        ---><span class="badge" ng-if="::m.user['turbo']" ng-style="::badgeBg('turbo')"></span><!--
     ---></span><!--
-    ---><span class="username" ng-if="m.user"
-              ng-click="selectUsername(m.user.username)"
-              style="color: {{calculateColor(m.user.color)}}">{{m.user['display-name']}}</span><!--
-    ---><span class="username" ng-if="!m.user && m.type === 'whisper'"
-              ng-click="selectUsername(m.from)">{{m.from}}</span><!--
-    ---><svg class="svg-whisper-arrow"
-             ng-if="m.type === 'whisper'"
-             version="1.1" width="16px"
-             height="10px"
-        ><polyline points="6 2, 10 6, 6 10, 6 2"></polyline></svg><!--
-    ---><span class="username" ng-if="m.type === 'whisper'"
-              ng-click="selectUsername(m.to)">{{m.to}}</span><!--
-    ---><span class="separator"
-              ng-if="m.type === 'chat' || m.type === 'whisper'">:&nbsp;</span><!--
-    ---><span class="separator" ng-if="m.type === 'action'">&nbsp;</span><!--
-    ---><span class="message" ng-bind-html="trusted(m.message)"></span>
+    ---><span class="username" ng-if="::m.user" ng-click="selectUsername(m.user.username)" ng-style="::{color: calculateColor(m.user.color)}">{{::m.user['display-name']}}</span><!--
+    ---><span class="username" ng-if="::!m.user && m.type === 'whisper'" ng-click="selectUsername(m.from)">{{::m.from}}</span><!--
+    ---><svg class="svg-whisper-arrow" ng-if="::m.type === 'whisper'" version="1.1" width="16px" height="10px"><polyline points="6 2, 10 6, 6 10, 6 2"></polyline></svg><!--
+    ---><span class="username" ng-if="::m.type === 'whisper'" ng-click="selectUsername(m.to)">{{::m.to}}</span><!--
+    ---><span class="separator" ng-if="::m.type === 'chat' || m.type === 'whisper'">:&nbsp;</span><!--
+    ---><span class="separator" ng-if="::m.type === 'action'">&nbsp;</span><!--
+    ---><span class="message" ng-bind-html="::trusted(m.message)"></span>
   </div>
   <div class="auto-scroll-notice" ng-if="!autoScroll()" ng-click="scrollDown()">
     More messages below
