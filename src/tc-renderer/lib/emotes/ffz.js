@@ -1,9 +1,6 @@
+import axios from 'axios';
+import {sleep} from '../util';
 import channels from '../channels';
-import angular from 'angular';
-
-// TODO modernize this
-
-const $http = angular.injector(["ng"]).get("$http");
 
 var globalEmotes = [];
 var channelEmotes = {};
@@ -13,43 +10,40 @@ channels.on('add', cache);
 channels.on('remove', remove);
 channels.channels.forEach(cache);
 
-function cacheGlobal(delay) {
+async function cacheGlobal(delay) {
   delay = delay || 0;
-
-  setTimeout(function() {
-    $http.get('http://api.frankerfacez.com/v1/set/global')
-      .then(onSuccess)
-      .catch(onError);
-  }, delay);
-
-  function onSuccess(response) {
-    response.data.default_sets.forEach(function(setKey) {
-      response.data.sets[setKey].emoticons.forEach(function(emote) {
+  await sleep(delay);
+  try {
+    const response = await axios('http://api.frankerfacez.com/v1/set/global');
+    const emotes = response.data;
+    emotes.default_sets.forEach((setKey) => {
+      emotes.sets[setKey].emoticons.forEach((emote) => {
         globalEmotes.push({
           emote: emote.name,
           url: 'http:' + emote.urls['1']
         });
-      });
+      })
     });
   }
-
-  function onError() {
+  catch(e) {
     cacheGlobal((delay || 1000) * 2);
   }
 }
 
-function cache(channel) {
+async function cache(channel) {
   channelEmotes[channel] = [];
-  var url = 'http://api.frankerfacez.com/v1/room/' + channel;
-  $http.get(url).then(function(response) {
-    var data = response.data;
-    data.sets[data.room.set].emoticons.forEach(function(emote) {
+  const url = 'http://api.frankerfacez.com/v1/room/' + channel;
+  try {
+    const response = await axios(url);
+    const data = response.data;
+    data.sets[data.room.set].emoticons.forEach((emote) => {
       channelEmotes[channel].push({
         emote: emote.name,
         url: 'http:' + emote.urls['1']
       });
     });
-  });
+  }
+  catch(e) {console.log('NO!')}
 }
 
 function remove(channel) {
