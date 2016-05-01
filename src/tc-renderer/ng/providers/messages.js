@@ -57,7 +57,7 @@ angular.module('tc').factory('messages', (
   }
 
   async function getMoreBacklog(channel) {
-    return getBacklog(channel, earliestMessageTimestampInSec(channel))
+    return getBacklog(channel, earliestMessageTimestamp(channel))
   }
 
   //=====================================================
@@ -86,8 +86,8 @@ angular.module('tc').factory('messages', (
     );
   }
 
-  async function getBacklog(channel, before = now(), after = 0, limit = 100) {
-    const url = 'https://backlog.gettc.xyz/' + channel;
+  async function getBacklog(channel, before = Date.now(), after = 0, limit = 100) {
+    const url = 'https://backlog.gettc.xyz/v1/' + channel;
     if (session.autoScroll) limit = limit > 50? 50 : limit;
     try {
       const req = await axios(url, {params: {before, after, limit}});
@@ -95,7 +95,6 @@ angular.module('tc').factory('messages', (
       backlog.forEach((obj) => {
         obj.type = obj.user['message-type'];
         obj.fromBacklog = true;
-        obj.at *= 1000; // API gives seconds, need ms
         addUserMessage(channel, obj);
       });
       sortMessages(channel);
@@ -105,9 +104,9 @@ angular.module('tc').factory('messages', (
   }
 
   async function getMissingMessages(channel) {
-    const recent = mostRecentMessageTimestampInSec(channel);
+    const recent = mostRecentMessageTimestamp(channel);
     const limit = recent? 100 : 50;
-    getBacklog(channel, now(), recent, limit);
+    getBacklog(channel, Date.now(), recent, limit);
   }
 
   function sortMessages(channel) {
@@ -179,24 +178,21 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Helper methods
   //=====================================================
-  function now() {
-    return Math.round(Date.now() / 1000);
-  }
 
-  function earliestMessageTimestampInSec(channel) {
+  function earliestMessageTimestamp(channel) {
     const msgs = messages[channel];
-    if (!msgs || !msgs.length) return now();
-    else return Math.round(msgs[0].at / 1000);
+    if (!msgs || !msgs.length) return Date.now();
+    else return msgs[0].at;
   }
 
-  function mostRecentMessageTimestampInSec(channel) {
+  function mostRecentMessageTimestamp(channel) {
     const msgs = messages[channel];
     if (!msgs || !msgs.length) return 0;
     else {
       const recentMessage = msgs.slice().reverse().find((msg) => {
         return msg.type === 'chat' || msg.type === 'action';
       });
-      return recentMessage? Math.round(recentMessage.at / 1000) : 0;
+      return recentMessage? recentMessage.at : 0;
     }
   }
 
