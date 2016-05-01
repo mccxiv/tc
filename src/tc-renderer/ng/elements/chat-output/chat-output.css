@@ -117,3 +117,7 @@ chat-output .deleted .message {
   text-decoration: line-through;
   opacity: 0.5;
 }
+
+#nprogress .spinner {
+  top: 47px;
+}

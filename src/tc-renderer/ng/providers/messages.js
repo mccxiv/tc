@@ -89,16 +89,19 @@ angular.module('tc').factory('messages', (
   async function getBacklog(channel, before = now(), after = 0, limit = 100) {
     const url = 'https://backlog.gettc.xyz/' + channel;
     if (session.autoScroll) limit = limit > 50? 50 : limit;
-    const req = await axios(url, {params: {before, after, limit}});
-    const backlog = req.data;
-    backlog.forEach((obj) => {
-      obj.type = obj.user['message-type'];
-      obj.fromBacklog = true;
-      obj.at *= 1000; // API gives seconds, need ms
-      addUserMessage(channel, obj);
-    });
-    sortMessages(channel);
-    return true;
+    try {
+      const req = await axios(url, {params: {before, after, limit}});
+      const backlog = req.data;
+      backlog.forEach((obj) => {
+        obj.type = obj.user['message-type'];
+        obj.fromBacklog = true;
+        obj.at *= 1000; // API gives seconds, need ms
+        addUserMessage(channel, obj);
+      });
+      sortMessages(channel);
+      return true;
+    }
+    catch(e) {return false;}
   }
 
   async function getMissingMessages(channel) {

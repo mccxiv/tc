@@ -1,6 +1,9 @@
+
+import 'nprogress/nprogress.css';
 import './chat-output.css';
 import 'frostyjs/dist/css/frosty.min.css';
 import 'imports?jQuery=jquery!frostyjs/dist/js/frosty.min.js';
+import NProgress from 'nprogress';
 import throttle from 'lodash.throttle';
 import $ from 'jquery';
 import angular from 'angular';
@@ -37,6 +40,7 @@ angular.module('tc').directive('chatOutput',
     fetchBadges();
     handleAnchorClicks();
     handleEmoteHover();
+    setupNprogress();
     requestAnimationFrame(scrollDown);
     delayedScroll(); // Need to rescroll once emotes and badges are loaded
 
@@ -53,6 +57,13 @@ angular.module('tc').directive('chatOutput',
     //===============================================================
     // Functions
     //===============================================================
+    function setupNprogress() {
+      NProgress.configure({
+        trickleRate: 0.18,
+        trickleSpeed: 50,
+      });
+    }
+
     function badgeBg(prop) {
       if (!scope.badges) return undefined;
       return {'background-image': `url(${scope.badges[prop].image})`};
@@ -127,12 +138,14 @@ angular.module('tc').directive('chatOutput',
      */
     async function getMoreBacklog() {
       if (fetchingBacklog) return;
+      NProgress.start();
       fetchingBacklog = true;
       const old = distanceFromBottom();
       await messages.getMoreBacklog(scope.channel);
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           scrollIfEnabled();
+          NProgress.done();
           setTimeout(delayedScroll, 101);
           setTimeout(() => fetchingBacklog = false, 40); // Cooldown period
           e.scrollTop += distanceFromBottom() - old;

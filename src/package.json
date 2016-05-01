@@ -21,6 +21,7 @@
     "lodash.escaperegexp": "^4.1.1",
     "lodash.throttle": "^4.0.1",
     "material-design-iconic-font": "2.1.2",
+    "nprogress": "^0.2.0",
     "proxy-observe": "0.0.9",
     "roboto-fontface": "0.4.5",
     "spellchecker": "3.2.3",
