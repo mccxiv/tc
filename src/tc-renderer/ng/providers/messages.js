@@ -22,6 +22,7 @@ angular.module('tc').factory('messages', (
   //=====================================================
   fetchFfzDonors();
   setupIrcListeners();
+  getMissingMessagesOnReconnect();
   deleteExtraMessagesOnAutoscrollEnabled();
   channels.channels.forEach(make);
   channels.on('add', make);
@@ -63,6 +64,13 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Private methods
   //=====================================================
+  function getMissingMessagesOnReconnect() {
+    irc.on('disconnected', () => {
+      irc.once('connected', () => {
+        settings.channels.forEach(getMissingMessages);
+      });
+    })
+  }
   function setupIrcListeners() {
     const listeners = getChatListeners();
     Object.keys(listeners).forEach((key) => {
@@ -228,6 +236,7 @@ angular.module('tc').factory('messages', (
   function make(channel) {
     messages[channel] = [];
     messages[channel].counter = 0;
+    getMissingMessages(channel);
   }
 
   function capitalize(str) {
@@ -250,7 +259,6 @@ angular.module('tc').factory('messages', (
       connected: () => {
         settings.channels.forEach((channel) => {
           addNotification(channel, `Welcome to ${channel}'s chat.`);
-          getMissingMessages(channel);
         });
       },
       disconnected: () => {

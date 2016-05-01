@@ -43,7 +43,7 @@ async function cache(channel) {
       });
     });
   }
-  catch(e) {console.log('NO!')}
+  catch(e) {}
 }
 
 function remove(channel) {

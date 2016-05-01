@@ -15,7 +15,7 @@ import _ from 'lodash';
 angular.module('tc').factory('emotesTwitch', function($http, irc) {
   var emotes = [];
 
-  irc.on('emotesets', function(sets) {
+  irc.once('emotesets', function(sets) {
     var url = 'https://api.twitch.tv/kraken/chat/emoticon_images';
     url += '?emotesets=' + sets;
 
