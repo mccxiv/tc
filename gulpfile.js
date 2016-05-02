@@ -5,8 +5,7 @@ var gulp = require('gulp');
 shell.config.throw = true; // Throw on error
 
 gulp.task('postinstall', function() {
-  shell.exec('bower install --allow-root');
-  shell.exec('cd src && npm install --unsafe-perm');
+  shell.exec('cd src && npm install');
 });
 
 gulp.task('launch', function() {

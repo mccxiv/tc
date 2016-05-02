@@ -1,5 +1,3 @@
-import './app.css';
-import './themes/dark.css';
 import './lib/startup/icon-font';
 import $ from 'jquery';
 import enableSpellchecker from './lib/startup/enable-spellchecker';
@@ -12,6 +10,9 @@ import makeTrayIconOnWindows from './lib/startup/tray-icon';
 import watchZoomChanges from './lib/startup/app-zoom';
 
 import './lib/startup/angular-stuff';
+
+import './app.css';
+import './themes/dark.css';
 
 console.log('Welcome to the Developer Console!');
 console.log('Technical info and error messages will be displayed here.');
