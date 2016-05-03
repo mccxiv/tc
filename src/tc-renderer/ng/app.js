@@ -4,9 +4,9 @@ import ngSanitize from 'angular-sanitize';
 import settings from '../lib/settings/settings';
 import 'angular-material/angular-material.css';
 
-angular.module('tc', [ngMaterial, ngSanitize]);
+const app = angular.module('tc', [ngMaterial, ngSanitize]);
 
-angular.module('tc').controller('main', ($scope, session, irc) => {
+app.controller('main', ($scope, session, irc) => {
   $scope.session = session;
   $scope.settings = settings;
 
@@ -24,4 +24,6 @@ angular.module('tc').controller('main', ($scope, session, irc) => {
 });
 
 /** Eagerly load stuff */
-angular.module('tc').run((messages, notifications) => {});
+app.run((messages, notifications) => {});
+
+app.config(($compileProvider) => $compileProvider.debugInfoEnabled(false));
