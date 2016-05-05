@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import {api} from '../../lib/api';
 
 /**
  * Provides an array of available Twitch emotes
@@ -12,17 +13,20 @@ import _ from 'lodash';
  *
  * @return {{emote: string}[]} May be empty if it hasn't been cached yet
  */
-angular.module('tc').factory('emotesTwitch', function($http, irc) {
+angular.module('tc').factory('emotesTwitch', function(irc) {
   var emotes = [];
 
   irc.once('emotesets', function(sets) {
-    var url = 'https://api.twitch.tv/kraken/chat/emoticon_images';
-    url += '?emotesets=' + sets;
-
     getEmotes();
 
-    function getEmotes() {
-      $http.get(url).success(onSuccess).error(onFail);
+    async function getEmotes() {
+      try {
+        const images = await api('chat/emoticon_images?emotesets=' + sets);
+        onSuccess(images);
+      }
+      catch(e) {
+        onFail();
+      }
 
       function onSuccess(data) {
         try {
