@@ -7,6 +7,10 @@ user-panel .zmdi {
   vertical-align: -1px;
 }
 
+user-panel .zmdi.zmdi-comment-more {
+  vertical-align: -2px;
+}
+
 user-panel .profile-picture-div {
   width: 53px;
   height: 53px;
