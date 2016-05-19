@@ -30,30 +30,33 @@
       </md-button>
 
       <md-button ng-click="sendMessage()" aria-label="Message">
-        <md-tooltip md-autohide>Private Message</md-tooltip>
+        <md-tooltip md-autohide>Message Via Website</md-tooltip>
         <i class="zmdi zmdi-email"></i>
+      </md-button>
+
+      <md-button ng-click="whisper()" aria-label="Whisper">
+        <md-tooltip md-autohide>Whisper</md-tooltip>
+        <i class="zmdi zmdi-comment-more"></i>
       </md-button>
 
       <span flex></span>
 
-            <span ng-class="{disabled: !amMod()}">
+        <span ng-class="{disabled: !amMod()}">
+          <md-button ng-click="purge()" aria-label="Purge">
+            <md-tooltip md-autohide>Purge (3s)</md-tooltip>
+            <i class="zmdi zmdi-replay-5"></i>
+          </md-button>
 
-                <md-button ng-click="purge()" aria-label="Purge">
-                  <md-tooltip md-autohide>Purge (3s)</md-tooltip>
-                  <i class="zmdi zmdi-replay-5"></i>
-                </md-button>
+          <md-button ng-click="timeout()" aria-label="Timeout">
+            <md-tooltip md-autohide>Timeout (10m)</md-tooltip>
+            <i class="zmdi zmdi-time-restore"></i>
+          </md-button>
 
-                <md-button ng-click="timeout()" aria-label="Timeout">
-                  <md-tooltip md-autohide>Timeout (10m)</md-tooltip>
-                  <i class="zmdi zmdi-time-restore"></i>
-                </md-button>
-
-                <md-button ng-click="ban()" aria-label="Ban">
-                  <md-tooltip md-autohide>Ban</md-tooltip>
-                  <i class="zmdi zmdi-block"></i>
-                </md-button>
-
-            </span>
+          <md-button ng-click="ban()" aria-label="Ban">
+            <md-tooltip md-autohide>Ban</md-tooltip>
+            <i class="zmdi zmdi-block"></i>
+          </md-button>
+        </span>
 
     </div>
   </div>

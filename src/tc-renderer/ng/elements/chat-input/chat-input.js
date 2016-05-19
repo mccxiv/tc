@@ -9,10 +9,10 @@ angular.module('tc').directive('chatInput',
   (session, irc, messages, emotesTwitch) => {
 
   function link(scope, element) {
-    scope.message = '';
     scope.session = session;
     scope.irc = irc;
     const input = element.find('input')[0];
+    session.input = input; // TODO make a better system
     let lastWhisperer;
 
     irc.on('whisper', (from) => lastWhisperer = from.username);
@@ -60,41 +60,41 @@ angular.module('tc').directive('chatInput',
 
     scope.input = () => {
       var channel = settings.channels[settings.selectedTabIndex];
-      if (!channel || !scope.message.trim().length) return;
+      if (!channel || !session.message.trim().length) return;
 
-      if (/^\/shrug$/.test(scope.message)) {
+      if (/^\/shrug$/.test(session.message)) {
         irc.say(channel, '¯\\_(ツ)_/¯');
       }
 
-      if (/^\/lenny$/.test(scope.message)) {
+      if (/^\/lenny$/.test(session.message)) {
         irc.say(channel, '( ͡° ͜ʖ ͡°)');
       }
 
-      if (/^\/donger$/.test(scope.message)) {
+      if (/^\/donger$/.test(session.message)) {
         irc.say(channel, 'ヽ༼ຈل͜ຈ༽ﾉ');
       }
 
-      if (scope.message.charAt(0) === '/') {
-        scope.message = '.' + scope.message.substr(1);
+      if (session.message.charAt(0) === '/') {
+        session.message = '.' + session.message.substr(1);
       }
 
-      if (scope.message.indexOf('.w') === 0) {
-        var words = scope.message.split(' ');
+      if (session.message.indexOf('.w') === 0) {
+        var words = session.message.split(' ');
         var username = words[1];
         var message = words.slice(2).join(' ');
         irc.whisper(username, message);
         messages.addWhisper(settings.identity.username, username, message);
       }
 
-      else irc.say(channel, scope.message);
+      else irc.say(channel, session.message);
 
-      scope.message = '';
+      session.message = '';
     };
 
     scope.change = function() {
-      if (scope.message === '/r ') {
-        if (lastWhisperer) scope.message = '/w ' + lastWhisperer + ' ';
-        else scope.message = '/w ';
+      if (session.message === '/r ') {
+        if (lastWhisperer) session.message = `/w ${lastWhisperer} `;
+        else session.message = '/w ';
       }
     };
   }

@@ -4,6 +4,7 @@ import template from './user-panel.html';
 import {user} from '../../../lib/api';
 import settings from '../../../lib/settings/settings';
 import capitalize from '../../../lib/transforms/capitalize';
+import {focus} from '../chat-input/chat-input';
 
 angular.module('tc').directive('userPanel',
   ($document, session, irc, openExternal) => {
@@ -54,6 +55,11 @@ angular.module('tc').directive('userPanel',
     scope.sendMessage = () => {
       const composeUrl = 'http://www.twitch.tv/message/compose?to=';
       openExternal(composeUrl + session.selectedUser);
+    };
+
+    scope.whisper = () => {
+      session.message = `/w ${session.selectedUser} `;
+      session.input.focus();
     };
 
     scope.timeout = (seconds) => {

@@ -3,7 +3,7 @@
     <label>Send a message</label>
     <input spellcheck="true"
            ng-disabled="!irc.ready"
-           ng-model="message"
+           ng-model="session.message"
            ng-trim="false"
            ng-focus="session.inputFocused = true"
            ng-blur="session.inputFocused = false"
