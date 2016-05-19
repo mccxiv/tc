@@ -1,4 +1,4 @@
-const regex = /\S*\w+\.[a-zA-Z]{2,63}\S*/;
+const regex = /\S*\w+\.[a-zA-Z]{2,63}\S*/g;
 
 function makeAnchor(url) {
   const original = url;
@@ -7,5 +7,5 @@ function makeAnchor(url) {
 }
 
 export default function addLinks(msg) {
-  return msg.replace(regex, (match) => makeAnchor(match));
+  return msg.replace(regex, match => makeAnchor(match));
 }
