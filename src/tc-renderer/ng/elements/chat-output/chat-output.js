@@ -61,7 +61,7 @@ angular.module('tc').directive('chatOutput',
     function setupNprogress() {
       NProgress.configure({
         trickleRate: 0.18,
-        trickleSpeed: 50,
+        trickleSpeed: 80,
       });
     }
 
