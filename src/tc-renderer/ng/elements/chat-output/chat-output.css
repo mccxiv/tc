@@ -25,6 +25,7 @@ chat-output .timestamp {
 chat-output .badge {
   width: 18px;
   height: 18px;
+  border-radius: 2px;
 }
 
 chat-output .emoticon,
