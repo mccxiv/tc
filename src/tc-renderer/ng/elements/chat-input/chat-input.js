@@ -62,15 +62,15 @@ angular.module('tc').directive('chatInput',
       var channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !scope.message.trim().length) return;
 
-      if (/\/shrug$/.test(scope.message)) {
+      if (/^\/shrug$/.test(scope.message)) {
         irc.say(channel, '¯\\_(ツ)_/¯');
       }
 
-      if (/\/lenny$/.test(scope.message)) {
+      if (/^\/lenny$/.test(scope.message)) {
         irc.say(channel, '( ͡° ͜ʖ ͡°)');
       }
 
-      if (/\/donger$/.test(scope.message)) {
+      if (/^\/donger$/.test(scope.message)) {
         irc.say(channel, 'ヽ༼ຈل͜ຈ༽ﾉ');
       }
 
