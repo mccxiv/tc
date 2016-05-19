@@ -205,8 +205,8 @@ angular.module('tc').factory('messages', (
   }
 
   async function fetchFfzDonors() {
-    const req = await axios('http://cdn.frankerfacez.com/script/donors.txt');
-    const donors = req.data.split('\n').map((s) => s.trim());
+    const req = await axios('https://api.frankerfacez.com/v1/badge/supporter');
+    const donors = req.data.users[3];
     ffzDonors.push(...donors);
   }
 
