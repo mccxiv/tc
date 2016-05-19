@@ -40,6 +40,7 @@ angular.module('tc').directive('chatOutput',
     fetchBadges();
     handleAnchorClicks();
     handleEmoteHover();
+    handleBadgeHover();
     setupNprogress();
     requestAnimationFrame(scrollDown);
     delayedScroll(); // Need to rescroll once emotes and badges are loaded
@@ -49,7 +50,7 @@ angular.module('tc').directive('chatOutput',
     //===============================================================
     scope.selectUsername = selectUsername;
     scope.isBroadcaster = isBroadcaster;
-    scope.trusted = (html) => $sce.trustAsHtml(html);
+    scope.trusted = html => $sce.trustAsHtml(html);
     scope.calculateColor = calculateColor;
     scope.scrollDown = scrollDown;
     scope.badgeBg = badgeBg;
@@ -86,23 +87,44 @@ angular.module('tc').directive('chatOutput',
     }
 
     function handleEmoteHover() {
-      element.on('mouseenter', '.emoticon', (e) => {
+      element.on('mouseenter', '.emoticon', e => {
         const emoticon = $(e.target);
         let tooltip = emoticon.data('emote-name');
         const description = emoticon.data('emote-description');
 
         if (description) tooltip += '<br>' + description;
-        // TODO memory leak?
-        emoticon.frosty({html: true, content: tooltip});
-        emoticon.frosty('show');
-        emoticon.one('mouseleave', kill);
-        setTimeout(kill, 3000);
-
-        function kill() {
-          emoticon.frosty('hide');
-          emoticon.off();
-        }
+        showTooltip(emoticon, tooltip);
       });
+    }
+
+    function handleBadgeHover() {
+      const descriptions = {
+        global_mode: 'Global Moderator',
+        admin: 'Twitch Admin',
+        subscriber: 'Channel Subscriber',
+        mod: 'Moderator',
+        staff: 'Twitch Staff',
+        turbo: '"Turbo" Subscriber',
+        ffz_donor: 'FFZ Supporter'
+      };
+
+      element.on('mouseenter', '.badge', e => {
+        const badge = $(e.target);
+        const type = badge.data('badge-type');
+        showTooltip(badge, descriptions[type]);
+      });
+    }
+
+    function showTooltip(el, content) {
+      el.frosty({html: true, content});
+      el.frosty('show');
+      el.one('mouseleave', kill);
+      setTimeout(kill, 3000);
+
+      function kill() {
+        el.frosty('hide');
+        el.off();
+      }
     }
 
     function scrollOnWindowResize() {
