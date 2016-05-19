@@ -140,16 +140,23 @@ angular.module('tc').directive('chatOutput',
      * shows all lines when scrolling up to the top (infinite scroll)
      */
     function watchUserScrolling() {
-      element.on('wheel', handler);
+      const throttled = throttle(handler, 250);
+
+      element.on('scroll', throttled);
 
       function handler() {
-        const before = session.autoScroll;
-        session.autoScroll = distanceFromBottom() === 0;
+        const prev = distanceFromBottom();
+        const scrollingBefore = session.autoScroll;
+
         setTimeout(() => {
-          session.autoScroll = distanceFromBottom() === 0;
-          if (before !== session.autoScroll) scope.$apply();
-          if (!session.autoScroll && distanceFromTop() === 0) getMoreBacklog();
-        }, 250); // Wait until the scroll has actually happened
+          const curr = distanceFromBottom();
+          if (curr > prev) { // Going up
+            session.autoScroll = false;
+            if (distanceFromTop() === 0) getMoreBacklog();
+          }
+          else if (prev > curr && curr === 0) session.autoScroll = true;
+          if (scrollingBefore !== session.autoScroll) scope.$apply();
+        }, 240);
       }
     }
 
