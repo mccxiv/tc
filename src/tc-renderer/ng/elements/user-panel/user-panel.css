@@ -66,3 +66,7 @@ user-panel .creation-date {
 user-panel .md-button:not([disabled]):hover {
   background-color: inherit;
 }
+
+user-panel .disabled {
+  opacity: 0.2;
+}
