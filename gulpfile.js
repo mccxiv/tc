@@ -29,6 +29,13 @@ gulp.task('reinstall', function() {
 gulp.task('build', function() {
   shell.rm('-rf', '_dist');
   shell.mkdir('-p', '_dist');
+  shell.rm('-rf', '_build');
+  shell.mkdir('-p', '_build/node_modules/');
+  shell.cp('-r', 'src/node_modules/spellchecker/', '_build/node_modules/spellchecker/');
+  shell.cp('-r', 'src/node_modules/nan/', '_build/node_modules/nan/');
+  shell.exec(path.normalize('./node_modules/.bin/webpack'));
+  shell.cp('src/tc-renderer/index.html', '_build/index.html');
+  shell.cp('src/package.json', '_build/package.json');
   shell.exec(path.normalize('./node_modules/.bin/webpack')); // -p Breaks it :(
   shell.exec('npm run dist');
   shell.mv('dist/win-x64/**', '_dist/');
