@@ -145,6 +145,7 @@ angular.module('tc').directive('chatOutput',
       element.on('scroll', throttled);
 
       function handler() {
+        if (fetchingBacklog) return;
         const prev = distanceFromBottom();
         const scrollingBefore = session.autoScroll;
 
