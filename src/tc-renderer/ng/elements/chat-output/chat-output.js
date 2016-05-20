@@ -61,7 +61,7 @@ angular.module('tc').directive('chatOutput',
     function setupNprogress() {
       NProgress.configure({
         trickleRate: 0.18,
-        trickleSpeed: 80,
+        trickleSpeed: 80
       });
     }
 
@@ -69,7 +69,7 @@ angular.module('tc').directive('chatOutput',
       if (!scope.badges) return undefined;
       return {'background-image': `url(${scope.badges[prop].image})`};
     }
-    
+
     function selectUsername(username) {
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;
@@ -140,24 +140,16 @@ angular.module('tc').directive('chatOutput',
      * shows all lines when scrolling up to the top (infinite scroll)
      */
     function watchUserScrolling() {
-      const throttled = throttle(handler, 250);
-
-      element.on('scroll', throttled);
+      element.on('wheel', handler);
 
       function handler() {
-        if (fetchingBacklog) return;
-        const prev = distanceFromBottom();
-        const scrollingBefore = session.autoScroll;
-
+        const before = session.autoScroll;
+        session.autoScroll = distanceFromBottom() === 0;
         setTimeout(() => {
-          const curr = distanceFromBottom();
-          if (curr > prev) { // Going up
-            session.autoScroll = false;
-            if (distanceFromTop() === 0) getMoreBacklog();
-          }
-          else if (prev > curr && curr === 0) session.autoScroll = true;
-          if (scrollingBefore !== session.autoScroll) scope.$apply();
-        }, 240);
+          session.autoScroll = distanceFromBottom() === 0;
+          if (before !== session.autoScroll) scope.$apply();
+          if (!session.autoScroll && distanceFromTop() === 0) getMoreBacklog();
+        }, 250); // Wait until the scroll has actually happened
       }
     }
 
