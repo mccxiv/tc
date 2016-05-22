@@ -143,6 +143,7 @@ angular.module('tc').directive('chatOutput',
       element.on('wheel', handler);
 
       function handler() {
+        if (fetchingBacklog) return;
         const before = session.autoScroll;
         session.autoScroll = distanceFromBottom() === 0;
         setTimeout(() => {
