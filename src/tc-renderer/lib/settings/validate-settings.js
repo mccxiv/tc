@@ -38,6 +38,8 @@ export default (settings) => {
 
   if (!angular.isObject(s.behavior)) s.behavior = angular.copy(defaults.behavior);
   if (typeof s.behavior.autoStart !== 'boolean') s.behavior.autoStart = angular.copy(defaults.behavior.autoStart);
+  
+  if (!angular.isObject(s.phrases)) s.phrases = angular.copy(defaults.phrases);
 
   return s;
 }

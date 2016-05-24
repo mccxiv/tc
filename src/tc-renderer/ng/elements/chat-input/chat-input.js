@@ -1,6 +1,7 @@
 import './chat-input.css';
 import angular from 'angular';
 import template from './chat-input.html';
+import replacePhrases from '../../../lib/transforms/replace-phrases';
 import settings from '../../../lib/settings/settings';
 import emotesFfz from '../../../lib/emotes/ffz';
 import emotesBttv from '../../../lib/emotes/bttv';
@@ -66,14 +67,6 @@ angular.module('tc').directive('chatInput',
         irc.say(channel, '¯\\_(ツ)_/¯');
       }
 
-      if (/^\/lenny$/.test(session.message)) {
-        irc.say(channel, '( ͡° ͜ʖ ͡°)');
-      }
-
-      if (/^\/donger$/.test(session.message)) {
-        irc.say(channel, 'ヽ༼ຈل͜ຈ༽ﾉ');
-      }
-
       if (session.message.charAt(0) === '/') {
         session.message = '.' + session.message.substr(1);
       }
@@ -92,9 +85,14 @@ angular.module('tc').directive('chatInput',
     };
 
     scope.change = function() {
-      if (session.message === '/r ') {
+      const msg = session.message;
+      if (msg === '/r ') {
         if (lastWhisperer) session.message = `/w ${lastWhisperer} `;
         else session.message = '/w ';
+      }
+
+      else if (msg.startsWith('/') || msg.endsWith(':')) {
+        session.message = replacePhrases(msg);
       }
     };
   }

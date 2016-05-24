@@ -26,6 +26,7 @@ export default {
   behavior: {
     autoStart: false
   },
+  phrases: {},
   selectedTabIndex: 0,
   channels: [],
   highlights: [],
