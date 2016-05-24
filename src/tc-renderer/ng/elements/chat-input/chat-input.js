@@ -63,10 +63,6 @@ angular.module('tc').directive('chatInput',
       var channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !session.message.trim().length) return;
 
-      if (/^\/shrug$/.test(session.message)) {
-        irc.say(channel, '¯\\_(ツ)_/¯');
-      }
-
       if (session.message.charAt(0) === '/') {
         session.message = '.' + session.message.substr(1);
       }
