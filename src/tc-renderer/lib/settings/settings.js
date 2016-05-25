@@ -24,7 +24,6 @@ function loadSettingsFromLocalstorageInstead() {
 }
 
 function saveSettings() {
-  console.log('Saving settings.');
   jsonFile.writeFileSync(settingsFilePath(), settings, {spaces: 2});
 }
 
