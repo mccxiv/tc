@@ -3,6 +3,7 @@ import angular from 'angular';
 import electron from 'electron';
 import template from './settings-panel.html';
 import settings from '../../../lib/settings/settings';
+import replacements from '../../../lib/data/replacements.json';
 import autoUpdater from '../../../lib/auto-updater';
 
 angular.module('tc').directive('settingsPanel', (highlights, notifications) => {
@@ -31,6 +32,36 @@ angular.module('tc').directive('settingsPanel', (highlights, notifications) => {
       },
       changeHighlightMe() {highlights.highlightMe(this.highlightMe)},
       save() {highlights.set(this.list)}
+    };
+
+    scope.shortcuts = {
+      defaults: replacements,
+      customs: settings.shortcuts,
+      new: {
+        name: '',
+        value: ''
+      },
+      newOnKey($event) {
+        if ($event.which === 13) {
+          const name = this.new.name.trim().toLowerCase();
+          const value = this.new.value.trim();
+          if (!name || !value) return;
+          settings.shortcuts[name] = value;
+          this.new.name = '';
+          this.new.value = '';
+        }
+      },
+      existingOnKey($event, name) {
+        if ($event.which === 13) this.checkDelete(name);
+      },
+      checkDelete(name) {
+        if (!settings.shortcuts[name].trim()) {
+          delete settings.shortcuts[name];
+        }
+      },
+      haveCustoms() {
+        return Object.keys(settings.shortcuts).length > 0;
+      }
     };
 
     scope.notifications = {

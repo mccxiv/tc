@@ -12,6 +12,11 @@
       <p>Highlights</p>
     </md-list-item>
     <md-list-item class="menu-item"
+                  ng-click="m.selected = 'shortcuts'"
+                  ng-class="{selected: m.selected === 'shortcuts'}">
+      <p>Shortcuts</p>
+    </md-list-item>
+    <md-list-item class="menu-item"
                   ng-click="m.selected = 'notifications'"
                   ng-class="{selected: m.selected === 'notifications'}">
       <p>Notifications</p>
@@ -74,6 +79,61 @@
                ng-change="highlights.changeHighlightMe()">
       Also highlight my own name
     </md-switch>
+  </md-content>
+
+  <md-content ng-switch-when="shortcuts" class="shortcuts">
+    <h1 class="md-headline">Text Shortcuts</h1>
+    <p>In the chat, surround a keyword with colons to replace it with its text.</p>
+
+    <h3>Add new shortcut</h3>
+    <form class="input-form new-shortcut-form">
+      <md-input-container>
+        <label>Keyword</label>
+        <input
+          ng-model="shortcuts.new.name"
+          ng-keypress="shortcuts.newOnKey($event)"
+        >
+      </md-input-container>
+      <md-input-container>
+        <label>Replacement</label>
+        <input
+          ng-model="shortcuts.new.value"
+          ng-keypress="shortcuts.newOnKey($event)"
+        >
+      </md-input-container>
+    </form>
+
+    <h3 ng-if="shortcuts.haveCustoms()">Custom Shortcuts</h3>
+
+    <md-list class="shortcut-list">
+      <md-list-item
+        class="item"
+        ng-repeat="(name, value) in shortcuts.customs"
+      >
+        <md-input-container>
+          <label>{{name}}</label>
+          <input
+            ng-model="shortcuts.customs[name]"
+            ng-keypress="shortcuts.existingOnKey($event, name)"
+            ng-blur="shortcuts.checkDelete(name)"
+          >
+        </md-input-container>
+      </md-list-item>
+    </md-list>
+
+    <h3>Default Shortcuts</h3>
+    <md-list class="shortcut-list">
+      <md-list-item
+        class="item"
+        ng-repeat="(name, value) in shortcuts.defaults"
+      >
+        <p><span class="shortcut-name">{{name}}</span> {{value}}</p>
+      </md-list-item>
+    </md-list>
+
+    <h3>Emojis</h3>
+    <p>Symbols and emojis are supported. Try :tm: and :poop: in chat.</p>
+
   </md-content>
 
   <md-content ng-switch-when="notifications">
