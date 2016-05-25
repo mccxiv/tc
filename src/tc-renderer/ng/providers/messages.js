@@ -25,8 +25,8 @@ angular.module('tc').factory('messages', (
   setupIrcListeners();
   getMissingMessagesOnReconnect();
   deleteExtraMessagesOnAutoscrollEnabled();
-  announceTwitter();
   channels.channels.forEach(make);
+  announceTwitter();
   channels.on('add', make);
   channels.on('remove', (channel) => delete messages[channel]);
 
@@ -69,7 +69,8 @@ angular.module('tc').factory('messages', (
   //=====================================================
   function announceTwitter() {
     const ver = electron.remote.app.getVersion();
-    addGlobalNotification(`Tc ${ver}, check twitter.com/tcchat for changes.`);
+    const channel = settings.channels[settings.selectedTabIndex];
+    addNotification(channel, `v${ver} - see twitter.com/tctwitch for changes.`);
   }
 
   function getMissingMessagesOnReconnect() {
@@ -115,6 +116,7 @@ angular.module('tc').factory('messages', (
         addUserMessage(channel, obj);
       });
       sortMessages(channel);
+      if (session.autoScroll) trimMessages(channel);
       return true;
     }
     catch(e) {return false;}
@@ -128,6 +130,12 @@ angular.module('tc').factory('messages', (
 
   function sortMessages(channel) {
     messages[channel].sort((a, b) => a.at - b.at);
+  }
+
+  function trimMessages(channel) {
+    while (messages[channel].length > messageLimit) {
+      messages[channel].shift();
+    }
   }
 
   /**
@@ -174,7 +182,7 @@ angular.module('tc').factory('messages', (
     }
 
     // Too many messages in memory
-    if (session.autoScroll) {
+    if (session.autoScroll && !fromBacklog) {
       if (messages[channel].length > messageLimit) {
         messages[channel].shift();
       }
