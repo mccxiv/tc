@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import angular from 'angular';
 import axios from 'axios';
+import electron from 'electron';
 import settings from '../../lib/settings/settings';
 import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
@@ -24,9 +25,11 @@ angular.module('tc').factory('messages', (
   setupIrcListeners();
   getMissingMessagesOnReconnect();
   deleteExtraMessagesOnAutoscrollEnabled();
+  announceTwitter();
   channels.channels.forEach(make);
   channels.on('add', make);
   channels.on('remove', (channel) => delete messages[channel]);
+
 
   //=====================================================
   // Public methods
@@ -64,6 +67,11 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Private methods
   //=====================================================
+  function announceTwitter() {
+    const ver = electron.remote.app.getVersion();
+    addGlobalNotification(`Tc ${ver}, check twitter.com/tcchat for changes.`);
+  }
+
   function getMissingMessagesOnReconnect() {
     irc.on('disconnected', () => {
       irc.once('connected', () => {
@@ -71,6 +79,7 @@ angular.module('tc').factory('messages', (
       });
     })
   }
+
   function setupIrcListeners() {
     const listeners = getChatListeners();
     Object.keys(listeners).forEach((key) => {
