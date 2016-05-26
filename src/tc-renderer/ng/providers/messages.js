@@ -70,6 +70,7 @@ angular.module('tc').factory('messages', (
   function announceTwitter() {
     const ver = electron.remote.app.getVersion();
     const channel = settings.channels[settings.selectedTabIndex];
+    if (!channel) return;
     addNotification(channel, `v${ver} - see twitter.com/tctwitch for changes.`);
   }
 
