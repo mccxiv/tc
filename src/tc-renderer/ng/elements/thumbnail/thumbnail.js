@@ -1,4 +1,6 @@
 import './thumbnail.css';
+import which from 'which';
+import {spawn} from 'child_process';
 import angular from 'angular';
 import template from './thumbnail.html';
 import * as api from '../../../lib/api';
@@ -9,9 +11,11 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
 
   function link(scope, element) {
     const stop = setInterval(load, 60000);
-    scope.m = {img: '', channel: null, stream: null};
+    scope.m = {img: '', channel: null, stream: null, livestreamer: false};
 
     load();
+    checkLivestreamerInstallation();
+    
     element.attr('layout', 'column');
 
     channels.on('change', () => {
@@ -22,9 +26,23 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
 
     scope.$on('$destroy', () => clearInterval(stop));
 
-    scope.openStream = () => {
+    scope.playLivestreamer = (audioOnly) => {
+      const type = audioOnly? 'audio' : 'best';
+      const channel = 'twitch.tv/' + scope.channel();
+      const opts = {detached: true, stdio: ['ignore']};
+      const child = spawn('livestreamer', [channel, type], opts);
+      child.unref();
+    };
+
+    scope.playTwitch = () => {
       openExternal(`http://www.twitch.tv/${scope.channel()}/popout`);
     };
+
+    function checkLivestreamerInstallation() {
+      which('livestreamer', err => {
+        scope.m.livestreamer = !err;
+      });
+    }
 
     function getChannel() {
       return settings.channels[settings.selectedTabIndex];

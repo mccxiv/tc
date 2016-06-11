@@ -10,9 +10,28 @@
             <i class="zmdi zmdi-account"></i> {{m.stream.viewers}}
         </span>
   </div>
-  <div class="hover-content" layout="column" layout-align="center center">
-    <i class="zmdi zmdi-play-circle-outline play-button"
-       ng-click="openStream()"></i>
+  <div class="hover-content" layout="row" layout-align="center center">
+    <i class="zmdi zmdi-hearing play"
+       ng-if="m.livestreamer"
+       ng-click="playLivestreamer(true)"
+    >
+      <md-tooltip md-autohide>
+        Audio Only
+      </md-tooltip>
+    </i>
+    <i class="zmdi zmdi-play-circle-outline play"
+       ng-if="m.livestreamer"
+       ng-click="playLivestreamer()"
+    >
+      <md-tooltip md-autohide>
+        Livestreamer
+      </md-tooltip>
+    </i>
+    <i class="zmdi zmdi-open-in-new play" ng-click="playTwitch()">
+      <md-tooltip md-autohide>
+        Twitch
+      </md-tooltip>
+    </i>
 
     <md-button ng-click="settings.appearance.thumbnail = false"
                aria-label="Hide thumbnail" class="hide-button">
