@@ -7,8 +7,8 @@ import addEmotesAsImages from './add-emotes-as-images';
 
 export default function processMessage(message, channel, emotesFromTwitch) {
   const twitchE = emotesFromTwitch;
-  let msg;
-  msg = escape(message);
+  let msg = message;
+  msg = escape(msg);
   msg = addLinks(msg);
   msg = addEmotesAsImages(msg, bttvEmotes(channel));
   msg = addEmotesAsImages(msg, ffzEmotes(channel));
