@@ -13,10 +13,12 @@ angular.module('tc').factory('notifications', (irc, highlights) => {
     }
   });
 
-  irc.on('whisper', (from, message) => {
+  irc.on('whisper', (from, user, message, self) => {
+    if (self) return;
     if (settings.notifications.onWhisper) {
-      if (settings.chat.ignored.indexOf(from.username) >= 0) return;
-      n('Whisper from ' + (from['display-name'] || from.username), message);
+      if (from.startsWith('#')) from = from.substring(1);
+      if (settings.chat.ignored.indexOf(from) >= 0) return;
+      n('Whisper from ' + from, message);
       if (settings.notifications.soundOnMention) sound.play();
     }
   });
