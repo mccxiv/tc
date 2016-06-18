@@ -285,6 +285,8 @@ angular.module('tc').factory('messages', (
   function getChatListeners() {
     return {
       action: (channel, user, message) => {
+        // TODO remove after tmi adds self emote parsing
+        if (self) user.emotes = generateEmotesProperty(message, _tempTwitchEmotes);
         addUserMessage(channel, {type: 'action', user, message});
       },
       ban: (channel, username, reason) => {
