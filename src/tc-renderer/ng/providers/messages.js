@@ -332,7 +332,8 @@ angular.module('tc').factory('messages', (
         addNotification(channel, msg);
       },
       notice: (channel, msgid, message) => {
-        addNotification(channel, message);
+        const ignored = ['ban_success', 'timeout_success'];
+        if (!ignored.includes(msgid)) addNotification(channel, message);
       },
       r9kbeta: (channel, on) => {
         const enabled = 'The channel is now in r9k mode.';
