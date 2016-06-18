@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import angular from 'angular';
 import axios from 'axios';
+import moment from 'moment';
 import electron from 'electron';
 import settings from '../../lib/settings/settings';
 import channels from '../../lib/channels';
@@ -266,6 +267,12 @@ angular.module('tc').factory('messages', (
       action: (channel, user, message) => {
         addUserMessage(channel, {type: 'action', user, message});
       },
+      ban: (channel, username, reason) => {
+        const baseMsg = username + ' has been banned.';
+        const msg = baseMsg + reason ? ' Reason: ' + reason : '';
+        timeoutFromChat(channel, username);
+        addNotification(channel, msg);
+      },
       chat: (channel, user, message) => {
         addUserMessage(channel, {type: 'chat', user, message});
       },
@@ -318,12 +325,17 @@ angular.module('tc').factory('messages', (
         if (on) msg = 'The channel is now in subscriber-only mode.';
         addNotification(channel, msg);
       },
-      timeout: (channel, username) => {
+      timeout: (channel, username, reason, duration) => {
+        const humanDur = moment.duration(duration, 'seconds').humanize();
+        const baseMsg = username + ` has been timed out for ${humanDur}.`;
+        const msg = baseMsg + reason ? ' Reason: ' + reason : '';
         timeoutFromChat(channel, username);
-        addNotification(channel, username + ' has been timed out.');
+        addNotification(channel, msg);
       },
       unhost: (channel) => addNotification(channel, 'Stopped hosting.'),
-      whisper: (from, message) => {
+      whisper: (from, user, message, self) => {
+        if (self) return;
+        if (from.startsWith('#')) from = from.substring(1);
         const me = capitalize(lowerCaseUsername);
         addWhisper(from, me, message)
       }
