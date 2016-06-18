@@ -40,6 +40,7 @@ angular.module('tc').factory('irc', $rootScope => {
   ee.isMod = (channel, username) => client.isMod(channel, username);
   ee.say = (channel, message) => client.say(channel, message);
   ee.whisper = (username, message) => client.whisper(username, message);
+  ee.getClient = () => client;
 
   //===============================================================
   // Setup

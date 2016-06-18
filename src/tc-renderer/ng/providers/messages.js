@@ -12,6 +12,7 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Variables
   //=====================================================
+  var _tempTwitchEmotes; // TODO remove after tmi adds self emote parsing
   var ffzDonors = [];
   var messageLimit = 50;
   var messages = {};
@@ -68,6 +69,25 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Private methods
   //=====================================================
+
+  // TODO remove after tmi adds self emote parsing
+  function generateEmotesProperty(message, twitchEmotes) {
+    const sets = twitchEmotes.emoticon_sets;
+    const emotes = {};
+    Object.keys(sets).forEach(setId => {
+      sets[setId].forEach(emote => {
+        message.replace(new RegExp(emote.code, 'g'), (match, index) => {
+          const start = index;
+          const end = index + match.length - 1;
+          emotes[emote.id] = emotes[emote.id] || [];
+          emotes[emote.id].push(start + '-' + end);
+          return match;
+        });
+      });
+    });
+    return emotes;
+  }
+
   function announceTwitter() {
     const ver = electron.remote.app.getVersion();
     const channel = settings.channels[settings.selectedTabIndex];
@@ -274,7 +294,8 @@ angular.module('tc').factory('messages', (
         addNotification(channel, msg);
       },
       chat: (channel, user, message, self) => {
-        if (self) console.log(channel, user, message, self);
+        // TODO remove after tmi adds self emote parsing
+        if (self) user.emotes = generateEmotesProperty(message, _tempTwitchEmotes);
         addUserMessage(channel, {type: 'chat', user, message});
       },
       clearchat: (channel) => {
@@ -294,6 +315,13 @@ angular.module('tc').factory('messages', (
         const enabled = 'Emote only mode has been enabled in the channel.';
         const disabled = 'Emote only mode has been disabled in the channel.';
         addNotification(channel, on ? enabled : disabled);
+      },
+      emotesets: sets => {
+        // TODO remove after tmi adds self emote parsing
+        irc.getClient().api(
+          {url: "/chat/emoticon_images?emotesets=" + sets},
+          function(err, res, body) {if (!err) _tempTwitchEmotes = body}
+        );
       },
       hosting: (channel, target) => {
         const msg = channel.substring(1) + ' is hosting ' + target;
