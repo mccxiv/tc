@@ -269,7 +269,7 @@ angular.module('tc').factory('messages', (
       },
       ban: (channel, username, reason) => {
         const baseMsg = username + ' has been banned.';
-        const msg = baseMsg + (reason ? ' Reason: ' + reason : '');
+        const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
         timeoutFromChat(channel, username);
         addNotification(channel, msg);
       },
@@ -329,7 +329,7 @@ angular.module('tc').factory('messages', (
         duration = Number(duration);
         const humanDur = moment.duration(duration, 'seconds').humanize();
         const baseMsg = username + ` has been timed out for ${humanDur}.`;
-        const msg = baseMsg + (reason ? ' Reason: ' + reason : '');
+        const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
         timeoutFromChat(channel, username);
         addNotification(channel, msg);
       },
