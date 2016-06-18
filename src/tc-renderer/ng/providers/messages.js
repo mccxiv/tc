@@ -273,7 +273,8 @@ angular.module('tc').factory('messages', (
         timeoutFromChat(channel, username);
         addNotification(channel, msg);
       },
-      chat: (channel, user, message) => {
+      chat: (channel, user, message, self) => {
+        if (self) console.log(channel, user, message, self);
         addUserMessage(channel, {type: 'chat', user, message});
       },
       clearchat: (channel) => {
@@ -301,6 +302,9 @@ angular.module('tc').factory('messages', (
       hosted: (channel, target, viewers) => {
         const msg = `${target} is hosting you with ${viewers} viewers.`;
         addNotification(channel, msg);
+      },
+      notice: (channel, msgid, message) => {
+        addNotification(channel, message);
       },
       r9kbeta: (channel, on) => {
         const enabled = 'The channel is now in r9k mode.';

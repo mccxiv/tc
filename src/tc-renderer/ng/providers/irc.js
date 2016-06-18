@@ -23,13 +23,13 @@ import {EventEmitter} from 'events';
  * @property {function} isMod             - Check if a user is a mode in a channel
  * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', ($rootScope) => {
+angular.module('tc').factory('irc', $rootScope => {
 
   //===============================================================
   // Variables
   //===============================================================
-  var ee = new EventEmitter();
-  var clients = {read: null, write: null};
+  const ee = new EventEmitter();
+  let client;
 
   //===============================================================
   // Public members
@@ -37,19 +37,15 @@ angular.module('tc').factory('irc', ($rootScope) => {
   ee.ready = false;
   ee.badLogin = false;
   ee.credentialsValid = credentialsValid;
-  ee.isMod = (channel, username) => clients.write.isMod(channel, username);
-  ee.say = (channel, message) => clients.write.say(channel, message);
-  ee.whisper = (username, message) => clients.write.whisper(username, message);
-
-  // TODO debug stuff
-  window.clients = clients;
+  ee.isMod = (channel, username) => client.isMod(channel, username);
+  ee.say = (channel, message) => client.say(channel, message);
+  ee.whisper = (username, message) => client.whisper(username, message);
 
   //===============================================================
   // Setup
   //===============================================================
   if (credentialsValid()) create();
 
-  onBadLogin(destroy);
   onValidCredentials(create);
   onInvalidCredentials(destroy);
   onChannelsChange(syncChannels);
@@ -63,40 +59,27 @@ angular.module('tc').factory('irc', ($rootScope) => {
     ee.badLogin = false;
 
     // Disconnected is handled elsewhere
-    var readEvents = [
+    const events = [
       'action', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-      'emotesets', 'hosted', 'hosting', 'mods', 'r9kbeta', 'slowmode', 
+      'emotesets', 'hosted', 'hosting', 'mods', 'notice', 'r9kbeta', 'slowmode',
       'subanniversary', 'subscribers', 'subscription', 'timeout', 
       'unhost', 'whisper'
     ];
 
-    var clientSettings = {
+    const clientSettings = {
       options: {debug: false},
       connection: {timeout: 20000, reconnect: true},
       identity: angular.copy(settings.identity),
       channels: []
     };
 
-    Object.keys(clients).forEach((key) => {
-      var setts = angular.copy(clientSettings);
-      clients[key] = new tmi.client(setts);
-      clients[key].connect();
-      clients[key].on('connected', joinChannels.bind(this, clients[key]));
-    });
+    client = new tmi.client(clientSettings);
+    client.connect();
+    client.on('connected', joinChannels);
+    onBadLogin(destroy);
+    forwardEvents(client, ee, events);
 
-    forwardEvents(clients.read, ee, readEvents);
-
-    clients.read.on('disconnected', (reason) => {
-      if (reason === 'Error logging in.') {
-        ee.badLogin = reason;
-        settings.identity.password = '';
-      }
-      ee.ready = false;
-      setTimeout(() => $rootScope.$apply(), 0);
-    });
-
-    // TODO should wait for write to be connected before being ready
-    clients.read.on('connected', () => {
+    client.on('connected', () => {
       ee.ready = true;
       setTimeout(() => $rootScope.$apply(), 0);
     });
@@ -107,22 +90,20 @@ angular.module('tc').factory('irc', ($rootScope) => {
     onlyEmitDisconnectedOnce();
 
     function onlyEmitDisconnectedOnce() {
-      clients.read.once('disconnected', (...args) => {
+      client.once('disconnected', (...args) => {
         args.unshift('disconnected');
         ee.emit.apply(ee, args);
-        clients.read.once('connected', onlyEmitDisconnectedOnce);
+        client.once('connected', onlyEmitDisconnectedOnce);
       });
     }
   }
 
   function destroy() {
-    Object.keys(clients).forEach((key) => {
-      if (clients[key]) {
-        clients[key].removeAllListeners();
-        clients[key].disconnect();
-        clients[key] = null;
-      }
-    });
+    if (client) {
+      client.removeAllListeners();
+      client.disconnect();
+      client = null;
+    }
   }
 
   /**
@@ -145,17 +126,15 @@ angular.module('tc').factory('irc', ($rootScope) => {
    * correct channels, the ones in the settings.
    */
   function syncChannels() {
-    [clients.read, clients.write].forEach((client) => {
-      joinChannels(client);
-      leaveChannels(client);
-    });
+    joinChannels();
+    leaveChannels();
   }
 
   /**
    * Joins any channels in settings.channels
    * that haven't been joined yet.
    */
-  function joinChannels(client) {
+  function joinChannels() {
     settings.channels.forEach((channel) => {
       const joined = client.getChannels().map(stripHash);
       if (joined.indexOf(channel) === -1) {
@@ -168,7 +147,7 @@ angular.module('tc').factory('irc', ($rootScope) => {
    * Leaves joined channels that do not
    * appear in settings.channels.
    */
-  function leaveChannels(client) {
+  function leaveChannels() {
     const joined = client.getChannels().map(stripHash);
     joined.forEach((channel) => {
       if (settings.channels.indexOf(channel) === -1) {
@@ -181,30 +160,18 @@ angular.module('tc').factory('irc', ($rootScope) => {
    * When a client disconnects due to unsuccessful login,
    * sets ee.badLogin and deletes the password from settings.
    * This should cause the login form to display with an error.
-   * Uses observers to attach this behavior to future client instances.
    */
   function onBadLogin(cb) {
-
-    if (clients.read) attachBadLoginCheck();
-
-    //noinspection JSCheckFunctionSignatures
-    Object.observe(clients, (changes) => {
-      changes.forEach((change) => {
-        if (change.name === 'read') attachBadLoginCheck();
-      });
-    }, ['update']);
-
-    function attachBadLoginCheck() {
-      if (!clients.read) return;
-      clients.read.on('disconnected', (reason) => {
-        if (reason === 'Login unsuccessful.') {
-          ee.badLogin = reason;
-          settings.identity.password = '';
-          setTimeout(() => $rootScope.$apply(), 0);
-          cb();
-        }
-      });
-    }
+    client.on('disconnected', (reason) => {
+      const reasons = ['Error logging in.', 'Login unsuccessful.'];
+      if (reasons.includes(reason)) {
+        ee.ready = false;
+        ee.badLogin = reason;
+        settings.identity.password = '';
+        setTimeout(() => $rootScope.$apply(), 0);
+        cb();
+      }
+    });
   }
 
   function onChannelsChange(cb) {
