@@ -99,7 +99,8 @@ angular.module('tc').directive('chatOutput',
 
     function handleBadgeHover() {
       const descriptions = {
-        global_mode: 'Global Moderator',
+        broadcaster: 'Broadcaster',
+        global_mod: 'Global Moderator',
         admin: 'Twitch Admin',
         subscriber: 'Channel Subscriber',
         mod: 'Moderator',
