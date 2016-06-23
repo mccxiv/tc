@@ -3,6 +3,7 @@ import angular from 'angular';
 import axios from 'axios';
 import moment from 'moment';
 import electron from 'electron';
+import escape from '../../lib/transforms/escape';
 import settings from '../../lib/settings/settings';
 import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
@@ -72,11 +73,14 @@ angular.module('tc').factory('messages', (
 
   // TODO remove after tmi adds self emote parsing
   function generateEmotesProperty(message, twitchEmotes) {
+    message = escape(message);
     const sets = twitchEmotes.emoticon_sets;
     const emotes = {};
     Object.keys(sets).forEach(setId => {
       sets[setId].forEach(emote => {
-        message.replace(new RegExp(emote.code, 'g'), (match, index) => {
+        message.replace(new RegExp(emote.code, 'g'), (...args) => {
+          const match = args[0];
+          const index = args[args.length - 2];
           const start = index;
           const end = index + match.length - 1;
           emotes[emote.id] = emotes[emote.id] || [];
@@ -85,6 +89,7 @@ angular.module('tc').factory('messages', (
         });
       });
     });
+    console.log(emotes);
     return emotes;
   }
 
