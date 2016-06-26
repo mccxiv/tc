@@ -3,7 +3,6 @@ import angular from 'angular';
 import axios from 'axios';
 import moment from 'moment';
 import electron from 'electron';
-import escape from '../../lib/transforms/escape';
 import settings from '../../lib/settings/settings';
 import channels from '../../lib/channels';
 import processMessage from '../../lib/transforms/process-message';
@@ -70,28 +69,6 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Private methods
   //=====================================================
-
-  // TODO remove after tmi adds self emote parsing
-  function generateEmotesProperty(message, twitchEmotes) {
-    message = escape(message);
-    const sets = twitchEmotes.emoticon_sets;
-    const emotes = {};
-    Object.keys(sets).forEach(setId => {
-      sets[setId].forEach(emote => {
-        message.replace(new RegExp(emote.code, 'g'), (...args) => {
-          const match = args[0];
-          const index = args[args.length - 2];
-          const start = index;
-          const end = index + match.length - 1;
-          emotes[emote.id] = emotes[emote.id] || [];
-          emotes[emote.id].push(start + '-' + end);
-          return match;
-        });
-      });
-    });
-    console.log(emotes);
-    return emotes;
-  }
 
   function announceTwitter() {
     const ver = electron.remote.app.getVersion();
@@ -290,8 +267,6 @@ angular.module('tc').factory('messages', (
   function getChatListeners() {
     return {
       action: (channel, user, message) => {
-        // TODO remove after tmi adds self emote parsing
-        if (self) user.emotes = generateEmotesProperty(message, _tempTwitchEmotes);
         addUserMessage(channel, {type: 'action', user, message});
       },
       ban: (channel, username, reason) => {
@@ -300,9 +275,7 @@ angular.module('tc').factory('messages', (
         timeoutFromChat(channel, username);
         addNotification(channel, msg);
       },
-      chat: (channel, user, message, self) => {
-        // TODO remove after tmi adds self emote parsing
-        if (self) user.emotes = generateEmotesProperty(message, _tempTwitchEmotes);
+      chat: (channel, user, message) => {
         addUserMessage(channel, {type: 'chat', user, message});
       },
       clearchat: (channel) => {
