@@ -12,12 +12,12 @@ side-toolbar .md-button {
   min-width: 0;
   border-radius: 0 !important;
   margin: 0;
-  line-height: 35px;
+  line-height: 34px;
+  min-height: 34px;
 }
 
 side-toolbar {
-  line-height: 35px;
-  min-height: 36px;
+  min-height: 34px;
 }
 
 side-toolbar .connection {

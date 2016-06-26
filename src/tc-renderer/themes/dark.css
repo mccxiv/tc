@@ -3,21 +3,6 @@
   color: #D3D3D3;
 }
 
-/* Apparently people don't like this */
-/*.dark .md-whiteframe-z2 {
-  box-shadow: 0 2px 4px -1px rgba(255, 255, 255, 0.14),
-    0 4px 5px 0 rgba(255, 255, 255, 0.098),
-    0 1px 10px 0 rgba(255, 255, 255, 0.084);
-}
-
-.dark md-tabs md-tabs-wrapper {
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.dark md-divider {
-  border-top-color: rgba(255, 255, 255, 0.12);
-}*/
-
 .dark :hover::-webkit-scrollbar-thumb {
   background-color: rgba(255, 255, 255, 0.35);
 }
@@ -45,7 +30,7 @@
 }
 
 .dark md-tabs .md-tab {
-  color: rgba(255, 255, 255, 0.54);
+  color: rgba(255, 255, 255, 0.74);
 }
 
 .dark md-tabs .md-tab.md-active {
@@ -66,4 +51,23 @@
 
 .dark chatters .chatter {
   color: rgba(255, 255, 255, 0.54);
+}
+
+.dark chat-input {
+  background-color: rgb(35, 35, 35);
+  border-right: 1px solid #252525;
+}
+
+.dark .side-bar {
+  background-color: rgb(35, 35, 35);
+}
+
+.dark side-toolbar {
+  border-bottom: 1px solid #3C3C3C;
+  background-color: rgb(47, 47, 47);
+}
+
+.dark chat-tabs md-tabs-wrapper {
+  background-color: rgb(47, 47, 47);
+  border-bottom: 1px solid #3C3C3C;
 }
