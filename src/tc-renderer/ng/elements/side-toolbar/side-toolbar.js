@@ -15,17 +15,6 @@ angular.module('tc').directive('sideToolbar',
     scope.settingsGui = settingsGui;
     element.attr('layout', 'row');
 
-    // Monkey patch for broken ng-class.
-    // See issue #174
-    scope.$watch(
-      () => irc.ready,
-      () => {
-        var el = element[0].querySelector('.connection');
-        if (!irc.ready) el.classList.add('not-ready');
-        else el.classList.remove('not-ready');
-      }
-    );
-
     autoUpdater.on('update-downloaded', () => {
       scope.m.updateAvailable = true;
       scope.$apply();
