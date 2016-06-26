@@ -14,7 +14,7 @@ angular.module('tc').factory('messages', (
   //=====================================================
   var _tempTwitchEmotes; // TODO remove after tmi adds self emote parsing
   var ffzDonors = [];
-  var messageLimit = 50;
+  var messageLimit = 125;
   var messages = {};
   var lowerCaseUsername = settings.identity.username.toLowerCase();
   var throttledApplySlow = _.throttle(applyLate, 3000);
@@ -110,7 +110,6 @@ angular.module('tc').factory('messages', (
 
   async function getBacklog(channel, before = Date.now(), after = 0, limit = 100) {
     const url = 'https://backlog.gettc.xyz/v1/' + channel;
-    if (session.autoScroll) limit = limit > 50? 50 : limit;
     try {
       const req = await axios(url, {params: {before, after, limit}});
       const backlog = req.data;
@@ -128,8 +127,7 @@ angular.module('tc').factory('messages', (
 
   async function getMissingMessages(channel) {
     const recent = mostRecentMessageTimestamp(channel);
-    const limit = recent? 100 : 50;
-    getBacklog(channel, Date.now(), recent, limit);
+    getBacklog(channel, Date.now(), recent);
   }
 
   function sortMessages(channel) {
