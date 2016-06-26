@@ -26,7 +26,7 @@
     "proxy-observe": "0.0.9",
     "roboto-fontface": "0.4.5",
     "spellchecker": "3.2.3",
-    "tmi.js": "1.0.0",
+    "tmi.js": "tmijs/tmi.js#29b31653051d8c9816bf1ca1e464bb16dff0547c",
     "which": "^1.2.10"
   }
 }
