@@ -16,7 +16,9 @@ angular.module('tc').directive('chatInput',
     session.input = input; // TODO make a better system
     let lastWhisperer;
 
-    irc.on('whisper', (from) => lastWhisperer = from.username);
+    irc.on('whisper', from => {
+      lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
+    });
 
     // Monkey patch for broken ng-class.
     // See issue #174
