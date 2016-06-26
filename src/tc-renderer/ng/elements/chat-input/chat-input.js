@@ -20,17 +20,6 @@ angular.module('tc').directive('chatInput',
       lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
     });
 
-    // Monkey patch for broken ng-class.
-    // See issue #174
-    scope.$watch(
-      () => irc.ready,
-      () => {
-        const inputContainer = element.find('md-input-container')[0];
-        if (!irc.ready) inputContainer.classList.add('disabled');
-        else inputContainer.classList.remove('disabled');
-      }
-    );
-
     scope.getAutoCompleteStrings = () => {
       var channel = settings.channels[settings.selectedTabIndex];
       if (!channel) return [];

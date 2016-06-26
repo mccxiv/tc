@@ -1,6 +1,9 @@
 <form ng-submit="input()">
   <md-input-container class="input-container" ng-class="{disabled: !irc.ready}">
-    <label>Send a message</label>
+    <label>
+      <span ng-if="irc.ready">Send a message</span>
+      <span ng-if="!irc.ready">Disconnected from server</span>
+    </label>
     <input spellcheck="true"
            ng-disabled="!irc.ready"
            ng-model="session.message"
