@@ -36,7 +36,7 @@ chat-output .badge {
 }
 
 chat-output .badge.ffz {
-  background-color: #755000;
+  background: #755000 url(https://cdn.frankerfacez.com/script/devicon.png);
 }
 
 chat-output .badge:last-child {

@@ -3,9 +3,14 @@ import r from 'axios';
 const kraken = 'https://api.twitch.tv/kraken/';
 
 export async function badges(channel) {
-  const badges = await api(`/chat/${channel}/badges`);
-  badges['ffz_donor'] = {};
-  badges['ffz_donor'].image = 'https://cdn.frankerfacez.com/script/devicon.png';
+  const userId = (await user(channel))._id;
+  const base = 'https://badges.twitch.tv/v1/badges/';
+  const globalUrl = base + 'global/display?language=en';
+  const channelUrl = base + `channels/${userId}/display?language=en`;
+  const globalBadges = (await r(globalUrl)).data;
+  const channelBadges = (await r(channelUrl)).data;
+  const input = [{}, globalBadges.badge_sets, channelBadges.badge_sets];
+  const badges = Object.assign(...input);
   return badges;
 }
 

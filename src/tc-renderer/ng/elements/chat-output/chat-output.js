@@ -4,7 +4,6 @@ import './chat-output.css';
 import 'frostyjs/dist/css/frosty.min.css';
 import 'imports?jQuery=jquery!frostyjs/dist/js/frosty.min.js';
 import NProgress from 'nprogress';
-import throttle from 'lodash.throttle';
 import $ from 'jquery';
 import angular from 'angular';
 import colors from '../../../lib/colors';
@@ -54,6 +53,7 @@ angular.module('tc').directive('chatOutput',
     scope.calculateColor = calculateColor;
     scope.scrollDown = scrollDown;
     scope.badgeBg = badgeBg;
+    scope.badgeTitle = badgeTitle;
 
     //===============================================================
     // Functions
@@ -65,9 +65,23 @@ angular.module('tc').directive('chatOutput',
       });
     }
 
-    function badgeBg(prop) {
-      if (!scope.badges) return undefined;
-      return {'background-image': `url(${scope.badges[prop].image})`};
+    function badgeBg(name, version) {
+      const badge = getBadge(name, version);
+      if (!badge) return undefined;
+      return {'background-image': `url(${badge.image_url_1x})`};
+    }
+
+    function badgeTitle(name, version) {
+      const badge = getBadge(name, version);
+      if (!badge) return undefined;
+      return badge.title;
+    }
+
+    function getBadge(name, version) {
+      const b = scope.badges;
+      if (b && b[name] && b[name].versions && b[name].versions[version]) {
+        return b[name].versions[version];
+      }
     }
 
     function selectUsername(username) {
@@ -98,21 +112,10 @@ angular.module('tc').directive('chatOutput',
     }
 
     function handleBadgeHover() {
-      const descriptions = {
-        broadcaster: 'Broadcaster',
-        global_mod: 'Global Moderator',
-        admin: 'Twitch Admin',
-        subscriber: 'Channel Subscriber',
-        mod: 'Moderator',
-        staff: 'Twitch Staff',
-        turbo: '"Turbo" Subscriber',
-        ffz_donor: 'FFZ Supporter'
-      };
-
       element.on('mouseenter', '.badge', e => {
         const badge = $(e.target);
-        const type = badge.data('badge-type');
-        showTooltip(badge, descriptions[type]);
+        const title = badge.data('title');
+        showTooltip(badge, title);
       });
     }
 

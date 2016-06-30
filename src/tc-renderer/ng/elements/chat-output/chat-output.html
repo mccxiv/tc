@@ -15,11 +15,13 @@
   ><!--
 	---><span class="timestamp lighter" ng-if="::opts.timestamps">{{::m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="::m.user"><!--
-        ---><span class="badge" data-badge-type="broadcaster" ng-if="::isBroadcaster(m.user.username)" ng-style="::badgeBg('broadcaster')"></span><!--
-        ---><span class="badge" data-badge-type="{{m.user['user-type']}}" ng-if="::m.user['user-type']" ng-style="::badgeBg(m.user['user-type'])"></span><!--
-        ---><span class="badge" data-badge-type="turbo" ng-if="::m.user['turbo']" ng-style="::badgeBg('turbo')"></span><!--
-        ---><span class="badge ffz" data-badge-type="ffz_donor" ng-if="::m.user['ffz_donor']" ng-style="::badgeBg('ffz_donor')"></span><!--
-        ---><span class="badge" data-badge-type="subscriber" ng-if="::m.user['subscriber']" ng-style="::badgeBg('subscriber')"></span><!--
+        ---><span
+              ng-repeat="(name, version) in ::m.user.badges"
+              class="badge"
+              data-title="{{::badgeTitle(name, version)}}"
+              ng-style="::badgeBg(name, version)"
+            ></span><!--
+        ---><span class="badge ffz" data-title="FFZ Supporter" ng-if="::m.user['ffz_donor']"></span><!--
     ---></span><!--
     ---><span class="username" ng-if="::m.user" ng-click="selectUsername(m.user.username)" ng-style="::{color: calculateColor(m.user.color)}">{{::m.user['display-name']}}</span><!--
     ---><span class="username" ng-if="::!m.user && m.type === 'whisper'" ng-click="selectUsername(m.from)">{{::m.from}}</span><!--
