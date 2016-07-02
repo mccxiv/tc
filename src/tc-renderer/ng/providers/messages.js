@@ -12,7 +12,6 @@ angular.module('tc').factory('messages', (
   //=====================================================
   // Variables
   //=====================================================
-  var _tempTwitchEmotes; // TODO remove after tmi adds self emote parsing
   var ffzDonors = [];
   var messageLimit = 125;
   var messages = {};
@@ -244,11 +243,6 @@ angular.module('tc').factory('messages', (
     });
   }
 
-  /**
-   * Because of inconsistent sync/async APIs
-   * the $apply() operation should be delayed to the next cycle
-   * TODO see if this is a performance issue
-   */
   function applyLate() {
     setTimeout(() => $rootScope.$apply(), 0);
   }
@@ -298,13 +292,6 @@ angular.module('tc').factory('messages', (
         const disabled = 'Emote only mode has been disabled in the channel.';
         addNotification(channel, on ? enabled : disabled);
       },
-      emotesets: sets => {
-        // TODO remove after tmi adds self emote parsing
-        irc.getClient().api(
-          {url: "/chat/emoticon_images?emotesets=" + sets},
-          function(err, res, body) {if (!err) _tempTwitchEmotes = body}
-        );
-      },
       hosting: (channel, target) => {
         const msg = channel.substring(1) + ' is hosting ' + target;
         addNotification(channel, msg);
@@ -317,6 +304,11 @@ angular.module('tc').factory('messages', (
         const ignored = ['ban_success', 'timeout_success'];
         if (!ignored.includes(msgid)) addNotification(channel, message);
       },
+      resub: (channel, username, months, message) => {
+        const noMsg = `${username} resubscribed (${months} months in a row)`;
+        const msg = noMsg + ': ' + message;
+        addNotification(channel, message ? msg : noMsg);
+      },
       r9kbeta: (channel, on) => {
         const enabled = 'The channel is now in r9k mode.';
         const disabled = 'The channel is no longer in r9k mode.';
@@ -327,10 +319,6 @@ angular.module('tc').factory('messages', (
         const enabled = 'This room is now in slow mode. ' +
           'You may send messages every ' + length + ' seconds.';
         addNotification(channel, on ? enabled : disabled);
-      },
-      subanniversary: (channel, username, months) => {
-        const msg = `${username} subscribed for ${months} months in a row!`;
-        addNotification(channel, msg);
       },
       subscription: (channel, username) => {
         addNotification(channel, username + ' has just subscribed!');
