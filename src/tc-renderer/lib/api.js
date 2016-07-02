@@ -10,8 +10,7 @@ export async function badges(channel) {
   const globalBadges = (await r(globalUrl)).data;
   const channelBadges = (await r(channelUrl)).data;
   const input = [{}, globalBadges.badge_sets, channelBadges.badge_sets];
-  const badges = Object.assign(...input);
-  return badges;
+  return Object.assign(...input);
 }
 
 export async function user(channel) {
