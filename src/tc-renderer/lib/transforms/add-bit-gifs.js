@@ -23,7 +23,7 @@ function makeImg(cheerText) {
   const bitGifUrl = getBitGifUrl(amount);
   if (!bitGifUrl) return cheerText;
   const meta = `data-emote-name="${cheerText}" alt="${cheerText}"`;
-  return `<img class="emoticon" ${meta} src="${bitGifUrl}">`;
+  return `<img class="emoticon" ${meta} src="${bitGifUrl}">${amount}`;
 }
 
 export default function addBitGifs(message) {
