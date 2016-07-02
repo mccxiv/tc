@@ -142,7 +142,7 @@ angular.module('tc').factory('messages', (
 
   /**
    * Add a user message.
-   * @property {string}  obj.type - 'action' or 'chat'
+   * @property {string}  obj.type - 'action' or 'chat' or 'cheer'
    * @property {string}  obj.channel
    * @property {object}  obj.user - As provided by tmi.js
    * @property {string}  obj.message
@@ -217,7 +217,8 @@ angular.module('tc').factory('messages', (
     if (!msgs || !msgs.length) return 0;
     else {
       const recentMessage = msgs.slice().reverse().find((msg) => {
-        return msg.type === 'chat' || msg.type === 'action';
+        const t = msg.type;
+        return t === 'chat' || t === 'action' || t === 'cheer';
       });
       return recentMessage? recentMessage.at : 0;
     }
@@ -275,6 +276,9 @@ angular.module('tc').factory('messages', (
       },
       chat: (channel, user, message) => {
         addUserMessage(channel, {type: 'chat', user, message});
+      },
+      cheer: (channel, user, message) => {
+        addUserMessage(channel, {type: 'cheer', user, message});
       },
       clearchat: (channel) => {
         const msg = 'Chat cleared by a moderator. (Prevented by Tc)';

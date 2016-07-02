@@ -61,9 +61,9 @@ angular.module('tc').factory('irc', $rootScope => {
 
     // Disconnected is handled elsewhere
     const events = [
-      'action', 'ban', 'chat', 'clearchat', 'connected', 'connecting', 'crash',
-      'emotesets', 'hosted', 'hosting', 'mods', 'notice', 'r9kbeta', 'slowmode',
-      'subanniversary', 'subscribers', 'subscription', 'timeout', 
+      'action', 'ban', 'chat', 'cheer', 'clearchat', 'connected', 'connecting',
+      'crash', 'emotesets', 'hosted', 'hosting', 'mods', 'notice', 'r9kbeta',
+      'slowmode', 'subanniversary', 'subscribers', 'subscription', 'timeout',
       'unhost', 'whisper'
     ];
 
