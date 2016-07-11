@@ -1,6 +1,6 @@
 import './thumbnail.css';
 import which from 'which';
-import {spawn} from 'child_process';
+import {exec} from 'child_process';
 import angular from 'angular';
 import template from './thumbnail.html';
 import * as api from '../../../lib/api';
@@ -26,12 +26,21 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
 
     scope.$on('$destroy', () => clearInterval(stop));
 
-    scope.playLivestreamer = (audioOnly) => {
-      const type = audioOnly? 'audio' : 'best';
+    scope.playLivestreamer = audioOnly => {
+      const type = audioOnly? 'audio' : '';
       const channel = 'twitch.tv/' + scope.channel();
-      const opts = {detached: true, stdio: ['ignore']};
-      const child = spawn('livestreamer', [channel, type], opts);
-      child.unref();
+      stream(type);
+
+      function stream(quality) {
+        exec(`livestreamer ${channel} ${quality}`, (err, stdout) => {0
+          if (!err && stdout) {
+            const lastLine = stdout.trim().split('\n').pop();
+            if (lastLine.startsWith('Available streams')) {
+              stream('best');
+            }
+          }
+        });
+      }
     };
 
     scope.playTwitch = () => {
