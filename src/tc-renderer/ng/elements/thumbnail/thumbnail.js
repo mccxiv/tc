@@ -32,7 +32,7 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
       stream(type);
 
       function stream(quality) {
-        exec(`livestreamer ${channel} ${quality}`, (err, stdout) => {0
+        exec(`livestreamer ${channel} ${quality}`, (err, stdout) => {
           if (!err && stdout) {
             const lastLine = stdout.trim().split('\n').pop();
             if (lastLine.startsWith('Available streams')) {
