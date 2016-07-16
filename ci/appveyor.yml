@@ -1,0 +1,9 @@
+version: '{build}'
+
+platform:
+  - x64
+
+install:
+  - ps: Install-Product node 6 x64
+  - cmd: npm install
+  - cmd: npm run build
