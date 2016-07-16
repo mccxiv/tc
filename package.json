@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp launch",
+    "preinstall": "npm install nslog",
     "postinstall": "gulp postinstall && npm run dist",
     "reinstall": "gulp reinstall",
     "build": "gulp build",
