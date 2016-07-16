@@ -23,13 +23,13 @@ angular.module('tc').directive('chatInput',
     scope.getAutoCompleteStrings = () => {
       var channel = settings.channels[settings.selectedTabIndex];
       if (!channel) return [];
-      else {
-        const usernames = messages(channel).filter(hasUser).map(getNames).filter(dedupe);
-        const bttvEmotes = grabEmotes(emotesBttv(channel)).sort();
-        const ffzEmotes = grabEmotes(emotesFfz(channel)).sort();
-        const twitchEmotes = grabEmotes(emotesTwitch).sort();
-        return [].concat(twitchEmotes, bttvEmotes, ffzEmotes, usernames);
-      }
+
+      const names = messages(channel).filter(hasUser).map(getNames).filter(dedupe).sort();
+      const atNames = names.map(name => '@' + name);
+      const bttvEmotes = grabEmotes(emotesBttv(channel)).sort();
+      const ffzEmotes = grabEmotes(emotesFfz(channel)).sort();
+      const twitchEmotes = grabEmotes(emotesTwitch).sort();
+      return [].concat(twitchEmotes, bttvEmotes, ffzEmotes, names, atNames);
 
       function grabEmotes(arr) {
         return arr.map((e) => e.emote);
