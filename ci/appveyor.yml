@@ -1,7 +1,8 @@
 version: '{build}'
 
-platform:
-  - x64
+os: Previous Visual Studio 2015
+
+platform: x64
 
 install:
   - cmd: npm install
