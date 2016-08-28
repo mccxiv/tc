@@ -43,10 +43,9 @@ angular.module('tc').directive('chatInput',
         return array.indexOf(x) === i;
       }
 
-      function getNames(message) {
-        return message.from ||
-          message.user['display-name'] ||
-          message.user.username;
+      function getNames(msg) {
+        const n = msg.from || msg.user['display-name'] || msg.user.username;
+        return n.replace(/\\s/, ''); // Because some names contain \s
       }
     };
 
