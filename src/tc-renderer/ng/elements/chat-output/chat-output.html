@@ -9,7 +9,8 @@
       highlighted: m.highlighted,
       deleted: m.deleted,
       whisper: m.type === 'whisper',
-      notification: m.type === 'notification'
+      notification: m.type === 'notification',
+      odd: m._isOdd
     }"
     ng-style="::m.type === 'action'? {'color': calculateColor(m.user.color)} : {}"
   ><!--
