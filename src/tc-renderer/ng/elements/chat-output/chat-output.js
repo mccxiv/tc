@@ -213,7 +213,7 @@ angular.module('tc').directive('chatOutput',
 
     function handleNewMessages() {
       scope.$watchCollection('messages', () => {
-        addZebraStripingPropertyToMessages();
+        if (settings.appearance.split) addZebraStripingPropertyToMessages();
         scrollIfEnabled();
       });
     }

@@ -17,6 +17,7 @@ export default {
     dark: false
   },
   appearance: {
+    split: false,
     thumbnail: true,
     simpleViewerCount: false,
     sidebarCollapsed: false,
