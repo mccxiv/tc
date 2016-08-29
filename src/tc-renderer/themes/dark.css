@@ -53,6 +53,10 @@
   color: rgba(255, 255, 255, 0.54);
 }
 
+.dark chat-output .chat-line.odd {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
 .dark chat-input {
   background-color: rgb(35, 35, 35);
   border-right: 1px solid #252525;

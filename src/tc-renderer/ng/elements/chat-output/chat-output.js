@@ -34,7 +34,7 @@ angular.module('tc').directive('chatOutput',
     //===============================================================
     watchUserScrolling();
     scrollWhenTogglingSidebar();
-    scrollOnNewMessages();
+    handleNewMessages();
     scrollOnWindowResize();
     fetchBadges();
     handleAnchorClicks();
@@ -54,6 +54,7 @@ angular.module('tc').directive('chatOutput',
     scope.scrollDown = scrollDown;
     scope.badgeBg = badgeBg;
     scope.badgeTitle = badgeTitle;
+    scope.isOdd = isOdd;
 
     //===============================================================
     // Functions
@@ -63,6 +64,19 @@ angular.module('tc').directive('chatOutput',
         trickleRate: 0.18,
         trickleSpeed: 80
       });
+    }
+
+    function isOdd(m) {
+      this.odd = this.odd || false;
+      if (!m.user) {
+        this.lastUsername = null;
+        this.odd = !this.odd;
+      }
+      else {
+        if (this.lastUsername !== m.user.username) this.odd = !this.odd;
+        this.lastUsername = m.user.username;
+      }
+      return this.odd;
     }
 
     function badgeBg(name, version) {
@@ -197,8 +211,32 @@ angular.module('tc').directive('chatOutput',
       );
     }
 
-    function scrollOnNewMessages() {
-      scope.$watchCollection('messages', scrollIfEnabled);
+    function handleNewMessages() {
+      scope.$watchCollection('messages', () => {
+        if (settings.appearance.split) addZebraStripingPropertyToMessages();
+        scrollIfEnabled();
+      });
+    }
+
+    function addZebraStripingPropertyToMessages() {
+      const msgs = scope.messages;
+      for (let i = 0; i < msgs.length; i++) {
+        if (msgs[i]._isOdd === undefined) {
+          const current = msgs[i];
+          if (i === 0) {
+            current._isOdd = !current.fromBacklog;
+          }
+          else {
+            const previous = msgs[i-1];
+            current._isOdd = !previous._isOdd;
+            if (current.user && previous.user) {
+              if (current.user.username === previous.user.username) {
+                current._isOdd = previous._isOdd;
+              }
+            }
+          }
+        }
+      }
     }
 
     function distanceFromTop() {

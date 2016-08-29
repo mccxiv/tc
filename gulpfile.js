@@ -10,9 +10,6 @@ gulp.task('postinstall', function() {
 
 gulp.task('launch', function() {
   shell.rm('-rf', '_build');
-  shell.mkdir('-p', '_build/node_modules/');
-  shell.cp('-r', 'src/node_modules/spellchecker/', '_build/node_modules/spellchecker/');
-  shell.cp('-r', 'src/node_modules/nan/', '_build/node_modules/nan/');
   shell.exec(path.normalize('./node_modules/.bin/webpack'));
   shell.cp('src/tc-renderer/index.html', '_build/index.html');
   shell.cp('src/package.json', '_build/package.json');
@@ -22,7 +19,6 @@ gulp.task('launch', function() {
 gulp.task('reinstall', function() {
   shell.exec('npm prune && npm update');
   shell.rm('-rf', 'src/node_modules');
-  shell.rm('-rf', 'src/bower_components');
   shell.exec('npm run postinstall');
 });
 
@@ -30,9 +26,6 @@ gulp.task('build', function() {
   shell.rm('-rf', '_dist');
   shell.mkdir('-p', '_dist');
   shell.rm('-rf', '_build');
-  shell.mkdir('-p', '_build/node_modules/');
-  shell.cp('-r', 'src/node_modules/spellchecker/', '_build/node_modules/spellchecker/');
-  shell.cp('-r', 'src/node_modules/nan/', '_build/node_modules/nan/');
   shell.exec(path.normalize('./node_modules/.bin/webpack'));
   shell.cp('src/tc-renderer/index.html', '_build/index.html');
   shell.cp('src/package.json', '_build/package.json');
