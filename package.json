@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp launch",
-    "postinstall": "gulp postinstall && npm run dist",
+    "postinstall": "gulp postinstall",
     "reinstall": "gulp reinstall",
     "build": "gulp build",
     "don't touch pack & dist": "",
