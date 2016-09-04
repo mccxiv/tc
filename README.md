@@ -9,7 +9,7 @@ Tc is a cross-platform desktop chat client for [Twitch.tv](http://www.twitch.tv/
 ### Options for contacting me
 - Open an issue on GitHub
 - My [personal Twitter](https://twitter.com/k3nt0456)
-- Tc's Twitter](https://twitter.com/tctwitch)
+- Tc's [Twitter](https://twitter.com/tctwitch)
 
 ### License
 Copyright (c) 2016 by Andrea Stella adr.stella@gmail.com  
