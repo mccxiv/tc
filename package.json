@@ -12,18 +12,22 @@
     "dist": "build"
   },
   "build": {
-    "app-bundle-id": "zyx.gettc.tc",
-    "app-category-type": "public.app-category.social-networking",
+    "appId": "zyx.gettc.tc",
+    "category": "public.app-category.social-networking",
     "asar": true,
+    "npmRebuild": false,
     "copyright": "Copyright 2015 Andrea Stella. All rights reserved",
     "version-string": {
       "CompanyName": "Mccxiv Software",
       "FileDescription": "Tc, the chat client for Twitch",
       "ProductName": "Tc"
     },
+    "dmg": {
+      "background": "src/assets/dmg-background.png"
+    },
     "mac": {
       "icon": "src/assets/icon.icns",
-      "background": "src/assets/dmg-background.png"
+      "identity": "Andrea Stella (42XGWVW434)"
     },
     "win": {
       "loadingGif": "src/assets/install.gif",
