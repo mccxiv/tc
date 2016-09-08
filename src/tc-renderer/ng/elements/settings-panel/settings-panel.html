@@ -12,9 +12,9 @@
       <p>Highlights</p>
     </md-list-item>
     <md-list-item class="menu-item"
-                  ng-click="m.selected = 'shortcuts'"
-                  ng-class="{selected: m.selected === 'shortcuts'}">
-      <p>Shortcuts</p>
+                  ng-click="m.selected = 'appearance'"
+                  ng-class="{selected: m.selected === 'appearance'}">
+      <p>Appearance</p>
     </md-list-item>
     <md-list-item class="menu-item"
                   ng-click="m.selected = 'notifications'"
@@ -22,14 +22,9 @@
       <p>Notifications</p>
     </md-list-item>
     <md-list-item class="menu-item"
-                  ng-click="m.selected = 'chat'"
-                  ng-class="{selected: m.selected === 'chat'}">
-      <p>Chat</p>
-    </md-list-item>
-    <md-list-item class="menu-item"
-                  ng-click="m.selected = 'appearance'"
-                  ng-class="{selected: m.selected === 'appearance'}">
-      <p>Appearance</p>
+                  ng-click="m.selected = 'shortcuts'"
+                  ng-class="{selected: m.selected === 'shortcuts'}">
+      <p>Shortcuts</p>
     </md-list-item>
     <md-list-item class="menu-item"
                   ng-click="m.selected = 'ignore'"
@@ -159,14 +154,6 @@
     </md-switch>
   </md-content>
 
-  <md-content ng-switch-when="chat">
-    <h1 class="md-headline">Chat options</h1>
-
-    <md-switch ng-model="settings.chat.timestamps">
-      Show time stamps
-    </md-switch>
-  </md-content>
-
   <md-content ng-switch-when="ignore">
     <h1 class="md-headline">Ignore List</h1>
 
@@ -197,10 +184,19 @@
   </md-content>
 
   <md-content ng-switch-when="appearance">
-    <h1 class="md-headline">Theme Options</h1>
+    <h1 class="md-headline">Appearance</h1>
+    <p>Some options will only affect new messages.</p>
 
     <md-switch ng-model="settings.theme.dark">
       Use dark theme
+    </md-switch>
+
+    <md-switch ng-model="settings.chat.timestamps">
+      Show time stamps
+    </md-switch>
+
+    <md-switch ng-model="settings.appearance.split">
+      Split chat lines for more contrast
     </md-switch>
 
     <md-divider></md-divider>

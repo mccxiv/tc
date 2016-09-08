@@ -35,6 +35,7 @@ export default (settings) => {
   if (typeof s.appearance.simpleViewerCount !== 'boolean') s.appearance.simpleViewerCount = defaults.appearance.simpleViewerCount;
   if (typeof s.appearance.sidebarCollapsed !== 'boolean') s.appearance.sidebarCollapsed = defaults.appearance.sidebarCollapsed;
   if (typeof s.appearance.chatters !== 'boolean') s.appearance.chatters = defaults.appearance.chatters;
+  if (typeof s.appearance.split !== 'boolean') s.appearance.split = defaults.appearance.split;
 
   if (!angular.isObject(s.behavior)) s.behavior = angular.copy(defaults.behavior);
   if (typeof s.behavior.autoStart !== 'boolean') s.behavior.autoStart = angular.copy(defaults.behavior.autoStart);
