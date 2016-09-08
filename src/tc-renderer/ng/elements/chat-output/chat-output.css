@@ -118,6 +118,10 @@ chat-output .deleted .message {
   opacity: 0.5;
 }
 
+chat-output .has-emotes {
+  line-height: 30px;
+}
+
 chat-output .chat-line.odd {
   background-color: rgba(0, 0, 0, 0.05);
 }

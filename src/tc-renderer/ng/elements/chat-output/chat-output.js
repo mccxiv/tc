@@ -214,8 +214,18 @@ angular.module('tc').directive('chatOutput',
     function handleNewMessages() {
       scope.$watchCollection('messages', () => {
         if (settings.appearance.split) addZebraStripingPropertyToMessages();
+        addLineHeightFixForEmoteMessages();
         scrollIfEnabled();
       });
+    }
+
+    function addLineHeightFixForEmoteMessages() {
+      const msgs = scope.messages;
+      for (let i = 0; i < msgs.length; i++) {
+        if (msgs[i]._containsEmote === undefined) {
+          msgs[i]._containsEmote = (msgs[i].message.indexOf('<img class="emoticon"') != -1);
+        }
+      }
     }
 
     function addZebraStripingPropertyToMessages() {
