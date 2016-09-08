@@ -32,8 +32,8 @@ function makeWindow() {
     y: mainWinState.y,
     width: mainWinState.width,
     height: mainWinState.height,
-    'min-width': 500,
-    'min-height': 390,
+    'min-width': 160,
+    'min-height': 100,
     icon: __dirname + '/assets/icon256.png'
   });
 
