@@ -176,6 +176,7 @@ angular.module('tc').factory('messages', (
     const msg = processMessage(messageObject, channel, twitchEmotes);
 
     messageObject.message = msg;
+    messageObject.emoted = msg.indexOf('<img class="emoticon"') != -1;
     messages[channel].push(messageObject);
 
     if ((type === 'chat' || type === 'action') && !fromBacklog) {
