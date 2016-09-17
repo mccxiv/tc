@@ -32,14 +32,17 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
       stream(type);
 
       function stream(quality) {
-        exec(`livestreamer ${channel} ${quality}`, (err, stdout) => {
-          if (!err && stdout) {
-            const lastLine = stdout.trim().split('\n').pop();
-            if (lastLine.startsWith('Available streams')) {
-              stream('best');
+        const id = '1pr5dzvymq1unqa2xiavdkvslsn4ebe';
+        exec(`livestreamer --http-header Client-ID=${id} ${channel} ${quality}`,
+          (err, stdout) => {
+            if (!err && stdout) {
+              const lastLine = stdout.trim().split('\n').pop();
+              if (lastLine.startsWith('Available streams')) {
+                stream('best');
+              }
             }
           }
-        });
+        );
       }
     };
 
