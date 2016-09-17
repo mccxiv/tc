@@ -17,6 +17,10 @@ chat-output {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+chat-output.fix-emoted-message .message.emoted {
+  line-height: 30px;
+}
+
 chat-output .timestamp {
   font-size: 1rem;
 }
@@ -69,7 +73,6 @@ chat-output .chat-lines {
 
 chat-output .chat-line {
   padding: 4px 0 4px 15px;
-  line-height: 17px;
   word-wrap: break-word;
 }
 

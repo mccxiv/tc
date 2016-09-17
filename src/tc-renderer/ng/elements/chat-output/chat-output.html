@@ -30,7 +30,7 @@
     ---><span class="username" ng-if="::m.type === 'whisper'" ng-click="selectUsername(m.to)">{{::m.to}}</span><!--
     ---><span class="separator" ng-if="::m.type === 'chat' || m.type === 'whisper' || m.type === 'cheer'">:&nbsp;</span><!--
     ---><span class="separator" ng-if="::m.type === 'action'">&nbsp;</span><!--
-    ---><span class="message" ng-bind-html="::trusted(m.message)"></span>
+    ---><span class="message" ng-class="::{ 'emoted': m.emoted }" ng-bind-html="::trusted(m.message)"></span>
   </div>
   <div class="auto-scroll-notice" ng-if="!autoScroll()" ng-click="scrollDown()">
     More messages below

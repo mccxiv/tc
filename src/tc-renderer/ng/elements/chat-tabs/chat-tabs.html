@@ -12,7 +12,8 @@
     <md-tab-body>
       <chat-output channel="channel"
                    ng-hide="hidden[channel]"
-                   ng-if="loaded[channel]">
+                   ng-if="loaded[channel]"
+                   ng-class="::{ 'fix-emoted-message': settings.appearance.emoteMessageFix }">
       </chat-output>
     </md-tab-body>
   </md-tab>

@@ -22,7 +22,8 @@ export default {
     simpleViewerCount: false,
     sidebarCollapsed: false,
     chatters: true,
-    zoom: 100
+    zoom: 100,
+    emoteMessageFix: false
   },
   behavior: {
     autoStart: false
