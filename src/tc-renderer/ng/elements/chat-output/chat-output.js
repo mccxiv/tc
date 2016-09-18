@@ -23,7 +23,7 @@ angular.module('tc').directive('chatOutput',
     //===============================================================
     const e = element[0];
     let fetchingBacklog = false;
-    scope.opts = settings.chat;
+    scope.settings = settings;
     scope.badges = null;
     scope.messages = messages(scope.channel);
     scope.autoScroll = () => session.autoScroll;

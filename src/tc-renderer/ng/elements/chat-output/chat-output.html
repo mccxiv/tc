@@ -1,6 +1,9 @@
 <!-- Awkward indentation to avoid any whitespace -->
 
-<div class="chat-lines">
+<div
+  class="chat-lines"
+  ng-class="{'variable-line-height': settings.appearance.variableLineHeight}"
+>
   <div
     class="chat-line"
     ng-repeat="m in messages"
@@ -14,7 +17,7 @@
     }"
     ng-style="::m.type === 'action'? {'color': calculateColor(m.user.color)} : {}"
   ><!--
-	---><span class="timestamp lighter" ng-if="::opts.timestamps">{{::m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
+	---><span class="timestamp lighter" ng-if="::settings.chat.timestamps">{{::m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="::m.user"><!--
         ---><span
               ng-repeat="(name, version) in ::m.user.badges"
