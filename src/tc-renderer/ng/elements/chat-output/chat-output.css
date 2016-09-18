@@ -130,13 +130,8 @@ chat-output .variable-line-height .chat-line {
   line-height: unset;
 }
 
-chat-output .variable-line-height .badge {
-  margin: -9px 0;
-  vertical-align: 5px;
-}
-
 chat-output .variable-line-height .emoticon {
-  margin-top: unset;
+  margin: unset;
   bottom: unset;
   vertical-align: -3px;
 }
