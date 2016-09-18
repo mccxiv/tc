@@ -23,7 +23,7 @@ angular.module('tc').directive('chatOutput',
     //===============================================================
     const e = element[0];
     let fetchingBacklog = false;
-    scope.opts = settings.chat;
+    scope.settings = settings;
     scope.badges = null;
     scope.messages = messages(scope.channel);
     scope.autoScroll = () => session.autoScroll;
@@ -214,6 +214,7 @@ angular.module('tc').directive('chatOutput',
     function handleNewMessages() {
       scope.$watchCollection('messages', () => {
         if (settings.appearance.split) addZebraStripingPropertyToMessages();
+        setTimeout(scrollIfEnabled, 150);
         scrollIfEnabled();
       });
     }

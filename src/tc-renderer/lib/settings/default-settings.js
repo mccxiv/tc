@@ -21,6 +21,7 @@ export default {
     thumbnail: true,
     simpleViewerCount: false,
     sidebarCollapsed: false,
+    variableLineHeight: false,
     chatters: true,
     zoom: 100
   },
