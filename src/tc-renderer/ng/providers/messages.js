@@ -241,6 +241,13 @@ angular.module('tc').factory('messages', (
         message.deleted = true;
       }
     });
+
+    if (settings.appearance.hideTimeouts) {
+      const arr = messages[channel];
+      for (let i = arr.length; i < 0; i--) {
+        if (arr[i].deleted) arr.splice(i, 1);
+      }
+    }
   }
 
   function applyLate() {
