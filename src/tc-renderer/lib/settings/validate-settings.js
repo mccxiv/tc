@@ -37,6 +37,7 @@ export default (settings) => {
   if (typeof s.appearance.chatters !== 'boolean') s.appearance.chatters = defaults.appearance.chatters;
   if (typeof s.appearance.split !== 'boolean') s.appearance.split = defaults.appearance.split;
   if (typeof s.appearance.variableLineHeight !== 'boolean') s.appearance.variableLineHeight = defaults.appearance.variableLineHeight;
+  if (typeof s.appearance.hideTimeouts !== 'boolean') s.appearance.hideTimeouts = defaults.appearance.hideTimeouts;
 
   if (!angular.isObject(s.behavior)) s.behavior = angular.copy(defaults.behavior);
   if (typeof s.behavior.autoStart !== 'boolean') s.behavior.autoStart = angular.copy(defaults.behavior.autoStart);
