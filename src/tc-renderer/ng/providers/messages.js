@@ -244,9 +244,10 @@ angular.module('tc').factory('messages', (
 
     if (settings.appearance.hideTimeouts) {
       const arr = messages[channel];
-      for (let i = arr.length; i < 0; i--) {
+      for (let i = arr.length - 1; i >= 0; i--) {
         if (arr[i].deleted) arr.splice(i, 1);
       }
+      applyLate();
     }
   }
 
@@ -338,12 +339,14 @@ angular.module('tc').factory('messages', (
         addNotification(channel, msg);
       },
       timeout: (channel, username, reason, duration) => {
-        duration = Number(duration);
-        const humanDur = moment.duration(duration, 'seconds').humanize();
-        const baseMsg = username + ` has been timed out for ${humanDur}.`;
-        const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
         timeoutFromChat(channel, username);
-        addNotification(channel, msg);
+        if (!settings.appearance.hideTimeouts) {
+          duration = Number(duration);
+          const humanDur = moment.duration(duration, 'seconds').humanize();
+          const baseMsg = username + ` has been timed out for ${humanDur}.`;
+          const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
+          addNotification(channel, msg);
+        }
       },
       unhost: (channel) => addNotification(channel, 'Stopped hosting.'),
       whisper: (from, user, message, self) => {
