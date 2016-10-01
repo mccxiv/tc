@@ -264,9 +264,11 @@ angular.module('tc').factory('messages', (
       },
       ban: (channel, username, reason) => {
         const baseMsg = username + ' has been banned.';
-        const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
         timeoutFromChat(channel, username);
-        addNotification(channel, msg);
+        if (!settings.appearance.hideTimeouts) {
+          const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
+          addNotification(channel, msg);
+        }
       },
       chat: (channel, user, message) => {
         addUserMessage(channel, {type: 'chat', user, message});
