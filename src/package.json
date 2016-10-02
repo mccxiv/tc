@@ -23,7 +23,7 @@
     "material-design-iconic-font": "2.1.2",
     "moment": "2.13.0",
     "nprogress": "0.2.0",
-    "proxy-observe": "0.0.18",
+    "proxy-observe": "github:mccxiv/proxy-observe",
     "roboto-fontface": "0.4.5",
     "tmi.js": "1.1.1",
     "which": "1.2.10"
