@@ -1,11 +1,16 @@
 import path from 'path';
+import {EventEmitter} from 'events';
 import electron from 'electron';
 import jsonFile from 'jsonfile';
 import validateSettings from './validate-settings';
 import 'proxy-observe';
 
+const events = new EventEmitter();
 const rawSettingsObject = validateSettings(loadSettings());
-const settings = Object.deepObserve(rawSettingsObject, saveSettings);
+const settings = Object.deepObserve(rawSettingsObject, (...args) => {
+  events.emit('change', ...args);
+  saveSettings();
+});
 
 function loadSettings() {
   let s;
@@ -33,3 +38,5 @@ function settingsFilePath() {
 }
 
 export default settings;
+
+export {events};
