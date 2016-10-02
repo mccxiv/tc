@@ -1,7 +1,6 @@
 import angular from 'angular';
 import notificationSound from '../../../assets/notification.ogg';
 import settings from '../../lib/settings/settings';
-import {getTray} from '../../lib/startup/tray-icon';
 
 angular.module('tc').factory('notifications', (irc, highlights) => {
 
@@ -49,8 +48,7 @@ angular.module('tc').factory('notifications', (irc, highlights) => {
    * @return {Notification}    - The Notification object that was created
    */
   function n(title, body) {
-    if (process.platform !== 'win32') new Notification(title, {body: body});
-    else getTray().displayBalloon({title: title, content: body});
+    new Notification(title, {body: body});
   }
 
   return {
