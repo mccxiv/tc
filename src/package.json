@@ -13,7 +13,7 @@
     "angular-material": "0.10.1",
     "angular-sanitize": "1.4.10",
     "axios": "0.9.1",
-    "electron-window-state": "2.0.0",
+    "electron-window-state": "3.0.4",
     "frostyjs": "github:mccxiv/frostyjs",
     "jquery": "2.1.4",
     "jsonfile": "2.3.0",
