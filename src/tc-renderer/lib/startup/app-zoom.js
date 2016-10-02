@@ -1,15 +1,16 @@
-
-
 import electron from 'electron';
 import $ from 'jquery';
-import 'proxy-observe';
-import settings from '../../lib/settings/settings';
+import settings, {events} from '../../lib/settings/settings';
 
 export default function watchZoomChanges() {
   updateZoom();
-  
-  Object.observe(settings.appearance, (changes) => {
-    changes.forEach((change) => {if (change.name === 'zoom') updateZoom()});
+  let zoomLevel = settings.appearance.zoom;
+
+  events.on('change', () => {
+    if (zoomLevel !== settings.appearance.zoom) {
+      updateZoom();
+      zoomLevel = settings.appearance.zoom;
+    }
   });
 
   $(document).on('keyup', (e) => {

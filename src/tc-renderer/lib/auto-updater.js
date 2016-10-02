@@ -14,8 +14,8 @@ else {
   const version = electron.remote.app.getVersion();
   const url = `http://dl.gettc.xyz/update/${os}/${version}`;
 
-  autoUpdater.setFeedUrl(url);
-  //autoUpdater.setFeedUrl('http://localhost/'); // Uncomment For testing
+  autoUpdater.setFeedURL(url);
+  //autoUpdater.setFeedURL('http://localhost/'); // Uncomment For testing
 
   setTimeout(check, 15000);
   setInterval(check, 1000 * 60 * 60 * 23);
