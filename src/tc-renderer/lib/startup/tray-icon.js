@@ -14,7 +14,7 @@ export default function makeTrayIconOnWindows() {
   const browserWindow = electron.remote.BrowserWindow;
   tray = new Tray(nativeImage.createFromDataURL(icon16));
 
-  tray.on('clicked', () => browserWindow.getAllWindows()[0].show());
+  tray.on('click', () => browserWindow.getAllWindows()[0].show());
 
   tray.setContextMenu(Menu.buildFromTemplate([
     {
