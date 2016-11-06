@@ -33,7 +33,7 @@ thumbnail:hover .hover-content {
   opacity: 1;
 }
 
-thumbnail i {
+thumbnail .viewers i {
   vertical-align: -1px;
 }
 
