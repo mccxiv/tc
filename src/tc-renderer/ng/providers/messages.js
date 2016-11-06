@@ -115,7 +115,7 @@ angular.module('tc').factory('messages', (
       backlog.forEach((obj) => {
         obj.type = obj.user['message-type'];
         obj.fromBacklog = true;
-        addUserMessage(channel, obj);
+        if (dontHaveMessage(channel, obj)) addUserMessage(channel, obj);
       });
       sortMessages(channel);
       if (session.autoScroll) trimMessages(channel);
@@ -137,6 +137,14 @@ angular.module('tc').factory('messages', (
     while (messages[channel].length > messageLimit) {
       messages[channel].shift();
     }
+  }
+
+  function dontHaveMessage(channel, obj) {
+    window.messages = messages;
+    if (!messages[channel] || !obj.user || !obj.user.id) return true;
+    return !messages[channel].find(msg => {
+      return msg.user ? msg.user.id === obj.user.id : false;
+    });
   }
 
   /**
