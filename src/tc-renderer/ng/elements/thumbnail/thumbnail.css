@@ -35,6 +35,9 @@ thumbnail:hover .hover-content {
 
 thumbnail i {
   vertical-align: -1px;
+}
+
+thumbnail .hover-content i {
   cursor: pointer;
 }
 
@@ -50,7 +53,7 @@ thumbnail .title {
 
 }
 
-thumbnail .stats {
+thumbnail .footer {
   font-size: 1.1rem;
   position: absolute;
   bottom: 8px;
@@ -82,4 +85,16 @@ thumbnail .hide-button {
 
 thumbnail:hover .hide-button {
   opacity: 1;
+}
+
+thumbnail .host-button {
+  margin-right: 5px;
+  padding-left: 4px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 2px;
+}
+
+thumbnail .host-button:hover {
+  border-color: rgba(255, 255, 255, 0.65);
 }

@@ -26,6 +26,10 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
 
     scope.$on('$destroy', () => clearInterval(stop));
 
+    scope.host = () => {
+
+    };
+
     scope.playLivestreamer = audioOnly => {
       const type = audioOnly? 'audio' : '';
       const channel = 'twitch.tv/' + scope.channel();
