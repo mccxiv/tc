@@ -7,7 +7,7 @@ import * as api from '../../../lib/api';
 import settings from '../../../lib/settings/settings';
 import channels from '../../../lib/channels';
 
-angular.module('tc').directive('thumbnail', (irc, openExternal) => {
+angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
 
   function link(scope, element) {
     const stop = setInterval(load, 60000);
@@ -27,12 +27,13 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
     scope.$on('$destroy', () => clearInterval(stop));
 
     scope.host = () => {
-
+      irc.say(`#${settings.identity.username}`, `.host ${getChannel()}`);
+      messages.addNotification(getChannel(), 'Host command sent.');
     };
 
     scope.playLivestreamer = audioOnly => {
       const type = audioOnly? 'audio' : '';
-      const channel = 'twitch.tv/' + scope.channel();
+      const channel = 'twitch.tv/' + getChannel();
       stream(type);
 
       function stream(quality) {
@@ -51,7 +52,7 @@ angular.module('tc').directive('thumbnail', (irc, openExternal) => {
     };
 
     scope.playTwitch = () => {
-      openExternal(`http://www.twitch.tv/${scope.channel()}/popout`);
+      openExternal(`http://www.twitch.tv/${getChannel()}/popout`);
     };
 
     function checkLivestreamerInstallation() {
