@@ -88,11 +88,13 @@ thumbnail:hover .hide-button {
 }
 
 thumbnail .host-button {
-  margin-right: 5px;
-  padding-left: 4px;
+  outline: none;
+  margin-right: 8px;
+  padding: 0 4px;
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 2px;
+  display: inline-block;
 }
 
 thumbnail .host-button:hover {

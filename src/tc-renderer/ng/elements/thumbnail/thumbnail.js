@@ -1,5 +1,6 @@
 import './thumbnail.css';
 import which from 'which';
+import axios from 'axios';
 import {exec} from 'child_process';
 import angular from 'angular';
 import template from './thumbnail.html';
@@ -10,10 +11,18 @@ import channels from '../../../lib/channels';
 angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
 
   function link(scope, element) {
-    const stop = setInterval(load, 60000);
-    scope.m = {img: '', channel: null, stream: null, livestreamer: false};
+    const loadThumbnailInterval = setInterval(loadThumbnail, 60000);
+    const loadHostStatusInterval = setInterval(loadHostStatus, 60 * 5 * 1000);
+    scope.m = {
+      img: '',
+      channel: null,
+      stream: null,
+      hosting: false,
+      livestreamer: false
+    };
 
-    load();
+    loadThumbnail();
+    loadHostStatus();
     checkLivestreamerInstallation();
     
     element.attr('layout', 'column');
@@ -21,14 +30,25 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
     channels.on('change', () => {
       scope.m.stream = null;
       scope.m.channel = null;
-      load();
+      scope.m.hosting = false;
+      loadThumbnail();
+      loadHostStatus();
     });
 
-    scope.$on('$destroy', () => clearInterval(stop));
+    scope.$on('$destroy', cleanup);
 
     scope.host = () => {
       irc.say(`#${settings.identity.username}`, `.host ${getChannel()}`);
       messages.addNotification(getChannel(), 'Host command sent.');
+      setTimeout(loadHostStatus, 1500);
+      setTimeout(loadHostStatus, 4000);
+    };
+
+    scope.unhost = () => {
+      irc.say(`#${settings.identity.username}`, '.unhost');
+      messages.addNotification(getChannel(), 'Unhost command sent.');
+      setTimeout(loadHostStatus, 1500);
+      setTimeout(loadHostStatus, 4000);
     };
 
     scope.playLivestreamer = audioOnly => {
@@ -65,7 +85,12 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       return settings.channels[settings.selectedTabIndex];
     }
 
-    async function load() {
+    function cleanup() {
+      clearInterval(loadThumbnailInterval);
+      clearInterval(loadHostStatusInterval);
+    }
+
+    async function loadThumbnail() {
       const channel = getChannel();
       scope.m.channel = await api.channel(channel);
       scope.m.stream = (await api.stream(channel)).stream;
@@ -74,6 +99,21 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       await preLoadImage(url);
       scope.m.img = url;
       scope.$apply();
+    }
+
+    function loadHostStatus() {
+      // This task is lower priority than the others, let them run first.
+      setTimeout(async () => {
+        const user = irc.getClient().globaluserstate;
+        const id =  user && user['user-id'] ? user['user-id'] : null;
+        if (!id) return setTimeout(loadHostStatus, 2000);
+        const opts = {params: {host: id, include_logins: 1}};
+        const resp = await axios('https://tmi.twitch.tv/hosts', opts);
+        if (resp.data && resp.data.hosts[0]) {
+          scope.m.hosting = resp.data.hosts[0].target_login === getChannel();
+          scope.$apply();
+        }
+      }, 600)
     }
 
     async function preLoadImage(url) {
