@@ -2,14 +2,6 @@
     <span class="title" title="{{m.channel.status}}">
         {{m.channel.status}}
     </span>
-  <div class="stats">
-        <span class="followers">
-            <i class="zmdi zmdi-favorite"></i> {{m.channel.followers}}
-        </span>
-        <span class="viewers">
-            <i class="zmdi zmdi-account"></i> {{m.stream.viewers}}
-        </span>
-  </div>
   <div class="hover-content" layout="row" layout-align="center center">
     <i class="zmdi zmdi-hearing play"
        ng-if="m.livestreamer"
@@ -41,6 +33,20 @@
       <i class="zmdi zmdi-close"></i>
     </md-button>
 
+  </div>
+  <div class="footer">
+    <span class="host-button" ng-click="host()" ng-if="!m.hosting">
+      Host <i class="zmdi zmdi-thumb-up"></i>
+    </span>
+    <span class="host-button" ng-click="unhost()" ng-if="m.hosting">
+      Unhost
+    </span>
+    <span class="followers">
+      <i class="zmdi zmdi-favorite"></i> {{m.channel.followers}}
+    </span>
+    <span class="viewers">
+      <i class="zmdi zmdi-account"></i> {{m.stream.viewers}}
+    </span>
   </div>
   <img class="preview" ng-src="{{m.img}}"></div>
 <md-divider ng-if="m.stream"></md-divider>
