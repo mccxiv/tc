@@ -9,7 +9,13 @@ function registerShortcuts() {
   key('⌘+shift+tab, ctrl+shift+tab', previousTab);
   key('⌘+left, ctrl+left', previousTab);
   key('⌘+right, ctrl+right', nextTab);
+  key('⌘+s, ctrl+s', toggleSidebar);
   key('tab', focusInput);
+}
+
+function toggleSidebar() {
+  const a = settings.appearance;
+  a.sidebarCollapsed = !a.sidebarCollapsed;
 }
 
 function focusInput() {
