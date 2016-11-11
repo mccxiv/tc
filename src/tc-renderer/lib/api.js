@@ -1,16 +1,22 @@
 import r from 'axios';
+import {sleep} from './util';
 
 const kraken = 'https://api.twitch.tv/kraken/';
 
 export async function badges(channel) {
-  const userId = (await user(channel))._id;
-  const base = 'https://badges.twitch.tv/v1/badges/';
-  const globalUrl = base + 'global/display?language=en';
-  const channelUrl = base + `channels/${userId}/display?language=en`;
-  const globalBadges = (await r(globalUrl)).data;
-  const channelBadges = (await r(channelUrl)).data;
-  const input = [{}, globalBadges.badge_sets, channelBadges.badge_sets];
-  return Object.assign(...input);
+  try {
+    const userId = (await user(channel))._id;
+    const base = 'https://badges.twitch.tv/v1/badges/';
+    const globalUrl = base + 'global/display?language=en';
+    const channelUrl = base + `channels/${userId}/display?language=en`;
+    const globalBadges = (await r(globalUrl)).data;
+    const channelBadges = (await r(channelUrl)).data;
+    const input = [{}, globalBadges.badge_sets, channelBadges.badge_sets];
+    return Object.assign(...input);
+  } catch(e) {
+    await sleep(3000);
+    return badges(channel)
+  }
 }
 
 export async function user(channel) {
