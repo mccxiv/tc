@@ -9,6 +9,21 @@ function registerShortcuts() {
   key('⌘+shift+tab, ctrl+shift+tab', previousTab);
   key('⌘+left, ctrl+left', previousTab);
   key('⌘+right, ctrl+right', nextTab);
+  key('tab', focusInput);
+}
+
+function focusInput() {
+  const isChannelTab = settings.selectedTabIndex < settings.channels.length;
+  if (isChannelTab) focus('#main-input');
+  else focus('#join-channel-input');
+}
+
+function focus(id) {
+  const mainInput = document.querySelector(id);
+  const active = document.activeElement;
+  if (active.tagName !== 'INPUT' && active !== mainInput) {
+    setTimeout(() => mainInput.focus(), 20); // Doesn't work without timeout
+  }
 }
 
 function nextTab() {
