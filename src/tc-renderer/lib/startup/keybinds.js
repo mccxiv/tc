@@ -12,15 +12,9 @@ function registerShortcuts() {
   key('⌘+s, ctrl+s', toggleSidebar);
   key('tab', focusInput);
 
-  key('⌘+1, ctrl+1', () => tab(1));
-  key('⌘+2, ctrl+2', () => tab(2));
-  key('⌘+3, ctrl+3', () => tab(3));
-  key('⌘+4, ctrl+4', () => tab(4));
-  key('⌘+5, ctrl+5', () => tab(5));
-  key('⌘+6, ctrl+6', () => tab(6));
-  key('⌘+7, ctrl+7', () => tab(7));
-  key('⌘+8, ctrl+8', () => tab(8));
-  key('⌘+9, ctrl+9', () => tab(9));
+  for(let i = 1; i < 10; i++) {
+    key(`⌘+${i}, ctrl+${i}`, () => tab(i));
+  }
 }
 
 function tab(index) {
