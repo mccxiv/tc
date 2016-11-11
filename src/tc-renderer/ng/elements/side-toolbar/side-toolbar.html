@@ -60,11 +60,11 @@
            ng-class="{collapsed: settings.appearance.sidebarCollapsed}">
   <md-tooltip md-autohide md-direction="right"
               ng-if="!settings.appearance.sidebarCollapsed">
-    Collapse sidebar
+    Collapse sidebar ({{::m.hotkey}} + s)
   </md-tooltip>
   <md-tooltip md-autohide md-direction="right"
               ng-if="settings.appearance.sidebarCollapsed">
-    Expand sidebar
+    Expand sidebar ({{::m.hotkey}} + s)
   </md-tooltip>
 
   <i class="zmdi zmdi-chevron-left"></i>

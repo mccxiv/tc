@@ -19,6 +19,9 @@
   <md-tab>
     <md-tab-label>
       <i class="zmdi zmdi-plus zmdi-lg"></i>
+      <md-tooltip md-direction="left">
+        New ({{::m.hotkey}} + n)
+      </md-tooltip>
     </md-tab-label>
     <md-tab-body>
       <add-channel ng-if="showingAddChannel()"></add-channel>

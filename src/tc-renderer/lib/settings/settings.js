@@ -30,11 +30,18 @@ function loadSettingsFromLocalstorageInstead() {
 
 function saveSettings() {
   jsonFile.writeFileSync(settingsFilePath(), settings, {spaces: 2});
+  safeApply();
 }
 
 function settingsFilePath() {
   const userData = electron.remote.app.getPath('userData');
   return path.resolve(userData, 'settings.json');
+}
+
+function safeApply() {
+  const rootAppElement = document.querySelector('[ng-app]');
+  const $scope = angular.element(rootAppElement).injector().get('$rootScope');
+  if (!$scope.$$phase) $scope.$apply();
 }
 
 export default settings;

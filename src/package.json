@@ -17,6 +17,7 @@
     "frostyjs": "github:mccxiv/frostyjs",
     "jquery": "2.1.4",
     "jsonfile": "2.3.0",
+    "keymaster": "1.6.2",
     "lodash": "4.9.0",
     "lodash.escaperegexp": "4.1.1",
     "lodash.throttle": "4.0.1",

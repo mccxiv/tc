@@ -4,7 +4,8 @@
       <span ng-if="irc.ready">Send a message</span>
       <span ng-if="!irc.ready">Disconnected from server</span>
     </label>
-    <input spellcheck="true"
+    <input id="main-input"
+           spellcheck="true"
            ng-disabled="!irc.ready"
            ng-model="session.message"
            ng-trim="false"

@@ -10,6 +10,7 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
   function link(scope, element) {
     element = $(element[0]);
 
+    scope.m = {hotkey: process.platform === 'darwin' ? '⌘' : 'ctrl'}
     scope.settings = settings;
     scope.hidden = {};
     scope.loaded = {};
