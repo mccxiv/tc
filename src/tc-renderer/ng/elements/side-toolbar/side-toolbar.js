@@ -9,7 +9,7 @@ angular.module('tc').directive('sideToolbar',
   (settingsGui, $mdDialog, irc, openExternal) => {
 
   function link(scope, element) {
-    scope.m = {};
+    scope.m = {hotkey: process.platform === 'darwin' ? '⌘' : 'ctrl'};
     scope.irc = irc;
     scope.settings = settings;
     scope.settingsGui = settingsGui;
