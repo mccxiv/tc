@@ -12,6 +12,7 @@ angular.module('tc').directive('chatters', ($http, session) => {
     let forceShowViewers = false;
     let timeout = null;
     scope.api = null;
+    scope.searchText = '';
 
     fetchList();
     setInterval(fetchList, 120000);
@@ -32,12 +33,17 @@ angular.module('tc').directive('chatters', ($http, session) => {
     };
 
     scope.tooManyNotDoable = function() {
+      if (scope.searchText.length > 1) return false; // Show all if searching
       return scope.api && scope.api.chatters.viewers.length > 10000;
     };
 
     scope.selectUser = function(username) {
       session.selectedUser = username;
       session.selectedUserChannel = scope.channel;
+    };
+
+    scope.chatterCount = function() {
+      return
     };
 
     async function fetchList(attemptNumber) {
@@ -48,6 +54,8 @@ angular.module('tc').directive('chatters', ($http, session) => {
         console.warn('CHATTERS: Failed to get user list. ' + attemptNumber, e);
         if (attemptNumber < 6) fetchList(attemptNumber + 1);
       }
+
+      console.log(scope.api);
       scope.$apply();
     }
 
