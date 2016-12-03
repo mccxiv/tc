@@ -12,6 +12,7 @@ angular.module('tc').directive('chatters', ($http, session) => {
     let forceShowViewers = false;
     let timeout = null;
     scope.api = null;
+    scope.searchText = '';
 
     fetchList();
     setInterval(fetchList, 120000);
@@ -27,11 +28,13 @@ angular.module('tc').directive('chatters', ($http, session) => {
     scope.showViewers = function(force) {
       if (typeof force === 'boolean') forceShowViewers = force;
       if (!scope.api) return false;
+      if (scope.searchText.length > 1) return true;
       if (scope.api.chatters.viewers.length < 201) return true;
       else return forceShowViewers;
     };
 
     scope.tooManyNotDoable = function() {
+      if (scope.searchText.length > 1) return false; // Show all if searching
       return scope.api && scope.api.chatters.viewers.length > 10000;
     };
 

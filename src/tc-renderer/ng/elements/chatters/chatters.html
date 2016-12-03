@@ -1,7 +1,9 @@
-<md-input-container class="input-container" style="padding-bottom:0;" ng-class="{disabled: !irc.ready}">
-  <label for="search">Filter Viewers</label>
-  <input type="text" id="search" ng-model="searchText" ng-focus="showViewers(true)">
-</md-input-container>
+<input
+  ng-model="searchText"
+  placeholder="Filter chatters - {{api.chatter_count | number}}"
+  ng-show="api.chatter_count > 50"
+  ng-model-options="{debounce: 300}"
+>
 
 <div ng-repeat="(key, value) in api.chatters">
   <h3 ng-if="value.length">{{prettyChatterNames(key)}}</h3>
@@ -24,6 +26,6 @@
         Too many, show all? <i class="zmdi zmdi-expand-more"></i>
       </md-button>
     </div>
-    <div ng-if="key === 'viewers' && tooManyNotDoable()">Too Many!</div>
+    <div ng-if="key === 'viewers' && tooManyNotDoable()">Too many, try filtering</div>
   </div>
 </div>
