@@ -1,6 +1,5 @@
 <input
   ng-model="searchText"
-  ng-focus="showViewers(true)"
   placeholder="Filter chatters - {{api.chatter_count | number}}"
   ng-show="api.chatter_count > 50"
   ng-model-options="{debounce: 300}"

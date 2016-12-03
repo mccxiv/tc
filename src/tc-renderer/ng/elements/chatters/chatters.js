@@ -28,6 +28,7 @@ angular.module('tc').directive('chatters', ($http, session) => {
     scope.showViewers = function(force) {
       if (typeof force === 'boolean') forceShowViewers = force;
       if (!scope.api) return false;
+      if (scope.searchText.length > 1) return true;
       if (scope.api.chatters.viewers.length < 201) return true;
       else return forceShowViewers;
     };
