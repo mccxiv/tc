@@ -1,15 +1,20 @@
+<md-input-container class="input-container" style="padding-bottom:0;" ng-class="{disabled: !irc.ready}">
+  <label for="search">Filter Viewers</label>
+  <input type="text" id="search" ng-model="searchText" ng-focus="showViewers(true)">
+</md-input-container>
+
 <div ng-repeat="(key, value) in api.chatters">
   <h3 ng-if="value.length">{{prettyChatterNames(key)}}</h3>
   <div class="usernames">
     <!-- Not DRY because this has better performance -->
     <div ng-if="key !== 'viewers'">
-      <div ng-repeat="username in value">
+      <div ng-repeat="username in value | filter:searchText">
         <span class="chatter"
               ng-click="selectUser(username)">{{username}}</span>
       </div>
     </div>
     <div ng-if="key === 'viewers' && !tooManyNotDoable()">
-      <div ng-repeat="username in value | limitTo: showViewers()? Infinity : 0">
+      <div ng-repeat="username in value | limitTo: showViewers()? Infinity : 0 | filter:searchText">
         <span class="chatter"
               ng-click="selectUser(username)">{{username}}</span>
       </div>
