@@ -37,6 +37,7 @@ chatters input {
   outline: none;
   cursor: pointer;
   margin: 5px 0;
+  background-color: inherit;
 }
 
 chatters input:focus {
