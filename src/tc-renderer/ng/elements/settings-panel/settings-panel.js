@@ -12,7 +12,7 @@ angular.module('tc').directive('settingsPanel', (highlights, notifications) => {
     scope.settings = settings;
     scope.m = {
       version: electron.remote.app.getVersion(),
-      selected: 'highlights'
+      selected: 'about'
     };
 
     scope.highlights = {

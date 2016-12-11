@@ -7,6 +7,12 @@
     <!-- TODO refactor this awful repetition -->
 
     <md-list-item class="menu-item"
+                  ng-click="m.selected = 'about'"
+                  ng-class="{selected: m.selected === 'about'}">
+      <p>About</p>
+    </md-list-item>
+
+    <md-list-item class="menu-item"
                   ng-click="m.selected = 'highlights'"
                   ng-class="{selected: m.selected === 'highlights'}">
       <p>Highlights</p>
@@ -30,11 +36,6 @@
                   ng-click="m.selected = 'ignore'"
                   ng-class="{selected: m.selected === 'ignore'}">
       <p>Ignore List</p>
-    </md-list-item>
-    <md-list-item class="menu-item"
-                  ng-click="m.selected = 'about'"
-                  ng-class="{selected: m.selected === 'about'}">
-      <p>About</p>
     </md-list-item>
   </md-list>
 
