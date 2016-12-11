@@ -7,8 +7,8 @@
     <!-- TODO refactor this awful repetition -->
 
     <md-list-item class="menu-item"
-                  ng-click="m.selected = 'about'"
-                  ng-class="{selected: m.selected === 'about'}">
+                  ng-click="m.selected = 'tc'"
+                  ng-class="{selected: m.selected === 'tc'}">
       <p>Tc</p>
     </md-list-item>
 
@@ -43,7 +43,7 @@
 
 <div flex class="settings-content" ng-switch on="m.selected" layout="column">
 
-  <md-content flex ng-switch-when="about" layout="column" class="tc"
+  <md-content flex ng-switch-when="tc" layout="column" class="tc"
               layout-align="center center">
     <img style="width: 150px;" src="../../../../assets/icon256.png">
 
