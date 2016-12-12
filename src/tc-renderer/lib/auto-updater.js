@@ -15,17 +15,14 @@ else {
   const url = `http://dl.gettc.xyz/update/${os}/${version}`;
 
   autoUpdater.setFeedURL(url);
-  //autoUpdater.setFeedURL('http://localhost/'); // Uncomment For testing
 
   setTimeout(check, 15000);
-  setInterval(check, 1000 * 60 * 60 * 23);
+  setInterval(check, 1000 * 60 * 60 * 23); // Check for updates every 23 hours
 
   function check() {
     console.log('Checking for updates at ' + url);
     autoUpdater.checkForUpdates();
   }
-
-  autoUpdater.on('error', (e) => console.warn('Error checking for updates.', e));
 }
 
 export default autoUpdater;

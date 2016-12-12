@@ -53,7 +53,11 @@
       <a href-external="http://gettc.xyz/">GetTc.xyz</a>
     </p>
     <p>
-      <md-button>Check for updates</md-button>
+      <md-button
+          ng-click="tc.checkForUpdates()"
+          ng-disabled="tc.checkedForUpdate">
+        Check for updates
+      </md-button>
     </p>
 
   </md-content>
