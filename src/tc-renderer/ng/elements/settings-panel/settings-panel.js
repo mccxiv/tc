@@ -24,10 +24,10 @@ angular.module('tc').directive('settingsPanel', (
       checkForUpdates() {
         scope.tc.checkedForUpdate = true;
         const a = autoUpdater;
-        a.checkForUpdates();
         a.once('error', updateError);
         a.once('update-available', updateAvailableToast);
         a.once('update-not-available', updateNotAvailableToast);
+        a.checkForUpdates();
 
         scope.$on('$destroy', () => {
           a.removeListener('error', updateError);
@@ -37,7 +37,7 @@ angular.module('tc').directive('settingsPanel', (
 
         function updateError(e) {
           $mdToast.showSimple('Unable to check for updates');
-          console.log('err', e);
+          console.warn('Update error:', e);
         }
         
         function updateNotAvailableToast() {
