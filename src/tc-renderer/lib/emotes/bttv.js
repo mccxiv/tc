@@ -30,6 +30,7 @@ async function fetch(channel) {
   const channelUrl = 'https://api.betterttv.net/2/channels/' + channel;
   const emotes = (await axios(channel? channelUrl : globalUrl)).data.emotes;
   if (channel) channelEmotes[channel] = [];
+  if (!channel) globalEmotes.splice(0);
   const emotesStorage = channel? channelEmotes[channel] : globalEmotes;
   emotes.forEach((emote) => {
     emotesStorage.push({
