@@ -21,6 +21,16 @@ ipc.on('disable-auto-start', disableAutoStart);
 app.on('before-quit', app.exit.bind(app, 0)); // Skip the 'close' event
 app.on('activate', unhideAppOnMac);
 
+// If we are running a non-packaged version of the app
+if (process.defaultApp) {
+  // If we have the path to our app we set the protocol client to launch electron.exe with the path to our app
+      if (process.argv.length >= 2) {
+        app.setAsDefaultProtocolClient('tc', process.execPath, [path.resolve(process.argv[1])])
+      }
+} else {
+  app.setAsDefaultProtocolClient('tc')
+}
+
 function makeWindow() {
   var mainWinState = windowState({
     defaultWidth: 800,
@@ -56,14 +66,21 @@ function devTools() {
 }
 
 function isSecondInstance() {
-  return app.makeSingleInstance(secondaryInstanceLaunched);
-}
-
-// Called when this is the main instance, and another is launched
-function secondaryInstanceLaunched() {
-  if (main.isMinimized()) main.restore();
-  if (!main.isVisible()) main.show();
-  if (!main.isFocused()) main.focus();
+    return app.makeSingleInstance(function (argv) {
+        if (main) {
+            if (main.isMinimized()) main.restore();
+            if (! main.isVisible()) main.show();
+            if (! main.isFocused()) main.focus();
+            // On windows we have to check the second instance arguments to emit the open-url event
+            if (process.platform === 'win32') {
+                // Check if the second instance was attempting to launch a URL for our protocol client
+                const url = argv.find(function (arg) {
+                    return /^tc:\/\//.test(arg)
+                });
+                if (url) app.emit('open-url', null, url)
+            }
+        }
+    });
 }
 
 function enableAutoStart() {
