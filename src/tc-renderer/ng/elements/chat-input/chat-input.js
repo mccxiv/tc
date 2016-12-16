@@ -12,6 +12,7 @@ angular.module('tc').directive('chatInput',
   function link(scope, element) {
     scope.session = session;
     scope.irc = irc;
+    scope.chatHistory = [];
     const input = element.find('input')[0];
     session.input = input; // TODO make a better system
     let lastWhisperer;
@@ -66,9 +67,37 @@ angular.module('tc').directive('chatInput',
       }
 
       else irc.say(channel, session.message);
-
+      scope.chatHistory.unshift(session.message);
       session.message = '';
     };
+
+      scope.keyUp = (event) => {
+          let keyCode = event.keyCode || event.which;
+
+          let historyIndex = scope.chatHistory.indexOf(session.message);
+          if (keyCode === 38) {
+              if (historyIndex >= 0) {
+                  if (scope.chatHistory[historyIndex + 1]) {
+                      session.message = scope.chatHistory[historyIndex + 1];
+                  }
+              } else {
+                  if (session.message != '') {
+                      scope.chatHistory.unshift(session.message);
+                      session.message = scope.chatHistory[1];
+                  } else {
+                      session.message = scope.chatHistory[0];
+                  }
+              }
+          } else if (keyCode === 40) {
+              if (historyIndex >= 0) {
+                  if (scope.chatHistory[historyIndex -1]) {
+                      session.message = scope.chatHistory[historyIndex -1];
+                  } else {
+                      session.message = '';
+                  }
+              }
+          }
+      };
 
     scope.change = function() {
       const msg = session.message;
