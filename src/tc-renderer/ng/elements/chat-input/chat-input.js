@@ -79,7 +79,6 @@ angular.module('tc').directive('chatInput',
 
           let historyIndex = scope.chatHistory.indexOf(session.message);
           if (keyCode === 38) {
-              console.log(historyIndex);
               if (historyIndex >= 0) {
                   if (scope.chatHistory[historyIndex + 1]) {
                       session.message = scope.chatHistory[historyIndex + 1];
