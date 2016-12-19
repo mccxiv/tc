@@ -67,6 +67,9 @@ angular.module('tc').directive('chatInput',
       }
 
       else irc.say(channel, session.message);
+      if (scope.chatHistory.indexOf(session.message) !== -1) {
+          scope.chatHistory.splice(scope.chatHistory.indexOf(session.message), 1)
+      }
       scope.chatHistory.unshift(session.message);
       session.message = '';
     };
@@ -76,6 +79,7 @@ angular.module('tc').directive('chatInput',
 
           let historyIndex = scope.chatHistory.indexOf(session.message);
           if (keyCode === 38) {
+              console.log(historyIndex);
               if (historyIndex >= 0) {
                   if (scope.chatHistory[historyIndex + 1]) {
                       session.message = scope.chatHistory[historyIndex + 1];
