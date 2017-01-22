@@ -18,11 +18,13 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       channel: null,
       stream: null,
       hosting: false,
+      streamlink: false,
       livestreamer: false
     };
 
     loadThumbnail();
     loadHostStatus();
+    checkStreamlinkInstallation();
     checkLivestreamerInstallation();
     
     element.attr('layout', 'column');
@@ -75,10 +77,12 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       openExternal(`http://www.twitch.tv/${getChannel()}/popout`);
     };
 
+    function checkStreamlinkInstallation() {
+      which('streamlink', err => scope.m.streamlink = !err);
+    }
+
     function checkLivestreamerInstallation() {
-      which('livestreamer', err => {
-        scope.m.livestreamer = !err;
-      });
+      which('livestreamer', err => scope.m.livestreamer = !err);
     }
 
     function getChannel() {
