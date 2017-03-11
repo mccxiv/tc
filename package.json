@@ -62,6 +62,6 @@
   },
   "devDependencies": {
     "electron-builder": "6.4.0",
-    "electron": "1.4.12"
+    "electron": "1.6.2"
   }
 }
