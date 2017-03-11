@@ -22,7 +22,8 @@ else {
   function check() {
     console.log('Checking for updates at ' + url);
     autoUpdater.on('error', handleAutomaticCheckError);
-    autoUpdater.checkForUpdates();
+    try {autoUpdater.checkForUpdates();}
+    catch (e) {console.warn('Auto-Update synchronous exception:', e);}
 
     function handleAutomaticCheckError(error) {
       console.warn('Unable to check for updates. ' +
