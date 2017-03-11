@@ -22,7 +22,7 @@ angular.module('tc').directive('chatInput',
     });
 
     scope.getAutoCompleteStrings = () => {
-      var channel = settings.channels[settings.selectedTabIndex];
+      const channel = settings.channels[settings.selectedTabIndex];
       if (!channel) return [];
 
       const names = messages(channel).filter(hasUser).map(getNames).filter(dedupe).sort();
@@ -51,7 +51,7 @@ angular.module('tc').directive('chatInput',
     };
 
     scope.input = () => {
-      var channel = settings.channels[settings.selectedTabIndex];
+      const channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !session.message.trim().length) return;
 
       if (session.message.charAt(0) === '/') {
@@ -59,9 +59,9 @@ angular.module('tc').directive('chatInput',
       }
 
       if (session.message.indexOf('.w') === 0) {
-        var words = session.message.split(' ');
-        var username = words[1];
-        var message = words.slice(2).join(' ');
+        const words = session.message.split(' ');
+        const username = words[1];
+        const message = words.slice(2).join(' ');
         irc.whisper(username, message);
         messages.addWhisper(settings.identity.username, username, message);
       }
@@ -74,33 +74,32 @@ angular.module('tc').directive('chatInput',
       session.message = '';
     };
 
-      scope.keyUp = (event) => {
-          let keyCode = event.keyCode || event.which;
-
-          let historyIndex = scope.chatHistory.indexOf(session.message);
-          if (keyCode === 38) {
-              if (historyIndex >= 0) {
-                  if (scope.chatHistory[historyIndex + 1]) {
-                      session.message = scope.chatHistory[historyIndex + 1];
-                  }
-              } else {
-                  if (session.message != '') {
-                      scope.chatHistory.unshift(session.message);
-                      session.message = scope.chatHistory[1];
-                  } else {
-                      session.message = scope.chatHistory[0];
-                  }
-              }
-          } else if (keyCode === 40) {
-              if (historyIndex >= 0) {
-                  if (scope.chatHistory[historyIndex -1]) {
-                      session.message = scope.chatHistory[historyIndex -1];
-                  } else {
-                      session.message = '';
-                  }
-              }
+    scope.keyUp = (event) => {
+      const keyCode = event.keyCode || event.which;
+      const historyIndex = scope.chatHistory.indexOf(session.message);
+      if (keyCode === 38) {
+        if (historyIndex >= 0) {
+          if (scope.chatHistory[historyIndex + 1]) {
+            session.message = scope.chatHistory[historyIndex + 1];
           }
-      };
+        } else {
+          if (session.message != '') {
+            scope.chatHistory.unshift(session.message);
+            session.message = scope.chatHistory[1];
+          } else {
+            session.message = scope.chatHistory[0];
+          }
+        }
+      } else if (keyCode === 40) {
+        if (historyIndex >= 0) {
+          if (scope.chatHistory[historyIndex - 1]) {
+            session.message = scope.chatHistory[historyIndex - 1];
+          } else {
+            session.message = '';
+          }
+        }
+      }
+    };
 
     scope.change = function() {
       const msg = session.message;
