@@ -4,19 +4,19 @@
     </span>
   <div class="hover-content" layout="row" layout-align="center center">
     <i class="zmdi zmdi-hearing play"
-       ng-if="m.livestreamer"
-       ng-click="playLivestreamer(true)"
+       ng-if="m.streamlink || m.livestreamer"
+       ng-click="playMediaplayer(true)"
     >
       <md-tooltip md-autohide>
         Audio Only
       </md-tooltip>
     </i>
     <i class="zmdi zmdi-play-circle-outline play"
-       ng-if="m.livestreamer"
-       ng-click="playLivestreamer()"
+       ng-if="m.streamlink || m.livestreamer"
+       ng-click="playMediaplayer()"
     >
       <md-tooltip md-autohide>
-        Livestreamer
+        {{m.streamlink ? 'Streamlink' : 'Livestreamer'}}
       </md-tooltip>
     </i>
     <i class="zmdi zmdi-open-in-new play" ng-click="playTwitch()">

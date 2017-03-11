@@ -18,11 +18,13 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       channel: null,
       stream: null,
       hosting: false,
+      streamlink: false,
       livestreamer: false
     };
 
     loadThumbnail();
     loadHostStatus();
+    checkStreamlinkInstallation();
     checkLivestreamerInstallation();
     
     element.attr('layout', 'column');
@@ -51,14 +53,15 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       setTimeout(loadHostStatus, 4000);
     };
 
-    scope.playLivestreamer = audioOnly => {
+    scope.playMediaplayer = audioOnly => {
+      const player = scope.m.streamlink ? 'streamlink' : 'livestreamer';
       const type = audioOnly? 'audio' : '';
       const channel = 'twitch.tv/' + getChannel();
       stream(type);
 
       function stream(quality) {
         const id = '1pr5dzvymq1unqa2xiavdkvslsn4ebe';
-        exec(`livestreamer --http-header Client-ID=${id} ${channel} ${quality}`,
+        exec(`${player} --http-header Client-ID=${id} ${channel} ${quality}`,
           (err, stdout) => {
             if (!err && stdout) {
               const lastLine = stdout.trim().split('\n').pop();
@@ -75,10 +78,12 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
       openExternal(`http://www.twitch.tv/${getChannel()}/popout`);
     };
 
+    function checkStreamlinkInstallation() {
+      which('streamlink', err => scope.m.streamlink = !err);
+    }
+
     function checkLivestreamerInstallation() {
-      which('livestreamer', err => {
-        scope.m.livestreamer = !err;
-      });
+      which('livestreamer', err => scope.m.livestreamer = !err);
     }
 
     function getChannel() {
