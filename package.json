@@ -16,7 +16,7 @@
     "category": "public.app-category.social-networking",
     "asar": true,
     "npmRebuild": false,
-    "copyright": "Copyright 2015 Andrea Stella. All rights reserved",
+    "copyright": "Copyright 2017 Andrea Stella. All rights reserved",
     "version-string": {
       "CompanyName": "Mccxiv Software",
       "FileDescription": "Tc, the chat client for Twitch",
