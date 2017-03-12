@@ -1,5 +1,5 @@
 export default () => {
   if (process.platform === 'darwin') {
-    document.body.style.backgroundColor = '#FDFCFD';
+    document.body.style.backgroundColor = '#FDFCFD'
   }
-};
+}

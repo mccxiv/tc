@@ -1,8 +1,7 @@
-const path = require('path');
-const webpack = require('webpack');
+const path = require('path')
 
 const base = {
-  //devtool: 'cheap-source-map',
+  // devtool: 'cheap-source-map',
   node: {
     __filename: false,
     __dirname: false
@@ -38,20 +37,20 @@ const base = {
     commonjs: 'spellchecker',
     commonjs2: 'spellchecker'
   }}
-};
+}
 
 const main = Object.assign({}, base, {
   target: 'electron-main',
   entry: {
     'main.js': path.join(__dirname, 'src/tc-main/main.js')
   }
-});
+})
 
 const renderer = Object.assign({}, base, {
   target: 'electron-renderer',
   entry: {
     'renderer.js': path.join(__dirname, 'src/tc-renderer/renderer.js')
   }
-});
+})
 
-module.exports = [main, renderer];
+module.exports = [main, renderer]
