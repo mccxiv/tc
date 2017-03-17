@@ -14,7 +14,8 @@ else {
   const version = electron.remote.app.getVersion();
   const url = `http://dl.gettc.xyz/update/${os}/${version}`;
 
-  autoUpdater.setFeedURL(url);
+  try {autoUpdater.setFeedURL(url)}
+  catch (e) {console.warn('autoUpdater error:', e)}
 
   setTimeout(check, 15000);
   setInterval(check, 1000 * 60 * 60 * 23); // Check for updates every 23 hours
