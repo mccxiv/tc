@@ -9,7 +9,7 @@
     "build": "gulp build",
     "don't touch pack & dist": "",
     "pack": "build",
-    "dist": "build"
+    "dist": "build -mw"
   },
   "build": {
     "appId": "zyx.gettc.tc",
