@@ -9,7 +9,8 @@
     "build": "gulp build",
     "don't touch pack & dist": "",
     "pack": "build",
-    "dist": "build -mw"
+    "dist": "build -mw",
+    "dist-linux": "build -l"
   },
   "build": {
     "appId": "zyx.gettc.tc",
@@ -23,14 +24,12 @@
       "ProductName": "Tc"
     },
     "dmg": {
-      "background": "src/assets/dmg-background.png"
+
     },
     "mac": {
-      "icon": "src/assets/icon.icns",
       "identity": "Andrea Stella (42XGWVW434)"
     },
     "win": {
-      "loadingGif": "src/assets/install.gif",
       "authors": "Mccxiv Software",
       "description": "Tc, the chat client for Twitch",
       "title": "Tc, the chat client for Twitch",
@@ -38,8 +37,7 @@
     }
   },
   "directories": {
-    "app": "_build",
-    "buildResources": "src/assets"
+    "app": "_build"
   },
   "dependencies": {
     "babel-core": "6.7.6",
