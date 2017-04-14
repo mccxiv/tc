@@ -9,28 +9,27 @@
     "build": "gulp build",
     "don't touch pack & dist": "",
     "pack": "build",
-    "dist": "build"
+    "dist": "build -mw",
+    "dist-linux": "build -l"
   },
   "build": {
     "appId": "zyx.gettc.tc",
     "category": "public.app-category.social-networking",
     "asar": true,
     "npmRebuild": false,
-    "copyright": "Copyright 2015 Andrea Stella. All rights reserved",
+    "copyright": "Copyright 2017 Andrea Stella. All rights reserved",
     "version-string": {
       "CompanyName": "Mccxiv Software",
       "FileDescription": "Tc, the chat client for Twitch",
       "ProductName": "Tc"
     },
     "dmg": {
-      "background": "src/assets/dmg-background.png"
+
     },
     "mac": {
-      "icon": "src/assets/icon.icns",
       "identity": "Andrea Stella (42XGWVW434)"
     },
     "win": {
-      "loadingGif": "src/assets/install.gif",
       "authors": "Mccxiv Software",
       "description": "Tc, the chat client for Twitch",
       "title": "Tc, the chat client for Twitch",
@@ -38,8 +37,7 @@
     }
   },
   "directories": {
-    "app": "_build",
-    "buildResources": "src/assets"
+    "app": "_build"
   },
   "dependencies": {
     "babel-core": "6.7.6",
@@ -62,6 +60,6 @@
   },
   "devDependencies": {
     "electron-builder": "6.4.0",
-    "electron": "1.4.10"
+    "electron": "1.6.2"
   }
 }

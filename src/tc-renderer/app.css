@@ -76,7 +76,8 @@ md-sidenav.collapsed {
 }
 
 md-toast {
-  bottom: 45px !important;
+  left: unset !important;
+  right: 8px !important;
 }
 
 .lighter {

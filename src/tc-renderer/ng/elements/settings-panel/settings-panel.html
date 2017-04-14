@@ -7,6 +7,12 @@
     <!-- TODO refactor this awful repetition -->
 
     <md-list-item class="menu-item"
+                  ng-click="m.selected = 'tc'"
+                  ng-class="{selected: m.selected === 'tc'}">
+      <p>Tc</p>
+    </md-list-item>
+
+    <md-list-item class="menu-item"
                   ng-click="m.selected = 'highlights'"
                   ng-class="{selected: m.selected === 'highlights'}">
       <p>Highlights</p>
@@ -31,16 +37,30 @@
                   ng-class="{selected: m.selected === 'ignore'}">
       <p>Ignore List</p>
     </md-list-item>
-    <md-list-item class="menu-item"
-                  ng-click="m.selected = 'about'"
-                  ng-class="{selected: m.selected === 'about'}">
-      <p>About</p>
-    </md-list-item>
   </md-list>
 
 </md-sidenav>
 
 <div flex class="settings-content" ng-switch on="m.selected" layout="column">
+
+  <md-content flex ng-switch-when="tc" layout="column" class="tc"
+              layout-align="center center">
+    <img style="width: 150px;" src="../../../../assets/icon256.png">
+
+    <h1 class="md-headline">Tc, the chat client for Twitch</h1>
+    <p>
+      <span>Version: {{m.version}}</span> |
+      <a href-external="http://gettc.xyz/">GetTc.xyz</a>
+    </p>
+    <p>
+      <md-button
+          ng-click="tc.checkForUpdates()"
+          ng-disabled="tc.checkedForUpdate">
+        Check for updates
+      </md-button>
+    </p>
+
+  </md-content>
 
   <md-content ng-switch-when="highlights" class="highlights">
     <h1 class="md-headline">Highlighted phrases</h1>
@@ -227,14 +247,4 @@
     </div>
   </md-content>
 
-  <md-content flex ng-switch-when="about" layout="column"
-              layout-align="center center">
-    <img style="width: 150px;" src="../../../../assets/icon256.png">
-
-    <h1 class="md-headline">Tc, the chat client for Twitch</h1>
-    <p>
-      <span>Version: {{m.version}}</span> |
-      <a href-external="http://gettc.xyz/">GetTc.xyz</a>
-    </p>
-  </md-content>
 </div>

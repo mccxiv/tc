@@ -12,6 +12,7 @@ angular.module('tc').directive('chatInput',
   function link(scope, element) {
     scope.session = session;
     scope.irc = irc;
+    scope.chatHistory = [];
     const input = element.find('input')[0];
     session.input = input; // TODO make a better system
     let lastWhisperer;
@@ -21,7 +22,7 @@ angular.module('tc').directive('chatInput',
     });
 
     scope.getAutoCompleteStrings = () => {
-      var channel = settings.channels[settings.selectedTabIndex];
+      const channel = settings.channels[settings.selectedTabIndex];
       if (!channel) return [];
 
       const names = messages(channel).filter(hasUser).map(getNames).filter(dedupe).sort();
@@ -50,7 +51,7 @@ angular.module('tc').directive('chatInput',
     };
 
     scope.input = () => {
-      var channel = settings.channels[settings.selectedTabIndex];
+      const channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !session.message.trim().length) return;
 
       if (session.message.charAt(0) === '/') {
@@ -58,16 +59,46 @@ angular.module('tc').directive('chatInput',
       }
 
       if (session.message.indexOf('.w') === 0) {
-        var words = session.message.split(' ');
-        var username = words[1];
-        var message = words.slice(2).join(' ');
+        const words = session.message.split(' ');
+        const username = words[1];
+        const message = words.slice(2).join(' ');
         irc.whisper(username, message);
         messages.addWhisper(settings.identity.username, username, message);
       }
 
       else irc.say(channel, session.message);
-
+      if (scope.chatHistory.indexOf(session.message) !== -1) {
+          scope.chatHistory.splice(scope.chatHistory.indexOf(session.message), 1)
+      }
+      scope.chatHistory.unshift(session.message);
       session.message = '';
+    };
+
+    scope.keyUp = (event) => {
+      const keyCode = event.keyCode || event.which;
+      const historyIndex = scope.chatHistory.indexOf(session.message);
+      if (keyCode === 38) {
+        if (historyIndex >= 0) {
+          if (scope.chatHistory[historyIndex + 1]) {
+            session.message = scope.chatHistory[historyIndex + 1];
+          }
+        } else {
+          if (session.message != '') {
+            scope.chatHistory.unshift(session.message);
+            session.message = scope.chatHistory[1];
+          } else {
+            session.message = scope.chatHistory[0];
+          }
+        }
+      } else if (keyCode === 40) {
+        if (historyIndex >= 0) {
+          if (scope.chatHistory[historyIndex - 1]) {
+            session.message = scope.chatHistory[historyIndex - 1];
+          } else {
+            session.message = '';
+          }
+        }
+      }
     };
 
     scope.change = function() {

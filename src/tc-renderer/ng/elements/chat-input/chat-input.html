@@ -12,6 +12,7 @@
            ng-focus="session.inputFocused = true"
            ng-blur="session.inputFocused = false"
            ng-change="change()"
+           ng-keyup="keyUp($event)"
            tab-completion tab-completion-fn="getAutoCompleteStrings()">
   </md-input-container>
 </form>

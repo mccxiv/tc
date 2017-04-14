@@ -12,8 +12,8 @@ Tc is a cross-platform desktop chat client for [Twitch.tv](http://www.twitch.tv/
 - Tc's [Twitter](https://twitter.com/tctwitch)
 
 ### License
-Copyright (c) 2016 by Andrea Stella adr.stella@gmail.com  
-You may use this source code in any way you like for personal use.  
+Copyright (c) 2017 by Andrea Stella adr.stella@gmail.com
+You may use this source code in any way you like for personal use.
 You may not distribute binaries, or their equivalent, created using this or significant portions of this source code.
 
 ### Contributor License Agreement

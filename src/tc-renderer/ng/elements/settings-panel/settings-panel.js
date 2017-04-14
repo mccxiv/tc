@@ -6,13 +6,48 @@ import settings from '../../../lib/settings/settings';
 import replacements from '../../../lib/data/replacements.json';
 import autoUpdater from '../../../lib/auto-updater';
 
-angular.module('tc').directive('settingsPanel', (highlights, notifications) => {
+angular.module('tc').directive('settingsPanel', (
+  highlights,
+  notifications,
+  $mdToast
+) => {
   function link(scope, element) {
     element.attr('layout', 'row');
     scope.settings = settings;
     scope.m = {
       version: electron.remote.app.getVersion(),
-      selected: 'highlights'
+      selected: 'tc'
+    };
+
+    scope.tc = {
+      checkedForUpdate: false,
+      checkForUpdates() {
+        scope.tc.checkedForUpdate = true;
+        const a = autoUpdater;
+        a.once('error', updateError);
+        a.once('update-available', updateAvailableToast);
+        a.once('update-not-available', updateNotAvailableToast);
+        a.checkForUpdates();
+
+        scope.$on('$destroy', () => {
+          a.removeListener('error', updateError);
+          a.removeListener('update-available', updateAvailableToast);
+          a.removeListener('update-not-available', updateNotAvailableToast);
+        });
+
+        function updateError(e) {
+          $mdToast.showSimple('Unable to check for updates');
+          console.warn('Update error:', e);
+        }
+        
+        function updateNotAvailableToast() {
+          $mdToast.showSimple('No updates found');
+        }
+
+        function updateAvailableToast() {
+          $mdToast.showSimple('Update found. Downloading...');
+        }
+      }
     };
 
     scope.highlights = {
@@ -69,8 +104,6 @@ angular.module('tc').directive('settingsPanel', (highlights, notifications) => {
         if (settings.notifications.soundOnMention) notifications.playSound();
       }
     };
-
-    autoUpdater.checkForUpdates();
 
     scope.zoomLabel = () => {
       if (settings.appearance.zoom === 100) return 'Normal';
