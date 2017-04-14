@@ -16,12 +16,6 @@ gulp.task('launch', function() {
   shell.exec(path.normalize('./node_modules/.bin/electron --enable-logging ./_build --dev-tools'));
 });
 
-gulp.task('reinstall', function() {
-  shell.exec('npm prune && npm update');
-  shell.rm('-rf', 'src/node_modules');
-  shell.exec('npm run postinstall');
-});
-
 gulp.task('build', function() {
   shell.rm('-rf', '_dist');
   shell.mkdir('-p', '_dist');
@@ -29,7 +23,12 @@ gulp.task('build', function() {
   shell.exec(path.normalize('./node_modules/.bin/webpack'));
   shell.cp('src/tc-renderer/index.html', '_build/index.html');
   shell.cp('src/package.json', '_build/package.json');
-  shell.exec('npm run dist');
+  console.log('Trying to build for Linux, it will fail on Windows');
+  shell.exec('npm run dist:linux');
+  console.log('Trying to build for Mac, it will fail unless on Mac');
+  shell.exec('npm run dist:mac');
+  console.log('Trying to build for Windows, it might fail without Wine');
+  shell.exec('npm run dist:windows');
   shell.mv('dist/win/**', '_dist/');
   shell.mv('dist/mac/*.dmg', '_dist/');
   shell.mv('dist/mac/*.zip', '_dist/');
