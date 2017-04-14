@@ -43,17 +43,14 @@ function makeWindow() {
       console.log('TC: Window tried closing, hiding it instead.');
       e.preventDefault();
       switch (process.platform) {
-        case 'linux':
-          app.quit();
-          break;
-
-        case 'darwin':
-          app.hide();
-          break;
-
-        default:
-        main.hide();
-
+          case 'windows':
+            main.hide();
+            break;
+          case 'darwin':
+            app.hide();
+            break;
+          default:
+            app.quit();
       }
   });
 
