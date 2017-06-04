@@ -55,7 +55,7 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
 
     scope.playMediaplayer = audioOnly => {
       const player = scope.m.streamlink ? 'streamlink' : 'livestreamer';
-      const type = audioOnly? 'audio' : '';
+      const type = audioOnly? 'audio_only' : '';
       const channel = 'twitch.tv/' + getChannel();
       stream(type);
 
