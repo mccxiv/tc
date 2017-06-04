@@ -14,7 +14,7 @@ angular.module('tc').factory('highlights', function() {
         if (me.test(line)) return true;
       }
       return settings.highlights.some(function(highlight) {
-        var regex = new RegExp(highlight, 'i');
+        var regex = new RegExp(`\\b${highlight}\\b`, 'i');
         return regex.test(line);
       });
     },
