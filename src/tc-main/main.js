@@ -40,10 +40,18 @@ function makeWindow() {
   mainWinState.manage(main);
 
   main.on('close', function (e) {
-    console.log('TC: Window tried closing, hiding it instead.');
-    e.preventDefault();
-    if (process.platform === 'darwin') app.hide();
-    else main.hide();
+      console.log('TC: Window tried closing, hiding it instead.');
+      e.preventDefault();
+      switch (process.platform) {
+          case 'windows':
+            main.hide();
+            break;
+          case 'darwin':
+            app.hide();
+            break;
+          default:
+            app.quit();
+      }
   });
 
   main.setMenu(null);
