@@ -32,6 +32,7 @@ gulp.task('build', function() {
   shell.mv('dist/win/**', '_dist/');
   shell.mv('dist/mac/*.dmg', '_dist/');
   shell.mv('dist/mac/*.zip', '_dist/');
+  shell.mv('dist/*.AppImage', '_dist/');
   shell.find('_dist').filter((f) => f.endsWith('.exe')).forEach((f) => {
     shell.mv(f, f.replace('Tc Setup ', 'tc-setup-win-'));
   });
@@ -41,6 +42,9 @@ gulp.task('build', function() {
   shell.find('_dist').filter((f) => f.endsWith('.zip')).forEach((f) => {
     var newName = f.replace('-mac', '').replace('Tc', 'tc-mac');
     shell.mv(f, newName);
+  });
+  shell.find('_dist').filter((f) => f.endsWith('.AppImage')).forEach((f) => {
+    shell.mv(f, f.replace('Tc-', 'tc-linux-').replace('-x86_64', ''));
   });
   shell.rm('-rf', 'dist');
 });
