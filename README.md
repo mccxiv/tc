@@ -1,7 +1,7 @@
 # Tc, the chat client for Twitch :smile: [gettc.xyz](http://gettc.xyz)
 
 <a href="http://gettc.xyz/" target="_blank">
-    ![](http://gettc.xyz/assets/img/icon256.png)
+    ![](./src/assets/img/icon256.png)
 </a>
 
 Tc is a cross-platform desktop chat client for [Twitch.tv](http://www.twitch.tv/).
