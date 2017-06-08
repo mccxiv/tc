@@ -43,7 +43,7 @@ function makeWindow() {
       console.log('TC: Window tried closing, hiding it instead.');
       e.preventDefault();
       switch (process.platform) {
-          case 'windows':
+          case 'win32':
             main.hide();
             break;
           case 'darwin':
