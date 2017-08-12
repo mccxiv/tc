@@ -1,4 +1,4 @@
-import emojis from '../data/emojis.json';
+import emojis from '../data/emojis';
 import replacements from '../data/replacements.json';
 import settings from '../settings/settings';
 
