@@ -302,8 +302,8 @@ angular.module('tc').factory('messages', (
           addNotification(channel, `Welcome to ${channel}'s chat.`);
         });
       },
-      disconnected: () => {
-        addGlobalNotification('Disconnected from the server.');
+      disconnected: (reason) => {
+        addGlobalNotification(`Disconnected: ${reason}`);
       },
       emoteonly: (channel, on) => {
         const enabled = 'Emote only mode has been enabled in the channel.';
