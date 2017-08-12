@@ -113,7 +113,7 @@ angular.module('tc').factory('irc', $rootScope => {
         ee.ready = false;
         args.unshift('disconnected');
         ee.emit.apply(ee, args);
-        client.once('connected', onlyEmitDisconnectedOnce);
+        if (client) client.once('connected', onlyEmitDisconnectedOnce);
         setTimeout(() => $rootScope.$apply(), 0);
       });
     }
