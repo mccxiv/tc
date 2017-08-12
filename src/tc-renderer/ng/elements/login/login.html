@@ -22,14 +22,16 @@
       </md-input-container>
     </form>
 
-
     <p class="password-warning" ng-if="doesntLookLikeToken()">
       You must use a token, not your password.
     </p>
-    <p class="password-notice">This is not your regular account password, you
-      need to generate a special "oauth token".</p>
-    <a class="generate-link" ng-click="generate()">Click here to generate your
-      token</a>
+    <p class="password-notice">
+      This is not your regular account password, you
+      need to generate a special "oauth token".
+    </p>
+    <a class="generate-link" ng-click="generate()">
+      Click here to generate your token
+    </a>
 
     <md-button class="login-button md-fab md-primary"
                aria-label="Log in"
