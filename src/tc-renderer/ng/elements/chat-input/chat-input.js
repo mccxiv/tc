@@ -2,6 +2,7 @@ import './chat-input.css';
 import angular from 'angular';
 import template from './chat-input.html';
 import replacePhrases from '../../../lib/transforms/replace-phrases';
+import {getChattersCached} from '../../../lib/chatters'
 import settings from '../../../lib/settings/settings';
 import emotesFfz from '../../../lib/emotes/ffz';
 import emotesBttv from '../../../lib/emotes/bttv';
@@ -25,7 +26,7 @@ angular.module('tc').directive('chatInput',
       const channel = settings.channels[settings.selectedTabIndex];
       if (!channel) return [];
 
-      const names = messages(channel).filter(hasUser).map(getNames).filter(dedupe).sort();
+      const names = viewersApiToList(getChattersCached(channel));
       const atNames = names.map(name => '@' + name);
       const bttvEmotes = grabEmotes(emotesBttv(channel)).sort();
       const ffzEmotes = grabEmotes(emotesFfz(channel)).sort();
@@ -36,17 +37,13 @@ angular.module('tc').directive('chatInput',
         return arr.map((e) => e.emote);
       }
 
-      function hasUser(message) {
-        return !!message.user || !!message.from;
-      }
-
-      function dedupe(x, i, array) {
-        return array.indexOf(x) === i;
-      }
-
-      function getNames(msg) {
-        const n = msg.from || msg.user['display-name'] || msg.user.username;
-        return n.replace(/\\s/, ''); // Because some names contain \s
+      function viewersApiToList (apiResponse) {
+        if (!apiResponse) return []
+        return Object.keys(apiResponse.chatters)
+          .map(key => apiResponse.chatters[key])
+          .reduce((acc, curr) => [...acc, ...curr])
+          .map(s => s[0].toUpperCase() + s.substr(1))
+          .sort()
       }
     };
 
