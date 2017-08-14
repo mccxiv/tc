@@ -6,7 +6,6 @@ import {getChattersCached} from '../../../lib/chatters'
 import settings from '../../../lib/settings/settings';
 import emotesFfz from '../../../lib/emotes/ffz';
 import emotesBttv from '../../../lib/emotes/bttv';
-import { user } from '../../../lib/api'
 
 angular.module('tc').directive('chatInput',
   (session, irc, messages, emotesTwitch) => {
