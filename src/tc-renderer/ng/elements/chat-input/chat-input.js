@@ -6,6 +6,7 @@ import {getChattersCached} from '../../../lib/chatters'
 import settings from '../../../lib/settings/settings';
 import emotesFfz from '../../../lib/emotes/ffz';
 import emotesBttv from '../../../lib/emotes/bttv';
+import { user } from '../../../lib/api'
 
 angular.module('tc').directive('chatInput',
   (session, irc, messages, emotesTwitch) => {
@@ -17,10 +18,15 @@ angular.module('tc').directive('chatInput',
     const input = element.find('input')[0];
     session.input = input; // TODO make a better system
     let lastWhisperer;
+    const displayNames = {}
 
     irc.on('whisper', from => {
       lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
     });
+
+    irc.on('chat', (channel, userstate) => {
+      displayNames[userstate.username] = userstate['display-name']
+    })
 
     scope.getAutoCompleteStrings = () => {
       const channel = settings.channels[settings.selectedTabIndex];
@@ -42,8 +48,17 @@ angular.module('tc').directive('chatInput',
         return Object.keys(apiResponse.chatters)
           .map(key => apiResponse.chatters[key])
           .reduce((acc, curr) => [...acc, ...curr])
-          .map(s => s[0].toUpperCase() + s.substr(1))
+          .map(replaceWithDisplayName)
+          .map(capitalize)
           .sort()
+      }
+      
+      function replaceWithDisplayName (username) {
+        return displayNames[username] || username
+      }
+
+      function capitalize (s) {
+        return s[0].toUpperCase() + s.substr(1)
       }
     };
 
