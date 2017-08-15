@@ -15,19 +15,25 @@
 
     <form ng-submit="login()">
       <md-input-container>
-        <label>Oauth password</label>
+        <label>Oauth token</label>
         <input ng-if="m.haveUsername" ng-model="m.password" type="password"
                auto-focus>
         <input ng-if="!m.haveUsername" ng-model="m.password" type="password">
       </md-input-container>
     </form>
 
-    <p class="password-notice">This is not your regular account password, you
-      need to generate a special "oauth:" password.</p>
-    <a class="generate-link" ng-click="generate()">Click here to generate your
-      password</a>
 
-    <md-button class="login-button md-fab md-primary" aria-label="Log in"
+    <p class="password-warning" ng-if="doesntLookLikeToken()">
+      You must use a token, not your password.
+    </p>
+    <p class="password-notice">This is not your regular account password, you
+      need to generate a special "oauth token".</p>
+    <a class="generate-link" ng-click="generate()">Click here to generate your
+      token</a>
+
+    <md-button class="login-button md-fab md-primary"
+               aria-label="Log in"
+               ng-disabled="!m.password || doesntLookLikeToken()"
                ng-click="login()">
       <i class="zmdi zmdi-arrow-right zmdi-hc-lg"></i>
     </md-button>

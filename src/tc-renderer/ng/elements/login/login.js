@@ -8,27 +8,29 @@ angular.module('tc').directive('login', function(irc, openExternal) {
     restrict: 'E',
     template: template,
     link: function(scope) {
+      scope.m = {}
       scope.irc = irc;
       scope.settings = settings;
-
-      scope.login = function() {
-        var password = scope.m.password;
-        if (!password.startsWith('oauth:')) password = 'oauth:' + password;
-        settings.identity.username = scope.m.username;
-        settings.identity.password = password;
-      };
-
-      scope.generate = function() {
-        openExternal('http://gettc.xyz/password/');
-      };
-
       // These values should NOT update the settings object or
       // it will break the form's conditionals
-      scope.m = {};
       scope.m.username = settings.identity.username;
       scope.m.password = settings.identity.password;
       scope.m.haveUsername = !!settings.identity.username.length;
       scope.m.haveNoPassword = !settings.identity.password.length;
+
+      scope.login = login
+      scope.generate = () => openExternal('http://gettc.xyz/password/')
+      scope.doesntLookLikeToken = doesntLookLikeToken
+
+      function login() {
+        settings.identity.username = scope.m.username;
+        settings.identity.password = scope.m.password;
+      }
+      
+      function doesntLookLikeToken () {
+        const password = scope.m.password
+        return !!(password && !password.startsWith('oauth'))
+      }
     }
   }
 });
