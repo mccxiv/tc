@@ -45,7 +45,7 @@ angular.module('tc').directive('chatters', ($http, session) => {
 
     async function fetchList(attemptNumber) {
       if (!isChannelSelected()) return;
-      try {scope.api = await getChatters(scope.channel);}
+      try {scope.api = await getChattersApi(scope.channel);}
       catch (e) {
         attemptNumber = attemptNumber || 1;
         console.warn('CHATTERS: Failed to get user list. ' + attemptNumber, e);
