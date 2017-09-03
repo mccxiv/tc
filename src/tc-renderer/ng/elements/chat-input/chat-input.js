@@ -2,7 +2,7 @@ import './chat-input.css';
 import angular from 'angular';
 import template from './chat-input.html';
 import replacePhrases from '../../../lib/transforms/replace-phrases';
-import {getChattersCached} from '../../../lib/chatters'
+import {getChatterNames} from '../../../lib/chatters'
 import settings from '../../../lib/settings/settings';
 import emotesFfz from '../../../lib/emotes/ffz';
 import emotesBttv from '../../../lib/emotes/bttv';
@@ -17,21 +17,16 @@ angular.module('tc').directive('chatInput',
     const input = element.find('input')[0];
     session.input = input; // TODO make a better system
     let lastWhisperer;
-    const displayNames = {}
 
     irc.on('whisper', from => {
       lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
     });
 
-    irc.on('chat', (channel, userstate) => {
-      displayNames[userstate.username] = userstate['display-name']
-    })
-
     scope.getAutoCompleteStrings = () => {
       const channel = settings.channels[settings.selectedTabIndex];
       if (!channel) return [];
 
-      const names = viewersApiToList(getChattersCached(channel));
+      const names = getChatterNames(channel)
       const atNames = names.map(name => '@' + name);
       const bttvEmotes = grabEmotes(emotesBttv(channel)).sort();
       const ffzEmotes = grabEmotes(emotesFfz(channel)).sort();
@@ -40,24 +35,6 @@ angular.module('tc').directive('chatInput',
 
       function grabEmotes(arr) {
         return arr.map((e) => e.emote);
-      }
-
-      function viewersApiToList (apiResponse) {
-        if (!apiResponse) return []
-        return Object.keys(apiResponse.chatters)
-          .map(key => apiResponse.chatters[key])
-          .reduce((acc, curr) => [...acc, ...curr])
-          .map(replaceWithDisplayName)
-          .map(capitalize)
-          .sort()
-      }
-      
-      function replaceWithDisplayName (username) {
-        return displayNames[username] || username
-      }
-
-      function capitalize (s) {
-        return s[0].toUpperCase() + s.substr(1)
       }
     };
 
