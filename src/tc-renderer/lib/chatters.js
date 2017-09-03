@@ -1,6 +1,7 @@
 import {chatters} from './api'
 
 const displayNames = { /* username1: 'UserName1' */ }
+const displayNamesAge = { /* username1: 123456789 */ }
 
 const chattersFromApi = {
   'example-channel-name-1': [
@@ -68,6 +69,7 @@ function onChat (channel, userObject) {
   activeChatters[channel] = activeChatters[channel] || {}
   activeChatters[channel][userObject.username] = Date.now()
   displayNames[userObject.username] = userObject['display-name']
+  displayNamesAge[userObject.username] = Date.now()
 }
 
 function toDisplayName (username) {
