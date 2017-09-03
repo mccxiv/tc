@@ -14,7 +14,10 @@ const activeChatters = {
   }
 }
 
+const longTime = 1000 * 60 * 60 * 4
+
 let chatListener
+setInterval(clearOldDisplayNames, longTime)
 
 export async function getChattersApi (channel) {
   if (!chatListener) bootStrapChatListener()
@@ -74,4 +77,16 @@ function onChat (channel, userObject) {
 
 function toDisplayName (username) {
   return displayNames[username] || username // TODO capitalize username
+}
+
+function clearOldDisplayNames () {
+  const usernames = Object.keys(displayNamesAge)
+  const now = Date.now()
+  usernames.forEach(username => {
+    const isOld = now - displayNamesAge[username] > longTime
+    if (isOld) {
+      delete displayNames[username]
+      delete displayNamesAge[username]
+    }
+  })
 }
