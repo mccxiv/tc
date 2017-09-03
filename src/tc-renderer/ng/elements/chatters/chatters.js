@@ -1,7 +1,7 @@
 import './chatters.css';
 import angular from 'angular';
 import template from './chatters.html';
-import {getChatters} from '../../../lib/chatters';
+import {getChattersApi} from '../../../lib/chatters';
 import settings from '../../../lib/settings/settings';
 import channels from '../../../lib/channels';
 import prettyChatterNames from '../../../lib/transforms/pretty-chatter-names';
