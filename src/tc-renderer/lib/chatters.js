@@ -38,12 +38,12 @@ function removeInactiveChatters (channel) {
   const activeChatterNames = Object.keys(activeChatters[channel])
   const apiChatterNames = chattersFromApi[channel]
   const now = Date.now()
-  const _30minutes = 1000 * 60 * 30
-  const _30minutesAgo = now - _30minutes
+  const minutes = 1000 * 60 * 10
+  const minutesAgo = now - minutes
   activeChatterNames.forEach(chatter => {
     if (apiChatterNames.includes(chatter)) return
     const lastMessage = activeChatters[channel][chatter]
-    if (lastMessage < _30minutesAgo) delete activeChatters[channel][chatter]
+    if (lastMessage < minutesAgo) delete activeChatters[channel][chatter]
   })
 }
 
