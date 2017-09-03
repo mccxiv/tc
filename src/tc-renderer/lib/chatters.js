@@ -11,9 +11,10 @@ const activeChatters = {
   }
 }
 
-// TODO listen to messages or read messages log to populate activeChatters
+let chatListener
 
 export async function getChattersApi (channel) {
+  if (!chatListener) bootStrapChatListener()
   const apiResponse = await chatters(channel)
   createChannelState(channel)
   populateChattersListFromApi(channel, apiResponse)
@@ -49,4 +50,16 @@ function removeInactiveChatters (channel) {
 
 function createChannelState (channel) {
   if (!activeChatters[channel]) activeChatters[channel] = {}
+}
+
+function bootStrapChatListener () {
+  const rootAppElement = document.querySelector('[ng-app]');
+  const irc = angular.element(rootAppElement).injector().get('irc')
+
+  chatListener = irc.on('chat', (channel, userObject) => {
+    if (channel.startsWith('#')) channel = channel.slice(1)
+    else console.warn('Hmm... Looks like the channel didn\'t start with #')
+    activeChatters[channel] = activeChatters[channel] || {}
+    activeChatters[channel][userObject.username] = Date.now()
+  })
 }
