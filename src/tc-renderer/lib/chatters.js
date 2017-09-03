@@ -26,7 +26,8 @@ export function getChatterNames (channel) {
   createChannelState(channel)
   const activeChatterNames = Object.keys(activeChatters[channel])
   const apiChatterNames = chattersFromApi[channel]
-  new Set([...activeChatterNames, ...apiChatterNames])
+  const uniqueSet = new Set([...activeChatterNames, ...apiChatterNames])
+  return Array.from(uniqueSet)
 }
 
 function populateChattersListFromApi(channel, apiResponse) {
