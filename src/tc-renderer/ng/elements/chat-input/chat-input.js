@@ -17,15 +17,10 @@ angular.module('tc').directive('chatInput',
     const input = element.find('input')[0];
     session.input = input; // TODO make a better system
     let lastWhisperer;
-    const displayNames = {}
 
     irc.on('whisper', from => {
       lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
     });
-
-    irc.on('chat', (channel, userstate) => {
-      displayNames[userstate.username] = userstate['display-name']
-    })
 
     scope.getAutoCompleteStrings = () => {
       const channel = settings.channels[settings.selectedTabIndex];
