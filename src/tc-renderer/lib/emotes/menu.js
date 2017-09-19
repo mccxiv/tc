@@ -1,9 +1,12 @@
+import {api} from '../api';
+
+let emotesets = ''
 const emotes = [
   {
     type: 'bttv-global',
     label: 'BetterTTV Global',
     emotes: [
-      {code: 'Kappa', url: 'http://example.com/kappa.jpg'}
+      {emote: 'Kappa', url: 'http://example.com/kappa.jpg'}
     ]
   },
   {
@@ -24,14 +27,14 @@ const emotes = [
     emotes: []
   },
   {
-    type: 'twitch-set',
-    id: '0',
-    label: 'Twitch set',
+    type: 'twitch',
+    label: 'Twitch',
     emotes: []
-  },
+  }
 ]
 
 removeExampleValues()
+setTimeout(listenForEmotesetsFromChat, 10) // TODO
 
 export function getAllCachedEmotes () {
 
@@ -53,19 +56,44 @@ export function addBttvChannelEmotes(channel, arrayOfEmoteObjects) {
   addChannelEmotes('bttv-channel', channel, arrayOfEmoteObjects)
 }
 
-export function addTwitchEmotesets (emotesetId) {
-  const t = 'twitch-set'
-  const i = emotesetId
-  const set = emotes.find(category => category.type === t && category.id === i)
-  if (!set) createAndFetchEmoteset(emotesetId)
+export async function addTwitchEmotesets (newEmotesets) {
+  if (emotesets === newEmotesets) return
+  emotesets = newEmotesets
+  await fetchAndPopulateEmotesets(newEmotesets)
 }
 
 function removeExampleValues () {
   emotes[0].emotes = []
 }
 
-function createAndFetchEmoteset(emotesetId) {
+async function fetchAndPopulateEmotesets(emotesets) {
+  try {
+    const twitchEmotes = []
+    const response = await api(`chat/emoticon_images?emotesets=${emotesets}`);
+    Object.keys(response.emoticon_sets).forEach(setKey => {
+      const set = response.emoticon_sets[setKey]
+      set.forEach(emoteObject => {
+        // Don't include regex based emote codes.
+        // Currently all regex emotes have a / in them
+        if (emoteObject.code.includes('/')) return;
+        twitchEmotes.push({
+          emote: emoteObject.code,
+          url: `http://static-cdn.jtvnw.net/emoticons/v1/${emoteObject.id}/1.0`
+        });
+      });
+    });
+    const category = emotes.find(category => category.type === 'twitch')
+    category.emotes = twitchEmotes
+  } catch (e) {
+    console.error(e)
+    // TODO retry
+  }
+}
 
+function listenForEmotesetsFromChat () {
+  const rootAppElement = document.querySelector('[ng-app]');
+  const irc = angular.element(rootAppElement).injector().get('irc')
+  irc.on('emotesets', addTwitchEmotesets)
 }
 
 function channelExist (type, channel) {

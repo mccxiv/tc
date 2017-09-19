@@ -12,6 +12,8 @@ import keepChannelsOnBacklog from './lib/startup/keep-channels-on-backlog';
 
 import './lib/startup/angular-stuff';
 
+import './lib/emotes/menu'
+
 import './app.css';
 import './themes/dark.css';
 
