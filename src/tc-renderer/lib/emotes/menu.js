@@ -8,11 +8,9 @@ const emotes = [
   },
   {
     type: 'bttv-channel',
-    channel: '__example',
+    channel: '__example_channel_1',
     label: 'BetterTTV Channel Emotes',
-    emotes: [
-      {code: 'Keepo', url: 'http://example.com/keepo.jpg'}
-    ]
+    emotes: []
   },
   {
     type: 'ffz-global',
@@ -21,13 +19,14 @@ const emotes = [
   },
   {
     type: 'ffz-channel',
-    channel: '__example',
+    channel: '__example_channel_1',
     label: 'FrankerFaceZ Channel Emotes',
     emotes: []
   },
   {
-    type: 'twitch-all',
-    label: 'FrankerFaceZ Channel Emotes',
+    type: 'twitch-set',
+    id: '0',
+    label: 'Twitch set',
     emotes: []
   },
 ]
@@ -54,12 +53,19 @@ export function addBttvChannelEmotes(channel, arrayOfEmoteObjects) {
   addChannelEmotes('bttv-channel', channel, arrayOfEmoteObjects)
 }
 
-export function addTwitchEmoteSets (emotesetArray) {
-  
+export function addTwitchEmotesets (emotesetId) {
+  const t = 'twitch-set'
+  const i = emotesetId
+  const set = emotes.find(category => category.type === t && category.id === i)
+  if (!set) createAndFetchEmoteset(emotesetId)
 }
 
 function removeExampleValues () {
-  emotes.forEach(emoteCategory => emoteCategory.emotes = [])
+  emotes[0].emotes = []
+}
+
+function createAndFetchEmoteset(emotesetId) {
+
 }
 
 function channelExist (type, channel) {
