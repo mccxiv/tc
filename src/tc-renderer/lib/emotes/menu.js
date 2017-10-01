@@ -1,6 +1,6 @@
 import {api} from '../api';
 
-let emotesets = ''
+let lastEmotesetsString = ''
 const emotes = [
   {
     type: 'bttv-global',
@@ -33,6 +33,8 @@ const emotes = [
   }
 ]
 
+// setInterval(() => console.log(emotes), 4000)
+
 removeExampleValues()
 setTimeout(listenForEmotesetsFromChat, 10) // TODO
 
@@ -56,20 +58,21 @@ export function addBttvChannelEmotes(channel, arrayOfEmoteObjects) {
   addChannelEmotes('bttv-channel', channel, arrayOfEmoteObjects)
 }
 
-export async function addTwitchEmotesets (newEmotesets) {
-  if (emotesets === newEmotesets) return
-  emotesets = newEmotesets
-  await fetchAndPopulateEmotesets(newEmotesets)
+export async function addTwitchEmotesets (newEmotesetsString) {
+  if (lastEmotesetsString === newEmotesetsString) return
+  lastEmotesetsString = newEmotesetsString
+  await fetchAndPopulateEmotesets(newEmotesetsString)
 }
 
 function removeExampleValues () {
   emotes[0].emotes = []
 }
 
-async function fetchAndPopulateEmotesets(emotesets) {
+async function fetchAndPopulateEmotesets(emotesetsString) {
   try {
     const twitchEmotes = []
-    const response = await api(`chat/emoticon_images?emotesets=${emotesets}`);
+    const url = `chat/emoticon_images?emotesets=${emotesetsString}`
+    const response = await api(url);
     Object.keys(response.emoticon_sets).forEach(setKey => {
       const set = response.emoticon_sets[setKey]
       set.forEach(emoteObject => {

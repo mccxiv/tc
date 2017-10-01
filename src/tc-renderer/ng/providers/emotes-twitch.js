@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import {api} from '../../lib/api';
+import {addTwitchEmotesets} from '../../lib/emotes/menu'
 
 /**
  * Provides an array of available Twitch emotes
@@ -17,6 +18,7 @@ angular.module('tc').factory('emotesTwitch', function(irc) {
   var emotes = [];
 
   irc.once('emotesets', function(sets) {
+    addTwitchEmotesets(sets)
     getEmotes();
 
     async function getEmotes() {
@@ -35,7 +37,7 @@ angular.module('tc').factory('emotesTwitch', function(irc) {
               // Don't include regex based emote codes.
               // Currently all regex emotes have a / in them
               if (contains(emoteObject.code, '/')) return;
-              emotes.push({emote: emoteObject.code})
+              emotes.push({emote: emoteObject.code, id: emoteObject.id})
             });
           });
         }
