@@ -120,7 +120,7 @@ function createChannel (type, channel) {
 }
 
 function addChannelEmotes (type, channel, arrayOfEmoteObjects) {
-  if (!channelExist(type, channel)) createChannel(type)
+  if (!channelExist(type, channel)) createChannel(type, channel)
   const category = emotes.find(e => e.type === type && e.channel === channel)
   category.emotes = arrayOfEmoteObjects
 }
