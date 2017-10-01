@@ -1,6 +1,7 @@
 import channels from '../channels';
 import axios from 'axios';
 import {sleep} from '../util';
+import {addBttvChannelEmotes, addBttvGlobalEmotes} from './menu'
 
 const globalEmotes = [];
 const channelEmotes = {};
@@ -38,6 +39,8 @@ async function fetch(channel) {
       url: `http://cdn.betterttv.net/emote/${emote.id}/1x`
     });
   });
+  if (channel) addBttvChannelEmotes(channel, emotesStorage)
+  else addBttvGlobalEmotes(emotesStorage)
 }
 
 async function tryGrabbingChannel(channel) {
