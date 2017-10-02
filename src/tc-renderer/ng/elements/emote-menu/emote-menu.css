@@ -1,0 +1,8 @@
+emote-menu {
+  width: 300px;
+  height: 200px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  overflow: scroll;
+}

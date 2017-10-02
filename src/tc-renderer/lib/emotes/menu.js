@@ -39,7 +39,7 @@ removeExampleValues()
 setTimeout(listenForEmotesetsFromChat, 10) // TODO
 
 export function getAllCachedEmotes () {
-
+  return emotes
 }
 
 export function addBttvGlobalEmotes (arrayOfEmoteObjects) {
