@@ -27,5 +27,6 @@ emote-menu .category-label {
 }
 
 emote-menu img {
-  margin: 0 4px
+  margin: 0 4px;
+  outline: none;
 }

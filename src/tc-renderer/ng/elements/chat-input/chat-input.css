@@ -39,6 +39,7 @@ chat-input .emote-menu-button {
   right: 10px;
   opacity: 0.2;
   z-index: 6666;
+  outline: none;
   cursor: pointer;
   font-size: 20px;
   position: absolute;
