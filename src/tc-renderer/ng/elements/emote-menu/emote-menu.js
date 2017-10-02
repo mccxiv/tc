@@ -3,13 +3,13 @@ import angular from 'angular';
 import template from './emote-menu.html';
 import {getAllCachedEmotes} from '../../../lib/emotes/menu';
 
-angular.module('tc').directive('emoteMenu', () => {
+angular.module('tc').directive('emoteMenu', (session) => {
   function link(scope) {
-    debugger
     scope.m = {categories: getAllCachedEmotes()}
 
-    scope.selectEmote = function () {
-      scope.m.emoteMenu = !scope.m.emoteMenu
+    scope.choose = function (emote) {
+      const space = session.message ? ' ' : ''
+      session.message = `${session.message || ''}${space}${emote}`
     }
   }
 

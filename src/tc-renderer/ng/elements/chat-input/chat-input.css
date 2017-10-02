@@ -1,5 +1,9 @@
 chat-input {
   display: block;
+  position: relative;
+}
+
+chat-input .overflow-container {
   overflow: hidden;
 }
 
