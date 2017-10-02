@@ -11,6 +11,7 @@ angular.module('tc').directive('chatInput',
   (session, irc, messages, emotesTwitch) => {
 
   function link(scope, element) {
+    scope.m = {emoteMenu: false}
     scope.session = session;
     scope.irc = irc;
     scope.chatHistory = [];
@@ -100,6 +101,10 @@ angular.module('tc').directive('chatInput',
         session.message = replacePhrases(msg);
       }
     };
+
+    scope.toggleEmoteMenu = function () {
+      scope.m.emoteMenu = !scope.m.emoteMenu
+    }
   }
 
   return {restrict: 'E', template, link}

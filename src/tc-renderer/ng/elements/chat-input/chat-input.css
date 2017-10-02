@@ -29,3 +29,17 @@ chat-input .md-input-has-value label,
 chat-input .md-input-focused label {
   opacity: 0;
 }
+
+chat-input .emote-menu-button {
+  bottom: 5px;
+  right: 10px;
+  opacity: 0.2;
+  z-index: 6666;
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+}
+
+chat-input .emote-menu-button:hover {
+  opacity: 0.6;
+}
