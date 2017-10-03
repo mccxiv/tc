@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {sleep} from '../util';
 import channels from '../channels';
+import {addFfzChannelEmotes, addFfzGlobalEmotes} from './menu'
 
 var globalEmotes = [];
 var channelEmotes = {};
@@ -18,12 +19,10 @@ async function cacheGlobal(delay) {
     const emotes = response.data;
     emotes.default_sets.forEach((setKey) => {
       emotes.sets[setKey].emoticons.forEach((emote) => {
-        globalEmotes.push({
-          emote: emote.name,
-          url: 'http:' + emote.urls['1']
-        });
+        globalEmotes.push({emote: emote.name, url: 'http:' + emote.urls['1']});
       })
     });
+    addFfzGlobalEmotes(globalEmotes)
   }
   catch(e) {
     cacheGlobal((delay || 1000) * 2);
@@ -31,17 +30,15 @@ async function cacheGlobal(delay) {
 }
 
 async function cache(channel) {
-  channelEmotes[channel] = [];
+  const emotes = channelEmotes[channel] = [];
   const url = 'http://api.frankerfacez.com/v1/room/' + channel;
   try {
     const response = await axios(url);
     const data = response.data;
     data.sets[data.room.set].emoticons.forEach((emote) => {
-      channelEmotes[channel].push({
-        emote: emote.name,
-        url: 'http:' + emote.urls['1']
-      });
+      emotes.push({emote: emote.name, url: 'http:' + emote.urls['1']});
     });
+    addFfzChannelEmotes(channel, emotes)
   }
   catch(e) {}
 }

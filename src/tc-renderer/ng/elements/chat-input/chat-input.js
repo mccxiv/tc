@@ -11,12 +11,15 @@ angular.module('tc').directive('chatInput',
   (session, irc, messages, emotesTwitch) => {
 
   function link(scope, element) {
+    scope.m = {emoteMenu: false}
     scope.session = session;
     scope.irc = irc;
     scope.chatHistory = [];
     const input = element.find('input')[0];
     session.input = input; // TODO make a better system
     let lastWhisperer;
+
+    closeEmoteMenuOnEscape()
 
     irc.on('whisper', from => {
       lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
@@ -39,6 +42,7 @@ angular.module('tc').directive('chatInput',
     };
 
     scope.input = () => {
+      if (scope.m.emoteMenu) scope.m.emoteMenu = false
       const channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !session.message.trim().length) return;
 
@@ -100,6 +104,25 @@ angular.module('tc').directive('chatInput',
         session.message = replacePhrases(msg);
       }
     };
+
+    scope.toggleEmoteMenu = function () {
+      scope.m.emoteMenu = !scope.m.emoteMenu
+    }
+
+    function closeEmoteMenuOnEscape () {
+      window.addEventListener('keyup', keyupHandlerCloseEmoteMenu)
+
+      scope.$on('$destroy', () => {
+        window.removeEventListener('keyup', keyupHandlerCloseEmoteMenu)
+      })
+
+      function keyupHandlerCloseEmoteMenu (e) {
+        if (e.keyCode === 27 && scope.m.emoteMenu) {
+          scope.m.emoteMenu = false
+          scope.$apply()
+        }
+      }
+    }
   }
 
   return {restrict: 'E', template, link}

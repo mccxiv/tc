@@ -11,6 +11,7 @@ import '../../ng/elements/thumbnail/thumbnail';
 import '../../ng/elements/chatters/chatters';
 import '../../ng/elements/chatters-tabs/chatters-tabs';
 import '../../ng/elements/add-channel/add-channel';
+import '../../ng/elements/emote-menu/emote-menu';
 
 import '../../ng/providers/open-external';
 import '../../ng/providers/session';
