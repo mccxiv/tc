@@ -3,6 +3,18 @@ import {api} from '../api';
 let lastEmotesetsString = ''
 const emotes = [
   {
+    type: 'bttv-channel',
+    channel: '__example_channel_1',
+    label: 'BetterTTV Channel Emotes',
+    emotes: []
+  },
+  {
+    type: 'ffz-channel',
+    channel: '__example_channel_1',
+    label: 'FrankerFaceZ Channel Emotes',
+    emotes: []
+  },
+  {
     type: 'bttv-global',
     label: 'BetterTTV Global',
     emotes: [
@@ -10,20 +22,8 @@ const emotes = [
     ]
   },
   {
-    type: 'bttv-channel',
-    channel: '__example_channel_1',
-    label: 'BetterTTV Channel Emotes',
-    emotes: []
-  },
-  {
     type: 'ffz-global',
     label: 'FrankerFaceZ Global',
-    emotes: []
-  },
-  {
-    type: 'ffz-channel',
-    channel: '__example_channel_1',
-    label: 'FrankerFaceZ Channel Emotes',
     emotes: []
   },
   {
@@ -36,10 +36,12 @@ const emotes = [
 // setInterval(() => console.log(emotes), 4000)
 
 removeExampleValues()
-setTimeout(listenForEmotesetsFromChat, 10) // TODO
 
-export function getAllCachedEmotes () {
-  return emotes
+export function getAllCachedEmotes (channel) {
+  return emotes.filter(category => {
+    if (category.channel) return category.channel === channel
+    return true
+  })
 }
 
 export function addBttvGlobalEmotes (arrayOfEmoteObjects) {
@@ -93,18 +95,12 @@ async function fetchAndPopulateEmotesets(emotesetsString) {
   }
 }
 
-function listenForEmotesetsFromChat () {
-  const rootAppElement = document.querySelector('[ng-app]');
-  const irc = angular.element(rootAppElement).injector().get('irc')
-  irc.on('emotesets', addTwitchEmotesets)
-}
-
 function channelExist (type, channel) {
   return !!emotes.find(e => e.type === type && e.channel === channel)
 }
 
 function createChannel (type, channel) {
-  const afterMap = {
+  const beforeMap = {
     'bttv-channel': 'bttv-global',
     'ffz-channel': 'ffz-global'
   }
@@ -113,8 +109,8 @@ function createChannel (type, channel) {
     'ffz-channel': 'FrankerFaceZ Channel Emotes'
   }
   const label = labelMap[type]
-  const after = afterMap[type]
-  const desiredInsertionIndex = emotes.findIndex(e => e.type === after) + 1
+  const before = beforeMap[type]
+  const desiredInsertionIndex = emotes.findIndex(e => e.type === before) - 1
   const category = {type, label, channel, emotes: []}
   emotes.splice(desiredInsertionIndex, 0, category)
 }

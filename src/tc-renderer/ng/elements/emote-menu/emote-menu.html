@@ -1,7 +1,12 @@
 <md-whiteframe class="md-whiteframe-z4 container">
   <div class="emote-list">
     <div class="category" ng-repeat="category in m.categories">
-      <div class="category-label">{{category.label}}</div>
+      <div
+        class="category-label"
+        ng-if="category.emotes.length"
+      >
+        {{category.label}}
+      </div>
       <div class="emotes">
         <img
           ng-repeat="emote in category.emotes"
