@@ -19,6 +19,8 @@ angular.module('tc').directive('chatInput',
     session.input = input; // TODO make a better system
     let lastWhisperer;
 
+    closeEmoteMenuOnEscape()
+
     irc.on('whisper', from => {
       lastWhisperer = from.startsWith('#') ? from.substring(1) : from;
     });
@@ -104,6 +106,21 @@ angular.module('tc').directive('chatInput',
 
     scope.toggleEmoteMenu = function () {
       scope.m.emoteMenu = !scope.m.emoteMenu
+    }
+
+    function closeEmoteMenuOnEscape () {
+      window.addEventListener('keyup', keyupHandlerCloseEmoteMenu)
+
+      scope.$on('$destroy', () => {
+        window.removeEventListener('keyup', keyupHandlerCloseEmoteMenu)
+      })
+
+      function keyupHandlerCloseEmoteMenu (e) {
+        if (e.keyCode === 27 && scope.m.emoteMenu) {
+          scope.m.emoteMenu = false
+          scope.$apply()
+        }
+      }
     }
   }
 
