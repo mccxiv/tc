@@ -27,7 +27,7 @@
     "nprogress": "0.2.0",
     "proxy-observe": "github:mccxiv/proxy-observe",
     "roboto-fontface": "0.4.5",
-    "tmi.js": "1.1.1",
+    "tmi.js": "1.2.1",
     "which": "1.2.10"
   }
 }
