@@ -11,7 +11,7 @@ angular.module('tc').directive('emoteMenu', (session) => {
 
     scope.choose = function (emote) {
       const space = session.message ? ' ' : ''
-      session.message = `${session.message || ''}${space}${emote}`
+      session.message = `${session.message || ''}${space}${emote} `
       session.input.focus();
     }
   }
