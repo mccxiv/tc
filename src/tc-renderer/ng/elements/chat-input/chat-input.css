@@ -27,6 +27,7 @@ chat-input .input-container .md-input {
   transition: border-color 300ms;
   border-color: transparent;
   padding-left: 20px;
+  padding-right: 32px;
 }
 
 chat-input .md-input-has-value label,
