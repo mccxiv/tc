@@ -42,6 +42,7 @@ angular.module('tc').directive('chatInput',
     };
 
     scope.input = () => {
+      if (scope.m.emoteMenu) scope.m.emoteMenu = false
       const channel = settings.channels[settings.selectedTabIndex];
       if (!channel || !session.message.trim().length) return;
 
