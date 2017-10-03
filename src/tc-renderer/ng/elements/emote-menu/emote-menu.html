@@ -9,8 +9,10 @@
       </div>
       <div class="emotes">
         <img
+          class="emoticon"
           ng-repeat="emote in category.emotes"
           src="{{emote.url}}"
+          data-emote-name="{{emote.emote}}"
           ng-click="choose(emote.emote)"
         />
       </div>
