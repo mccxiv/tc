@@ -7,8 +7,6 @@ function registerShortcuts() {
   key('⌘+n, ctrl+n', goToAddChannel);
   key('⌘+tab, ctrl+tab', nextTab);
   key('⌘+shift+tab, ctrl+shift+tab', previousTab);
-  key('⌘+shift+left, ctrl+shift+left', previousTab);
-  key('⌘+shift+right, ctrl+shift+right', nextTab);
   key('⌘+s, ctrl+s', toggleSidebar);
   key('tab', focusInput);
 
