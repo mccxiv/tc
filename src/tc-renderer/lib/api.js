@@ -39,3 +39,13 @@ export async function api(endpoint) {
   const options = {headers: {'Client-ID': '1pr5dzvymq1unqa2xiavdkvslsn4ebe'}};
   return (await r(kraken + endpoint, options)).data;
 }
+
+export async function apiv5 (endpoint) {
+  const options = {
+    headers: {
+      'Client-ID': '1pr5dzvymq1unqa2xiavdkvslsn4ebe',
+      'Accept': 'application/vnd.twitchtv.v5+json'
+    }
+  };
+  return (await r(kraken + endpoint, options)).data;
+}
