@@ -19,6 +19,7 @@ function makeImg (cheer) {
   const action = config.actions.find(a => a.prefix.toLowerCase() === prefix)
   if (!action) return cheer
   action.tiers.forEach(t => {if (amount >= t.min_bits) tier = t})
+  // TODO use the correct theme from settings
   const imagePaths = [
     'images.light.animated.1',
     'images.dark.animated.1',
