@@ -1,33 +1,51 @@
-import axios from 'axios';
-import settings from '../settings/settings';
+import {apiv5} from '../api'
 
-let bits;
+let config = {};
 
 fetchBitsConfig();
 
 async function fetchBitsConfig() {
-  bits = (await axios('https://www.twitch.tv/bits/config.json')).data.bits;
-  bits.tiers.reverse();
+  config = await apiv5('bits/actions')
 }
 
-function getBitGifUrl(amount) {
-  if (!bits) return;
-  const tier = bits.tiers.find(tier => tier.min_bits <= amount);
-  if (!tier) return;
-  const theme = settings.theme.dark ? 'dark' : 'light';
-  return `https://static-cdn.jtvnw.net/bits/${theme}/animated/${tier.image}/1`;
+function getCheerPrefixes () {
+  return (config.actions || []).map(a => a.prefix.toLowerCase())
 }
 
-function makeImg(cheerText) {
-  const amount = Number(cheerText.replace('cheer', ''));
-  const bitGifUrl = getBitGifUrl(amount);
-  if (!bitGifUrl) return cheerText;
-  const meta = `data-emote-name="${cheerText}" alt="${cheerText}"`;
-  return `<img class="emoticon" ${meta} src="${bitGifUrl}">${amount}`;
+function makeImg (cheer) {
+  let tier
+  const [, prefix, digit] = /(\D+)(\d+)/.exec(cheer)
+  const amount = Number(digit)
+  const action = config.actions.find(a => a.prefix.toLowerCase() === prefix)
+  if (!action) return cheer
+  action.tiers.forEach(t => {if (amount >= t.min_bits) tier = t})
+  const imagePaths = [
+    'images.light.animated.1',
+    'images.dark.animated.1',
+    'images.light.static.1',
+    'images.dark.static.1'
+  ]
+  const urls = imagePaths.map(path => deepGet(tier, path))
+  const firstValidUrl = urls.find(url => !!url)
+  const meta = `data-emote-name="${cheer}" alt="${cheer}"`
+  return `<img class="emoticon" ${meta} src="${firstValidUrl}">${digit}`
+
+  function deepGet(obj, path) {
+    const parts = path.split(".")
+    if (parts.length === 1) return obj[parts[0]]
+    return deepGet(obj[parts[0]], parts.slice(1).join("."))
+  }
 }
 
-export default function addBitGifs(message) {
-  const regString = `(?<=(?:^| ))cheer\\d+(?=(?: |$))(?!(?:[^<]*>))`;
-  const re = new RegExp(regString, 'g');
-  return message.replace(re, makeImg);
+export default function addBitGifs (message) {
+  const prefixes = getCheerPrefixes()
+  const words = message.split(' ')
+  const converted = words.map(word => {
+    const endsWithNumber = /\d+$/.test(word)
+    if (!endsWithNumber) return word
+    const prefix = prefixes.find(prefix => word.startsWith(prefix))
+    if (!prefix) return word
+    return makeImg(word)
+  })
+  return converted.join(' ')
 }
