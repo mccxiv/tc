@@ -6,11 +6,15 @@ import settings from '../../../lib/settings/settings';
 import {getAllCachedEmotes} from '../../../lib/emotes/menu';
 
 
-angular.module('tc').directive('emoteMenu', (session) => {
+angular.module('tc').directive('emoteMenu', ($timeout, session) => {
   function link(scope, element) {
-    scope.m = {categories: getAllCachedEmotes(currChannel())}
+    scope.m = {
+      visible: false,
+      categories: getAllCachedEmotes(currChannel())
+    }
 
     handleEmoteHover()
+    $timeout(() => scope.m.visible = true)
 
     scope.choose = function (emote) {
       const space = session.message ? ' ' : ''

@@ -40,3 +40,18 @@ emote-menu img {
 emote-menu img:hover {
   background-color: #d9d9d9;
 }
+
+emote-menu .container {
+  will-change: opacity, transform;
+}
+
+emote-menu .container.ng-enter {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 140ms cubic-bezier(.55, 0, .1, 1)
+}
+
+emote-menu .container.ng-enter.ng-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+}
