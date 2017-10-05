@@ -40,6 +40,15 @@ export async function api(endpoint) {
   return (await r(kraken + endpoint, options)).data;
 }
 
+export async function usernameToId (username) {
+  try {
+    const response = await apiv5(`users?login=${username}`)
+    return response.users[0]._id
+  } catch (e) {
+    return null
+  }
+}
+
 export async function apiv5 (endpoint) {
   const options = {
     headers: {

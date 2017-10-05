@@ -1,22 +1,49 @@
-import {apiv5} from '../api'
+import {apiv5, usernameToId} from '../api'
+import channels from '../channels';
 
-let config = {};
+const state = {
+  global: [],
+  channels: {'example-channel-1': []},
+  ids: {'example-channel-1': '12345'}
+}
+
+const getters = {
+  cheerPrefixes (channel) {
+    const actions = getters.actions(channel)
+    return actions.map(a => a.prefix.toLowerCase())
+  },
+
+  actions (channel) {
+    const global = state.global || []
+    const current = state.channels[channel] || []
+    return current.length ? current : global
+  }
+}
 
 fetchBitsConfig();
+channels.on('add', fetchBitsConfig);
+channels.on('remove', cleanup);
+channels.channels.forEach(fetchBitsConfig);
 
-async function fetchBitsConfig() {
-  config = await apiv5('bits/actions')
+async function fetchBitsConfig(channel) {
+  if (!state.ids[channel]) state.ids[channel] = await usernameToId(channel)
+  const channelArgs = channel ? `?channel_id=${state.ids[channel]}` : ''
+  const response = await apiv5(`bits/actions${channelArgs}`)
+  if (channel) state.channels[channel] = response.actions
+  else state.global = response.actions
 }
 
-function getCheerPrefixes () {
-  return (config.actions || []).map(a => a.prefix.toLowerCase())
+function cleanup (channel) {
+  delete state.channels[channel]
+  delete state.ids[channel]
 }
 
-function makeImg (cheer) {
+function makeImg (channel, cheer) {
   let tier
+  const actions = getters.actions(channel)
   const [, prefix, digit] = /(\D+)(\d+)/.exec(cheer)
   const amount = Number(digit)
-  const action = config.actions.find(a => a.prefix.toLowerCase() === prefix)
+  const action = actions.find(a => a.prefix.toLowerCase() === prefix)
   if (!action) return cheer
   action.tiers.forEach(t => {if (amount >= t.min_bits) tier = t})
   // TODO use the correct theme from settings
@@ -38,15 +65,15 @@ function makeImg (cheer) {
   }
 }
 
-export default function addBitGifs (message) {
-  const prefixes = getCheerPrefixes()
+export default function addBitGifs (channel, message) {
+  const prefixes = getters.cheerPrefixes(channel)
   const words = message.split(' ')
   const converted = words.map(word => {
     const endsWithNumber = /\d+$/.test(word)
     if (!endsWithNumber) return word
     const prefix = prefixes.find(prefix => word.startsWith(prefix))
     if (!prefix) return word
-    return makeImg(word)
+    return makeImg(channel, word)
   })
   return converted.join(' ')
 }
