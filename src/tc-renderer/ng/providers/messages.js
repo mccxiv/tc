@@ -113,6 +113,10 @@ angular.module('tc').factory('messages', (
       const backlog = req.data;
       backlog.forEach((obj) => {
         obj.type = obj.user['message-type'];
+        if (obj.user.bits) {
+          obj.type = 'cheer'
+          obj.golden = true
+        }
         obj.fromBacklog = true;
         if (dontHaveMessage(channel, obj)) addUserMessage(channel, obj);
       });
