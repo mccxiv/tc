@@ -71,6 +71,7 @@ angular.module('tc').factory('irc', $rootScope => {
       'crash',
       'emotesets',
       'emoteonly',
+      'notification', // FIXME: Custom event from forked tmi.js
       'hosted',
       'hosting',
       'mods',
