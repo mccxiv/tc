@@ -41,11 +41,10 @@ angular.module('tc').factory('messages', (
   }
 
   /** Adds a message with the 'notification' type */
-  function addNotification(channel, message) {
-    addMessage(channel, {
-      type: 'notification',
-      message
-    });
+  function addNotification(channel, message, golden) {
+    const messageObject = {type: 'notification', message}
+    if (golden) messageObject.golden = true
+    addMessage(channel, messageObject);
   }
   
   /** Adds a message with the 'whisper' type */
@@ -114,6 +113,10 @@ angular.module('tc').factory('messages', (
       const backlog = req.data;
       backlog.forEach((obj) => {
         obj.type = obj.user['message-type'];
+        if (obj.user.bits) {
+          obj.type = 'cheer'
+          obj.golden = true
+        }
         obj.fromBacklog = true;
         if (dontHaveMessage(channel, obj)) addUserMessage(channel, obj);
       });
@@ -323,9 +326,9 @@ angular.module('tc').factory('messages', (
         if (!ignored.includes(msgid)) addNotification(channel, message);
       },
       resub: (channel, username, months, message) => {
-        const noMsg = `${username} resubscribed (${months} months in a row)`;
-        const msg = noMsg + ': ' + message;
-        addNotification(channel, message ? msg : noMsg);
+        const noMsg = `${username} resubscribed ${months} months in a row!`;
+        const msg = noMsg + ' "' + message + '"';
+        addNotification(channel, message ? msg : noMsg, true);
       },
       r9kbeta: (channel, on) => {
         const enabled = 'The channel is now in r9k mode.';
@@ -338,8 +341,16 @@ angular.module('tc').factory('messages', (
           'You may send messages every ' + length + ' seconds.';
         addNotification(channel, on ? enabled : disabled);
       },
-      subscription: (channel, username) => {
-        addNotification(channel, username + ' has just subscribed!');
+      subscription: (channel, username, method, message) => {
+        const planMap = {
+          '1000': '$4.99',
+          '2000': '$9.99',
+          '3000': '$24.99'
+        }
+        const plan = planMap[method.plan] ? planMap[method.plan] : method.plan;
+        const noMsg = `${username} has subscribed with a ${plan} plan!`
+        const msg = `${noMsg} "${message}"`
+        addNotification(channel, message ? msg : noMsg, true);
       },
       subscribers: (channel, on) => {
         let msg = 'The channel is no longer in subscriber-only mode';

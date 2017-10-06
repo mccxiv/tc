@@ -122,6 +122,10 @@ chat-output .chat-line.odd {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+chat-output .chat-line.golden {
+  background-color: #fff6c6;
+}
+
 #nprogress .spinner {
   top: 47px;
 }
