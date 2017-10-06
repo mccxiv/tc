@@ -278,9 +278,24 @@ angular.module('tc').factory('messages', (
 
   function getChatListeners() {
     return {
+      // Users talking
+      chat: (channel, user, message) => {
+        addUserMessage(channel, {type: 'chat', user, message});
+      },
+      cheer: (channel, user, message) => {
+        addUserMessage(channel, {type: 'cheer', user, message, golden: true});
+      },
       action: (channel, user, message) => {
         addUserMessage(channel, {type: 'action', user, message});
       },
+      whisper: (from, user, message, self) => {
+        if (self) return;
+        if (from.startsWith('#')) from = from.substring(1);
+        const me = capitalize(lowerCaseUsername);
+        addWhisper(from, me, message)
+      },
+
+      // Moderators doing stuff
       ban: (channel, username, reason) => {
         const baseMsg = username + ' has been banned.';
         timeoutFromChat(channel, username);
@@ -288,74 +303,6 @@ angular.module('tc').factory('messages', (
           const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '');
           addNotification(channel, msg);
         }
-      },
-      chat: (channel, user, message) => {
-        addUserMessage(channel, {type: 'chat', user, message});
-      },
-      cheer: (channel, user, message) => {
-        addUserMessage(channel, {type: 'cheer', user, message});
-      },
-      clearchat: (channel) => {
-        const msg = 'Chat cleared by a moderator. (Prevented by Tc)';
-        addNotification(channel, msg);
-      },
-      connecting: () => addGlobalNotification('Connecting...'),
-      connected: () => {
-        settings.channels.forEach((channel) => {
-          addNotification(channel, `Welcome to ${channel}'s chat.`);
-        });
-      },
-      disconnected: () => {
-        addGlobalNotification('Disconnected from the server.');
-      },
-      emoteonly: (channel, on) => {
-        const enabled = 'Emote only mode has been enabled in the channel.';
-        const disabled = 'Emote only mode has been disabled in the channel.';
-        addNotification(channel, on ? enabled : disabled);
-      },
-      hosting: (channel, target) => {
-        const msg = channel.substring(1) + ' is hosting ' + target;
-        addNotification(channel, msg);
-      },
-      hosted: (channel, target, viewers) => {
-        const msg = `${target} is hosting you with ${viewers} viewers.`;
-        addNotification(channel, msg);
-      },
-      notice: (channel, msgid, message) => {
-        const ignored = ['ban_success', 'timeout_success'];
-        if (!ignored.includes(msgid)) addNotification(channel, message);
-      },
-      resub: (channel, username, months, message) => {
-        const noMsg = `${username} resubscribed ${months} months in a row!`;
-        const msg = noMsg + ' "' + message + '"';
-        addNotification(channel, message ? msg : noMsg, true);
-      },
-      r9kbeta: (channel, on) => {
-        const enabled = 'The channel is now in r9k mode.';
-        const disabled = 'The channel is no longer in r9k mode.';
-        addNotification(channel, on ? enabled : disabled);
-      },
-      slowmode: (channel, on, length) => {
-        const disabled = 'This room is no longer in slow mode.';
-        const enabled = 'This room is now in slow mode. ' +
-          'You may send messages every ' + length + ' seconds.';
-        addNotification(channel, on ? enabled : disabled);
-      },
-      subscription: (channel, username, method, message) => {
-        const planMap = {
-          '1000': '$4.99',
-          '2000': '$9.99',
-          '3000': '$24.99'
-        }
-        const plan = planMap[method.plan] ? planMap[method.plan] : method.plan;
-        const noMsg = `${username} has subscribed with a ${plan} plan!`
-        const msg = `${noMsg} "${message}"`
-        addNotification(channel, message ? msg : noMsg, true);
-      },
-      subscribers: (channel, on) => {
-        let msg = 'The channel is no longer in subscriber-only mode';
-        if (on) msg = 'The channel is now in subscriber-only mode.';
-        addNotification(channel, msg);
       },
       timeout: (channel, username, reason, duration) => {
         timeoutFromChat(channel, username);
@@ -367,12 +314,46 @@ angular.module('tc').factory('messages', (
           addNotification(channel, msg);
         }
       },
-      unhost: (channel) => addNotification(channel, 'Stopped hosting.'),
-      whisper: (from, user, message, self) => {
-        if (self) return;
-        if (from.startsWith('#')) from = from.substring(1);
-        const me = capitalize(lowerCaseUsername);
-        addWhisper(from, me, message)
+      clearchat: (channel) => {
+        const msg = 'Chat cleared by a moderator. (Prevented by Tc)';
+        addNotification(channel, msg);
+      },
+
+      // Oh boy, network troubles
+      connecting: () => addGlobalNotification('Connecting...'),
+      connected: () => {
+        settings.channels.forEach((channel) => {
+          addNotification(channel, `Welcome to ${channel}'s chat.`);
+        });
+      },
+      disconnected: () => {
+        addGlobalNotification('Disconnected from the server.');
+      },
+
+      // Money!
+      subscription: (channel, username, method, message) => {
+        const planMap = {
+          '1000': '$4.99',
+          '2000': '$9.99',
+          '3000': '$24.99'
+        }
+        const plan = planMap[method.plan] ? planMap[method.plan] : method.plan;
+        const noMsg = `${username} has subscribed with a ${plan} plan!`
+        const msg = `${noMsg} "${message}"`
+        addNotification(channel, message ? msg : noMsg, true);
+      },
+      resub: (channel, username, months, message) => {
+        const noMsg = `${username} resubscribed ${months} months in a row!`;
+        const msg = noMsg + ' "' + message + '"';
+        addNotification(channel, message ? msg : noMsg, true);
+      },
+
+      // Twitch's NOTICE
+      // We're using a forked tmi.js because tmi.js's notice event is a based
+      // on a whitelist. So it is not future-proof
+      notification: (channel, msgId, message) => {
+        if (channel) addNotification(channel, message);
+        else addGlobalNotification(message);
       }
     };
   }
