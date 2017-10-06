@@ -1,5 +1,4 @@
 import './lib/startup/icon-font';
-import $ from 'jquery';
 import registerShortcuts from './lib/startup/keybinds';
 import keepTitleUpdated from './lib/startup/keep-title-updated';
 import enableDevTools from './lib/startup/enable-dev-tools';
@@ -30,7 +29,3 @@ preventPageNavigation();
 makeTrayIconOnWindows();
 watchZoomChanges();
 keepChannelsOnBacklog();
-
-
-$('.loader').delay(1400).fadeOut(1000);
-$('.app').delay(1400).fadeTo(1000, 1);

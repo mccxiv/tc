@@ -28,6 +28,7 @@ function makeWindow() {
   });
 
   main = new BrowserWindow({
+    show: false,
     x: mainWinState.x,
     y: mainWinState.y,
     width: mainWinState.width,
@@ -36,6 +37,12 @@ function makeWindow() {
     'min-height': 100,
     icon: __dirname + '/assets/icon256.png'
   });
+
+  main.on('ready-to-show', function () {
+    setTimeout(function () {
+      main.show();
+    }, 150)
+  })
 
   mainWinState.manage(main);
 
