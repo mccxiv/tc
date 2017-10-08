@@ -1,4 +1,4 @@
-.dark, .dark md-dialog, .dark md-sidenav {
+.dark, .dark md-dialog, .dark md-sidenav, .dark emote-menu .container {
   background-color: rgb(30, 30, 30);
   color: #D3D3D3;
 }
