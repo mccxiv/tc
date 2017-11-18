@@ -109,7 +109,7 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
     function loadHostStatus() {
       // This task is lower priority than the others, let them run first.
       setTimeout(async () => {
-        const user = irc.getClient().globaluserstate;
+        const user = (irc.getClient() || {}).globaluserstate;
         const id =  user && user['user-id'] ? user['user-id'] : null;
         if (!id) return setTimeout(loadHostStatus, 2000);
         const opts = {params: {host: id, include_logins: 1}};
