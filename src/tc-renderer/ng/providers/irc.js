@@ -185,8 +185,8 @@ angular.module('tc').factory('irc', $rootScope => {
    */
   function onBadLogin(cb) {
     client.on('disconnected', (reason) => {
-      const reasons = ['Error logging in.', 'Login unsuccessful.'];
-      if (reasons.includes(reason)) {
+      const lowerCaseReason = reason.toLowerCase()
+      if (lowerCaseReason.includes('authentication failed')) {
         ee.ready = false;
         ee.badLogin = reason;
         settings.identity.password = '';

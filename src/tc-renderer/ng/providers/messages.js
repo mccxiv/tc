@@ -351,9 +351,10 @@ angular.module('tc').factory('messages', (
       // Twitch's NOTICE
       // We're using a forked tmi.js because tmi.js's notice event is a based
       // on a whitelist. So it is not future-proof
-      notification: (channel, msgId, message) => {
-        if (channel) addNotification(channel, message);
-        else addGlobalNotification(message);
+      notification: (channel = '', msgId, message) => {
+        channel = channel.substr(1)
+        if (!channel || channel === '*') addGlobalNotification(message);
+        else addNotification(channel, message);
       }
     };
   }
