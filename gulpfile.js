@@ -46,5 +46,5 @@ gulp.task('build', function() {
   shell.find('_dist').filter((f) => f.endsWith('.AppImage')).forEach((f) => {
     shell.mv(f, f.replace('Tc-', 'tc-linux-').replace('-x86_64', ''));
   });
-  shell.rm('-rf', 'dist');
+  // shell.rm('-rf', 'dist');
 });
