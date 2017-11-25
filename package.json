@@ -27,7 +27,12 @@
       "identity": "Andrea Stella (42XGWVW434)"
     },
     "win": {
-      "icon": "src/assets/icon.ico"
+      "target": [
+        "squirrel"
+      ]
+    },
+    "squirrelWindows": {
+      "iconUrl": "https://github.com/mccxiv/tc/blob/master/build/icon.ico?raw=true"
     }
   },
   "dependencies": {
@@ -52,6 +57,7 @@
   },
   "devDependencies": {
     "electron": "^1.8.1",
-    "electron-builder": "^19.46.4"
+    "electron-builder": "^19.46.4",
+    "electron-builder-squirrel-windows": "^19.46.5"
   }
 }

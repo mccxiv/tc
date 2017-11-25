@@ -29,7 +29,7 @@ gulp.task('build', function() {
   shell.exec('npm run dist:mac');
   console.log('Trying to build for Windows, it might fail without Wine');
   shell.exec('npm run dist:windows');
-  shell.mv('dist/win/**', '_dist/');
+  shell.mv('dist/squirrel-windows/**', '_dist/');
   shell.mv('dist/mac/*.dmg', '_dist/');
   shell.mv('dist/mac/*.zip', '_dist/');
   shell.mv('dist/*.AppImage', '_dist/');
@@ -46,5 +46,5 @@ gulp.task('build', function() {
   shell.find('_dist').filter((f) => f.endsWith('.AppImage')).forEach((f) => {
     shell.mv(f, f.replace('Tc-', 'tc-linux-').replace('-x86_64', ''));
   });
-  // shell.rm('-rf', 'dist');
+  shell.rm('-rf', 'dist');
 });
