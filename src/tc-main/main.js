@@ -11,7 +11,7 @@ var main;
 app.commandLine.appendSwitch('js-flags', '--harmony');
 
 if (squirrelStartup()) app.exit(0);
-if (isSecondInstance()) app.quit();
+if (isSecondInstance()) app.exit();
 if (process.argv.indexOf('--dev-tools') > 0) setTimeout(devTools, 1500);
 
 app.on('ready', makeWindow);
