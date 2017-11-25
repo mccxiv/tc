@@ -1,6 +1,7 @@
 {
   "private": true,
   "name": "tc-project",
+  "description": "Tc, the chat client for Twitch",
   "version": "0.0.0",
   "scripts": {
     "start": "gulp launch",
@@ -21,8 +22,11 @@
     "copyright": "Copyright 2017 Andrea Stella. All rights reserved",
     "version-string": {
       "CompanyName": "Mccxiv Software",
-      "FileDescription": "Tc, the chat client for Twitch",
+
       "ProductName": "Tc"
+    },
+    "directories": {
+      "app": "_build"
     },
     "dmg": {},
     "mac": {
@@ -34,9 +38,6 @@
       "title": "Tc, the chat client for Twitch",
       "setupIcon": "src/assets/icon.ico"
     }
-  },
-  "directories": {
-    "app": "_build"
   },
   "dependencies": {
     "babel-core": "^6.26.0",
@@ -60,6 +61,6 @@
   },
   "devDependencies": {
     "electron": "^1.8.1",
-    "electron-builder": "^6.7.7"
+    "electron-builder": "^19.46.4"
   }
 }
