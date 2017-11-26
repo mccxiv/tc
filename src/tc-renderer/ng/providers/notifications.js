@@ -4,7 +4,7 @@ import settings from '../../lib/settings/settings'
 import notificationIcon from '../../../assets/icon256.png'
 
 angular.module('tc').factory('notifications', (irc, highlights) => {
-  var sound = new Audio(notificationSound)
+  var sound = new window.Audio(notificationSound)
 
   irc.on('disconnected', () => {
     if (settings.notifications.onConnect) {
@@ -30,7 +30,7 @@ angular.module('tc').factory('notifications', (irc, highlights) => {
       if (settings.chat.ignored.indexOf(user.username) >= 0) return
       // TODO inefficient, runs test twice: here and in messages
       if (highlights.test(message) &&
-        settings.identity.username.toLowerCase() != user.username) {
+        settings.identity.username.toLowerCase() !== user.username) {
         channel = channel.substring(1)
         n('Mentioned on ' + channel, user['display-name'] + ': ' + message)
         if (settings.notifications.soundOnMention) {
@@ -48,7 +48,8 @@ angular.module('tc').factory('notifications', (irc, highlights) => {
    * @return {Notification}    - The Notification object that was created
    */
   function n (title, body) {
-    new Notification(title, {body: body, icon: notificationIcon, silent: true})
+    const opts = {body: body, icon: notificationIcon, silent: true}
+    return new window.Notification(title, opts)
   }
 
   return {

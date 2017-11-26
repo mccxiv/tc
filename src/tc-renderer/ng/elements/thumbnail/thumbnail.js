@@ -122,7 +122,7 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
 
     async function preLoadImage (url) {
       return new Promise((resolve) => {
-        const img = new Image()
+        const img = new window.Image()
         img.src = url
         img.addEventListener('load', resolve)
       })

@@ -92,6 +92,7 @@ angular.module('tc').factory('irc', $rootScope => {
       channels: []
     }
 
+    // eslint-disable-next-line new-cap
     client = new tmi.client(clientSettings)
     client.connect()
     client.on('connected', joinChannels)

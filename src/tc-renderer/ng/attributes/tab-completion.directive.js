@@ -12,11 +12,11 @@ angular.module('tc').directive('tabCompletion', () => {
     let currentItem
 
     element.on('keydown', (event) => {
-      if (event.which === 9) tabPress()
+      if (event.which === 9) tabPress(event)
       else previousKeyWasTab = false
     })
 
-    function tabPress () {
+    function tabPress (event) {
       event.preventDefault()
 
       // first time pressing tab, setup state

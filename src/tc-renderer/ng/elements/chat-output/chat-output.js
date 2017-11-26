@@ -41,7 +41,7 @@ angular.module('tc').directive('chatOutput',
       handleEmoteHover()
       handleBadgeHover()
       setupNprogress()
-      requestAnimationFrame(scrollDown)
+      window.requestAnimationFrame(scrollDown)
       delayedScroll() // Need to rescroll once emotes and badges are loaded
 
       // ===============================================================
@@ -183,8 +183,8 @@ angular.module('tc').directive('chatOutput',
         fetchingBacklog = true
         const old = distanceFromBottom()
         await messages.getMoreBacklog(scope.channel)
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
             scrollIfEnabled()
             NProgress.done()
             setTimeout(delayedScroll, 101)

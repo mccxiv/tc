@@ -4,7 +4,6 @@ import template from './user-panel.html'
 import {user} from '../../../lib/api'
 import settings from '../../../lib/settings/settings'
 import capitalize from '../../../lib/transforms/capitalize'
-import {focus} from '../chat-input/chat-input'
 
 angular.module('tc').directive('userPanel',
   ($document, session, irc, openExternal) => {
