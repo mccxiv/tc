@@ -20,7 +20,7 @@ function loadSettings () {
 }
 
 function loadSettingsFromLocalstorageInstead () {
-  let s = localStorage.settings || {}
+  let s = window.localStorage.settings || {}
   if (typeof s === 'string') {
     try { s = JSON.parse(s) }
     catch (e) { s = {} }

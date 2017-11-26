@@ -61,9 +61,12 @@ var rgbToHsl = function (r, g, b) {
   r /= 255
   g /= 255
   b /= 255
-  var max = Math.max(r, g, b), min = Math.min(r, g, b), h, s,
-    l = Math.min(Math.max(0, (max + min) / 2), 1),
-    d = Math.min(Math.max(0, max - min), 1)
+  var max = Math.max(r, g, b)
+  var min = Math.min(r, g, b)
+  var h
+  var s
+  var l = Math.min(Math.max(0, (max + min) / 2), 1)
+  var d = Math.min(Math.max(0, max - min), 1)
 
   if (d === 0) {
     h = s = d // achromatic
@@ -133,7 +136,14 @@ colors.calculateColorReplacement = function (color, background) {
   // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
   // Modified further to use HSL as an intermediate format, to avoid hue-shifting
   // toward primaries when darkening and toward secondaries when lightening
-  var rgb, hsl, light = (background === 'light'), factor = (light ? 0.1 : -0.1), r, g, b, l
+  var rgb
+  var hsl
+  var light = (background === 'light')
+  var factor = (light ? 0.1 : -0.1)
+  var r
+  var g
+  var b
+  var l
 
   color = String(color).replace(/[^0-9a-f]/gi, '')
   if (color.length < 6) {

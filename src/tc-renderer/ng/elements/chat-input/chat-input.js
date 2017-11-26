@@ -71,10 +71,10 @@ angular.module('tc').directive('chatInput',
         if (keyCode === 38) {
           if (historyIndex >= 0) {
             if (scope.chatHistory[historyIndex + 1]) {
-              session.message = scope.chatHistory[historyIndex + 1]9
+              session.message = scope.chatHistory[historyIndex + 1]
             }
           } else {
-            if (session.message != '') {
+            if (session.message !== '') {
               scope.chatHistory.unshift(session.message)
               session.message = scope.chatHistory[1]
             } else {
