@@ -7,6 +7,7 @@
     "start": "gulp launch",
     "postinstall": "gulp postinstall",
     "build": "gulp build",
+    "lint": "eslint src",
     "don't touch pack & dist, just run build instead": "",
     "pack": "build",
     "dist": "build",
@@ -35,7 +36,7 @@
       "iconUrl": "https://github.com/mccxiv/tc/blob/master/build/icon.ico?raw=true"
     }
   },
-  "dependencies": {
+  "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^6.4.1",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -43,6 +44,15 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "css-loader": "^0.23.1",
+    "electron": "^1.8.1",
+    "electron-builder": "^19.46.6",
+    "electron-builder-squirrel-windows": "^19.46.5",
+    "eslint": "^4.11.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "file-loader": "^0.8.5",
     "gulp": "^3.9.1",
     "html-loader": "^0.4.5",
@@ -54,10 +64,5 @@
     "style-loader": "^0.13.2",
     "url-loader": "^0.5.9",
     "webpack": "^1.15.0"
-  },
-  "devDependencies": {
-    "electron": "^1.8.1",
-    "electron-builder": "^19.46.4",
-    "electron-builder-squirrel-windows": "^19.46.5"
   }
 }
