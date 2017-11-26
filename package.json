@@ -7,7 +7,7 @@
     "start": "gulp launch",
     "postinstall": "gulp postinstall",
     "build": "gulp build",
-    "lint": "eslint src",
+    "lint": "eslint src --fix",
     "don't touch pack & dist, just run build instead": "",
     "pack": "build",
     "dist": "build",

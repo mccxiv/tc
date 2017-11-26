@@ -34,4 +34,4 @@ export default {
   channels: [],
   highlights: [],
   highlightMe: true
-};
+}

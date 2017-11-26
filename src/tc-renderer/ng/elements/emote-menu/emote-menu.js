@@ -1,13 +1,12 @@
-import './emote-menu.css';
-import $ from 'jquery';
-import angular from 'angular';
-import template from './emote-menu.html';
-import settings from '../../../lib/settings/settings';
-import {getAllCachedEmotes} from '../../../lib/emotes/menu';
-
+import './emote-menu.css'
+import $ from 'jquery'
+import angular from 'angular'
+import template from './emote-menu.html'
+import settings from '../../../lib/settings/settings'
+import {getAllCachedEmotes} from '../../../lib/emotes/menu'
 
 angular.module('tc').directive('emoteMenu', ($timeout, session) => {
-  function link(scope, element) {
+  function link (scope, element) {
     scope.m = {
       visible: false,
       categories: getAllCachedEmotes(currChannel())
@@ -19,36 +18,36 @@ angular.module('tc').directive('emoteMenu', ($timeout, session) => {
     scope.choose = function (emote) {
       const space = session.message ? ' ' : ''
       session.message = `${session.message || ''}${space}${emote} `
-      session.input.focus();
+      session.input.focus()
     }
 
-    function handleEmoteHover() {
+    function handleEmoteHover () {
       $(element[0]).on('mouseenter', '.emoticon', e => {
-        const emoticon = $(e.target);
-        let tooltip = emoticon.data('emote-name');
-        const description = emoticon.data('emote-description');
+        const emoticon = $(e.target)
+        let tooltip = emoticon.data('emote-name')
+        const description = emoticon.data('emote-description')
 
-        if (description) tooltip += '<br>' + description;
-        showTooltip(emoticon, tooltip);
-      });
+        if (description) tooltip += '<br>' + description
+        showTooltip(emoticon, tooltip)
+      })
     }
 
-    function showTooltip(el, content) {
-      el.frosty({html: true, content});
-      el.frosty('show');
-      el.one('mouseleave', kill);
-      setTimeout(kill, 3000);
+    function showTooltip (el, content) {
+      el.frosty({html: true, content})
+      el.frosty('show')
+      el.one('mouseleave', kill)
+      setTimeout(kill, 3000)
 
       function kill () {
-        el.frosty('hide');
-        el.off();
+        el.frosty('hide')
+        el.off()
       }
     }
   }
 
   return {restrict: 'E', template, link}
-});
+})
 
-function currChannel() {
-  return settings.channels[settings.selectedTabIndex];
+function currChannel () {
+  return settings.channels[settings.selectedTabIndex]
 }

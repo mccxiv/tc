@@ -1,4 +1,4 @@
-import angular from 'angular';
+import angular from 'angular'
 
 /**
  * @ngdoc directive
@@ -13,12 +13,12 @@ angular.module('tc').directive('hrefExternal', (openExternal) => {
     restrict: 'A',
     link: (scope, element, attrs) => {
       element.bind('click', () => {
-        let href = attrs.hrefExternal;
+        let href = attrs.hrefExternal
         if (!href.startsWith('http://') && !href.startsWith('https://')) {
-          href = 'http://' + href;
+          href = 'http://' + href
         }
-        openExternal(href);
-      });
+        openExternal(href)
+      })
     }
-  };
-});
+  }
+})

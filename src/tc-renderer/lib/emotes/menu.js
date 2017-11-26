@@ -1,4 +1,4 @@
-import {api} from '../api';
+import {api} from '../api'
 
 let lastEmotesetsString = ''
 const emotes = [
@@ -52,11 +52,11 @@ export function addFfzGlobalEmotes (arrayOfEmoteObjects) {
   emotes.find(e => e.type === 'ffz-global').emotes = arrayOfEmoteObjects
 }
 
-export function addFfzChannelEmotes(channel, arrayOfEmoteObjects) {
+export function addFfzChannelEmotes (channel, arrayOfEmoteObjects) {
   addChannelEmotes('ffz-channel', channel, arrayOfEmoteObjects)
 }
 
-export function addBttvChannelEmotes(channel, arrayOfEmoteObjects) {
+export function addBttvChannelEmotes (channel, arrayOfEmoteObjects) {
   addChannelEmotes('bttv-channel', channel, arrayOfEmoteObjects)
 }
 
@@ -70,23 +70,23 @@ function removeExampleValues () {
   emotes[0].emotes = []
 }
 
-async function fetchAndPopulateEmotesets(emotesetsString) {
+async function fetchAndPopulateEmotesets (emotesetsString) {
   try {
     const twitchEmotes = []
     const url = `chat/emoticon_images?emotesets=${emotesetsString}`
-    const response = await api(url);
+    const response = await api(url)
     Object.keys(response.emoticon_sets).forEach(setKey => {
       const set = response.emoticon_sets[setKey]
       set.forEach(emoteObject => {
         // Don't include regex based emote codes.
         // Currently all regex emotes have a / in them
-        if (emoteObject.code.includes('/')) return;
+        if (emoteObject.code.includes('/')) return
         twitchEmotes.push({
           emote: emoteObject.code,
           url: `http://static-cdn.jtvnw.net/emoticons/v1/${emoteObject.id}/1.0`
-        });
-      });
-    });
+        })
+      })
+    })
     const category = emotes.find(category => category.type === 'twitch')
     category.emotes = twitchEmotes
   } catch (e) {
