@@ -1,4 +1,5 @@
 import {apiv5, usernameToId} from '../api'
+import settings from '../settings/settings'
 import channels from '../channels'
 
 const state = {
@@ -48,6 +49,7 @@ function makeImg (channel, cheer) {
   action.tiers.forEach(t => { if (amount >= t.min_bits) tier = t })
   // TODO use the correct theme from settings
   const imagePaths = [
+    `images.${settings.theme.dark ? 'dark' : 'light'}.animated.1`,
     'images.light.animated.1',
     'images.dark.animated.1',
     'images.light.static.1',
