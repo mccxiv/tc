@@ -38,7 +38,7 @@ export function getChatterNames (channel) {
   return displayNames
 }
 
-function populateChattersListFromApi(channel, apiResponse) {
+function populateChattersListFromApi (channel, apiResponse) {
   chattersFromApi[channel] = Object.keys(apiResponse.chatters)
     .map(key => apiResponse.chatters[key])
     .reduce((acc, curr) => [...acc, ...curr])
@@ -60,7 +60,7 @@ function createChannelState (channel) {
 }
 
 function bootStrapChatListener () {
-  const rootAppElement = document.querySelector('[ng-app]');
+  const rootAppElement = document.querySelector('[ng-app]')
   const irc = angular.element(rootAppElement).injector().get('irc')
   chatListener = irc.on('chat', onChat)
 }

@@ -1,5 +1,5 @@
 import {apiv5, usernameToId} from '../api'
-import channels from '../channels';
+import channels from '../channels'
 
 const state = {
   global: [],
@@ -20,12 +20,12 @@ const getters = {
   }
 }
 
-fetchBitsConfig();
-channels.on('add', fetchBitsConfig);
-channels.on('remove', cleanup);
-channels.channels.forEach(fetchBitsConfig);
+fetchBitsConfig()
+channels.on('add', fetchBitsConfig)
+channels.on('remove', cleanup)
+channels.channels.forEach(fetchBitsConfig)
 
-async function fetchBitsConfig(channel) {
+async function fetchBitsConfig (channel) {
   if (!state.ids[channel]) state.ids[channel] = await usernameToId(channel)
   const channelArgs = channel ? `?channel_id=${state.ids[channel]}` : ''
   const response = await apiv5(`bits/actions${channelArgs}`)
@@ -45,7 +45,7 @@ function makeImg (channel, cheer) {
   const amount = Number(digit)
   const action = actions.find(a => a.prefix.toLowerCase() === prefix)
   if (!action) return cheer
-  action.tiers.forEach(t => {if (amount >= t.min_bits) tier = t})
+  action.tiers.forEach(t => { if (amount >= t.min_bits) tier = t })
   // TODO use the correct theme from settings
   const imagePaths = [
     'images.light.animated.1',
@@ -58,10 +58,10 @@ function makeImg (channel, cheer) {
   const meta = `data-emote-name="${cheer}" alt="${cheer}"`
   return `<img class="emoticon" ${meta} src="${firstValidUrl}">${digit}`
 
-  function deepGet(obj, path) {
-    const parts = path.split(".")
+  function deepGet (obj, path) {
+    const parts = path.split('.')
     if (parts.length === 1) return obj[parts[0]]
-    return deepGet(obj[parts[0]], parts.slice(1).join("."))
+    return deepGet(obj[parts[0]], parts.slice(1).join('.'))
   }
 }
 
