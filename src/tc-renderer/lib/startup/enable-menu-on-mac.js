@@ -12,7 +12,7 @@ export default () => {
           label: 'Quit',
           accelerator: 'Command+Q',
           click: function () {
-            electron.remote.app.exit(0)
+            electron.remote.app.quit()
           }
         }
       ]
