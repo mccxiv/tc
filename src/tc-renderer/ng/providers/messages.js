@@ -160,6 +160,7 @@ angular.module('tc').factory('messages', (
    */
   function addUserMessage (channel, obj) {
     const {user, message} = obj
+    console.log('u', user)
     const notSelf = user.username !== lowerCaseUsername
 
     if (settings.chat.ignored.indexOf(user.username) > -1) return

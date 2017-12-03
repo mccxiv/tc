@@ -9,6 +9,7 @@ import $ from 'jquery'
 import angular from 'angular'
 import colors from '../../../lib/colors'
 import template from './chat-output.html'
+import {getModBadge} from '../../../lib/emotes/ffz'
 import {sleep} from '../../../lib/util'
 import {badges} from '../../../lib/api'
 import settings from '../../../lib/settings/settings'
@@ -80,15 +81,25 @@ angular.module('tc').directive('chatOutput',
       }
 
       function badgeBg (name, version) {
-        const badge = getBadge(name, version)
-        if (!badge) return undefined
-        return {'background-image': `url(${badge.image_url_1x})`}
+        const url = getBadgeUrl(name, version)
+        if (!url) return undefined
+        return {'background-image': `url(${url})`}
       }
 
       function badgeTitle (name, version) {
         const badge = getBadge(name, version)
         if (!badge) return undefined
         return badge.title
+      }
+      
+      function getBadgeUrl (name, version) {
+        if (name === 'moderator' && version === '1') {
+          const ffzModBadgeUrl = getModBadge(scope.channel)
+          if (ffzModBadgeUrl) return ffzModBadgeUrl
+        }
+        const badge = getBadge(name, version)
+        if (!badge) return undefined
+        return badge.image_url_1x
       }
 
       function getBadge (name, version) {
