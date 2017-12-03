@@ -3,8 +3,9 @@ import {sleep} from '../util'
 import channels from '../channels'
 import {addFfzChannelEmotes, addFfzGlobalEmotes} from './menu'
 
-var globalEmotes = []
-var channelEmotes = {}
+const globalEmotes = []
+const channelEmotes = {}
+const channelModBadges = {}
 
 cacheGlobal()
 channels.on('add', cache)
@@ -38,6 +39,9 @@ async function cache (channel) {
     data.sets[data.room.set].emoticons.forEach((emote) => {
       emotes.push({emote: emote.name, url: 'http:' + emote.urls['1']})
     })
+    if (data.room.moderator_badge) {
+      channelModBadges[channel] = `https://${data.room.moderator_badge}/solid`
+    }
     addFfzChannelEmotes(channel, emotes)
   }
   catch (e) {}
@@ -45,6 +49,11 @@ async function cache (channel) {
 
 function remove (channel) {
   delete channelEmotes[channel]
+  delete channelModBadges[channel]
+}
+
+export function getModBadge (channel) {
+  return channelModBadges[channel]
 }
 
 export default function getFfzEmotes (channel) {
