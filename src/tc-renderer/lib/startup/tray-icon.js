@@ -31,7 +31,7 @@ export default function makeTrayIconOnWindows () {
     },
     {
       label: 'Quit Tc',
-      click: app.exit.bind(app, 0)
+      click: () => app.quit()
     }
   ]))
 

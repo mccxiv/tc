@@ -5,9 +5,10 @@ var BrowserWindow = require('electron').BrowserWindow
 var squirrelStartup = require('./lib/squirrel-startup.js')
 var windowState = require('electron-window-state')
 
-console.log('TC: Starting :D')
+console.log('Tc: Starting :D')
 
-var main
+let main
+let quittingFromRightClick = false
 app.commandLine.appendSwitch('js-flags', '--harmony')
 
 if (squirrelStartup()) app.exit(0)
@@ -18,7 +19,7 @@ app.on('ready', makeWindow)
 ipc.on('open-dev-tools', devTools)
 ipc.on('enable-auto-start', enableAutoStart)
 ipc.on('disable-auto-start', disableAutoStart)
-app.on('before-quit', app.exit.bind(app, 0)) // Skip the 'close' event
+app.on('before-quit', () => quittingFromRightClick = true)
 app.on('activate', unhideAppOnMac)
 
 function makeWindow () {
@@ -47,18 +48,29 @@ function makeWindow () {
   mainWinState.manage(main)
 
   main.on('close', function (e) {
-    console.log('TC: Window tried closing, hiding it instead.')
-    e.preventDefault()
-    switch (process.platform) {
-      case 'win32':
-        main.hide()
-        break
-      case 'darwin':
-        app.hide()
-        break
-      default:
-        app.quit()
-    }
+
+    // As silly as this is, I have not found a better approach to consistently
+    // save the window state. Even during graceful shutdowns by the OS,
+    // Windows will attempt to close all windows instead of quitting the app
+    // process. This results in "hiding it instead" behavior, and then a force
+    // quit after that. This is a workaround to make sure the window state is
+    // always saved
+    mainWinState.saveState(main)
+
+    if (!quittingFromRightClick) {
+      console.log('Tc: User closed the window, hiding it instead.')
+      e.preventDefault()
+      switch (process.platform) {
+        case 'win32':
+          main.hide()
+          break
+        case 'darwin':
+          app.hide()
+          break
+        default:
+          app.quit()
+      }
+    } else console.log('Tc: Window closing via app quit, allowing it.')
   })
 
   main.setMenu(null)
@@ -109,14 +121,14 @@ function toggleAutostart (adding) {
 
     // Check that Update.exe exists, otherwise we're in standalone mode
     fs.stat(updateDotExe, function (err, stats) {
-      if (err || !stats.size) console.warn('TC: Update.exe not found.')
+      if (err || !stats.size) console.warn('Tc: Update.exe not found.')
       else execSync(createShortcut)
     })
   }
-  else console.warn('TC: There is no autostart option for this platform.')
+  else console.warn('Tc: There is no autostart option for this platform.')
 }
 
 function unhideAppOnMac () {
-  console.log('TC: App activated, unhiding the window.')
+  console.log('Tc: App activated, unhiding the window.')
   app.show()
 }
