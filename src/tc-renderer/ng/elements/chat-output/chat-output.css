@@ -100,6 +100,11 @@ chat-output .from-backlog {
   border-left: 3px solid rgba(140, 162, 207, 0.46);
 }
 
+chat-output .golden {
+  padding-left: 12px;
+  border-left: 3px solid #ffd767;
+}
+
 chat-output .auto-scroll-notice {
   position: fixed;
   bottom: 0;

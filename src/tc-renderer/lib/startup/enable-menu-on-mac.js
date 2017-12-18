@@ -1,8 +1,8 @@
-import electron from 'electron';
+import electron from 'electron'
 
 export default () => {
-  if (process.platform !== 'darwin') return;
-  var Menu = electron.remote.Menu;
+  if (process.platform !== 'darwin') return
+  var Menu = electron.remote.Menu
 
   var template = [
     {
@@ -11,8 +11,8 @@ export default () => {
         {
           label: 'Quit',
           accelerator: 'Command+Q',
-          click: function() {
-            electron.remote.app.exit(0);
+          click: function () {
+            electron.remote.app.quit()
           }
         }
       ]
@@ -55,8 +55,8 @@ export default () => {
         }
       ]
     }
-  ];
+  ]
 
-  var menu = Menu.buildFromTemplate(template);
-  Menu.setApplicationMenu(menu);
-};
+  var menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+}

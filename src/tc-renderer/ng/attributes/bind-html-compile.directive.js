@@ -1,4 +1,4 @@
-import angular from 'angular';
+import angular from 'angular'
 
 angular.module('tc').directive('bindHtmlCompile', ($compile) => {
   return {
@@ -7,10 +7,10 @@ angular.module('tc').directive('bindHtmlCompile', ($compile) => {
       scope.$watch(
         () => scope.$eval(attrs.bindHtmlCompile),
         (value) => {
-          element.html(value);
-          $compile(element.contents())(scope);
+          element.html(value)
+          $compile(element.contents())(scope)
         }
-      );
+      )
     }
-  };
-});
+  }
+})

@@ -45,3 +45,7 @@ login .generate-link {
 login .password-notice {
   margin-top: 0;
 }
+
+login .password-warning {
+  color: darkred;
+}
