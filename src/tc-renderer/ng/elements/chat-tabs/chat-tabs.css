@@ -73,3 +73,11 @@ chat-tabs .move-arrow.right {
 chat-tabs md-tab-item:hover .move-arrow {
   opacity: 0.65;
 }
+
+chat-tabs md-tab-item:first-of-type .move-arrow.left {
+  display: none;
+}
+
+chat-tabs md-tab-item:nth-last-of-type(2) .move-arrow.right {
+  display: none;
+}
