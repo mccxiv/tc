@@ -1,18 +1,17 @@
-import channels from '../channels';
-import settings from '../settings/settings';
-import capitalize from '../transforms/capitalize';
+import channels from '../channels'
+import settings from '../settings/settings'
+import capitalize from '../transforms/capitalize'
 
-export default function keepTitleUpdated() {
+export default function keepTitleUpdated () {
+  update()
+  channels.on('change', update)
 
-  update();
-  channels.on('change', update);
-
-  function update() {
-    let prefix;
-    const suffix = ' - Tc';
-    var channel = settings.channels[settings.selectedTabIndex];
-    if (channel) prefix = capitalize(channel);
-    else prefix = 'Join channel';
-    document.title = prefix + suffix;
+  function update () {
+    let prefix
+    const suffix = ' - Tc'
+    var channel = settings.channels[settings.selectedTabIndex]
+    if (channel) prefix = capitalize(channel)
+    else prefix = 'Join channel'
+    document.title = prefix + suffix
   }
 }

@@ -13,6 +13,7 @@
       deleted: m.deleted,
       whisper: m.type === 'whisper',
       notification: m.type === 'notification',
+      golden: m.golden,
       odd: m._isOdd
     }"
     ng-style="::m.type === 'action'? {'color': calculateColor(m.user.color)} : {}"
