@@ -7,13 +7,13 @@
           ng-repeat="channel in settings.channels">
     <md-tab-label>
       <i
-          ng-click="moveLeft($event)"
+          ng-click="moveLeft($event, channel)"
           class="zmdi zmdi-chevron-left move-arrow left"
       ></i>
       {{channel}}
       <span class="counter">{{unread(channel)}}</span>
       <i
-          ng-click="moveLeft($event)"
+          ng-click="moveRight($event, channel)"
           class="zmdi zmdi-chevron-right move-arrow right"
       ></i>
     </md-tab-label>

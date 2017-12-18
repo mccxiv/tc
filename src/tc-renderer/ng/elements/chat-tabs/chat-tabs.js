@@ -21,6 +21,7 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     scope.unread = numberOfUnreadMessages
     scope.showingAddChannel = isAddTabSelected
     scope.moveLeft = moveLeft
+    scope.moveRight = moveRight
 
     if (currChannel()) scope.loaded[currChannel()] = true
 
@@ -30,8 +31,23 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
       setTimeout(() => clickTab(settings.channels.length - 1), 200)
     })
     
-    function moveLeft ($event) {
-      console.log('aaaa')
+    function moveLeft ($event, channel) {
+      moveTab($event, channel, -1)
+    }
+
+    function moveRight ($event, channel) {
+      moveTab($event, channel, 1)
+    }
+    
+    function moveTab ($event, channel, positionChange) {
+      const index = settings.channels.indexOf(channel)
+      const newIndex = index + positionChange
+      arrayMove(settings.channels, index, newIndex)
+      settings.selectedTabIndex = newIndex
+
+      // TODO clearly need to figure out a better way
+      setTimeout(() => settings.selectedTabIndex = newIndex, 2000)
+
       $event.stopPropagation()
       $event.preventDefault()
     }
@@ -102,6 +118,12 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
 
     function currChannel () {
       return settings.channels[settings.selectedTabIndex]
+    }
+
+    function arrayMove(arr, fromIndex, toIndex) {
+      const element = arr[fromIndex];
+      arr.splice(fromIndex, 1);
+      arr.splice(toIndex, 0, element);
     }
   }
 
