@@ -3,6 +3,7 @@ import {EventEmitter} from 'events'
 
 const emitter = new EventEmitter()
 const channels = settings.channels
+let recentlyRemoved = null
 
 emitter.setMaxListeners(0)
 emitter.channels = channels
@@ -25,9 +26,23 @@ function checkChannelsChange () {
   const changes = diff(oldChannels, settings.channels)
   oldChannels = copyAsArray(settings.channels)
   if (!changes.added.length && !changes.removed.length) return
-  emitter.emit('change')
-  changes.added.forEach(added => emitter.emit('add', added))
-  changes.removed.forEach(removed => emitter.emit('remove', removed))
+
+  // Because some operations move channels around, they show up here as
+  // remove + add (at a different index). Let's not emit events for that
+  changes.removed.forEach(removed => {
+    if (!removed) return // Not sure why, some are undefined
+    recentlyRemoved = removed
+    window.requestAnimationFrame(() => {
+      if (!settings.channels.includes(recentlyRemoved)) {
+        emitter.emit('remove', removed)
+      }
+      recentlyRemoved = null
+    })
+  })
+  changes.added.forEach(added => {
+    if (added === recentlyRemoved) return
+    emitter.emit('add', added)
+  })
 }
 
 /**

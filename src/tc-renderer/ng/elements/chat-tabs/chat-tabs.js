@@ -43,11 +43,6 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
       const index = settings.channels.indexOf(channel)
       const newIndex = index + positionChange
       arrayMove(settings.channels, index, newIndex)
-      settings.selectedTabIndex = newIndex
-
-      // TODO clearly need to figure out a better way
-      setTimeout(() => settings.selectedTabIndex = newIndex, 2000)
-
       $event.stopPropagation()
       $event.preventDefault()
     }
