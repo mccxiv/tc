@@ -20,6 +20,7 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     scope.deselected = handleChannelDeselected
     scope.unread = numberOfUnreadMessages
     scope.showingAddChannel = isAddTabSelected
+    scope.moveLeft = moveLeft
 
     if (currChannel()) scope.loaded[currChannel()] = true
 
@@ -28,6 +29,12 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
       setTimeout(() => clickTab(settings.channels.length), 10)
       setTimeout(() => clickTab(settings.channels.length - 1), 200)
     })
+    
+    function moveLeft ($event) {
+      console.log('aaaa')
+      $event.stopPropagation()
+      $event.preventDefault()
+    }
 
     function clickTab (index) {
       element.find('md-tab-item').eq(index).click()
