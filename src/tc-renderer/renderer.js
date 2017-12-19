@@ -8,6 +8,7 @@ import preventPageNavigation from './lib/startup/prevent-page-navigation'
 import makeTrayIconOnWindows from './lib/startup/tray-icon'
 import watchZoomChanges from './lib/startup/app-zoom'
 import keepChannelsOnBacklog from './lib/startup/keep-channels-on-backlog'
+import joinChannelFromCommand from './lib/startup/commandline'
 
 import './lib/startup/angular-stuff'
 
@@ -29,3 +30,4 @@ preventPageNavigation()
 makeTrayIconOnWindows()
 watchZoomChanges()
 keepChannelsOnBacklog()
+joinChannelFromCommand()

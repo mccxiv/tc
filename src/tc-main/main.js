@@ -87,10 +87,16 @@ function isSecondInstance () {
 }
 
 // Called when this is the main instance, and another is launched
-function secondaryInstanceLaunched () {
+function secondaryInstanceLaunched (argv) {
   if (main.isMinimized()) main.restore()
   if (!main.isVisible()) main.show()
   if (!main.isFocused()) main.focus()
+
+    argv.forEach(function (arg) {
+        if (argv.includes('--channel=')) {
+          main.webContents.send('join-channel', arg.slice(10))
+        }
+    })
 }
 
 function enableAutoStart () {
