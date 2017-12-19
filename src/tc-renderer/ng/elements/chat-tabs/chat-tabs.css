@@ -33,8 +33,7 @@ chat-tabs .chat-tabs {
 }
 
 chat-tabs .md-tab {
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
+  padding-top: 7px !important;
 }
 
 chat-tabs md-tab-label {
@@ -48,4 +47,37 @@ chat-tabs .counter {
   font-size: 1.0rem;
   position: absolute;
   opacity: 0.65;
+}
+
+chat-tabs md-tab-item:hover .counter {
+  opacity: 0;
+}
+
+chat-tabs .move-arrow {
+  outline: none;
+  cursor: pointer;
+  top: 12px;
+  font-size: 14px;
+  position: absolute;
+  opacity: 0;
+}
+
+chat-tabs .move-arrow.left {
+  left: 10px
+}
+
+chat-tabs .move-arrow.right {
+  right: 10px
+}
+
+chat-tabs md-tab-item:hover .move-arrow {
+  opacity: 0.65;
+}
+
+chat-tabs md-tab-item:first-of-type .move-arrow.left {
+  display: none;
+}
+
+chat-tabs md-tab-item:nth-last-of-type(2) .move-arrow.right {
+  display: none;
 }
