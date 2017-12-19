@@ -67,6 +67,9 @@ function makeWindow () {
         case 'darwin':
           app.hide()
           break
+        case 'linux':
+          main.hide()
+          break
         default:
           app.quit()
       }
