@@ -56,7 +56,7 @@ const colors = {}
  * @return  Array           The HSL representation
  */
 let rgbToHsl = function (r, g, b) {
-  // Convert RGB to HSL, not ideal but it's faster than HCL or full YIQ conversion
+  // RGB to HSL, not ideal but it's faster than HCL or full YIQ conversion
   // based on http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
   r /= 255
   g /= 255
@@ -95,7 +95,8 @@ let rgbToHsl = function (r, g, b) {
  * @return  Array           The RGB representation
  */
 let hslToRgb = function (h, s, l) {
-  // Convert HSL to RGB, again based on http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+  // Convert HSL to RGB, again based on
+  // http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
   let r, g, b, hueToRgb, q, p
 
   if (s === 0) {
@@ -119,7 +120,7 @@ let hslToRgb = function (h, s, l) {
 }
 
 colors.calculateColorBackground = function (color) {
-  // Converts HEX to YIQ to judge what color background the color would look best on
+  // HEX to YIQ to judge what color background the color would look best on
   color = String(color).replace(/[^0-9a-f]/gi, '')
   if (color.length < 6) {
     color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2]
@@ -133,8 +134,8 @@ colors.calculateColorBackground = function (color) {
 }
 
 colors.calculateColorReplacement = function (color, background) {
-  // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-  // Modified further to use HSL as an intermediate format, to avoid hue-shifting
+  // Modified http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+  // Modified further to use HSL as intermediate format, to avoid hue-shifting
   // toward primaries when darkening and toward secondaries when lightening
   let rgb
   let hsl

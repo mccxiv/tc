@@ -1,3 +1,5 @@
+/* eslint max-len: 0 */
+
 import defaults from './default-settings'
 import angular from 'angular'
 

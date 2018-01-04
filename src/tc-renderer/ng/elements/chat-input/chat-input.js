@@ -57,7 +57,10 @@ angular.module('tc').directive('chatInput',
           messages.addWhisper(settings.identity.username, username, message)
         } else irc.say(channel, session.message)
         if (scope.chatHistory.indexOf(session.message) !== -1) {
-          scope.chatHistory.splice(scope.chatHistory.indexOf(session.message), 1)
+          scope.chatHistory.splice(
+            scope.chatHistory.indexOf(session.message),
+            1
+          )
         }
         scope.chatHistory.unshift(session.message)
         session.message = ''

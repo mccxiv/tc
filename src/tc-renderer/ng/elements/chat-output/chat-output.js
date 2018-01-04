@@ -216,7 +216,7 @@ angular.module('tc').directive('chatOutput',
       function scrollWhenTogglingSidebar () {
         scope.$watch(
           () => settings.appearance.sidebarCollapsed,
-          (a, b) => { if (a !== b) $timeout(scrollIfEnabled, 260) } // Angular sux
+          (a, b) => { if (a !== b) $timeout(scrollIfEnabled, 260) } // :(
         )
       }
 
@@ -268,7 +268,11 @@ angular.module('tc').directive('chatOutput',
 
       async function fetchBadges (attempt) {
         if (attempt) await sleep(2000)
-        try { scope.badges = await badges(scope.channel) } catch (e) { if (attempt < 5) fetchBadges(attempt + 1) }
+        try {
+          scope.badges = await badges(scope.channel)
+        } catch (e) {
+          if (attempt < 5) fetchBadges(attempt + 1)
+        }
         scope.$apply()
       }
 
@@ -279,9 +283,10 @@ angular.module('tc').directive('chatOutput',
           while ((
             (
               colors.calculateColorBackground(color) === 'light' &&
-          settings.theme.dark
+              settings.theme.dark
             ) || (
-              colors.calculateColorBackground(color) === 'dark' && !settings.theme.dark
+              colors.calculateColorBackground(color) === 'dark' &&
+              !settings.theme.dark
             ))) {
             lightness = colors.calculateColorBackground(color)
             color = colors.calculateColorReplacement(color, lightness)

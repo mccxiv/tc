@@ -13,15 +13,22 @@ import {EventEmitter} from 'events'
  * @name irc
  * @type {object}
  *
- * @fires irc#tmi-events                  - Rebroadcasts events from tmi.js
+ * @fires irc#tmi-events
+ *   - Rebroadcasts events from tmi.js
  *
- * @property {boolean} ready              - True if connected to the server
- * @property {boolean} badLogin           - True if currently disconnected because of credentials
+ * @property {boolean} ready
+ *   - True if connected to the server
+ * @property {boolean} badLogin
+ *   - True if currently disconnected because of credentials
  *
- * @property {function} say               - Send a message to the server
- * @property {function} whisper           - Send a whisper to the server
- * @property {function} isMod             - Check if a user is a mode in a channel
- * @property {function} credentialsValid  - Returns true if the credentials appear valid. Not verified server side
+ * @property {function} say
+ *   - Send a message to the server
+ * @property {function} whisper
+ *   - Send a whisper to the server
+ * @property {function} isMod
+ *   - Check if a user is a mode in a channel
+ * @property {function} credentialsValid
+ *   - Returns true if the credentials appear valid. Not verified server side
  */
 angular.module('tc').factory('irc', $rootScope => {
   // ===============================================================
@@ -130,7 +137,7 @@ angular.module('tc').factory('irc', $rootScope => {
 
   /**
    * Re emits events from `emitter` on `reEmitter`
-   * @param {Object}   emitter   - Emits events to rebroadcast. Has .addListener()
+   * @param {Object}   emitter   - Emits as rebroadcast. Has .addListener()
    * @param {Object}   reEmitter - The object that will rebroadcast. Has .emit()
    * @param {String[]} events    - The events to listen for on `emitter`
    */

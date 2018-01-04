@@ -2,6 +2,7 @@
 // https://github.com/night/BetterTTV/
 import unescape from './unescape'
 
+// eslint-disable-next-line
 const regex = /(?:https?:\/\/)?(?:[-a-zA-Z0-9@:%_+~#=]+\.)+[a-z]{2,6}\b(?:[-a-zA-Z0-9@:%_+.~#?&;//=()]*)/gi
 
 export default function addLinks (message) {

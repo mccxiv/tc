@@ -46,7 +46,8 @@ angular.module('tc').directive('sideToolbar',
       scope.restart = () => autoUpdater.quitAndInstall()
 
       scope.toggleCollapsed = () => {
-        settings.appearance.sidebarCollapsed = !settings.appearance.sidebarCollapsed
+        const flipped = !settings.appearance.sidebarCollapsed
+        settings.appearance.sidebarCollapsed = flipped
       }
 
       scope.showingThumbnailButton = () => {

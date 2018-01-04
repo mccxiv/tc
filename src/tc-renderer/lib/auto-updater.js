@@ -12,7 +12,11 @@ if (os !== 'win32' && os !== 'darwin') {
   const version = electron.remote.app.getVersion()
   const url = `http://dl.gettc.xyz/update/${os}/${version}`
 
-  try { autoUpdater.setFeedURL(url) } catch (e) { console.warn('autoUpdater error:', e) }
+  try {
+    autoUpdater.setFeedURL(url)
+  } catch (e) {
+    console.warn('autoUpdater error:', e)
+  }
 
   const checkWithParams = () => check(autoUpdater, url)
 
@@ -23,7 +27,11 @@ if (os !== 'win32' && os !== 'darwin') {
 function check (autoUpdater, url) {
   console.log('Checking for updates at ' + url)
   autoUpdater.on('error', handleAutomaticCheckError)
-  try { autoUpdater.checkForUpdates() } catch (e) { console.warn('Auto-Update synchronous exception:', e) }
+  try {
+    autoUpdater.checkForUpdates()
+  } catch (e) {
+    console.warn('Auto-Update synchronous exception:', e)
+  }
 
   function handleAutomaticCheckError (error) {
     console.warn('Unable to check for updates. ' +
