@@ -4,7 +4,7 @@ import settings from '../../lib/settings/settings'
 import notificationIcon from '../../../assets/icon256.png'
 
 angular.module('tc').factory('notifications', (irc, highlights) => {
-  var sound = new window.Audio(notificationSound)
+  const sound = new window.Audio(notificationSound)
 
   irc.on('disconnected', () => {
     if (settings.notifications.onConnect) {

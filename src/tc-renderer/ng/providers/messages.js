@@ -12,12 +12,12 @@ angular.module('tc').factory('messages', (
   // =====================================================
   // Variables
   // =====================================================
-  var ffzDonors = []
-  var messageLimit = 125
-  var messages = {}
-  var lowerCaseUsername = settings.identity.username.toLowerCase()
-  var throttledApplySlow = _.throttle(applyLate, 3000)
-  var throttledApplyFast = _.throttle(applyLate, 100)
+  const ffzDonors = []
+  const messageLimit = 125
+  const messages = {}
+  const lowerCaseUsername = settings.identity.username.toLowerCase()
+  const throttledApplySlow = _.throttle(applyLate, 3000)
+  const throttledApplyFast = _.throttle(applyLate, 100)
 
   // =====================================================
   // Setup
@@ -122,8 +122,7 @@ angular.module('tc').factory('messages', (
       sortMessages(channel)
       if (session.autoScroll) trimMessages(channel)
       return true
-    }
-    catch (e) { return false }
+    } catch (e) { return false }
   }
 
   async function getMissingMessages (channel) {
@@ -205,8 +204,7 @@ angular.module('tc').factory('messages', (
     // the message is for the currently selected channel
     if (channel === settings.channels[settings.selectedTabIndex]) {
       throttledApplyFast()
-    }
-    else if (messageObject.user) {
+    } else if (messageObject.user) {
       throttledApplySlow()
     }
   }

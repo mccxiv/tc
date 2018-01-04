@@ -1,5 +1,6 @@
 import path from 'path'
 import {EventEmitter} from 'events'
+import angular from 'angular'
 import electron from 'electron'
 import jsonFile from 'jsonfile'
 import validateSettings from './validate-settings'
@@ -14,16 +15,18 @@ const settings = Object.deepObserve(rawSettingsObject, (...args) => {
 
 function loadSettings () {
   let s
-  try { s = jsonFile.readFileSync(settingsFilePath()) }
-  catch (e) { s = loadSettingsFromLocalstorageInstead() }
+  try {
+    s = jsonFile.readFileSync(settingsFilePath())
+  } catch (e) {
+    s = loadSettingsFromLocalstorageInstead()
+  }
   return s
 }
 
 function loadSettingsFromLocalstorageInstead () {
   let s = window.localStorage.settings || {}
   if (typeof s === 'string') {
-    try { s = JSON.parse(s) }
-    catch (e) { s = {} }
+    try { s = JSON.parse(s) } catch (e) { s = {} }
   }
   return s
 }

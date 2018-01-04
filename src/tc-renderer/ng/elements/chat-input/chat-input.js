@@ -55,9 +55,7 @@ angular.module('tc').directive('chatInput',
           const message = words.slice(2).join(' ')
           irc.whisper(username, message)
           messages.addWhisper(settings.identity.username, username, message)
-        }
-
-        else irc.say(channel, session.message)
+        } else irc.say(channel, session.message)
         if (scope.chatHistory.indexOf(session.message) !== -1) {
           scope.chatHistory.splice(scope.chatHistory.indexOf(session.message), 1)
         }
@@ -97,9 +95,7 @@ angular.module('tc').directive('chatInput',
         if (msg === '/r ') {
           if (lastWhisperer) session.message = `/w ${lastWhisperer} `
           else session.message = '/w '
-        }
-
-        else if (msg.startsWith('/') || msg.endsWith(':')) {
+        } else if (msg.startsWith('/') || msg.endsWith(':')) {
           session.message = replacePhrases(msg)
         }
       }

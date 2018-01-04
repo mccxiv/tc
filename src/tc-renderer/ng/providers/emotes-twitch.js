@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import angular from 'angular'
 import {api} from '../../lib/api'
 import {addTwitchEmotesets} from '../../lib/emotes/menu'
 
@@ -15,7 +16,7 @@ import {addTwitchEmotesets} from '../../lib/emotes/menu'
  * @return {{emote: string}[]} May be empty if it hasn't been cached yet
  */
 angular.module('tc').factory('emotesTwitch', function (irc) {
-  var emotes = []
+  const emotes = []
 
   irc.once('emotesets', function (sets) {
     addTwitchEmotesets(sets)
@@ -25,8 +26,7 @@ angular.module('tc').factory('emotesTwitch', function (irc) {
       try {
         const images = await api('chat/emoticon_images?emotesets=' + sets)
         onSuccess(images)
-      }
-      catch (e) {
+      } catch (e) {
         onFail()
       }
 
@@ -40,8 +40,7 @@ angular.module('tc').factory('emotesTwitch', function (irc) {
               emotes.push({emote: emoteObject.code, id: emoteObject.id})
             })
           })
-        }
-        catch (e) {
+        } catch (e) {
           console.error(e)
           onFail()
         }

@@ -30,7 +30,7 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
       setTimeout(() => clickTab(settings.channels.length), 10)
       setTimeout(() => clickTab(settings.channels.length - 1), 200)
     })
-    
+
     function moveLeft ($event, channel) {
       moveTab($event, channel, -1)
     }
@@ -38,7 +38,7 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     function moveRight ($event, channel) {
       moveTab($event, channel, 1)
     }
-    
+
     function moveTab ($event, channel, positionChange) {
       const index = settings.channels.indexOf(channel)
       const newIndex = index + positionChange
@@ -58,7 +58,7 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
      */
     function numberOfUnreadMessages (channel) {
       if (currChannel() === channel) return ''
-      var unread = messages(channel).counter - (scope.readUntil[channel] || 0)
+      let unread = messages(channel).counter - (scope.readUntil[channel] || 0)
       if (!unread) return ''
       if (unread > 100) return '*'
       else return unread
@@ -115,10 +115,10 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
       return settings.channels[settings.selectedTabIndex]
     }
 
-    function arrayMove(arr, fromIndex, toIndex) {
-      const element = arr[fromIndex];
-      arr.splice(fromIndex, 1);
-      arr.splice(toIndex, 0, element);
+    function arrayMove (arr, fromIndex, toIndex) {
+      const element = arr[fromIndex]
+      arr.splice(fromIndex, 1)
+      arr.splice(toIndex, 0, element)
     }
   }
 

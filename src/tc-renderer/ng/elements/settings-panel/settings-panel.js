@@ -113,9 +113,9 @@ angular.module('tc').directive('settingsPanel', (
     scope.ignore = {
       input: '',
       add () {
-        var username = this.input.trim().toLowerCase()
-        var isNotIgnored = settings.chat.ignored.indexOf(username) < 0
-        var isNotBlank = this.input.length
+        let username = this.input.trim().toLowerCase()
+        let isNotIgnored = settings.chat.ignored.indexOf(username) < 0
+        let isNotBlank = this.input.length
         if (isNotBlank && isNotIgnored) settings.chat.ignored.push(username)
         this.input = ''
       },

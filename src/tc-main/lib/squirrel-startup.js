@@ -1,15 +1,15 @@
 module.exports = function () {
   if (process.platform !== 'win32') return false
 
-  var squirrelCommand = process.argv[1]
+  let squirrelCommand = process.argv[1]
 
   if (squirrelCommand) {
-    var createShortcut
-    var app = require('electron').app
-    var path = require('path')
-    var execSync = require('child_process').execSync
-    var target = path.basename(process.execPath)
-    var updateDotExe = path.resolve(
+    let createShortcut
+    let app = require('electron').app
+    let path = require('path')
+    let execSync = require('child_process').execSync
+    let target = path.basename(process.execPath)
+    let updateDotExe = path.resolve(
       path.dirname(process.execPath),
       '..',
       'update.exe'

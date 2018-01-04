@@ -10,11 +10,11 @@ angular.module('tc').factory('highlights', function () {
      */
     test: function (line) {
       if (settings.highlightMe) {
-        var me = new RegExp(settings.identity.username, 'i')
+        const me = new RegExp(settings.identity.username, 'i')
         if (me.test(line)) return true
       }
       return settings.highlights.some(function (highlight) {
-        var regex = new RegExp(`\\b${highlight}\\b`, 'i')
+        const regex = new RegExp(`\\b${highlight}\\b`, 'i')
         return regex.test(line)
       })
     },
@@ -47,8 +47,7 @@ angular.module('tc').factory('highlights', function () {
     set: function (highlights) {
       if (Array.isArray(highlights)) {
         settings.highlights = highlights
-      }
-      else console.warn('HIGHLIGHTS: Invalid highlights provided')
+      } else console.warn('HIGHLIGHTS: Invalid highlights provided')
     }
   }
 })

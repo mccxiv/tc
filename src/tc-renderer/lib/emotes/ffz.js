@@ -24,8 +24,7 @@ async function cacheGlobal (delay) {
       })
     })
     addFfzGlobalEmotes(globalEmotes)
-  }
-  catch (e) {
+  } catch (e) {
     cacheGlobal((delay || 1000) * 2)
   }
 }
@@ -43,8 +42,7 @@ async function cache (channel) {
       channelModBadges[channel] = `https://${data.room.moderator_badge}/solid`
     }
     addFfzChannelEmotes(channel, emotes)
-  }
-  catch (e) {}
+  } catch (e) {}
 }
 
 function remove (channel) {

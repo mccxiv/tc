@@ -1,9 +1,9 @@
-var path = require('path')
-var app = require('electron').app
-var ipc = require('electron').ipcMain
-var BrowserWindow = require('electron').BrowserWindow
-var squirrelStartup = require('./lib/squirrel-startup.js')
-var windowState = require('electron-window-state')
+let path = require('path')
+let app = require('electron').app
+let ipc = require('electron').ipcMain
+let BrowserWindow = require('electron').BrowserWindow
+let squirrelStartup = require('./lib/squirrel-startup.js')
+let windowState = require('electron-window-state')
 
 console.log('Tc: Starting :D')
 
@@ -23,7 +23,7 @@ app.on('before-quit', () => quittingFromRightClick = true)
 app.on('activate', unhideAppOnMac)
 
 function makeWindow () {
-  var mainWinState = windowState({
+  let mainWinState = windowState({
     defaultWidth: 800,
     defaultHeight: 450
   })
@@ -48,7 +48,6 @@ function makeWindow () {
   mainWinState.manage(main)
 
   main.on('close', function (e) {
-
     // As silly as this is, I have not found a better approach to consistently
     // save the window state. Even during graceful shutdowns by the OS,
     // Windows will attempt to close all windows instead of quitting the app
@@ -103,19 +102,19 @@ function disableAutoStart () {
 
 function toggleAutostart (adding) {
   if (process.platform === 'win32') {
-    var command = adding ? 'createShortcut' : 'removeShortcut'
+    let command = adding ? 'createShortcut' : 'removeShortcut'
 
-    var fs = require('fs')
-    var path = require('path')
-    var execSync = require('child_process').execSync
-    var target = path.basename(process.execPath)
-    var updateDotExe = path.resolve(
+    let fs = require('fs')
+    let path = require('path')
+    let execSync = require('child_process').execSync
+    let target = path.basename(process.execPath)
+    let updateDotExe = path.resolve(
       path.dirname(process.execPath),
       '..',
       'update.exe'
     )
 
-    var createShortcut = '"' + updateDotExe + '"' +
+    let createShortcut = '"' + updateDotExe + '"' +
       ' --' + command + '="' + target + '"' +
       ' --shortcut-locations=Startup'
 
@@ -124,8 +123,7 @@ function toggleAutostart (adding) {
       if (err || !stats.size) console.warn('Tc: Update.exe not found.')
       else execSync(createShortcut)
     })
-  }
-  else console.warn('Tc: There is no autostart option for this platform.')
+  } else console.warn('Tc: There is no autostart option for this platform.')
 }
 
 function unhideAppOnMac () {

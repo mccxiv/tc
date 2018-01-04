@@ -2,9 +2,9 @@ import electron from 'electron'
 
 export default () => {
   if (process.platform !== 'darwin') return
-  var Menu = electron.remote.Menu
+  let Menu = electron.remote.Menu
 
-  var template = [
+  let template = [
     {
       label: 'Tc',
       submenu: [
@@ -57,6 +57,6 @@ export default () => {
     }
   ]
 
-  var menu = Menu.buildFromTemplate(template)
+  let menu = Menu.buildFromTemplate(template)
   Menu.setApplicationMenu(menu)
 }
