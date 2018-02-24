@@ -24,7 +24,7 @@ angular.module('tc').directive('sideToolbar',
       scope.channel = () => settings.channels[settings.selectedTabIndex]
 
       scope.confirmLogout = (event) => {
-        var confirm = $mdDialog.confirm()
+        let confirm = $mdDialog.confirm()
           .parent(angular.element(document.body))
           .content('Are you sure you want to log out? ' +
           'You will need to re-enter your password.')
@@ -46,7 +46,8 @@ angular.module('tc').directive('sideToolbar',
       scope.restart = () => autoUpdater.quitAndInstall()
 
       scope.toggleCollapsed = () => {
-        settings.appearance.sidebarCollapsed = !settings.appearance.sidebarCollapsed
+        const flipped = !settings.appearance.sidebarCollapsed
+        settings.appearance.sidebarCollapsed = flipped
       }
 
       scope.showingThumbnailButton = () => {

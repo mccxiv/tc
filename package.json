@@ -38,6 +38,17 @@
       "iconUrl": "https://github.com/mccxiv/tc/blob/master/build/icon.ico?raw=true"
     }
   },
+  "eslintConfig": {
+    "extends": "standard",
+    "rules": {
+      "no-return-assign": "off",
+      "no-var": "error",
+      "max-len": "error"
+    }
+  },
+  "eslintIgnore": [
+    "src/node_modules"
+  ],
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^6.4.1",

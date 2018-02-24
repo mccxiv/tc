@@ -1,3 +1,4 @@
+import angular from 'angular'
 import {chatters} from './api'
 
 const displayNames = { /* username1: 'UserName1' */ }

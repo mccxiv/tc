@@ -55,18 +55,18 @@ const colors = {}
  * @param   Number  b       The blue color value
  * @return  Array           The HSL representation
  */
-var rgbToHsl = function (r, g, b) {
-  // Convert RGB to HSL, not ideal but it's faster than HCL or full YIQ conversion
+let rgbToHsl = function (r, g, b) {
+  // RGB to HSL, not ideal but it's faster than HCL or full YIQ conversion
   // based on http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
   r /= 255
   g /= 255
   b /= 255
-  var max = Math.max(r, g, b)
-  var min = Math.min(r, g, b)
-  var h
-  var s
-  var l = Math.min(Math.max(0, (max + min) / 2), 1)
-  var d = Math.min(Math.max(0, max - min), 1)
+  let max = Math.max(r, g, b)
+  let min = Math.min(r, g, b)
+  let h
+  let s
+  let l = Math.min(Math.max(0, (max + min) / 2), 1)
+  let d = Math.min(Math.max(0, max - min), 1)
 
   if (d === 0) {
     h = s = d // achromatic
@@ -94,9 +94,10 @@ var rgbToHsl = function (r, g, b) {
  * @param   Number  l       The lightness
  * @return  Array           The RGB representation
  */
-var hslToRgb = function (h, s, l) {
-  // Convert HSL to RGB, again based on http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
-  var r, g, b, hueToRgb, q, p
+let hslToRgb = function (h, s, l) {
+  // Convert HSL to RGB, again based on
+  // http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
+  let r, g, b, hueToRgb, q, p
 
   if (s === 0) {
     r = g = b = Math.round(Math.min(Math.max(0, 255 * l), 255)) // achromatic
@@ -119,31 +120,31 @@ var hslToRgb = function (h, s, l) {
 }
 
 colors.calculateColorBackground = function (color) {
-  // Converts HEX to YIQ to judge what color background the color would look best on
+  // HEX to YIQ to judge what color background the color would look best on
   color = String(color).replace(/[^0-9a-f]/gi, '')
   if (color.length < 6) {
     color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2]
   }
 
-  var r = parseInt(color.substr(0, 2), 16)
-  var g = parseInt(color.substr(2, 2), 16)
-  var b = parseInt(color.substr(4, 2), 16)
-  var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000
+  let r = parseInt(color.substr(0, 2), 16)
+  let g = parseInt(color.substr(2, 2), 16)
+  let b = parseInt(color.substr(4, 2), 16)
+  let yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000
   return (yiq >= 128) ? 'dark' : 'light'
 }
 
 colors.calculateColorReplacement = function (color, background) {
-  // Modified from http://www.sitepoint.com/javascript-generate-lighter-darker-color/
-  // Modified further to use HSL as an intermediate format, to avoid hue-shifting
+  // Modified http://www.sitepoint.com/javascript-generate-lighter-darker-color/
+  // Modified further to use HSL as intermediate format, to avoid hue-shifting
   // toward primaries when darkening and toward secondaries when lightening
-  var rgb
-  var hsl
-  var light = (background === 'light')
-  var factor = (light ? 0.1 : -0.1)
-  var r
-  var g
-  var b
-  var l
+  let rgb
+  let hsl
+  let light = (background === 'light')
+  let factor = (light ? 0.1 : -0.1)
+  let r
+  let g
+  let b
+  let l
 
   color = String(color).replace(/[^0-9a-f]/gi, '')
   if (color.length < 6) {

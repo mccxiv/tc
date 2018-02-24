@@ -1,4 +1,3 @@
-
 import 'nprogress/nprogress.css'
 import './chat-output.css'
 import './bttv-seasonal-emotes.css'
@@ -72,8 +71,7 @@ angular.module('tc').directive('chatOutput',
         if (!m.user) {
           this.lastUsername = null
           this.odd = !this.odd
-        }
-        else {
+        } else {
           if (this.lastUsername !== m.user.username) this.odd = !this.odd
           this.lastUsername = m.user.username
         }
@@ -91,7 +89,7 @@ angular.module('tc').directive('chatOutput',
         if (!badge) return undefined
         return badge.title
       }
-      
+
       function getBadgeUrl (name, version) {
         if (name === 'moderator' && version === '1') {
           const ffzModBadgeUrl = getModBadge(scope.channel)
@@ -218,7 +216,7 @@ angular.module('tc').directive('chatOutput',
       function scrollWhenTogglingSidebar () {
         scope.$watch(
           () => settings.appearance.sidebarCollapsed,
-          (a, b) => { if (a !== b) $timeout(scrollIfEnabled, 260) } // Angular sux
+          (a, b) => { if (a !== b) $timeout(scrollIfEnabled, 260) } // :(
         )
       }
 
@@ -237,8 +235,7 @@ angular.module('tc').directive('chatOutput',
             const current = msgs[i]
             if (i === 0) {
               current._isOdd = !current.fromBacklog
-            }
-            else {
+            } else {
               const previous = msgs[i - 1]
               current._isOdd = !previous._isOdd
               if (current.user && previous.user) {
@@ -271,8 +268,11 @@ angular.module('tc').directive('chatOutput',
 
       async function fetchBadges (attempt) {
         if (attempt) await sleep(2000)
-        try { scope.badges = await badges(scope.channel) }
-        catch (e) { if (attempt < 5) fetchBadges(attempt + 1) }
+        try {
+          scope.badges = await badges(scope.channel)
+        } catch (e) {
+          if (attempt < 5) fetchBadges(attempt + 1)
+        }
         scope.$apply()
       }
 
@@ -283,9 +283,10 @@ angular.module('tc').directive('chatOutput',
           while ((
             (
               colors.calculateColorBackground(color) === 'light' &&
-          settings.theme.dark
+              settings.theme.dark
             ) || (
-              colors.calculateColorBackground(color) === 'dark' && !settings.theme.dark
+              colors.calculateColorBackground(color) === 'dark' &&
+              !settings.theme.dark
             ))) {
             lightness = colors.calculateColorBackground(color)
             color = colors.calculateColorReplacement(color, lightness)

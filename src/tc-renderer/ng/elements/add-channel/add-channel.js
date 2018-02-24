@@ -8,7 +8,7 @@ angular.module('tc').directive('addChannel', () => {
     scope.value = ''
     scope.keypress = (event) => {
       if (event.which === 13) {
-        var channel = scope.value.trim()
+        let channel = scope.value.trim()
         channel = channel.toLowerCase()
         if (channel.length && settings.channels.indexOf(channel) < 0) {
           settings.channels.push(channel)

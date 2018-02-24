@@ -9,7 +9,7 @@ export default function keepTitleUpdated () {
   function update () {
     let prefix
     const suffix = ' - Tc'
-    var channel = settings.channels[settings.selectedTabIndex]
+    let channel = settings.channels[settings.selectedTabIndex]
     if (channel) prefix = capitalize(channel)
     else prefix = 'Join channel'
     document.title = prefix + suffix
