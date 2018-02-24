@@ -4,15 +4,15 @@ var gulp = require('gulp');
 
 shell.config.throw = true; // Throw on error
 
-gulp.task('postinstall', function() {
-  shell.exec('cd src && npm install');
-});
-
-gulp.task('launch', function() {
+gulp.task('dev-watch-files', function () {
   shell.rm('-rf', '_build');
-  shell.exec(path.normalize('./node_modules/.bin/webpack'));
+  shell.mkdir('_build');
   shell.cp('src/tc-renderer/index.html', '_build/index.html');
   shell.cp('src/package.json', '_build/package.json');
+  shell.exec(path.normalize('./node_modules/.bin/webpack --watch'));
+})
+
+gulp.task('dev-launch-electron', function() {
   shell.exec(path.normalize('./node_modules/.bin/electron --enable-logging ./_build --dev-tools'));
 });
 

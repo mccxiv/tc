@@ -5,7 +5,9 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp launch",
-    "postinstall": "gulp postinstall",
+    "postinstall": "cd src && npm install",
+    "dev-watch-files": "gulp dev-watch-files",
+    "dev-launch-electron": "gulp dev-launch-electron",
     "build": "gulp build",
     "lint": "eslint src --fix",
     "don't touch pack & dist, just run build instead": "",
