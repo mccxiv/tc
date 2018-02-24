@@ -11,10 +11,18 @@ const base = {
     filename: '[name]'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
-        loader: 'babel',
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015', 'stage-0'],
+              plugins: ['transform-runtime']
+            }
+          }
+        ],
         include: [
           path.resolve(__dirname, 'src', 'tc-main'),
           path.resolve(__dirname, 'src', 'tc-renderer'),
@@ -23,24 +31,44 @@ const base = {
       },
       {
         test: /frosty\.min\.js$/,
-        loader: 'imports?jQuery=jquery'
+        use: [
+          {
+            loader: 'imports-loader',
+            options: {jQuery: 'jquery'}
+          }
+        ]
       },
-      {test: /\.css$/, loader: 'style!css'},
-      {test: /\.(ttf|woff|woff2)/, loader: 'url'}, // Missing $ is intentional
-      {test: /\.(png|ogg)$/, loader: 'url'},
-      {test: /\.json$/, loader: 'json'},
-      {test: /\.node$/, loader: 'node'},
-      {test: /\.html$/, loader: 'html'}
-    ]
-  },
-  babel: {
-    presets: ['es2015', 'stage-0'],
-    plugins: ['transform-runtime']
-  },
-  externals: {'spellchecker': { // None of these work...
-    commonjs: 'spellchecker',
-    commonjs2: 'spellchecker'
-  }}
+      {
+        test: /\.css$/,
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'}
+        ]
+      }, // Missing $ is intentional
+      {
+        test: /\.(ttf|woff|woff2)/,
+        use: [
+          {loader: 'url-loader'}
+        ]
+      },
+      {
+        test: /\.(png|ogg)$/,
+        use: [
+          {loader: 'url-loader'}]
+      },
+      {
+        test: /\.node$/,
+        use: [
+          {loader: 'node-loader'}
+        ]
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {loader: 'html-loader'}
+        ]
+      }]
+  }
 }
 
 const main = Object.assign({}, base, {
