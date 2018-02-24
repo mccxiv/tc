@@ -57,7 +57,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
     "css-loader": "^0.23.1",
-    "electron": "^1.7.9",
+    "electron": "^1.8.2",
     "electron-builder": "^19.46.6",
     "electron-builder-squirrel-windows": "^19.46.5",
     "eslint": "^4.11.0",
