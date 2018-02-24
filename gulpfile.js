@@ -18,7 +18,7 @@ gulp.task('dev-launch-electron', function () {
   ))
 })
 
-gulp.task('build', function() {
+gulp.task('build', function () {
   shell.rm('-rf', '_dist')
   shell.mkdir('-p', '_dist')
   shell.rm('-rf', '_build')
