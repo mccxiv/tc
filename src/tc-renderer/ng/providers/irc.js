@@ -128,10 +128,31 @@ angular.module('tc').factory('irc', $rootScope => {
   }
 
   function destroy () {
-    if (client) {
-      client.removeAllListeners()
-      client.disconnect()
-      client = null
+    // Why so much ceremony around .disconnect()? Because tmi.js won't
+    // disconnect if the connection is in a certain state at the time.
+
+    if (!client) return
+    const clientToDestroy = client
+    clientToDestroy.reconnect = false
+    client = null
+    let disconnectAttempts = 0
+
+    attemptToDisconnect()
+
+    async function attemptToDisconnect () {
+      console.log('Attempting to destroy a client', clientToDestroy)
+      try {
+        await clientToDestroy.disconnect()
+        clientToDestroy.removeAllListeners()
+      } catch (e) {
+        disconnectAttempts++
+        if (disconnectAttempts < 10) setTimeout(attemptToDisconnect, 3000)
+        else {
+          console.warn('Unable to properly disconnect a client, giving up')
+          console.warn('This might leak memory')
+          clientToDestroy.removeAllListeners()
+        }
+      }
     }
   }
 
