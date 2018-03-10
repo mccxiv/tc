@@ -10,6 +10,7 @@ const base = {
     path: path.join(__dirname, '_build'),
     filename: '[name]'
   },
+  stats: 'minimal',
   module: {
     rules: [
       {
@@ -67,7 +68,9 @@ const base = {
         use: [
           {loader: 'html-loader'}
         ]
-      }]
+      }
+    ],
+    noParse: /ws/
   }
 }
 

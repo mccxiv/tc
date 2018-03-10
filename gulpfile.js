@@ -9,7 +9,9 @@ gulp.task('dev-watch-files', function () {
   shell.mkdir('_build')
   shell.cp('src/tc-renderer/index.html', '_build/index.html')
   shell.cp('src/package.json', '_build/package.json')
-  shell.exec(path.normalize('./node_modules/.bin/webpack --watch'))
+  shell.exec(path.normalize(
+    './node_modules/.bin/webpack --mode development --watch'
+  ))
 })
 
 gulp.task('dev-launch-electron', function () {
@@ -22,7 +24,7 @@ gulp.task('build', function () {
   shell.rm('-rf', '_dist')
   shell.mkdir('-p', '_dist')
   shell.rm('-rf', '_build')
-  shell.exec(path.normalize('./node_modules/.bin/webpack'))
+  shell.exec(path.normalize('./node_modules/.bin/webpack --mode production'))
   shell.cp('src/tc-renderer/index.html', '_build/index.html')
   shell.cp('src/package.json', '_build/package.json')
   console.log('Trying to build for Linux, it will fail on Windows')
