@@ -23,7 +23,7 @@
     "lodash.escaperegexp": "4.1.1",
     "lodash.throttle": "4.0.1",
     "material-design-iconic-font": "2.1.2",
-    "moment": "2.13.0",
+    "moment": "^2.21.0",
     "nprogress": "0.2.0",
     "proxy-observe": "github:mccxiv/proxy-observe",
     "roboto-fontface": "0.4.5",
