@@ -136,17 +136,19 @@ angular.module('tc').factory('irc', $rootScope => {
     clientToDestroy.reconnect = false
     client = null
     let disconnectAttempts = 0
+    clientToDestroy.disconnect()
 
-    attemptToDisconnect()
+    makeSureItsDead()
 
-    async function attemptToDisconnect () {
+    async function makeSureItsDead () {
       console.log('Attempting to destroy a client', clientToDestroy)
       try {
+        if (!clientToDestroy.ws) return // Looks like it's dead
         await clientToDestroy.disconnect()
         clientToDestroy.removeAllListeners()
       } catch (e) {
         disconnectAttempts++
-        if (disconnectAttempts < 10) setTimeout(attemptToDisconnect, 3000)
+        if (disconnectAttempts < 10) setTimeout(makeSureItsDead, 3000)
         else {
           console.warn('Unable to properly disconnect a client, giving up')
           console.warn('This might leak memory')
