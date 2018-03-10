@@ -14,14 +14,14 @@ export default function watchZoomChanges () {
   })
 
   $(document).on('keyup', (e) => {
-    if (e.ctrlKey) {
+    if (e.ctrlKey && !e.altKey) { // Check to avoid Alt Gr
       if (e.which === 107 || e.which === 187) zoomIn()
       if (e.which === 109 || e.which === 189) zoomOut()
     }
   })
 
   $(document).on('wheel', (e) => {
-    if (e.ctrlKey) {
+    if (e.ctrlKey && !e.altKey) { // Check to avoid Alt Gr
       if (e.originalEvent.deltaY > 0) zoomOut()
       else zoomIn()
     }
