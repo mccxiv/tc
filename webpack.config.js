@@ -69,9 +69,9 @@ const base = {
           {loader: 'html-loader'}
         ]
       }
-    ],
-    noParse: /ws/
-  }
+    ]
+  },
+  externals: /bufferutil|utf-8-validate/ // Ignore missing optional modules
 }
 
 const main = Object.assign({}, base, {
