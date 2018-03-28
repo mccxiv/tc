@@ -154,7 +154,7 @@ angular.module('tc').factory('messages', (
    * Add a user message.
    * @property {string}  obj.type - 'action' or 'chat' or 'cheer'
    * @property {string}  obj.channel
-   * @property {object}  obj.user - As provided by tmi.js
+   * @property {object}  obj.user - As provided by Twitch
    * @property {string}  obj.message
    * @property {boolean} obj.fromBacklog
    * @property {number}  obj.at - Timestamp
@@ -347,10 +347,7 @@ angular.module('tc').factory('messages', (
         addNotification(channel, message ? msg : noMsg, true)
       },
 
-      // Twitch's NOTICE
-      // We're using a forked tmi.js because tmi.js's notice event is a based
-      // on a whitelist. So it is not future-proof
-      notification: (channel = '', msgId, message) => {
+      notice: (channel = '', msgId, message) => {
         channel = channel.substr(1)
         if (!channel || channel === '*') addGlobalNotification(message)
         else addNotification(channel, message)
