@@ -1,5 +1,6 @@
 import r from 'axios'
 import {sleep, mergeDeep} from './util'
+import {CLIENT_ID} from './constants'
 
 const kraken = 'https://api.twitch.tv/kraken/'
 
@@ -42,7 +43,7 @@ export async function chatters (channel) {
 }
 
 export async function api (endpoint) {
-  const options = {headers: {'Client-ID': '1pr5dzvymq1unqa2xiavdkvslsn4ebe'}}
+  const options = {headers: {'Client-ID': CLIENT_ID}}
   return (await r(kraken + endpoint, options)).data
 }
 
@@ -58,7 +59,7 @@ export async function usernameToId (username) {
 export async function apiv5 (endpoint) {
   const options = {
     headers: {
-      'Client-ID': '1pr5dzvymq1unqa2xiavdkvslsn4ebe',
+      'Client-ID': CLIENT_ID,
       'Accept': 'application/vnd.twitchtv.v5+json'
     }
   }
