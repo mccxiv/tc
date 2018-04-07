@@ -86,6 +86,7 @@ angular.module('tc').factory('irc', $rootScope => {
       'slowmode',
       'subscribers',
       'subscription',
+      'subgift',
       'timeout',
       'unhost',
       'whisper'
