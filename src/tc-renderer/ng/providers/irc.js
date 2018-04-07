@@ -1,4 +1,4 @@
-import tmi from 'tmi.js'
+import {Client} from 'twitch-js'
 import angular from 'angular'
 import settings from '../../lib/settings/settings'
 import {EventEmitter} from 'events'
@@ -77,11 +77,10 @@ angular.module('tc').factory('irc', $rootScope => {
       'crash',
       'emotesets',
       'emoteonly',
-      'notification', // FIXME: Custom event from forked tmi.js
+      'notice',
       'hosted',
       'hosting',
       'mods',
-      'notice',
       'resub',
       'r9kbeta',
       'slowmode',
@@ -99,8 +98,7 @@ angular.module('tc').factory('irc', $rootScope => {
       channels: []
     }
 
-    // eslint-disable-next-line new-cap
-    client = new tmi.client(clientSettings)
+    client = new Client(clientSettings)
     client.connect()
     client.on('connected', joinChannels)
     onBadLogin(destroy)
