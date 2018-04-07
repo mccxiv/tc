@@ -275,6 +275,14 @@ angular.module('tc').factory('messages', (
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
 
+  function planCodeToName (planCode) {
+    return {
+      '1000': '$4.99',
+      '2000': '$9.99',
+      '3000': '$24.99'
+    }[planCode] || planCode
+  }
+
   function getChatListeners () {
     return {
       // Users talking
@@ -331,12 +339,7 @@ angular.module('tc').factory('messages', (
 
       // Money!
       subscription: (channel, username, method, message) => {
-        const planMap = {
-          '1000': '$4.99',
-          '2000': '$9.99',
-          '3000': '$24.99'
-        }
-        const plan = planMap[method.plan] ? planMap[method.plan] : method.plan
+        const plan = planCodeToName(method.plan)
         const noMsg = `${username} has subscribed with a ${plan} plan!`
         const msg = `${noMsg} "${message}"`
         addNotification(channel, message ? msg : noMsg, true)
@@ -345,6 +348,13 @@ angular.module('tc').factory('messages', (
         const noMsg = `${username} resubscribed ${months} months in a row!`
         const msg = noMsg + ' "' + message + '"'
         addNotification(channel, message ? msg : noMsg, true)
+      },
+      subgift: (channel, username, recepient, {plan, planName}) => {
+        console.log('subgift', [channel, username, recepient, {plan, planName}]) // TODO remove
+        const planText = planCodeToName(plan)
+        const message = `${username} gifted a ${planText} sub to ${recepient}!`
+        console.log('subgift', message) // TODO remove
+        addNotification(channel, message, true)
       },
 
       notice: (channel = '', msgId, message) => {
