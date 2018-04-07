@@ -277,9 +277,9 @@ angular.module('tc').factory('messages', (
 
   function planCodeToName (planCode) {
     return {
-      '1000': '$4.99',
-      '2000': '$9.99',
-      '3000': '$24.99'
+      '1000': 'Tier 1',
+      '2000': 'Tier 2',
+      '3000': 'Tier 3'
     }[planCode] || planCode
   }
 
@@ -338,22 +338,27 @@ angular.module('tc').factory('messages', (
       },
 
       // Money!
-      subscription: (channel, username, method, message) => {
+      subscription: (channel, username, method, message, user) => {
         const plan = planCodeToName(method.plan)
-        const noMsg = `${username} has subscribed with a ${plan} plan!`
-        const msg = `${noMsg} "${message}"`
-        addNotification(channel, message ? msg : noMsg, true)
+        const msg = `${username} has subscribed with a ${plan} plan!`
+        addNotification(channel, msg, true)
+        if (message) {
+          addUserMessage(channel, {type: 'chat', user, message, golden: true})
+        }
       },
-      resub: (channel, username, months, message) => {
-        const noMsg = `${username} resubscribed ${months} months in a row!`
-        const msg = noMsg + ' "' + message + '"'
-        addNotification(channel, message ? msg : noMsg, true)
+      resub: (channel, username, months, message, user, {plan, planName}) => {
+        const planText = planCodeToName(plan)
+        const resub1 = `${username} resubscribed with a ${planText} sub`
+        const resub2 = `${months} months in a row!`
+        const msg = `${resub1} ${resub2}`
+        addNotification(channel, msg, true)
+        if (message) {
+          addUserMessage(channel, {type: 'chat', user, message, golden: true})
+        }
       },
       subgift: (channel, username, recepient, {plan, planName}) => {
-        console.log('subgift', [channel, username, recepient, {plan, planName}]) // TODO remove
         const planText = planCodeToName(plan)
         const message = `${username} gifted a ${planText} sub to ${recepient}!`
-        console.log('subgift', message) // TODO remove
         addNotification(channel, message, true)
       },
 
