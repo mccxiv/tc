@@ -1,5 +1,6 @@
 import {Client} from 'twitch-js'
 import angular from 'angular'
+import {CLIENT_ID} from '../../lib/constants'
 import settings from '../../lib/settings/settings'
 import {EventEmitter} from 'events'
 
@@ -93,7 +94,7 @@ angular.module('tc').factory('irc', $rootScope => {
     ]
 
     const clientSettings = {
-      options: {debug: false},
+      options: {debug: false, clientId: CLIENT_ID},
       connection: {timeout: 20000, reconnect: true},
       identity: angular.copy(settings.identity),
       channels: []
