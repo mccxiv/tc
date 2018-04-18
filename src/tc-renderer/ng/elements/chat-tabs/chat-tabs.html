@@ -10,6 +10,10 @@
           ng-click="moveLeft($event, channel)"
           class="zmdi zmdi-chevron-left move-arrow left"
       ></i>
+      <i
+          class="zmdi zmdi-circle"
+          ng-if="live(channel)"
+      ></i>
       {{channel}}
       <span class="counter">{{unread(channel)}}</span>
       <i

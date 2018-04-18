@@ -4,12 +4,17 @@ import angular from 'angular'
 import template from './chat-tabs.html'
 import settings from '../../../lib/settings/settings'
 import channels from '../../../lib/channels'
+import * as api from '../../../lib/api'
 
 angular.module('tc').directive('chatTabs', ($timeout, messages) => {
   function link (scope, element) {
+    const getStreamsInterval = setInterval(getStreams, 60000)
     element = $(element[0])
 
-    scope.m = {hotkey: process.platform === 'darwin' ? '⌘' : 'ctrl'}
+    scope.m = {
+      streams: {},
+      hotkey: process.platform === 'darwin' ? '⌘' : 'ctrl'
+    }
     scope.settings = settings
     scope.hidden = {}
     scope.loaded = {}
@@ -22,8 +27,15 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     scope.showingAddChannel = isAddTabSelected
     scope.moveLeft = moveLeft
     scope.moveRight = moveRight
+    scope.live = isLive
 
     if (currChannel()) scope.loaded[currChannel()] = true
+
+    getStreams()
+
+    channels.on('change', () => {
+      getStreams()
+    })
 
     // TODO remove hack. When joining a new channel it won't render unless...
     channels.on('add', () => {
@@ -119,6 +131,31 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
       const element = arr[fromIndex]
       arr.splice(fromIndex, 1)
       arr.splice(toIndex, 0, element)
+    }
+
+    async function getStreams() {
+      scope.m.streams = {}
+      for (const channel of settings.channels) {
+        try {
+          // Will throw undefined when Tc first loads
+          scope.m.streams[channel] = await api.stream(channel)
+        }
+        catch (e) {
+          setTimeout(getStreams, 2000)
+        }
+      }
+    }
+
+    function isLive(channel) {
+      try {
+        // Will throw undefined when Tc first loads
+        if (scope.m.streams[channel].stream !== null) {
+          return true
+        }
+      }
+      catch (e) {
+        return false
+      }
     }
   }
 

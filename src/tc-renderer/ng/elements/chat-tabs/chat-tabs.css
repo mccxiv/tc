@@ -81,3 +81,7 @@ chat-tabs md-tab-item:first-of-type .move-arrow.left {
 chat-tabs md-tab-item:nth-last-of-type(2) .move-arrow.right {
   display: none;
 }
+
+chat-tabs .zmdi-circle {
+  color: rgba(255,0,0,0.8);
+}
