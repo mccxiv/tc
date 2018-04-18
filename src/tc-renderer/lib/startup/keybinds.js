@@ -5,6 +5,7 @@ key.filter = () => true
 
 function registerShortcuts () {
   key('⌘+n, ctrl+n', goToAddChannel)
+  key('⌘+w, ctrl+w', leaveChannel)
   key('⌘+tab, ctrl+tab', nextTab)
   key('⌘+shift+tab, ctrl+shift+tab', previousTab)
   key('⌘+s, ctrl+s', toggleSidebar)
@@ -52,6 +53,10 @@ function previousTab () {
 
 function goToAddChannel () {
   settings.selectedTabIndex = settings.channels.length
+}
+
+function leaveChannel () {
+  settings.channels.splice(settings.selectedTabIndex, 1)
 }
 
 export default registerShortcuts
