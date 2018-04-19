@@ -149,12 +149,14 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     function isLive(channel) {
       try {
         // Will throw undefined when Tc first loads
-        if (scope.m.streams[channel].stream !== null) {
-          return true
+        if (scope.m.streams[channel].stream.stream_type === 'live') {
+          return 'live'
+        } else if (scope.m.streams[channel].stream.stream_type === 'rerun') {
+          return 'rerun'
         }
       }
       catch (e) {
-        return false
+        return
       }
     }
   }

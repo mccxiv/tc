@@ -83,10 +83,17 @@ chat-tabs md-tab-item:nth-last-of-type(2) .move-arrow.right {
 }
 
 chat-tabs .zmdi-circle {
-  color: rgba(255,0,0,0.8);
   font-size: 0.65em;
   padding-right: 1px;
   position: relative;
   top: -2px;
   left: -1px;
+}
+
+chat-tabs .live-indicator {
+  color: rgba(255,0,0,0.8);  
+}
+
+chat-tabs .rerun-indicator {
+  color: rgba(200,200,200,0.8);
 }
