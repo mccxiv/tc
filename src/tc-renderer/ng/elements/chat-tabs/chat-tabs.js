@@ -134,8 +134,8 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     }
 
     async function getStreams() {
-      scope.m.streams = {}
       for (const channel of settings.channels) {
+        if (typeof scope.m.streams === 'undefined') { scope.m.streams = {} }
         try {
           // Will throw undefined when Tc first loads
           scope.m.streams[channel] = await api.stream(channel)
