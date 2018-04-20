@@ -24,7 +24,8 @@ export default {
     sidebarCollapsed: false,
     variableLineHeight: false,
     chatters: true,
-    zoom: 100
+    zoom: 100,
+    alwaysOnTop: false
   },
   behavior: {
     autoStart: false

@@ -226,6 +226,12 @@
       </md-tooltip>
     </md-switch>
 
+    <md-switch 
+        ng-model="settings.appearance.alwaysOnTop"
+        ng-change="toggleOnTop()">
+      Always on top
+    </md-switch>
+
     <md-divider></md-divider>
 
     <md-switch ng-model="settings.appearance.hideTimeouts">

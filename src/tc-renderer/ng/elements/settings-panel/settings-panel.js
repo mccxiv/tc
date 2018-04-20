@@ -121,6 +121,17 @@ angular.module('tc').directive('settingsPanel', (
       },
       delete (index) { settings.chat.ignored.splice(index, 1) }
     }
+
+    scope.toggleOnTop = () => {
+      var main = electron.remote.getCurrentWindow()
+      if (main.isAlwaysOnTop()) {
+        scope.settings.appearance.alwaysOnTop = false
+        main.setAlwaysOnTop(false)
+      } else {
+        scope.settings.appearance.alwaysOnTop = true
+        main.setAlwaysOnTop(true)
+      }
+    }
   }
 
   return {restrict: 'E', template, link}
