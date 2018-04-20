@@ -9,6 +9,7 @@ import makeTrayIconOnWindows from './lib/startup/tray-icon'
 import watchZoomChanges from './lib/startup/app-zoom'
 import keepChannelsOnBacklog from './lib/startup/keep-channels-on-backlog'
 import joinChannelFromCommand from './lib/startup/commandline'
+import setOnTop from './lib/startup/always-on-top'
 
 import './lib/startup/angular-stuff'
 
@@ -31,3 +32,4 @@ makeTrayIconOnWindows()
 watchZoomChanges()
 keepChannelsOnBacklog()
 joinChannelFromCommand()
+setOnTop()
