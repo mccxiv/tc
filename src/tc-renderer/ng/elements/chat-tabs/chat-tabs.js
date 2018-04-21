@@ -27,7 +27,9 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     scope.showingAddChannel = isAddTabSelected
     scope.moveLeft = moveLeft
     scope.moveRight = moveRight
-    scope.live = isLive
+    scope.live = liveStreamType
+
+    scope.$on('$destroy', cleanup)
 
     if (currChannel()) scope.loaded[currChannel()] = true
 
@@ -135,31 +137,23 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
 
     async function getStreams() {
       for (const channel of settings.channels) {
-        if (typeof scope.m.streams === 'undefined') { scope.m.streams = {} }
-        try {
-          // Will throw undefined when Tc first loads
-          scope.m.streams[channel] = await api.stream(channel)
-        }
-        catch (e) {
-          setTimeout(getStreams, 2000)
-        }
+        scope.m.streams[channel] = await api.stream(channel)
       }
     }
 
-    function isLive(channel) {
-      try {
-        // Will throw undefined when Tc first loads
-        if (scope.m.streams[channel].stream.stream_type === 'live') {
-          return 'live'
-        } else if (scope.m.streams[channel].stream.stream_type === 'rerun') {
-          return 'rerun'
-        }
-      }
-      catch (e) {
-        return
-      }
+    function liveStreamType(channel) {
+      if (
+        !scope.m.streams[channel] ||
+        !scope.m.streams[channel].stream
+      ) return null
+
+      return scope.m.streams[channel].stream.stream_type
+    }
+
+    function cleanup() {
+      clearInterval(getStreamsInterval)
     }
   }
 
-  return {restrict: 'E', template, link}
+  return {restrict: 'E', scope: {}, template, link}
 })
