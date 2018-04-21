@@ -35,8 +35,12 @@
 
   </div>
   <div class="footer">
+    <span class="game">
+      <i class="zmdi zmdi-gamepad"></i> {{m.channel.game}}
+    </span>
+    <br/>
     <span class="host-button" ng-click="host()" ng-if="!m.hosting">
-      Host <i class="zmdi zmdi-thumb-up"></i>
+      <i class="zmdi zmdi-thumb-up"></i> Host
     </span>
     <span class="host-button" ng-click="unhost()" ng-if="m.hosting">
       Unhost
