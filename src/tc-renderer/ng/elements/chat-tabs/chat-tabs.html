@@ -10,6 +10,14 @@
           ng-click="moveLeft($event, channel)"
           class="zmdi zmdi-chevron-left move-arrow left"
       ></i>
+      <i
+          class="zmdi zmdi-circle live-indicator"
+          ng-if="live(channel) === 'live'"
+      ></i>
+      <i
+          class="zmdi zmdi-replay rerun-indicator"
+          ng-if="live(channel) === 'rerun'"
+      ></i>
       {{channel}}
       <span class="counter">{{unread(channel)}}</span>
       <i
