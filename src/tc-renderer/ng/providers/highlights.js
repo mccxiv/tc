@@ -14,8 +14,13 @@ angular.module('tc').factory('highlights', function () {
         if (me.test(line)) return true
       }
       return settings.highlights.some(function (highlight) {
-        const regex = new RegExp(`\\b${highlight}\\b`, 'i')
-        return regex.test(line)
+        if (highlight.startsWith('user:')) {
+          const regex = new RegExp(`\\b${highlight.substring(5, highlight.length)}\\b`, 'i')
+          return regex.test(line.substring(0, line.indexOf(':')))
+        } else {
+          const regex = new RegExp(`\\b${highlight}\\b`, 'i')
+          return regex.test(line)
+        }
       })
     },
 
