@@ -123,7 +123,7 @@ angular.module('tc').directive('settingsPanel', (
     }
 
     scope.toggleOnTop = () => {
-      var main = electron.remote.getCurrentWindow()
+      const main = electron.remote.getCurrentWindow()
       if (main.isAlwaysOnTop()) {
         scope.settings.appearance.alwaysOnTop = false
         main.setAlwaysOnTop(false)
