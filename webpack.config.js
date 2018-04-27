@@ -6,6 +6,9 @@ const base = {
     __filename: false,
     __dirname: false
   },
+  performance: {
+    hints: false
+  },
   output: {
     path: path.join(__dirname, '_build'),
     filename: '[name]'
@@ -19,6 +22,7 @@ const base = {
           {
             loader: 'babel-loader',
             options: {
+              compact: true,
               presets: ['es2015', 'stage-0'],
               plugins: ['transform-runtime', 'angularjs-annotate']
             }
