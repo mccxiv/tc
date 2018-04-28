@@ -65,13 +65,14 @@
   <md-content ng-switch-when="highlights" class="highlights">
     <h1 class="md-headline">Highlighted phrases</h1>
     <p>
-      You may add words and phrases to make them stand out in chat and
+      You may add words, phrases or users to make them stand out in chat and
       show up as desktop notifications. Matches are not case sensitive.
+      Users can be added as:&nbsp;user:name.
     </p>
 
     <form class="input-form" ng-submit="highlights.add()">
       <md-input-container>
-        <label>Add a new phrase. Supports regex</label>
+        <label>Add a new phrase or user.<br>Phrases support regex, users do not</label>
         <input ng-model="highlights.input">
       </md-input-container>
     </form>
