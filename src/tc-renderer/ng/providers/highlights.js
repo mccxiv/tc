@@ -9,17 +9,18 @@ angular.module('tc').factory('highlights', function () {
      * @return {boolean}     - True if `line` contains a highlighted phrase.
      */
     test: function (line) {
+      const user = line.substring(0, line.indexOf(':'))
+      const message = line.substring(line.indexOf(':') + 2, line.length)
       if (settings.highlightMe) {
         const me = new RegExp(settings.identity.username, 'i')
-        if (me.test(line)) return true
+        if (me.test(message)) return true
       }
       return settings.highlights.some(function (highlight) {
         if (highlight.startsWith('user:')) {
-          const regex = new RegExp(`\\b${highlight.substring(5, highlight.length)}\\b`, 'i')
-          return regex.test(line.substring(0, line.indexOf(':')))
+          return user === highlight.toLowerCase().substring(5, highlight.length)
         } else {
           const regex = new RegExp(`\\b${highlight}\\b`, 'i')
-          return regex.test(line)
+          return regex.test(message)
         }
       })
     },
