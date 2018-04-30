@@ -165,14 +165,10 @@ angular.module('tc').factory('messages', (
       'botlandbot'
     ];
 
-    // const notSelf = user.username !== lowerCaseUsername
     const shouldntHighlighUser = (
       user.username === lowerCaseUsername ||
       _.includes(user.username, ignoreHighlightsFromUsers)
     );
-
-    console.log(user);
-    console.log(user.username);
 
     if (settings.chat.ignored.indexOf(user.username) > -1) return
     if (user.special) user.special.reverse()
