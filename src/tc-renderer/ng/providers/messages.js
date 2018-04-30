@@ -161,13 +161,24 @@ angular.module('tc').factory('messages', (
    */
   function addUserMessage (channel, obj) {
     const {user, message} = obj
-    const notSelf = user.username !== lowerCaseUsername
+    const ignoreHighlightsFromUsers = [
+      'botlandbot'
+    ];
+
+    // const notSelf = user.username !== lowerCaseUsername
+    const shouldntHighlighUser = (
+      user.username === lowerCaseUsername ||
+      _.includes(user.username, ignoreHighlightsFromUsers)
+    );
+
+    console.log(user);
+    console.log(user.username);
 
     if (settings.chat.ignored.indexOf(user.username) > -1) return
     if (user.special) user.special.reverse()
     if (!user['display-name']) user['display-name'] = user.username
     if (isFfzDonor(user.username)) user.ffz_donor = true
-    if (highlights.test(message) && notSelf) obj.highlighted = true
+    if (highlights.test(message) && !shouldntHighlighUser) obj.highlighted = true
 
     addMessage(channel, obj)
   }
