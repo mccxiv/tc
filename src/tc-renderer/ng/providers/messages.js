@@ -167,8 +167,9 @@ angular.module('tc').factory('messages', (
     if (user.special) user.special.reverse()
     if (!user['display-name']) user['display-name'] = user.username
     if (isFfzDonor(user.username)) user.ffz_donor = true
-    if (highlights.test(`${user.username}: ${message}`) && notSelf) obj.highlighted = true
-
+    if (highlights.test(message, user.username) && notSelf) {
+      obj.highlighted = true
+    }
     addMessage(channel, obj)
   }
 
