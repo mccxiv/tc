@@ -43,9 +43,9 @@ gulp.task('build', function () {
       console.log('\nAttempting to build Mac version.')
       build('mac')
       console.log('\nAttempting to build Linux version.')
-      build('linux') // TBD if possible
+      build('linux')
       console.log('\nAttempting to build Windows version.')
-      build('windows') // TBD if possible
+      build('windows')
       break
   }
   shell.rm('-rf', 'dist')

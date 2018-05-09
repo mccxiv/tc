@@ -22,7 +22,6 @@ const base = {
           {
             loader: 'babel-loader',
             options: {
-              compact: true,
               presets: ['es2015', 'stage-0'],
               plugins: ['transform-runtime', 'angularjs-annotate']
             }
