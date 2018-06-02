@@ -5,17 +5,22 @@ angular.module('tc').factory('highlights', function () {
   return {
     /**
      * Test if a string matches any of the saved highlighted phrases.
-     * @param {string} line  - Where to search for highlights.
+     * @param {string} message  - Message to search for highlights.
+     * @param {string} user - User to search for highlights.
      * @return {boolean}     - True if `line` contains a highlighted phrase.
      */
-    test: function (line) {
+    test: function (message, user) {
       if (settings.highlightMe) {
         const me = new RegExp(settings.identity.username, 'i')
-        if (me.test(line)) return true
+        if (me.test(message)) return true
       }
       return settings.highlights.some(function (highlight) {
-        const regex = new RegExp(`\\b${highlight}\\b`, 'i')
-        return regex.test(line)
+        if (highlight.startsWith('user:')) {
+          return user === highlight.toLowerCase().substring(5, highlight.length)
+        } else {
+          const regex = new RegExp(`\\b${highlight}\\b`, 'i')
+          return regex.test(message)
+        }
       })
     },
 
