@@ -6,6 +6,9 @@ const base = {
     __filename: false,
     __dirname: false
   },
+  performance: {
+    hints: false
+  },
   output: {
     path: path.join(__dirname, '_build'),
     filename: '[name]'
