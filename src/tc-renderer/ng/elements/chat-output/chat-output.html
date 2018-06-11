@@ -18,7 +18,7 @@
     }"
     ng-style="::m.type === 'action'? {'color': calculateColor(m.user.color)} : {}"
   ><!--
-	---><span class="timestamp lighter" ng-if="::settings.chat.timestamps">{{::m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
+    ---><span class="timestamp lighter" ng-if="::settings.chat.timestamps">{{::m.at | date: 'H:mm'}}&nbsp;&nbsp;</span><!--
     ---><span class="badges" ng-if="::m.user"><!--
         ---><span
               ng-repeat="(name, version) in ::m.user.badges"
@@ -28,7 +28,12 @@
             ></span><!--
         ---><span class="badge ffz" data-title="FFZ Supporter" ng-if="::m.user['ffz_donor']"></span><!--
     ---></span><!--
-    ---><span class="username" ng-if="::m.user" ng-click="selectUsername(m.user.username)" ng-style="::{color: calculateColor(m.user.color)}">{{::m.user['display-name']}}</span><!--
+    ---><span class="username" ng-if="::m.user" ng-click="selectUsername(m.user.username)" ng-style="::{color: calculateColor(m.user.color)}"><!--
+      --->{{::m.user['display-name']}}<!--
+      ---><span class="badges" ng-if="::m.user['display-name'].toLowerCase() != m.user['username']"><!--
+        --->&nbsp;({{::m.user['username']}})<!--
+      ---></span><!--
+    ---></span><!--
     ---><span class="username" ng-if="::!m.user && m.type === 'whisper'" ng-click="selectUsername(m.from)">{{::m.from}}</span><!--
     ---><svg class="svg-whisper-arrow" ng-if="::m.type === 'whisper'" version="1.1" width="16px" height="10px"><polyline points="6 2, 10 6, 6 10, 6 2"></polyline></svg><!--
     ---><span class="username" ng-if="::m.type === 'whisper'" ng-click="selectUsername(m.to)">{{::m.to}}</span><!--
