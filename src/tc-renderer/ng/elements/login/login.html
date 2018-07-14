@@ -16,9 +16,8 @@
     <form ng-submit="login()">
       <md-input-container>
         <label>Oauth token</label>
-        <input ng-if="m.haveUsername" ng-model="m.password" type="password"
-               auto-focus>
-        <input ng-if="!m.haveUsername" ng-model="m.password" type="password">
+        <input ng-if="m.haveUsername" ng-model="m.password" type="password" ng-keyup="trimPassword()" auto-focus>
+        <input ng-if="!m.haveUsername" ng-model="m.password" type="password" ng-keyup="trimPassword()">
       </md-input-container>
     </form>
 

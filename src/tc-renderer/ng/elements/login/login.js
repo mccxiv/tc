@@ -19,12 +19,17 @@ angular.module('tc').directive('login', function (irc, openExternal) {
       scope.m.haveNoPassword = !settings.identity.password.length
 
       scope.login = login
+      scope.trimPassword = trimPassword
       scope.generate = () => openExternal('http://gettc.xyz/password/')
       scope.doesntLookLikeToken = doesntLookLikeToken
 
       function login () {
-        settings.identity.username = scope.m.username
-        settings.identity.password = scope.m.password
+        settings.identity.username = scope.m.username.trim()
+        settings.identity.password = scope.m.password.trim()
+      }
+      
+      function trimPassword () {
+        scope.m.password = scope.m.password.trim()
       }
 
       function doesntLookLikeToken () {
