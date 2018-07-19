@@ -140,3 +140,8 @@ chat-output .variable-line-height .emoticon {
   bottom: unset;
   vertical-align: -3px;
 }
+
+chat-output .inlineimg {
+  max-width: 400px;
+  max-height: 200px;
+}
