@@ -29,8 +29,7 @@ const base = {
         ],
         include: [
           path.resolve(__dirname, 'src', 'tc-main'),
-          path.resolve(__dirname, 'src', 'tc-renderer'),
-          path.resolve(__dirname, 'src', 'node_modules', 'twitch-js')
+          path.resolve(__dirname, 'src', 'tc-renderer')
         ]
       },
       {

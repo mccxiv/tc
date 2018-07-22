@@ -1,4 +1,4 @@
-import {Client} from 'twitch-js'
+import Client from 'twitch-js'
 import angular from 'angular'
 import {CLIENT_ID} from '../../lib/constants'
 import settings from '../../lib/settings/settings'
@@ -36,6 +36,7 @@ angular.module('tc').factory('irc', $rootScope => {
   // Variables
   // ===============================================================
   const ee = new EventEmitter()
+  let twitchJsClient
   let client
 
   // ===============================================================
@@ -62,69 +63,51 @@ angular.module('tc').factory('irc', $rootScope => {
   // Private methods
   // ===============================================================
 
-  function create () {
+  async function create () {
     destroy()
     ee.badLogin = false
 
-    // Disconnected is handled elsewhere
-    const events = [
-      'action',
-      'ban',
-      'chat',
-      'cheer',
-      'clearchat',
-      'connected',
-      'connecting',
-      'crash',
-      'emotesets',
-      'emoteonly',
-      'notice',
-      'hosted',
-      'hosting',
-      'mods',
-      'resub',
-      'r9kbeta',
-      'slowmode',
-      'subscribers',
-      'subscription',
-      'subgift',
-      'timeout',
-      'unhost',
-      'whisper'
-    ]
-
     const clientSettings = {
+      username: settings.identity.username,
+      token: settings.identity.password,
+
       options: {debug: false, clientId: CLIENT_ID},
       connection: {timeout: 20000, reconnect: true},
       identity: angular.copy(settings.identity),
       channels: []
     }
 
-    client = new Client(clientSettings)
-    client.connect()
-    client.on('connected', joinChannels)
-    onBadLogin(destroy)
-    forwardEvents(client, ee, events)
-
-    client.on('connected', () => {
-      ee.ready = true
-      setTimeout(() => $rootScope.$apply(), 0)
-    })
+    twitchJsClient = new Client(clientSettings)
+    client = twitchJsClient.chat
+    console.log(client)
+    try {
+      await twitchJsClient.chat.connect()
+    } catch (e) {
+      console.log(e)
+    }
+    joinChannels()
+    // onBadLogin(destroy) // TODO
+    forwardEvents(client, ee)
+    ee.ready = true
+    setTimeout(() => $rootScope.$apply(), 0)
 
     // Disconnected event gets spammed on every connection
     // attempt. This is not ok if the internet is temporarily
     // down, for example.
-    onlyEmitDisconnectedOnce()
 
-    function onlyEmitDisconnectedOnce () {
-      client.once('disconnected', (...args) => {
-        ee.ready = false
-        args.unshift('disconnected')
-        ee.emit.apply(ee, args)
-        if (client) client.once('connected', onlyEmitDisconnectedOnce)
-        setTimeout(() => $rootScope.$apply(), 0)
-      })
-    }
+    // TODO
+
+    // onlyEmitDisconnectedOnce()
+
+    // function onlyEmitDisconnectedOnce () {
+    //   client.once('disconnected', (...args) => {
+    //     ee.ready = false
+    //     args.unshift('disconnected')
+    //     ee.emit.apply(ee, args)
+    //     if (client) client.once('connected', onlyEmitDisconnectedOnce)
+    //     setTimeout(() => $rootScope.$apply(), 0)
+    //   })
+    // }
   }
 
   function destroy () {
@@ -160,16 +143,12 @@ angular.module('tc').factory('irc', $rootScope => {
 
   /**
    * Re emits events from `emitter` on `reEmitter`
-   * @param {Object}   emitter   - Emits as rebroadcast. Has .addListener()
-   * @param {Object}   reEmitter - The object that will rebroadcast. Has .emit()
-   * @param {String[]} events    - The events to listen for on `emitter`
+   * @param {Object} emitter   - Emits as rebroadcast. Has .addListener()
+   * @param {Object} reEmitter - The object that will rebroadcast. Has .emit()
    */
-  function forwardEvents (emitter, reEmitter, events) {
-    events.forEach((event) => {
-      emitter.addListener(event, (...args) => {
-        args.unshift(event)
-        reEmitter.emit.apply(reEmitter, args)
-      })
+  function forwardEvents (emitter, reEmitter) {
+    emitter.on('*', (arg1, ...otherArgs) => {
+      reEmitter.emit(arg1.command, arg1, ...otherArgs)
     })
   }
 
@@ -188,7 +167,7 @@ angular.module('tc').factory('irc', $rootScope => {
    */
   function joinChannels () {
     settings.channels.forEach((channel) => {
-      const joined = client.getChannels().map(stripHash)
+      const joined = Object.keys(client.channels).map(stripHash)
       if (joined.indexOf(channel) === -1) {
         client.join(channel)
       }
@@ -200,7 +179,7 @@ angular.module('tc').factory('irc', $rootScope => {
    * appear in settings.channels.
    */
   function leaveChannels () {
-    const joined = client.getChannels().map(stripHash)
+    const joined = Object.keys(client.channels).map(stripHash)
     joined.forEach((channel) => {
       if (settings.channels.indexOf(channel) === -1) {
         client.part(channel)

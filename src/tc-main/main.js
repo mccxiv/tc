@@ -13,7 +13,6 @@ app.commandLine.appendSwitch('js-flags', '--harmony')
 
 if (squirrelStartup()) app.exit(0)
 if (isSecondInstance()) app.exit()
-if (process.argv.indexOf('--dev-tools') > 0) setTimeout(devTools, 1500)
 
 app.on('ready', makeWindow)
 ipc.on('open-dev-tools', devTools)
@@ -38,6 +37,8 @@ function makeWindow () {
     'min-height': 100,
     icon: path.resolve(__dirname, '/assets/icon256.png')
   })
+
+  if (process.argv.indexOf('--dev-tools') > 0) devTools()
 
   main.on('ready-to-show', function () {
     setTimeout(function () {

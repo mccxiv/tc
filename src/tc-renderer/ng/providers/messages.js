@@ -85,7 +85,7 @@ angular.module('tc').factory('messages', (
   function setupIrcListeners () {
     const listeners = getChatListeners()
     Object.keys(listeners).forEach((key) => {
-      irc.on(key, listeners[key])
+      // irc.on(key, listeners[key])
     })
   }
 
@@ -288,6 +288,7 @@ angular.module('tc').factory('messages', (
     return {
       // Users talking
       chat: (channel, user, message) => {
+        debugger
         addUserMessage(channel, {type: 'chat', user, message})
       },
       cheer: (channel, user, message) => {
