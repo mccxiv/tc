@@ -1,4 +1,4 @@
-import Client from 'twitch-js'
+import Client, {ChatConstants} from 'twitch-js'
 import angular from 'angular'
 import {CLIENT_ID} from '../../lib/constants'
 import settings from '../../lib/settings/settings'
@@ -67,6 +67,13 @@ angular.module('tc').factory('irc', $rootScope => {
     destroy()
     ee.badLogin = false
 
+    // We can't listen to ALL because of a bug
+    const events = {...ChatConstants.EVENTS}
+    delete events.RAW
+    delete events.ALL
+    delete events.ERROR_ENCOUNTERED
+    delete events.PARSE_ERROR_ENCOUNTERED
+
     const clientSettings = {
       username: settings.identity.username,
       token: settings.identity.password,
@@ -81,13 +88,13 @@ angular.module('tc').factory('irc', $rootScope => {
     client = twitchJsClient.chat
     console.log(client)
     try {
-      await twitchJsClient.chat.connect()
+      await client.connect()
     } catch (e) {
       console.log(e)
     }
     joinChannels()
-    // onBadLogin(destroy) // TODO
-    forwardEvents(client, ee)
+    onBadLogin(destroy)
+    forwardEvents(client, ee, Object.values(events))
     ee.ready = true
     setTimeout(() => $rootScope.$apply(), 0)
 
@@ -95,19 +102,19 @@ angular.module('tc').factory('irc', $rootScope => {
     // attempt. This is not ok if the internet is temporarily
     // down, for example.
 
-    // TODO
+    onlyEmitDisconnectedOnce()
 
-    // onlyEmitDisconnectedOnce()
-
-    // function onlyEmitDisconnectedOnce () {
-    //   client.once('disconnected', (...args) => {
-    //     ee.ready = false
-    //     args.unshift('disconnected')
-    //     ee.emit.apply(ee, args)
-    //     if (client) client.once('connected', onlyEmitDisconnectedOnce)
-    //     setTimeout(() => $rootScope.$apply(), 0)
-    //   })
-    // }
+    function onlyEmitDisconnectedOnce () {
+      client.once(ChatConstants.EVENTS.DISCONNECTED, (...args) => {
+        ee.ready = false
+        args.unshift(ChatConstants.EVENTS.DISCONNECTED)
+        ee.emit.apply(ee, args)
+        if (client) {
+          client.once(ChatConstants.EVENTS.CONNECTED, onlyEmitDisconnectedOnce)
+        }
+        setTimeout(() => $rootScope.$apply(), 0)
+      })
+    }
   }
 
   function destroy () {
@@ -143,12 +150,17 @@ angular.module('tc').factory('irc', $rootScope => {
 
   /**
    * Re emits events from `emitter` on `reEmitter`
-   * @param {Object} emitter   - Emits as rebroadcast. Has .addListener()
-   * @param {Object} reEmitter - The object that will rebroadcast. Has .emit()
+   * @param {Object}   emitter   - Emits as rebroadcast. Has .addListener()
+   * @param {Object}   reEmitter - The object that will rebroadcast. Has .emit()
+   * @param {String[]} events    - The events to listen for on `emitter`
    */
-  function forwardEvents (emitter, reEmitter) {
-    emitter.on('*', (arg1, ...otherArgs) => {
-      reEmitter.emit(arg1.command, arg1, ...otherArgs)
+  function forwardEvents (emitter, reEmitter, events) {
+    events.forEach((event) => {
+      emitter.addListener(event, (...args) => {
+        args.unshift(event)
+        console.log('Event:', ...args)
+        reEmitter.emit.apply(reEmitter, args)
+      })
     })
   }
 
@@ -193,15 +205,16 @@ angular.module('tc').factory('irc', $rootScope => {
    * This should cause the login form to display with an error.
    */
   function onBadLogin (cb) {
-    client.on('disconnected', (reason) => {
+    client.on(ChatConstants.EVENTS.DISCONNECTED, (...args) => {
+      console.log('DISCONNECTED ARGS:', ...args)
       const reasons = [
         'Error logging in.',
         'Login unsuccessful.',
         'Login authentication failed'
       ]
-      if (reasons.includes(reason)) {
+      if (reasons.includes(args[0])) {
         ee.ready = false
-        ee.badLogin = reason
+        ee.badLogin = args[0] // TODO
         settings.identity.password = ''
         setTimeout(() => $rootScope.$apply(), 0)
         cb()
