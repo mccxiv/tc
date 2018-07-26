@@ -71,6 +71,9 @@ angular.module('tc').factory('irc', $rootScope => {
     const events = {...ChatConstants.EVENTS}
     delete events.RAW
     delete events.ALL
+    delete events.MODE
+    delete events.NAMES
+    delete events.NAMES_END
     delete events.ERROR_ENCOUNTERED
     delete events.PARSE_ERROR_ENCOUNTERED
 
@@ -94,7 +97,7 @@ angular.module('tc').factory('irc', $rootScope => {
     }
     joinChannels()
     onBadLogin(destroy)
-    forwardEvents(client, ee, Object.values(events))
+    forwardEvents(client, ee, ['PRIVMSG'])
     ee.ready = true
     setTimeout(() => $rootScope.$apply(), 0)
 
@@ -155,10 +158,11 @@ angular.module('tc').factory('irc', $rootScope => {
    * @param {String[]} events    - The events to listen for on `emitter`
    */
   function forwardEvents (emitter, reEmitter, events) {
-    events.forEach((event) => {
+    events.forEach(event => {
+      console.log('Listening', event)
       emitter.addListener(event, (...args) => {
         args.unshift(event)
-        console.log('Event:', ...args)
+        // console.log('Event:', ...args)
         reEmitter.emit.apply(reEmitter, args)
       })
     })

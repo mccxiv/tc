@@ -85,7 +85,7 @@ angular.module('tc').factory('messages', (
   function setupIrcListeners () {
     const listeners = getChatListeners()
     Object.keys(listeners).forEach((key) => {
-      // irc.on(key, listeners[key])
+      irc.on(key, listeners[key])
     })
   }
 
@@ -160,14 +160,16 @@ angular.module('tc').factory('messages', (
    * @property {number}  obj.at - Timestamp
    */
   function addUserMessage (channel, obj) {
-    const {user, message} = obj
-    const notSelf = user.username !== lowerCaseUsername
+    const {tags, message, username} = obj
+    const notSelf = username !== lowerCaseUsername
 
-    if (settings.chat.ignored.indexOf(user.username) > -1) return
-    if (user.special) user.special.reverse()
-    if (!user['display-name']) user['display-name'] = user.username
-    if (isFfzDonor(user.username)) user.ffz_donor = true
-    if (highlights.test(message, user.username) && notSelf) {
+    console.log(channel, obj)
+
+    if (settings.chat.ignored.indexOf(tags.username) > -1) return
+    if (tags.special) tags.special.reverse()
+    if (!tags.displayName) tags.displayName = username
+    if (isFfzDonor(tags.username)) tags.ffz_donor = true
+    if (highlights.test(message, username) && notSelf) {
       obj.highlighted = true
     }
     addMessage(channel, obj)
@@ -184,7 +186,7 @@ angular.module('tc').factory('messages', (
     if (channel.charAt(0) === '#') channel = channel.substring(1)
     if (!messageObject.at) messageObject.at = Date.now()
 
-    const twitchEmotes = messageObject.user ? messageObject.user.emotes : null
+    const twitchEmotes = messageObject.tags ? messageObject.tags.emotes : null
     const msg = processMessage(messageObject, channel, twitchEmotes)
 
     messageObject.message = msg
@@ -207,7 +209,7 @@ angular.module('tc').factory('messages', (
     // the message is for the currently selected channel
     if (channel === settings.channels[settings.selectedTabIndex]) {
       throttledApplyFast()
-    } else if (messageObject.user) {
+    } else if (messageObject.tags) {
       throttledApplySlow()
     }
   }
@@ -284,91 +286,104 @@ angular.module('tc').factory('messages', (
     }[planCode] || planCode
   }
 
+  function messageHasBits (messageObject) {
+    return ((messageObject || {}).tags || {}).bits
+  }
+
+  function getActionTextOrNull (messageObject) {
+    const regex = /^\u0001ACTION ([^\u0001]+)\u0001$/
+    const match = messageObject.message.match(regex)
+    return match ? match[1] : null
+  }
+
   function getChatListeners () {
     return {
       // Users talking
-      chat: (channel, user, message) => {
-        debugger
-        addUserMessage(channel, {type: 'chat', user, message})
-      },
-      cheer: (channel, user, message) => {
-        addUserMessage(channel, {type: 'cheer', user, message, golden: true})
-      },
-      action: (channel, user, message) => {
-        addUserMessage(channel, {type: 'action', user, message})
-      },
-      whisper: (from, user, message, self) => {
-        if (self) return
-        if (from.startsWith('#')) from = from.substring(1)
-        const me = capitalize(lowerCaseUsername)
-        addWhisper(from, me, message)
-      },
-
-      // Moderators doing stuff
-      ban: (channel, username, reason) => {
-        const baseMsg = username + ' has been banned.'
-        timeoutFromChat(channel, username)
-        if (!settings.appearance.hideTimeouts) {
-          const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '')
-          addNotification(channel, msg)
-        }
-      },
-      timeout: (channel, username, reason, duration) => {
-        timeoutFromChat(channel, username)
-        if (!settings.appearance.hideTimeouts) {
-          duration = Number(duration)
-          const humanDur = moment.duration(duration, 'seconds').humanize()
-          const baseMsg = username + ` has been timed out for ${humanDur}.`
-          const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '')
-          addNotification(channel, msg)
-        }
-      },
-      clearchat: (channel) => {
-        const msg = 'Chat cleared by a moderator. (Prevented by Tc)'
-        addNotification(channel, msg)
-      },
-
-      // Oh boy, network troubles
-      connecting: () => addGlobalNotification('Connecting...'),
-      connected: () => {
-        settings.channels.forEach((channel) => {
-          addNotification(channel, `Welcome to ${channel}'s chat.`)
+      PRIVMSG: (messageObject) => {
+        const {channel, tags, message} = messageObject
+        console.log('PRIVMSG', messageObject)
+        const hasBits = messageHasBits(messageObject)
+        const actionText = getActionTextOrNull(messageObject)
+        const type = hasBits ? 'cheer' : actionText ? 'action' : 'chat'
+        addUserMessage(channel, {
+          type,
+          tags,
+          message: actionText || message,
+          golden: hasBits
         })
-      },
-      disconnected: (reason) => {
-        addGlobalNotification(`Disconnected: ${reason}`)
-      },
-
-      // Money!
-      subscription: (channel, username, method, message, user) => {
-        const plan = planCodeToName(method.plan)
-        const msg = `${username} has subscribed with a ${plan} plan!`
-        addNotification(channel, msg, true)
-        if (message) {
-          addUserMessage(channel, {type: 'chat', user, message, golden: true})
-        }
-      },
-      resub: (channel, username, months, message, user, {plan, planName}) => {
-        const planText = planCodeToName(plan)
-        const resub1 = `${username} resubscribed with a ${planText} sub`
-        const resub2 = `${months} months in a row!`
-        const msg = `${resub1} ${resub2}`
-        addNotification(channel, msg, true)
-        if (message) {
-          addUserMessage(channel, {type: 'chat', user, message, golden: true})
-        }
-      },
-      subgift: (channel, username, recepient, {plan, planName}) => {
-        const planText = planCodeToName(plan)
-        const message = `${username} gifted a ${planText} sub to ${recepient}!`
-        addNotification(channel, message, true)
-      },
-
-      notice: (channel = '', msgId, message) => {
-        channel = channel.substr(1)
-        if (!channel || channel === '*') addGlobalNotification(message)
-        else addNotification(channel, message)
       }
+      // whisper: (from, user, message, self) => {
+      //   if (self) return
+      //   if (from.startsWith('#')) from = from.substring(1)
+      //   const me = capitalize(lowerCaseUsername)
+      //   addWhisper(from, me, message)
+      // },
+      //
+      // // Moderators doing stuff
+      // ban: (channel, username, reason) => {
+      //   const baseMsg = username + ' has been banned.'
+      //   timeoutFromChat(channel, username)
+      //   if (!settings.appearance.hideTimeouts) {
+      //     const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '')
+      //     addNotification(channel, msg)
+      //   }
+      // },
+      // timeout: (channel, username, reason, duration) => {
+      //   timeoutFromChat(channel, username)
+      //   if (!settings.appearance.hideTimeouts) {
+      //     duration = Number(duration)
+      //     const humanDur = moment.duration(duration, 'seconds').humanize()
+      //     const baseMsg = username + ` has been timed out for ${humanDur}.`
+      //     const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '')
+      //     addNotification(channel, msg)
+      //   }
+      // },
+      // clearchat: (channel) => {
+      //   const msg = 'Chat cleared by a moderator. (Prevented by Tc)'
+      //   addNotification(channel, msg)
+      // },
+      //
+      // // Oh boy, network troubles
+      // connecting: () => addGlobalNotification('Connecting...'),
+      // connected: () => {
+      //   settings.channels.forEach((channel) => {
+      //     addNotification(channel, `Welcome to ${channel}'s chat.`)
+      //   })
+      // },
+      // disconnected: (reason) => {
+      //   addGlobalNotification(`Disconnected: ${reason}`)
+      // },
+      //
+      // // Money!
+      // subscription: (channel, username, method, message, user) => {
+      //   const plan = planCodeToName(method.plan)
+      //   const msg = `${username} has subscribed with a ${plan} plan!`
+      //   addNotification(channel, msg, true)
+      //   if (message) {
+      //     addUserMessage(channel, {type: 'chat', user, message, golden: true})
+      //   }
+      // },
+      // resub: (channel, username, months, message, user, {plan, planName}) => {
+      //   const planText = planCodeToName(plan)
+      //   const resub1 = `${username} resubscribed with a ${planText} sub`
+      //   const resub2 = `${months} months in a row!`
+      //   const msg = `${resub1} ${resub2}`
+      //   addNotification(channel, msg, true)
+      //   if (message) {
+      //     addUserMessage(channel, {type: 'chat', user, message, golden: true})
+      //   }
+      // },
+      // subgift: (channel, username, recepient, {plan, planName}) => {
+      //   const planText = planCodeToName(plan)
+      //   const message = `${username} gifted a ${planText} sub to ${recepient}!`
+      //   addNotification(channel, message, true)
+      // },
+      //
+      // notice: (channel = '', msgId, message) => {
+      //   channel = channel.substr(1)
+      //   if (!channel || channel === '*') addGlobalNotification(message)
+      //   else addNotification(channel, message)
+      // }
     }
   }
 

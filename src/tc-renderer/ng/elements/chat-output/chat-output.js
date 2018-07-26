@@ -55,6 +55,7 @@ angular.module('tc').directive('chatOutput',
       scope.badgeBg = badgeBg
       scope.badgeTitle = badgeTitle
       scope.isOdd = isOdd
+      scope.nameAndDisplayNameDiffer = nameAndDisplayNameDiffer
 
       // ===============================================================
       // Functions
@@ -294,6 +295,11 @@ angular.module('tc').directive('chatOutput',
         }
         return color
       }
+    }
+    
+    function nameAndDisplayNameDiffer (m) {
+      return m.tags.displayName &&
+        (m.tags.displayName.toLowerCase() !== m.tags.username)
     }
 
     return {restrict: 'E', link, template, scope: {channel: '='}}
