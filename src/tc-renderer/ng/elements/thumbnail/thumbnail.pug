@@ -1,13 +1,23 @@
 .content.slide(ng-if='m.stream')
   span.title(title='{{m.channel.status}}') {{m.channel.status}}
   .hover-content(layout='row', layout-align='center center')
-    i.zmdi.zmdi-hearing.play(ng-if='m.streamlink || m.livestreamer', ng-click='playMediaplayer(true)')
+    i.zmdi.zmdi-hearing.play(
+      ng-if='m.streamlink || m.livestreamer',
+      ng-click='playMediaplayer(true)'
+    )
       md-tooltip(md-autohide='') Audio Only
-    i.zmdi.zmdi-play-circle-outline.play(ng-if='m.streamlink || m.livestreamer', ng-click='playMediaplayer()')
-      md-tooltip(md-autohide='') {{m.streamlink ? 'Streamlink' : 'Livestreamer'}}
+    i.zmdi.zmdi-play-circle-outline.play(
+      ng-if='m.streamlink || m.livestreamer',
+      ng-click='playMediaplayer()'
+    )
+      md-tooltip(md-autohide='')
+        | {{m.streamlink ? 'Streamlink' : 'Livestreamer'}}
     i.zmdi.zmdi-open-in-new.play(ng-click='playTwitch()')
       md-tooltip(md-autohide='') Twitch
-    md-button.hide-button(ng-click='settings.appearance.thumbnail = false', aria-label='Hide thumbnail')
+    md-button.hide-button(
+      ng-click='settings.appearance.thumbnail = false',
+      aria-label='Hide thumbnail'
+    )
       md-tooltip(md-autohide='') Hide thumbnail
       i.zmdi.zmdi-close
   .footer
