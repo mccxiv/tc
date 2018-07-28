@@ -27,13 +27,7 @@
       ng-if='::!m.user && m.type === "whisper"',
       ng-click='selectUsername(m.from)'
     ) {{::m.from}}
-    svg.svg-whisper-arrow(
-      ng-if='::m.type === "whisper"',
-      version='1.1',
-      width='16px',
-      height='10px'
-    )
-      polyline(points='6 2, 10 6, 6 10, 6 2')
+    i.zmdi.zmdi-chevron-right.whisper-arrow(ng-if='::m.type === "whisper"')
     span.username(
       ng-if='::m.type === "whisper"',
       ng-click='selectUsername(m.to)'

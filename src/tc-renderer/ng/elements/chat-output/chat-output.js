@@ -297,7 +297,7 @@ angular.module('tc').directive('chatOutput',
         }
         return color
       }
-      
+
       function messageClasses (m) {
         return {
           'from-backlog': m.fromBacklog,
@@ -315,7 +315,7 @@ angular.module('tc').directive('chatOutput',
           ? {'color': calculateColor(m.user.color)}
           : {}
       }
-      
+
       function displayNameIsDifferent (m) {
         return m.user['display-name'].toLowerCase() !== m.user['username']
       }
