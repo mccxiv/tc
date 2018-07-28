@@ -1,6 +1,6 @@
 import './side-toolbar.css'
 import angular from 'angular'
-import template from './side-toolbar.html'
+import template from './side-toolbar.pug'
 import settings from '../../../lib/settings/settings'
 import capitalize from '../../../lib/transforms/capitalize'
 import autoUpdater from '../../../lib/auto-updater'

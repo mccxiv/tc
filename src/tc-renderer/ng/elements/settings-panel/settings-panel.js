@@ -1,7 +1,7 @@
 import './settings-panel.css'
 import angular from 'angular'
 import electron from 'electron'
-import template from './settings-panel.html'
+import template from './settings-panel.pug'
 import settings from '../../../lib/settings/settings'
 import replacements from '../../../lib/data/replacements.json'
 import autoUpdater from '../../../lib/auto-updater'

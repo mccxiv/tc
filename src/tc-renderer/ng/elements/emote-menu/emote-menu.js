@@ -1,7 +1,7 @@
 import './emote-menu.css'
 import $ from 'jquery'
 import angular from 'angular'
-import template from './emote-menu.html'
+import template from './emote-menu.pug'
 import settings from '../../../lib/settings/settings'
 import {getAllCachedEmotes} from '../../../lib/emotes/menu'
 

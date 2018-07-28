@@ -1,0 +1,10 @@
+md-tabs(md-selected='settings.selectedTabIndex', md-no-bar='', md-no-pagination='', md-dynamic-height='', ng-show='settings.appearance.chatters')
+  md-tab(ng-repeat='channel in settings.channels', label='...')
+    chatters(channel='channel')
+  md-tab(label='...')
+    // md-tab need label and must not be empty 
+    |   
+md-button.toggle-button(md-no-ink='', ng-click='settings.appearance.chatters = !settings.appearance.chatters', aria-label='Hide list', ng-class='{"hide-button": settings.appearance.chatters, collapsed: !settings.appearance.chatters}')
+  md-tooltip(md-autohide='', ng-if='settings.appearance.chatters') Hide list
+  md-tooltip(md-autohide='', ng-if='!settings.appearance.chatters') Show viewer list
+  i.zmdi.zmdi-chevron-up

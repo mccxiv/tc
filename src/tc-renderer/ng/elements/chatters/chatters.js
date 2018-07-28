@@ -1,6 +1,6 @@
 import './chatters.css'
 import angular from 'angular'
-import template from './chatters.html'
+import template from './chatters.pug'
 import {getChattersApi} from '../../../lib/chatters'
 import settings from '../../../lib/settings/settings'
 import channels from '../../../lib/channels'

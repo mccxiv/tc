@@ -1,0 +1,6 @@
+md-whiteframe.md-whiteframe-z4.container(ng-if='m.visible')
+  .emote-list
+    .category(ng-repeat='category in m.categories')
+      .category-label(ng-if='category.emotes.length') {{category.label}}
+      .emotes
+        img.emoticon(ng-repeat='emote in category.emotes', src='{{emote.url}}', data-emote-name='{{emote.emote}}', ng-click='choose(emote.emote)')

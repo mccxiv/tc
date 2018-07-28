@@ -1,7 +1,7 @@
 import './chat-tabs.css'
 import $ from 'jquery'
 import angular from 'angular'
-import template from './chat-tabs.html'
+import template from './chat-tabs.pug'
 import settings from '../../../lib/settings/settings'
 import channels from '../../../lib/channels'
 import * as api from '../../../lib/api'

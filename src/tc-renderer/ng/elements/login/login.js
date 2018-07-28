@@ -1,6 +1,6 @@
 import './login.css'
 import angular from 'angular'
-import template from './login.html'
+import template from './login.pug'
 import settings from '../../../lib/settings/settings'
 
 angular.module('tc').directive('login', function (irc, openExternal) {
