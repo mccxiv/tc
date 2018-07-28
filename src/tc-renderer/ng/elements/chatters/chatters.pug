@@ -1,4 +1,9 @@
-input(ng-model='searchText', placeholder='Filter chatters - {{api.chatter_count | number}}', ng-show='api.chatter_count > 50', ng-model-options='{debounce: 300}')
+input(
+  ng-model='searchText',
+  placeholder='Filter chatters - {{api.chatter_count | number}}',
+  ng-show='api.chatter_count > 50',
+  ng-model-options='{debounce: 300}'
+)
 div(ng-repeat='(key, value) in api.chatters')
   h3(ng-if='value.length') {{prettyChatterNames(key)}}
   .usernames
@@ -7,7 +12,7 @@ div(ng-repeat='(key, value) in api.chatters')
       div(ng-repeat='username in value | filter:searchText')
         span.chatter(ng-click='selectUser(username)') {{username}}
     div(ng-if='key === "viewers" && !tooManyNotDoable()')
-      div(ng-repeat='username in value | limitTo: showViewers()? Infinity : 0 | filter:searchText')
+      div(ng-repeat='username in value | limitTo: showViewers() ? Infinity : 0 | filter:searchText')
         span.chatter(ng-click='selectUser(username)') {{username}}
     div(ng-if='key === "viewers" && !tooManyNotDoable() && !showViewers()')
       md-button.show-more-button(ng-click='showViewers(true)')
