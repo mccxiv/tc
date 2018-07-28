@@ -1,14 +1,26 @@
-md-tabs.chat-tabs(flex='', md-selected='settings.selectedTabIndex', md-border-bottom='')
-  md-tab(md-on-select='selected(channel)', md-on-deselect='deselected(channel)', ng-repeat='channel in settings.channels')
+md-tabs.chat-tabs(
+  flex='',
+  md-selected='settings.selectedTabIndex',
+  md-border-bottom=''
+)
+  md-tab(
+    md-on-select='selected(channel)',
+    md-on-deselect='deselected(channel)',
+    ng-repeat='channel in settings.channels'
+  )
     md-tab-label
-      i.zmdi.zmdi-chevron-left.move-arrow.left(ng-click='moveLeft($event, channel)')
+      i.zmdi.zmdi-chevron-left.move-left(ng-click='moveLeft($event, channel)')
       i.zmdi.zmdi-circle.live-indicator(ng-if='live(channel) === "live"')
       i.zmdi.zmdi-replay.rerun-indicator(ng-if='live(channel) === "rerun"')
       | {{channel}}
       span.counter {{unread(channel)}}
-      i.zmdi.zmdi-chevron-right.move-arrow.right(ng-click='moveRight($event, channel)')
+      i.zmdi.zmdi-chevron-right.move-right(ng-click='moveRight($event, channel)')
     md-tab-body
-      chat-output(channel='channel', ng-hide='hidden[channel]', ng-if='loaded[channel]')
+      chat-output(
+        channel='channel',
+        ng-hide='hidden[channel]',
+        ng-if='loaded[channel]'
+      )
   md-tab
     md-tab-label
       i.zmdi.zmdi-plus.zmdi-lg
