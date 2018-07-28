@@ -18,6 +18,8 @@ angular.module('tc').factory('irc', $rootScope => {
   let twitchJsClient
   let client
 
+  window.ee = ee
+
   // ===============================================================
   // Public members
   // ===============================================================
@@ -76,7 +78,7 @@ angular.module('tc').factory('irc', $rootScope => {
     }
     joinChannels()
     onBadLogin(destroy)
-    forwardEvents(client, ee, ['PRIVMSG', 'WHISPER'])
+    forwardEvents(client, ee, ['PRIVMSG', 'WHISPER', '*'])
     ee.ready = true
     setTimeout(() => $rootScope.$apply(), 0)
 

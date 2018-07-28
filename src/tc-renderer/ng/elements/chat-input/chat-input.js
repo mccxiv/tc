@@ -20,9 +20,10 @@ angular.module('tc').directive('chatInput',
 
       closeEmoteMenuOnEscape()
 
-      irc.on('whisper', from => {
-        lastWhisperer = from.startsWith('#') ? from.substring(1) : from
-      })
+      // TODO redo with twitch-js
+      // irc.on('whisper', from => {
+      //   lastWhisperer = from.startsWith('#') ? from.substring(1) : from
+      // })
 
       scope.getAutoCompleteStrings = () => {
         const channel = settings.channels[settings.selectedTabIndex]
@@ -53,9 +54,13 @@ angular.module('tc').directive('chatInput',
           const words = session.message.split(' ')
           const username = words[1]
           const message = words.slice(2).join(' ')
-          irc.whisper(username, message)
-          messages.addWhisper(settings.identity.username, username, message)
-        } else irc.say(channel, session.message)
+          console.log(`#${username}`, message)
+          irc.whisper(`#jtv`, username, message)
+          // messages.addWhisper(settings.identity.username, username, message)
+        } else {
+          console.log('say: ', channel, session.message)
+          irc.say(channel, session.message)
+        }
         if (scope.chatHistory.indexOf(session.message) !== -1) {
           scope.chatHistory.splice(
             scope.chatHistory.indexOf(session.message),
