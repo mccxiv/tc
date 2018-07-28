@@ -9,27 +9,6 @@ import {EventEmitter} from 'events'
  *
  * Provides a way to interact with the Twitch chat servers
  * Communication is done with the IRC protocol but over webSockets, via tmi.js.
- *
- * @ngdoc factory
- * @name irc
- * @type {object}
- *
- * @fires irc#tmi-events
- *   - Rebroadcasts events from tmi.js
- *
- * @property {boolean} ready
- *   - True if connected to the server
- * @property {boolean} badLogin
- *   - True if currently disconnected because of credentials
- *
- * @property {function} say
- *   - Send a message to the server
- * @property {function} whisper
- *   - Send a whisper to the server
- * @property {function} isMod
- *   - Check if a user is a mode in a channel
- * @property {function} credentialsValid
- *   - Returns true if the credentials appear valid. Not verified server side
  */
 angular.module('tc').factory('irc', $rootScope => {
   // ===============================================================
@@ -45,7 +24,7 @@ angular.module('tc').factory('irc', $rootScope => {
   ee.ready = false
   ee.badLogin = false
   ee.credentialsValid = credentialsValid
-  ee.isMod = (channel, username) => client.isMod(channel, username)
+  ee.amMod = amMod
   ee.say = (channel, message) => client.say(channel, message)
   ee.whisper = (username, message) => client.whisper(username, message)
   ee.getClient = () => client
@@ -257,6 +236,13 @@ angular.module('tc').factory('irc', $rootScope => {
     const haveUsername = !!settings.identity.username.length
     const havePassword = !!settings.identity.password.length
     return haveUsername && havePassword
+  }
+
+  function amMod (channel) {
+    const channels = client.channels
+    const chan = channels[channel]
+    const userState = chan.userState
+    return userState.isModerator
   }
 
   return ee

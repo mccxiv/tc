@@ -33,7 +33,7 @@ angular.module('tc').directive('userPanel',
 
       scope.amMod = () => {
         const channel = settings.channels[settings.selectedTabIndex]
-        return irc.isMod('#' + channel, settings.identity.username)
+        return irc.amMod('#' + channel)
       }
 
       /**
