@@ -73,8 +73,8 @@ angular.module('tc').directive('chatOutput',
           this.lastUsername = null
           this.odd = !this.odd
         } else {
-          if (this.lastUsername !== m.user.username) this.odd = !this.odd
-          this.lastUsername = m.user.username
+          if (this.lastUsername !== m.user.__username) this.odd = !this.odd
+          this.lastUsername = m.user.__username
         }
         return this.odd
       }
@@ -239,8 +239,8 @@ angular.module('tc').directive('chatOutput',
             } else {
               const previous = msgs[i - 1]
               current._isOdd = !previous._isOdd
-              if (current.user && previous.user) {
-                if (current.user.username === previous.user.username) {
+              if (current.tags && previous.tags) {
+                if (current.tags.__username === previous.tags.__username) {
                   current._isOdd = previous._isOdd
                 }
               }
@@ -299,7 +299,7 @@ angular.module('tc').directive('chatOutput',
     
     function nameAndDisplayNameDiffer (m) {
       return m.tags.displayName &&
-        (m.tags.displayName.toLowerCase() !== m.tags.username)
+        (m.tags.displayName.toLowerCase() !== m.tags.__username)
     }
 
     return {restrict: 'E', link, template, scope: {channel: '='}}

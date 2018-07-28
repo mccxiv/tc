@@ -274,17 +274,25 @@ angular.module('tc').factory('messages', (
     getMissingMessages(channel)
   }
 
-  function capitalize (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1)
+  function getUsernameFromRaw (raw) {
+    try {
+      return raw.split(' ')[1].split(':')[1].split('!')[0]
+    } catch (e) {
+      return null
+    }
   }
 
-  function planCodeToName (planCode) {
-    return {
-      '1000': 'Tier 1',
-      '2000': 'Tier 2',
-      '3000': 'Tier 3'
-    }[planCode] || planCode
-  }
+  // function capitalize (str) {
+  //   return str.charAt(0).toUpperCase() + str.slice(1)
+  // }
+  //
+  // function planCodeToName (planCode) {
+  //   return {
+  //     '1000': 'Tier 1',
+  //     '2000': 'Tier 2',
+  //     '3000': 'Tier 3'
+  //   }[planCode] || planCode
+  // }
 
   function messageHasBits (messageObject) {
     return ((messageObject || {}).tags || {}).bits
@@ -302,6 +310,7 @@ angular.module('tc').factory('messages', (
       PRIVMSG: (messageObject) => {
         const {channel, tags, message} = messageObject
         console.log('PRIVMSG', messageObject)
+        tags.__username = getUsernameFromRaw(messageObject._raw)
         const hasBits = messageHasBits(messageObject)
         const actionText = getActionTextOrNull(messageObject)
         const type = hasBits ? 'cheer' : actionText ? 'action' : 'chat'

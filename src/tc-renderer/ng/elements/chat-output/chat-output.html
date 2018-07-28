@@ -28,10 +28,10 @@
             ></span><!--
         ---><span class="badge ffz" data-title="FFZ Supporter" ng-if="::m.tags.ffz_donor"></span><!--
     ---></span><!--
-    ---><span class="username" ng-if="::m.tags" ng-click="selectUsername(m.username)" ng-style="::{color: calculateColor(m.tags.color)}"><!--
-      --->{{::m.tags.displayName || m.tags.username}}<!--
+    ---><span class="username" ng-if="::m.tags" ng-click="selectUsername(m.tags.__username)" ng-style="::{color: calculateColor(m.tags.color)}"><!--
+      --->{{::m.tags.displayName || m.tags.__username}}<!--
       ---><span ng-if="::nameAndDisplayNameDiffer(m)"><!--
-        --->&nbsp;({{::m.tags.username}})<!--
+        --->&nbsp;({{::m.tags.__username}})<!--
       ---></span><!--
     ---></span><!--
     ---><span class="username" ng-if="::!m.tags && m.type === 'whisper'" ng-click="selectUsername(m.from)">{{::m.from}}</span><!--
