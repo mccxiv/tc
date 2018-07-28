@@ -11,11 +11,29 @@
     form(ng-submit='login()')
       md-input-container
         label Oauth token
-        input(ng-if='m.haveUsername', ng-model='m.password', type='password', ng-keyup='trimPassword()', auto-focus='')
+        input(
+          ng-if='m.haveUsername',
+          ng-model='m.password',
+          type='password',
+          ng-keyup='trimPassword()',
+          auto-focus=''
+        )
         |  
-        input(ng-if='!m.haveUsername', ng-model='m.password', type='password', ng-keyup='trimPassword()')
-    p.password-warning(ng-if='doesntLookLikeToken()') You must use a token, not your password.
-    p.password-notice This is not your regular account password, you need to generate a special "oauth token".
+        input(
+          ng-if='!m.haveUsername',
+          ng-model='m.password',
+          type='password',
+          ng-keyup='trimPassword()'
+        )
+    p.password-warning(ng-if='doesntLookLikeToken()')
+      | You must use a token, not your password.
+    p.password-notice
+      | This is not your regular account password,&nbsp;
+      | you need to generate a special "oauth token".
     a.generate-link(ng-click='generate()') Click here to generate your token
-    md-button.login-button.md-fab.md-primary(aria-label='Log in', ng-disabled='!m.password || doesntLookLikeToken()', ng-click='login()')
+    md-button.login-button.md-fab.md-primary(
+      aria-label='Log in',
+      ng-disabled='!m.password || doesntLookLikeToken()',
+      ng-click='login()'
+    )
       i.zmdi.zmdi-arrow-right.zmdi-hc-lg
