@@ -10,6 +10,12 @@ angular.module('tc').directive('chattersTabs', () => {
     link: (scope) => {
       scope.settings = settings
       scope.hideChatters = () => {} // TODO why?
+      scope.toggleButtonClasses = () => {
+        return {
+          'hide-button': settings.appearance.chatters,
+          collapsed: !settings.appearance.chatters
+        }
+      }
     }
   }
 })
