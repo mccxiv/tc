@@ -162,8 +162,6 @@ angular.module('tc').factory('messages', (
     const {tags, message, username} = obj
     const notSelf = username !== lowerCaseUsername
 
-    console.log(channel, obj)
-
     if (settings.chat.ignored.indexOf(tags.__username) > -1) return
     if (tags.special) tags.special.reverse()
     if (!tags.displayName) tags.displayName = username
@@ -308,7 +306,6 @@ angular.module('tc').factory('messages', (
       // Users talking
       PRIVMSG: (messageObject) => {
         const {channel, tags, message} = messageObject
-        console.log('PRIVMSG', messageObject)
         tags.__username = getUsernameFromRaw(messageObject._raw)
         const hasBits = messageHasBits(messageObject)
         const actionText = getActionTextOrNull(messageObject)
