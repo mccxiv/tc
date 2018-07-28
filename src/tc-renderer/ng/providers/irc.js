@@ -49,7 +49,7 @@ angular.module('tc').factory('irc', $rootScope => {
     // We can't listen to ALL because of a bug
     const events = {...ChatConstants.EVENTS}
     delete events.RAW
-    delete events.ALL
+    // delete events.ALL
     delete events.MODE
     delete events.NAMES
     delete events.NAMES_END
@@ -76,7 +76,7 @@ angular.module('tc').factory('irc', $rootScope => {
     }
     joinChannels()
     onBadLogin(destroy)
-    forwardEvents(client, ee, ['PRIVMSG'])
+    forwardEvents(client, ee, ['PRIVMSG', 'WHISPER'])
     ee.ready = true
     setTimeout(() => $rootScope.$apply(), 0)
 
@@ -141,7 +141,7 @@ angular.module('tc').factory('irc', $rootScope => {
       console.log('Listening', event)
       emitter.addListener(event, (...args) => {
         args.unshift(event)
-        // console.log('Event:', ...args)
+        console.log('Event:', ...args)
         reEmitter.emit.apply(reEmitter, args)
       })
     })

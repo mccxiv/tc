@@ -47,14 +47,14 @@ angular.module('tc').factory('messages', (
   }
 
   /** Adds a message with the 'whisper' type */
-  function addWhisper (from, to, message) {
+  function addWhisper (from, to, messageObject) {
     settings.channels.forEach((channel) => {
       addMessage(channel, {
         type: 'whisper',
         from: typeof from === 'string' ? from : from.username,
         user: typeof from === 'object' ? from : undefined,
         to,
-        message
+        ...messageObject
       })
     })
   }
@@ -244,22 +244,22 @@ angular.module('tc').factory('messages', (
   }
 
   /** Mark previous messages from this user as deleted */
-  function timeoutFromChat (channel, username) {
-    channel = channel.substring(1)
-    messages[channel].forEach((message) => {
-      if (message.tags && message.tags.__username === username) {
-        message.deleted = true
-      }
-    })
-
-    if (settings.appearance.hideTimeouts) {
-      const arr = messages[channel]
-      for (let i = arr.length - 1; i >= 0; i--) {
-        if (arr[i].deleted) arr.splice(i, 1)
-      }
-      applyLate()
-    }
-  }
+  // function timeoutFromChat (channel, username) {
+  //   channel = channel.substring(1)
+  //   messages[channel].forEach((message) => {
+  //     if (message.tags && message.tags.__username === username) {
+  //       message.deleted = true
+  //     }
+  //   })
+  //
+  //   if (settings.appearance.hideTimeouts) {
+  //     const arr = messages[channel]
+  //     for (let i = arr.length - 1; i >= 0; i--) {
+  //       if (arr[i].deleted) arr.splice(i, 1)
+  //     }
+  //     applyLate()
+  //   }
+  // }
 
   function applyLate () {
     setTimeout(() => $rootScope.$apply(), 0)
@@ -301,12 +301,16 @@ angular.module('tc').factory('messages', (
     return match ? match[1] : null
   }
 
+  function mutateAddUsernameToTags (messageObject) {
+    messageObject.tags.__username = getUsernameFromRaw(messageObject._raw)
+  }
+
   function getChatListeners () {
     return {
-      // Users talking
       PRIVMSG: (messageObject) => {
+        console.log(messageObject)
+        mutateAddUsernameToTags(messageObject)
         const {channel, tags, message} = messageObject
-        tags.__username = getUsernameFromRaw(messageObject._raw)
         const hasBits = messageHasBits(messageObject)
         const actionText = getActionTextOrNull(messageObject)
         const type = hasBits ? 'cheer' : actionText ? 'action' : 'chat'
@@ -316,13 +320,13 @@ angular.module('tc').factory('messages', (
           message: actionText || message,
           golden: hasBits
         })
+      },
+      WHISPER: (messageObject) => {
+        mutateAddUsernameToTags(messageObject)
+        const from = messageObject.tags.__username
+        if (messageObject.isSelf) return
+        addWhisper(from, lowerCaseUsername, messageObject)
       }
-      // whisper: (from, user, message, self) => {
-      //   if (self) return
-      //   if (from.startsWith('#')) from = from.substring(1)
-      //   const me = capitalize(lowerCaseUsername)
-      //   addWhisper(from, me, message)
-      // },
       //
       // // Moderators doing stuff
       // ban: (channel, username, reason) => {
