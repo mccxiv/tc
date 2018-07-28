@@ -73,8 +73,8 @@ angular.module('tc').directive('chatOutput',
           this.lastUsername = null
           this.odd = !this.odd
         } else {
-          if (this.lastUsername !== m.user.__username) this.odd = !this.odd
-          this.lastUsername = m.user.__username
+          if (this.lastUsername !== m.tags.__username) this.odd = !this.odd
+          this.lastUsername = m.tags.__username
         }
         return this.odd
       }

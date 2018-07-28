@@ -15,6 +15,6 @@ export default function processMessage (msgObject, channel, emotesFromTwitch) {
   msg = addEmotesAsImages(msg, bttvEmotes(channel))
   msg = addEmotesAsImages(msg, ffzEmotes(channel))
   msg = twitchE ? addEmotesAsImages(msg, twitchEmotes(original, twitchE)) : msg
-  msg = msgObject.user && msgObject.user.bits ? addBitGifs(channel, msg) : msg
+  msg = msgObject.tags && msgObject.tags.bits ? addBitGifs(channel, msg) : msg
   return msg
 }

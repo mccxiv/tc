@@ -113,8 +113,8 @@ angular.module('tc').factory('messages', (
       const req = await axios(url, {params: {before, after, limit}})
       const backlog = req.data
       backlog.forEach((obj) => {
-        obj.type = obj.user['message-type']
-        if (obj.user.bits) {
+        obj.type = obj.tags['message-type']
+        if (obj.tags.bits) {
           obj.type = 'cheer'
           obj.golden = true
         }
@@ -143,10 +143,9 @@ angular.module('tc').factory('messages', (
   }
 
   function dontHaveMessage (channel, obj) {
-    window.messages = messages
     if (!messages[channel] || !obj.user || !obj.user.id) return true
     return !messages[channel].find(msg => {
-      return msg.user ? msg.user.id === obj.user.id : false
+      return msg.tags ? msg.tags.id === obj.user.id : false
     })
   }
 
@@ -165,10 +164,10 @@ angular.module('tc').factory('messages', (
 
     console.log(channel, obj)
 
-    if (settings.chat.ignored.indexOf(tags.username) > -1) return
+    if (settings.chat.ignored.indexOf(tags.__username) > -1) return
     if (tags.special) tags.special.reverse()
     if (!tags.displayName) tags.displayName = username
-    if (isFfzDonor(tags.username)) tags.ffz_donor = true
+    if (isFfzDonor(tags.__username)) tags.ffz_donor = true
     if (highlights.test(message, username) && notSelf) {
       obj.highlighted = true
     }
@@ -250,7 +249,7 @@ angular.module('tc').factory('messages', (
   function timeoutFromChat (channel, username) {
     channel = channel.substring(1)
     messages[channel].forEach((message) => {
-      if (message.user && message.user.username === username) {
+      if (message.tags && message.tags.__username === username) {
         message.deleted = true
       }
     })
