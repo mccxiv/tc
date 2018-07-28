@@ -84,12 +84,12 @@ chat-tabs md-tab-item:nth-last-of-type(2) .move-right {
   display: none;
 }
 
-chat-tabs .zmdi-circle, chat-tabs .zmdi-replay {
+chat-tabs .live-indicator, chat-tabs .rerun-indicator {
   font-size: 0.65em;
   padding-right: 1px;
   position: relative;
-  top: -2px;
-  left: -1px;
+  top: -1px;
+  left: -4px;
 }
 
 chat-tabs .zmdi-replay {
