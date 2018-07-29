@@ -1,0 +1,58 @@
+md-button.connection(
+  md-no-ink='',
+  aria-label='Connection status',
+  ng-class='{"not-ready": !irc.ready, "ready": irc.ready}'
+)
+  md-tooltip(md-autohide='', md-direction='right')
+    | Status: {{irc.ready? 'Connected' : 'Connecting'}}
+  i.zmdi.zmdi-swap-vertical
+md-button(ng-click='confirmLogout($event)', aria-label='Sign out')
+  md-tooltip(md-autohide='', md-direction='right')
+    | {{capitalize(settings.identity.username)}}: Sign out
+  i.zmdi.zmdi-account
+md-button(ng-click='settingsGui.show($event)', aria-label='Settings')
+  md-tooltip(md-autohide='', md-direction='right') Settings
+  i.zmdi.zmdi-settings
+md-divider.vertical
+span(flex='')
+md-button.update(
+  md-no-ink='',
+  aria-label='Update', ng-click='restart()',
+  ng-if='m.updateAvailable'
+)
+  md-tooltip(md-autohide='', md-direction='right')
+    | Update is ready. Restart Tc to install it.
+  i.zmdi.zmdi-download
+md-button(
+  ng-click='settings.appearance.thumbnail = true',
+  aria-label='Show thumbnail',
+  ng-if='showingThumbnailButton()'
+)
+  md-tooltip(md-autohide='', md-direction='right') Show thumbnail
+  i.zmdi.zmdi-tv-play
+md-button(
+  ng-click='openChannel()',
+  aria-label='Go to channel',
+  ng-if='channel()'
+)
+  md-tooltip(md-autohide='', md-direction='right') Go to Channel
+  i.zmdi.zmdi-open-in-new
+md-button(ng-click='leave()', aria-label='Leave channel', ng-if='channel()')
+  md-tooltip(md-autohide='', md-direction='right') Leave Channel
+  i.zmdi.zmdi-close
+md-button.collapse-button(
+  ng-click='toggleCollapsed()',
+  aria-label='Small sidebar',
+  ng-class='{collapsed: settings.appearance.sidebarCollapsed}'
+)
+  md-tooltip(
+    md-autohide='',
+    md-direction='right',
+    ng-if='!settings.appearance.sidebarCollapsed'
+  ) Collapse sidebar ({{::m.hotkey}} + s)
+  md-tooltip(
+    md-autohide='',
+    md-direction='right',
+    ng-if='settings.appearance.sidebarCollapsed'
+  ) Expand sidebar ({{::m.hotkey}} + s)
+  i.zmdi.zmdi-chevron-left

@@ -1,0 +1,21 @@
+input(
+  ng-model='searchText',
+  placeholder='Filter chatters - {{api.chatter_count | number}}',
+  ng-show='api.chatter_count > 50',
+  ng-model-options='{debounce: 300}'
+)
+div(ng-repeat='(key, value) in api.chatters')
+  h3(ng-if='value.length') {{prettyChatterNames(key)}}
+  .usernames
+    // Not DRY because this has better performance 
+    div(ng-if='key !== "viewers"')
+      div(ng-repeat='username in value | filter:searchText')
+        span.chatter(ng-click='selectUser(username)') {{username}}
+    div(ng-if='key === "viewers" && !tooManyNotDoable()')
+      div(ng-repeat='username in value | limitTo: showViewers() ? Infinity : 0 | filter:searchText')
+        span.chatter(ng-click='selectUser(username)') {{username}}
+    div(ng-if='key === "viewers" && !tooManyNotDoable() && !showViewers()')
+      md-button.show-more-button(ng-click='showViewers(true)')
+        | Too many, show all?
+        i.zmdi.zmdi-expand-more
+    div(ng-if='key === "viewers" && tooManyNotDoable()') Too many, try filtering

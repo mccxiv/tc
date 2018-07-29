@@ -1,6 +1,6 @@
 import './chat-input.css'
 import angular from 'angular'
-import template from './chat-input.html'
+import template from './chat-input.pug'
 import replacePhrases from '../../../lib/transforms/replace-phrases'
 import {getChatterNames} from '../../../lib/chatters'
 import settings from '../../../lib/settings/settings'

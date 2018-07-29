@@ -1,0 +1,185 @@
+md-sidenav.settings-sidebar.md-sidenav-left.md-whiteframe-z2.menu(
+  md-is-locked-open='true'
+)
+  md-list
+    md-subheader.md-no-sticky Settings
+    // TODO refactor this awful repetition 
+    md-list-item.menu-item(
+      ng-click='m.selected = "tc"',
+      ng-class='{selected: m.selected === "tc"}'
+    )
+      p Tc
+    md-list-item.menu-item(
+      ng-click='m.selected = "highlights"',
+      ng-class='{selected: m.selected === "highlights"}'
+    )
+      p Highlights
+    md-list-item.menu-item(
+      ng-click='m.selected = "appearance"',
+      ng-class='{selected: m.selected === "appearance"}'
+    )
+      p Appearance
+    md-list-item.menu-item(
+      ng-click='m.selected = "notifications"',
+      ng-class='{selected: m.selected === "notifications"}'
+    )
+      p Notifications
+    md-list-item.menu-item(
+      ng-click='m.selected = "shortcuts"',
+      ng-class='{selected: m.selected === "shortcuts"}'
+    )
+      p Shortcuts
+    md-list-item.menu-item(
+      ng-click='m.selected = "ignore"',
+      ng-class='{selected: m.selected === "ignore"}'
+    )
+      p Ignore List
+.settings-content(
+  flex='',
+  ng-switch='',
+  on='m.selected',
+  layout='column'
+)
+  md-content.tc(
+    flex='',
+    ng-switch-when='tc',
+    layout='column',
+    layout-align='center center'
+  )
+    img(style='width: 150px;', src="../../../../assets/icon256.png")
+    h1.md-headline Tc, the chat client for Twitch
+    p
+      span Version: {{m.version}}
+      | &nbsp;|&nbsp;
+      a(href-external='http://gettc.xyz/') gettc.xyz
+    p
+      md-button(
+        ng-click='tc.checkForUpdates()',
+        ng-disabled='tc.checkedForUpdate'
+      ) Check for updates
+  md-content.highlights(ng-switch-when='highlights')
+    h1.md-headline Highlighted phrases
+    p
+      | You may add words, phrases or users to make them stand out in chat&nbsp;
+      | and show up as desktop notifications. Matches are not case&nbsp;
+      | sensitive. Users can be added as: user:name.
+    form.input-form(ng-submit='highlights.add()')
+      md-input-container
+        label
+          | Add a new phrase or user.
+          br
+          | Phrases support regex, users do not
+        input(ng-model='highlights.input')
+    md-list.phrase-list
+      md-list-item.item(
+        ng-repeat='highlight in highlights.list track by $index'
+      )
+        md-button.close-button.md-raised.md-warn(
+          ng-click='highlights.remove($index)'
+        )
+          md-tooltip(md-autohide='', md-direction='right') Delete this phrase
+          i.zmdi.zmdi-close
+        p {{highlight}}
+    md-switch(
+      ng-model='highlights.highlightMe',
+      aria-label='Highlight Self',
+      ng-change='highlights.changeHighlightMe()'
+    ) Also highlight my own name
+  md-content.shortcuts(ng-switch-when='shortcuts')
+    h1.md-headline Text Shortcuts
+    p In the chat, surround a keyword with colons to replace it with its text.
+    h3 Add new shortcut
+    form.input-form.new-shortcut-form
+      md-input-container
+        label Keyword
+        input(
+          ng-model='shortcuts.new.name',
+          ng-keypress='shortcuts.newOnKey($event)'
+        )
+      md-input-container
+        label Replacement
+        input(
+          ng-model='shortcuts.new.value',
+          ng-keypress='shortcuts.newOnKey($event)'
+        )
+    h3(ng-if='shortcuts.haveCustoms()') Custom Shortcuts
+    md-list.shortcut-list
+      md-list-item.item(ng-repeat='(name, value) in shortcuts.customs')
+        md-input-container
+          label {{name}}
+          input(
+            ng-model='shortcuts.customs[name]',
+            ng-keypress='shortcuts.existingOnKey($event, name)',
+            ng-blur='shortcuts.checkDelete(name)'
+          )
+    h3 Default Shortcuts
+    md-list.shortcut-list
+      md-list-item.item(ng-repeat='(name, value) in shortcuts.defaults')
+        p
+          span.shortcut-name {{name}}
+          | {{value}}
+    h3 Emojis
+    p Symbols and emojis are supported. Try :tm: and :poop: in chat.
+  md-content(ng-switch-when='notifications')
+    h1.md-headline Desktop notifications
+    md-switch(ng-model='settings.notifications.onConnect')
+      | On connection and disconnection
+    md-switch(ng-model='settings.notifications.onMention')
+      | On highlighted phrases
+    md-switch(ng-model='settings.notifications.onWhisper')
+      | On whispers
+    md-divider
+    md-switch(
+      ng-model='settings.notifications.soundOnMention',
+      ng-change='notifications.playSound()'
+    ) Also play a sound
+  md-content(ng-switch-when='ignore')
+    h1.md-headline Ignore List
+    form.input-form(ng-submit='ignore.add()')
+      md-input-container
+        label Add a new user to ignore
+        input(ng-model='ignore.input')
+    md-list.phrase-list
+      md-list-item.item(
+        ng-repeat='ignored in settings.chat.ignored track by $index'
+      )
+        md-button.close-button.md-raised.md-warn(
+          ng-click='ignore.delete($index)'
+        )
+          md-tooltip(md-autohide='', md-direction='right') Unblock this user
+          i.zmdi.zmdi-close
+        p {{ignored}}
+  md-content(ng-switch-when='appearance')
+    h1.md-headline Appearance
+    p Some options will only affect new messages.
+    md-switch(ng-model='settings.theme.dark')
+      | Use dark theme
+    md-switch(ng-model='settings.chat.timestamps')
+      | Show time stamps
+    md-switch(ng-model='settings.appearance.split')
+      | Split chat lines for more contrast
+    md-switch(ng-model='settings.appearance.variableLineHeight')
+      | Prevent emotes from overlapping
+      md-tooltip(md-autohide='', md-direction='right')
+        | Use variable line height. Causes some lines to be taller.
+    md-switch(
+      ng-model='settings.appearance.alwaysOnTop',
+      ng-change='toggleOnTop()'
+    ) Always on top
+    md-divider
+    md-switch(ng-model='settings.appearance.hideTimeouts')
+      | Completely remove timeouts and bans
+      md-tooltip Delete purged messages instead of just fading them
+    md-divider
+    h1.md-headline Zoom Level
+    div(layout='')
+      span.slider-label(layout='', layout-align='center center') {{zoomLabel()}}
+      md-slider(
+        flex='',
+        md-discrete='',
+        ng-model='settings.appearance.zoom',
+        min='100',
+        max='175',
+        step='5',
+        aria-label='Zoom'
+      )

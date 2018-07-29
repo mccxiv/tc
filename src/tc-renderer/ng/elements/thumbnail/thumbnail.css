@@ -111,3 +111,11 @@ thumbnail .game {
   white-space: nowrap;
   margin: 1px 1px 0 1px;
 }
+
+thumbnail .footer i {
+  margin-right: 4px;
+}
+
+thumbnail .footer span {
+  margin-right: 6px;
+}

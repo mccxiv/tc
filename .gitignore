@@ -1,5 +1,6 @@
 /.*
 /_*
 !/.gitignore
+!/.editorconfig
 node_modules
 dist/

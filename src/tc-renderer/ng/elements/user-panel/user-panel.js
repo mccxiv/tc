@@ -1,6 +1,6 @@
 import './user-panel.css'
 import angular from 'angular'
-import template from './user-panel.html'
+import template from './user-panel.pug'
 import {user} from '../../../lib/api'
 import settings from '../../../lib/settings/settings'
 import capitalize from '../../../lib/transforms/capitalize'

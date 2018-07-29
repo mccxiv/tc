@@ -53,7 +53,8 @@ chat-tabs md-tab-item:hover .counter {
   opacity: 0;
 }
 
-chat-tabs .move-arrow {
+chat-tabs .move-left,
+chat-tabs .move-right {
   outline: none;
   cursor: pointer;
   top: 12px;
@@ -62,32 +63,33 @@ chat-tabs .move-arrow {
   opacity: 0;
 }
 
-chat-tabs .move-arrow.left {
+chat-tabs .move-left {
   left: 10px
 }
 
-chat-tabs .move-arrow.right {
+chat-tabs .move-right {
   right: 10px
 }
 
-chat-tabs md-tab-item:hover .move-arrow {
+chat-tabs md-tab-item:hover .move-left,
+chat-tabs md-tab-item:hover .move-right {
   opacity: 0.65;
 }
 
-chat-tabs md-tab-item:first-of-type .move-arrow.left {
+chat-tabs md-tab-item:first-of-type .move-left {
   display: none;
 }
 
-chat-tabs md-tab-item:nth-last-of-type(2) .move-arrow.right {
+chat-tabs md-tab-item:nth-last-of-type(2) .move-right {
   display: none;
 }
 
-chat-tabs .zmdi-circle, chat-tabs .zmdi-replay {
+chat-tabs .live-indicator, chat-tabs .rerun-indicator {
   font-size: 0.65em;
   padding-right: 1px;
   position: relative;
-  top: -2px;
-  left: -1px;
+  top: -1px;
+  left: -4px;
 }
 
 chat-tabs .zmdi-replay {

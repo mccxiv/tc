@@ -7,7 +7,7 @@ import NProgress from 'nprogress'
 import $ from 'jquery'
 import angular from 'angular'
 import colors from '../../../lib/colors'
-import template from './chat-output.html'
+import template from './chat-output.pug'
 import {getModBadge} from '../../../lib/emotes/ffz'
 import {sleep} from '../../../lib/util'
 import {badges} from '../../../lib/api'
@@ -55,6 +55,9 @@ angular.module('tc').directive('chatOutput',
       scope.badgeBg = badgeBg
       scope.badgeTitle = badgeTitle
       scope.isOdd = isOdd
+      scope.messageClasses = messageClasses
+      scope.messageInlineStyles = messageInlineStyles
+      scope.displayNameIsDifferent = displayNameIsDifferent
 
       // ===============================================================
       // Functions
@@ -293,6 +296,28 @@ angular.module('tc').directive('chatOutput',
           }
         }
         return color
+      }
+
+      function messageClasses (m) {
+        return {
+          'from-backlog': m.fromBacklog,
+          highlighted: m.highlighted,
+          deleted: m.deleted,
+          whisper: m.type === 'whisper',
+          notification: m.type === 'notification',
+          golden: m.golden,
+          odd: m._isOdd
+        }
+      }
+
+      function messageInlineStyles (m) {
+        return m.type === 'action'
+          ? {'color': calculateColor(m.user.color)}
+          : {}
+      }
+
+      function displayNameIsDifferent (m) {
+        return m.user['display-name'].toLowerCase() !== m.user['username']
       }
     }
 
