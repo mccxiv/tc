@@ -2,21 +2,49 @@ md-sidenav.settings-sidebar.md-sidenav-left.md-whiteframe-z2.menu(md-is-locked-o
   md-list
     md-subheader.md-no-sticky Settings
     // TODO refactor this awful repetition 
-    md-list-item.menu-item(ng-click='m.selected = "tc"', ng-class='{selected: m.selected === "tc"}')
+    md-list-item.menu-item(
+      ng-click='m.selected = "tc"',
+      ng-class='{selected: m.selected === "tc"}'
+    )
       p Tc
-    md-list-item.menu-item(ng-click='m.selected = "highlights"', ng-class='{selected: m.selected === "highlights"}')
+    md-list-item.menu-item(
+      ng-click='m.selected = "highlights"',
+      ng-class='{selected: m.selected === "highlights"}'
+    )
       p Highlights
-    md-list-item.menu-item(ng-click='m.selected = "appearance"', ng-class='{selected: m.selected === "appearance"}')
+    md-list-item.menu-item(
+      ng-click='m.selected = "appearance"',
+      ng-class='{selected: m.selected === "appearance"}'
+    )
       p Appearance
-    md-list-item.menu-item(ng-click='m.selected = "notifications"', ng-class='{selected: m.selected === "notifications"}')
+    md-list-item.menu-item(
+      ng-click='m.selected = "notifications"',
+      ng-class='{selected: m.selected === "notifications"}'
+    )
       p Notifications
-    md-list-item.menu-item(ng-click='m.selected = "shortcuts"', ng-class='{selected: m.selected === "shortcuts"}')
+    md-list-item.menu-item(
+      ng-click='m.selected = "shortcuts"',
+      ng-class='{selected: m.selected === "shortcuts"}'
+    )
       p Shortcuts
-    md-list-item.menu-item(ng-click='m.selected = "ignore"', ng-class='{selected: m.selected === "ignore"}')
+    md-list-item.menu-item(
+      ng-click='m.selected = "ignore"',
+      ng-class='{selected: m.selected === "ignore"}'
+    )
       p Ignore List
-.settings-content(flex='', ng-switch='', on='m.selected', layout='column')
-  md-content.tc(flex='', ng-switch-when='tc', layout='column', layout-align='center center')
-    img(style='width: 150px;', src='../../../../assets/icon256.png')
+.settings-content(
+  flex='',
+  ng-switch='',
+  on='m.selected',
+  layout='column'
+)
+  md-content.tc(
+    flex='',
+    ng-switch-when='tc',
+    layout='column',
+    layout-align='center center'
+  )
+    img(style='width: 150px;', src="../../../../assets/icon256.png")
     h1.md-headline Tc, the chat client for Twitch
     p
       span Version: {{m.version}}
