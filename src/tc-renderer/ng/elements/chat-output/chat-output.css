@@ -11,6 +11,7 @@ chat-output {
   height: 100%;
   display: block;
   overflow: auto;
+  will-change: transform;
   font-size: 1.4rem;
   user-select: text;
   -webkit-user-select: text;
