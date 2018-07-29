@@ -1,0 +1,120 @@
+chat-output::-webkit-scrollbar
+  width: 4px
+
+chat-output::-webkit-scrollbar-thumb
+  border-radius: 2px
+  background-color: rgba(0, 0, 0, .3)
+
+chat-output
+  height: 100%
+  display: block
+  overflow: auto
+  will-change: transform
+  font-size: 1.4rem
+  user-select: text
+  -webkit-user-select: text
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+
+  .timestamp
+    font-size: 1rem
+
+  .badge
+    width: 18px
+    height: 18px
+    border-radius: 2px
+
+  .emoticon,
+  .badge
+    margin: -9px 0
+    vertical-align: 5px
+    display: inline-block
+
+  .badge.ffz
+    background: #755000 url(https://cdn.frankerfacez.com/script/devicon.png)
+
+  .badge:last-child
+    margin-right: 3px
+
+  .emoticon
+    bottom: -8px
+    max-height: 30px
+    margin-top: -30px
+    position: relative
+    vertical-align: middle
+
+  .badge:not(:first-child)
+    margin-left: 3px
+
+  .username
+    outline: none
+    cursor: pointer
+
+  .username:hover
+    text-decoration: underline
+
+  .chat-lines
+    padding-top: 10px
+
+  .chat-line
+    padding: 4px 0 4px 15px
+    line-height: 17px
+    word-wrap: break-word
+
+  .chat-line .separator
+    margin-right: 2px
+
+  .chat-line .username
+    font-weight: bold
+
+  .highlighted
+    background-color: rgba(255, 0, 0, 0.15) !important
+    /* override zebra */
+
+  .whisper
+    padding-left: 5px
+    border-left: 3px solid rgba(166, 142, 210, 0.46)
+    background-color: rgba(255, 174, 0, 0.15)
+
+  .notification
+    color: #9D9D9D
+
+  .from-backlog
+    padding-left: 12px
+    border-left: 3px solid rgba(140, 162, 207, 0.46)
+
+  .golden
+    padding-left: 12px
+    border-left: 3px solid #ffd767
+
+  .auto-scroll-notice
+    position: fixed
+    bottom: 0
+    width: calc(100% + 15px)
+    margin-left: -15px
+    padding: 5px
+    color: white
+    background-color: rgba(0, 0, 0, 0.3)
+    text-align: center
+    cursor: pointer
+    outline: none
+
+  .deleted .message
+    text-decoration: line-through
+    opacity: 0.5
+
+  .chat-line.odd
+    background-color: rgba(0, 0, 0, 0.05)
+
+  .variable-line-height .chat-line
+    line-height: unset
+
+  .variable-line-height .emoticon
+    margin: unset
+    bottom: unset
+    vertical-align: -3px
+
+  .whisper-arrow
+    margin: 0 6px
+
+#nprogress .spinner
+  top: 47px

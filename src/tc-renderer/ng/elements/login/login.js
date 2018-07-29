@@ -1,4 +1,4 @@
-import './login.css'
+import './login.styl'
 import angular from 'angular'
 import template from './login.pug'
 import settings from '../../../lib/settings/settings'

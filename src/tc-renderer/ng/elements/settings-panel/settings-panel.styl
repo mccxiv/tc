@@ -1,0 +1,68 @@
+settings-panel
+  overflow: auto
+
+  md-list-item
+    min-height: 30px
+
+  .menu
+    /* Need all three to overwrite defaults */
+    width: 150px
+    min-width: 150px
+    max-width: 150px
+
+  .settings-content > *
+    padding: 15px
+
+  .menu-item .md-button
+    border-radius: 0 !important
+
+  .menu-item .md-button:hover
+    background-color: rgba(0, 0, 0, 0.1) !important
+
+  .selected .md-button
+    background-color: rgba(0, 0, 0, 0.2) !important
+
+  .slider-label
+    padding-right: 10px
+
+  .highlights .item
+    font-size: 1.4rem
+    cursor: default
+
+  .close-button
+    width: 26px
+    min-width: 0
+    line-height: 2.5rem
+    height: 2.5rem
+
+  md-input-container
+    width: 300px
+
+  .tc h1
+    margin-bottom: 0
+
+  .shortcuts .new-shortcut-form
+    display: flex
+    flex-direction: row
+
+  .shortcuts .new-shortcut-form md-input-container:first-child
+    width: 150px
+
+  .shortcuts .new-shortcut-form md-input-container:nth-child(2)
+    width: 250px
+
+  md-list-item.md-clickable:hover
+    cursor: default
+
+  .shortcuts .new-shortcut-form
+    padding-left: 16px
+
+  .shortcuts > p
+    padding-left: 16px
+
+  .shortcuts .shortcut-name
+    width: 75px
+    display: inline-block
+    text-align: right
+    padding-right: 15px
+

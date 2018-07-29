@@ -1,4 +1,4 @@
-import './chat-input.css'
+import './chat-input.styl'
 import angular from 'angular'
 import template from './chat-input.pug'
 import replacePhrases from '../../../lib/transforms/replace-phrases'

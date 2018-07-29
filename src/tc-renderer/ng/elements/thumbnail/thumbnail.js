@@ -1,4 +1,4 @@
-import './thumbnail.css'
+import './thumbnail.styl'
 import which from 'which'
 import axios from 'axios'
 import {exec} from 'child_process'

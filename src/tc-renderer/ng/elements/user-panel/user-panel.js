@@ -1,4 +1,4 @@
-import './user-panel.css'
+import './user-panel.styl'
 import angular from 'angular'
 import template from './user-panel.pug'
 import {user} from '../../../lib/api'

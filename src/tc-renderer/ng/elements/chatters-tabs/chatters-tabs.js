@@ -1,4 +1,4 @@
-import './chatters-tabs.css'
+import './chatters-tabs.styl'
 import angular from 'angular'
 import template from './chatters-tabs.pug'
 import settings from '../../../lib/settings/settings'

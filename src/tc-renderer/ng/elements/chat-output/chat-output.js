@@ -1,6 +1,6 @@
 import 'nprogress/nprogress.css'
-import './chat-output.css'
-import './bttv-seasonal-emotes.css'
+import './chat-output.styl'
+import './bttv-seasonal-emotes.styl'
 import 'frostyjs/dist/css/frosty.min.css'
 import 'frostyjs/dist/js/frosty.min.js'
 import NProgress from 'nprogress'

@@ -1,4 +1,4 @@
-import './chat-tabs.css'
+import './chat-tabs.styl'
 import $ from 'jquery'
 import angular from 'angular'
 import template from './chat-tabs.pug'
