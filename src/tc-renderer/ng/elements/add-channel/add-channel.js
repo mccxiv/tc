@@ -1,4 +1,4 @@
-import './add-channel.css'
+import './add-channel.styl'
 import angular from 'angular'
 import template from './add-channel.pug'
 import settings from '../../../lib/settings/settings'

@@ -43,13 +43,6 @@ const base = {
         ]
       },
       {
-        test: /\.css$/,
-        use: [
-          {loader: 'style-loader'},
-          {loader: 'css-loader'}
-        ]
-      }, // Missing $ is intentional
-      {
         test: /\.(ttf|woff|woff2)/,
         use: [
           {loader: 'url-loader'}
@@ -77,6 +70,21 @@ const base = {
         use: [
           {loader: 'html-loader'},
           {loader: 'pug-html-loader'}
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'}
+        ]
+      },
+      {
+        test: /\.styl$/,
+        use: [
+          {loader: 'style-loader'},
+          {loader: 'css-loader'},
+          {loader: 'stylus-loader'}
         ]
       }
     ]
