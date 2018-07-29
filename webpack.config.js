@@ -75,8 +75,8 @@ const base = {
       {
         test: /\.pug$/,
         use: [
-          {loader: 'apply-loader'},
-          {loader: 'pug-loader'}
+          {loader: 'html-loader'},
+          {loader: 'pug-html-loader'}
         ]
       }
     ]

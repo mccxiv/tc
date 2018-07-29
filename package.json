@@ -50,7 +50,6 @@
     "src/node_modules"
   ],
   "devDependencies": {
-    "apply-loader": "^2.0.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-angularjs-annotate": "^0.8.2",
@@ -75,8 +74,7 @@
     "json-loader": "^0.5.7",
     "ng-annotate-loader": "^0.6.1",
     "node-loader": "^0.6.0",
-    "pug": "^2.0.3",
-    "pug-loader": "^2.4.0",
+    "pug-html-loader": "^1.1.5",
     "shelljs": "^0.8.1",
     "style-loader": "^0.20.2",
     "url-loader": "^0.6.2",
