@@ -1,6 +1,6 @@
 import angular from 'angular'
 import template from '../elements/settings-panel/settings-gui-dialog.pug'
-import '../elements/settings-panel/settings-gui-dialog.css'
+import '../elements/settings-panel/settings-gui-dialog.styl'
 
 angular.module('tc').factory('settingsGui', function ($mdDialog, $rootElement) {
   return {

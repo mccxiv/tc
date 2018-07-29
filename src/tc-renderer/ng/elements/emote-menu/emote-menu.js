@@ -1,4 +1,4 @@
-import './emote-menu.css'
+import './emote-menu.styl'
 import $ from 'jquery'
 import angular from 'angular'
 import template from './emote-menu.pug'

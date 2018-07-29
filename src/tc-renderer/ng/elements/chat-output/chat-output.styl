@@ -1,0 +1,121 @@
+chat-output::-webkit-scrollbar
+  width: 4px
+
+chat-output::-webkit-scrollbar-thumb
+  border-radius: 2px
+  background-color: rgba(0, 0, 0, .3)
+
+chat-output
+  height: 100%
+  display: block
+  overflow: auto
+  will-change: transform
+  font-size: 1.4rem
+  user-select: text
+  -webkit-user-select: text
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+
+chat-output .timestamp
+  font-size: 1rem
+
+chat-output .badge
+  width: 18px
+  height: 18px
+  border-radius: 2px
+
+chat-output .emoticon,
+chat-output .badge
+  margin: -9px 0
+  vertical-align: 5px
+  display: inline-block
+
+chat-output .badge.ffz
+  background: #755000 url(https://cdn.frankerfacez.com/script/devicon.png)
+
+chat-output .badge:last-child
+  margin-right: 3px
+
+chat-output .emoticon
+  bottom: -8px
+  max-height: 30px
+  margin-top: -30px
+  position: relative
+  vertical-align: middle
+
+chat-output .badge:not(:first-child)
+  margin-left: 3px
+
+chat-output .username
+  outline: none
+  cursor: pointer
+
+chat-output .username:hover
+  text-decoration: underline
+
+chat-output .chat-lines
+  padding-top: 10px
+
+chat-output .chat-line
+  padding: 4px 0 4px 15px
+  line-height: 17px
+  word-wrap: break-word
+
+chat-output .chat-line .separator
+  margin-right: 2px
+
+chat-output .chat-line .username
+  font-weight: bold
+
+chat-output .highlighted
+  background-color: rgba(255, 0, 0, 0.15) !important
+  /* override zebra */
+
+chat-output .whisper
+  padding-left: 5px
+  border-left: 3px solid rgba(166, 142, 210, 0.46)
+  background-color: rgba(255, 174, 0, 0.15)
+
+chat-output .notification
+  color: #9D9D9D
+
+chat-output .from-backlog
+  padding-left: 12px
+  border-left: 3px solid rgba(140, 162, 207, 0.46)
+
+chat-output .golden
+  padding-left: 12px
+  border-left: 3px solid #ffd767
+
+chat-output .auto-scroll-notice
+  position: fixed
+  bottom: 0
+  width: calc(100% + 15px)
+  margin-left: -15px
+  padding: 5px
+  color: white
+  background-color: rgba(0, 0, 0, 0.3)
+  text-align: center
+  cursor: pointer
+  outline: none
+
+chat-output .deleted .message
+  text-decoration: line-through
+  opacity: 0.5
+
+chat-output .chat-line.odd
+  background-color: rgba(0, 0, 0, 0.05)
+
+#nprogress .spinner
+  top: 47px
+
+chat-output .variable-line-height .chat-line
+  line-height: unset
+
+chat-output .variable-line-height .emoticon
+  margin: unset
+  bottom: unset
+  vertical-align: -3px
+
+chat-output .whisper-arrow
+  margin: 0 6px
+

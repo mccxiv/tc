@@ -1,4 +1,4 @@
-import './side-toolbar.css'
+import './side-toolbar.styl'
 import angular from 'angular'
 import template from './side-toolbar.pug'
 import settings from '../../../lib/settings/settings'

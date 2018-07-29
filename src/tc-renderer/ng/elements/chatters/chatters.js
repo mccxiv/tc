@@ -1,4 +1,4 @@
-import './chatters.css'
+import './chatters.styl'
 import angular from 'angular'
 import template from './chatters.pug'
 import {getChattersApi} from '../../../lib/chatters'

@@ -1,4 +1,4 @@
-import './settings-panel.css'
+import './settings-panel.styl'
 import angular from 'angular'
 import electron from 'electron'
 import template from './settings-panel.pug'
