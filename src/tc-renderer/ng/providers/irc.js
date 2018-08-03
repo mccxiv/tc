@@ -95,7 +95,7 @@ angular.module('tc').factory('irc', $rootScope => {
 
     const clientSettings = {
       options: {debug: false, clientId: CLIENT_ID},
-      connection: {timeout: 20000, reconnect: true},
+      connection: {timeout: 20000, reconnect: true, secure: true},
       identity: angular.copy(settings.identity),
       channels: []
     }
