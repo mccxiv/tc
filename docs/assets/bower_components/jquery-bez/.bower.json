@@ -1,0 +1,22 @@
+{
+  "name": "jquery-bez",
+  "version": "1.0.11",
+  "author": "Robert Dallas Gray",
+  "description": "Create easing functions from cubic-bezier co-ordinates",
+  "main": "jquery.bez.min.js",
+  "ignore": [
+    "src/",
+    "Makefile"
+  ],
+  "homepage": "https://github.com/rdallasgray/bez",
+  "_release": "1.0.11",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.11",
+    "commit": "c2073ac67808e1cda74e8daf2faa578c4cede952"
+  },
+  "_source": "git://github.com/rdallasgray/bez.git",
+  "_target": "~1.0.11",
+  "_originalSource": "jquery-bez",
+  "_direct": true
+}

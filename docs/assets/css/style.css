@@ -1,0 +1,262 @@
+@media (min-width: 1600px) {
+    .container {
+        width: 1550px;
+    }
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    color: #6f6f6f;
+    background-color: #F7F7F7;
+}
+
+h1 {
+    font-size: 72px;
+}
+
+.container {
+    padding: 0;
+    width: 1250px;
+}
+
+* {
+    transition: all 150ms;
+}
+
+.demo {
+    background: linear-gradient(to right, #8e44ad, #c0392b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    width: 100%;
+    min-width: 1250px;
+}
+
+/* Browser mockup code
+ * Contribute: https://gist.github.com/jarthod/8719db9fef8deb937f4f
+ * Live example: https://updown.io
+ */
+
+.demo .browser-mockup {
+    border-top: 2em solid rgba(230, 230, 230, 0.7);
+    box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+    position: relative;
+    border-radius: 3px 3px 0 0
+}
+
+.demo .browser-mockup:before {
+    display: block;
+    position: absolute;
+    content: '';
+    top: -1.25em;
+    left: 1em;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background-color: #f44;
+    box-shadow: 0 0 0 2px #f44, 1.5em 0 0 2px #9b3, 3em 0 0 2px #fb5;
+}
+
+.demo .browser-mockup.with-tab:after {
+    display: block;
+    position: absolute;
+    content: '';
+    top: -2em;
+    left: 5.5em;
+    width: 20%;
+    height: 0em;
+    border-bottom: 2em solid white;
+    border-left: 0.8em solid transparent;
+    border-right: 0.8em solid transparent;
+}
+
+.demo .browser-mockup.with-url:after {
+    display: block;
+    position: absolute;
+    content: '';
+    top: -1.6em;
+    left: 5.5em;
+    width: calc(100% - 6em);
+    height: 1.2em;
+    border-radius: 2px;
+    background-color: white;
+}
+
+.demo .browser-mockup > * {
+    display: block;
+}
+
+.intro {
+    padding-bottom: 120px;
+    font-size: 18px;
+}
+
+.intro .logo-column,
+.intro .text-column {
+    padding: 50px;
+}
+
+.intro .logo-column {
+    text-align: right;
+}
+
+.intro .text-column {
+    padding-right: 20%;
+}
+
+.intro .subtext {
+    margin: 0 0 40px;
+}
+
+.features {
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.features .emote {
+    vertical-align: -7px;
+}
+
+.features-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.features-image {
+    width: 600px;
+    margin: 0 auto;
+    display: block;
+    box-shadow: 5px 7px 10px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.feature {
+    width: 410px;
+    position: absolute;
+    border-top: 2px solid #4aaf86;
+}
+
+.feature:after {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    display: block;
+    background-color: #4aaf86;
+    border-radius: 50%;
+}
+
+.feature.right:after {
+    left: 0;
+}
+
+.feature.left {
+    right: 62%;
+    padding-right: 160px;
+}
+
+.feature.right {
+    left: 62%;
+    padding-left: 160px;
+    text-align: right;
+}
+
+.feature h6 {
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.f1 {top: 79px;}
+.f2 {top: 186px;}
+.f3 {top: 348px;}
+.f4 {top: 68px;}
+.f5 {top: 238px;}
+.f6 {top: 433px;}
+
+.feature.f3 {
+    border-top: none;
+}
+
+.feature.f3:after {
+    display: none;
+}
+
+.download-links {
+    padding-top: 40px;
+    padding-bottom: 80px;
+    text-align: center;
+}
+
+.download-links .title {
+    margin: 60px;
+}
+
+.download-links .btn {
+    margin-top: 10px;
+    width: 154px;
+}
+
+.download-links .release-name-box {
+    margin: 45px;
+}
+
+.platforms {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.platform-picture {
+    display: block;
+    width: 150px;
+    margin: 20px auto;
+    opacity: 0.7;
+}
+
+.changelog .title {
+    text-align: center;
+    margin: 60px;
+}
+
+.changelog .changes {
+    width: 500px;
+    margin: 10px auto;
+}
+
+.changelog .changes h1 {
+    font-size: 25px;
+}
+
+.changelog .changes p {
+    margin-bottom: 40px;
+}
+
+.changelog .changes .version {
+    font-size: 13px;
+}
+
+.footer {
+    height: 350px;
+    padding-top: 150px;
+    text-align: center;
+}
+
+.footer .disclaimer {
+    margin-top: 100px;
+    margin-bottom: 15px;
+}
+
+.footer img {
+    vertical-align: -3px;
+}
