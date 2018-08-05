@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import angular from 'angular'
 import {api} from '../../lib/api'
 import {addTwitchEmotesets} from '../../lib/emotes/menu'
@@ -32,8 +31,8 @@ angular.module('tc').factory('emotesTwitch', function (irc) {
 
       function onSuccess (data) {
         try {
-          _.each(data.emoticon_sets, function (set) {
-            set.forEach(function (emoteObject) {
+          Object.values(data.emoticon_sets).forEach(set => {
+            set.forEach(emoteObject => {
               // Don't include regex based emote codes.
               // Currently all regex emotes have a / in them
               if (contains(emoteObject.code, '/')) return
