@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import throttle from 'lodash.throttle'
 import angular from 'angular'
 import axios from 'axios'
 import moment from 'moment'
@@ -16,8 +16,8 @@ angular.module('tc').factory('messages', (
   const messageLimit = 125
   const messages = {}
   const lowerCaseUsername = settings.identity.username.toLowerCase()
-  const throttledApplySlow = _.throttle(applyLate, 3000)
-  const throttledApplyFast = _.throttle(applyLate, 100)
+  const throttledApplySlow = throttle(applyLate, 3000)
+  const throttledApplyFast = throttle(applyLate, 100)
 
   // =====================================================
   // Setup

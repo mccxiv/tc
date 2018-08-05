@@ -19,7 +19,6 @@
     "jquery": "^3.3.1",
     "jsonfile": "2.3.0",
     "keymaster": "1.6.2",
-    "lodash": "4.9.0",
     "lodash.escaperegexp": "4.1.1",
     "lodash.throttle": "4.0.1",
     "material-design-iconic-font": "2.1.2",
