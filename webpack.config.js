@@ -22,8 +22,14 @@ const base = {
           {
             loader: 'babel-loader',
             options: {
-              presets: ['es2015', 'stage-0'],
-              plugins: ['transform-runtime', 'angularjs-annotate']
+              presets: [
+                ['@babel/preset-env', {
+                  targets: {
+                    chrome: 59
+                  }
+                }]
+              ],
+              plugins: ['@babel/plugin-transform-runtime']
             }
           }
         ],
@@ -88,6 +94,11 @@ const base = {
         ]
       }
     ]
+  },
+  optimization: {
+    // Disable minification so that we can skip using ng-annotate
+    // Minifying doesn't matter for Electron apps
+    minimize: false
   },
   externals: /bufferutil|utf-8-validate/ // Ignore missing optional modules
 }
