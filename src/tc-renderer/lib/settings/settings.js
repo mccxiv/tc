@@ -3,12 +3,12 @@ import {EventEmitter} from 'events'
 import angular from 'angular'
 import electron from 'electron'
 import jsonFile from 'jsonfile'
-import validateSettings from './validate-settings'
+import {getValidatedSettings} from './validate-settings'
 import 'proxy-observe'
 
 const events = new EventEmitter()
-const rawSettingsObject = validateSettings(loadSettings())
-const settings = Object.deepObserve(rawSettingsObject, (...args) => {
+const settings = getValidatedSettings(loadSettings())
+Object.deepObserve(settings, (...args) => {
   events.emit('change', ...args)
   saveSettings()
 })
