@@ -1,7 +1,6 @@
 const path = require('path')
 
 const base = {
-  devtool: 'cheap-module-inline-source-map',
   node: {
     __filename: false,
     __dirname: false
