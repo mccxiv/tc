@@ -20,7 +20,6 @@ const fromBlueprint = (blueprint, untrustedObj) => {
       const blueprintType = R.type(value)
       return R.equals(untrustedType, blueprintType) ? untrustedValue : value
     }),
-    R.tap((a) => console.log(a)),
     unflattenObj
   )(blueprint)
 }
@@ -32,7 +31,6 @@ const pathPairToObj = (key, val) => R.assocPath(R.split('.', key), val, {})
 const unflattenObj = R.pipe(
   R.toPairs,
   R.map(R.apply(pathPairToObj)),
-  R.tap((a) => console.log(a)),
   mergeDeepAll
 )
 
@@ -42,7 +40,7 @@ const valueAtdotPath = R.useWith(R.path, [R.split('.')])
 
 const flattenObjToDotPath = obj => {
   const go = obj_ => R.chain(([k, v]) => {
-    if (R.type(v) === 'Object' || R.type(v) === 'Array') {
+    if (R.type(v) === 'Object') {
       return R.map(([k_, v_]) => [`${k}.${k_}`, v_], go(v))
     } else {
       return [[k, v]]
