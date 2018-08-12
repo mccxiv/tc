@@ -1,6 +1,12 @@
 thumbnail
   color: #e1e1e1
 
+  &:hover .hover-content
+    opacity: 1
+
+  &:hover .hide-button
+    opacity: 1
+
   img
     display: block
 
@@ -22,9 +28,6 @@ thumbnail
   .hover-content .play
     font-size: 35px
     margin: 10px
-
-  thumbnail:hover .hover-content
-    opacity: 1
 
   .viewers i
     vertical-align: -1px
@@ -67,9 +70,6 @@ thumbnail
     border-radius: 0
     line-height: 24px
     transition: opacity 250ms ease-out
-
-  thumbnail:hover .hide-button
-    opacity: 1
 
   .host-button
     outline: none
