@@ -1,5 +1,20 @@
 .content.slide(ng-if='m.stream')
   span.title(title='{{m.channel.status}}') {{m.channel.status}}
+  .footer
+    span.game
+      i.zmdi.zmdi-gamepad
+      | {{m.channel.game}}
+    br
+    span.host-button(ng-click='host()', ng-if='!m.hosting')
+      i.zmdi.zmdi-thumb-up
+      | Host
+    span.host-button(ng-click='unhost()', ng-if='m.hosting') Unhost
+    span.followers
+      i.zmdi.zmdi-favorite
+      | {{m.channel.followers}}
+    span.viewers
+      i.zmdi.zmdi-account
+      | {{m.stream.viewers}}
   .hover-content(layout='row', layout-align='center center')
     i.zmdi.zmdi-hearing.play(
       ng-if='m.streamlink || m.livestreamer',
@@ -20,20 +35,5 @@
     )
       md-tooltip(md-autohide='') Hide thumbnail
       i.zmdi.zmdi-close
-  .footer
-    span.game
-      i.zmdi.zmdi-gamepad
-      | {{m.channel.game}}
-    br
-    span.host-button(ng-click='host()', ng-if='!m.hosting')
-      i.zmdi.zmdi-thumb-up
-      | Host
-    span.host-button(ng-click='unhost()', ng-if='m.hosting') Unhost
-    span.followers
-      i.zmdi.zmdi-favorite
-      | {{m.channel.followers}}
-    span.viewers
-      i.zmdi.zmdi-account
-      | {{m.stream.viewers}}
   img.preview(ng-src='{{m.img}}')
 md-divider(ng-if='m.stream')
