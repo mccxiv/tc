@@ -89,5 +89,5 @@ angular.module('tc').directive('userPanel',
       }
     }
 
-    return {restrict: 'E', template, link}
+    return {restrict: 'E', template, link, scope: {}}
   })

@@ -28,5 +28,5 @@ angular.module('tc').directive('addChannel', () => {
     }
   })
 
-  return {restrict: 'E', template, link}
+  return {restrict: 'E', template, link, scope: {}}
 })

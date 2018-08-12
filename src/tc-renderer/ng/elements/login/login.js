@@ -7,6 +7,7 @@ angular.module('tc').directive('login', function (irc, openExternal) {
   return {
     restrict: 'E',
     template: template,
+    scope: {},
     link: function (scope) {
       scope.m = {}
       scope.irc = irc
@@ -27,7 +28,7 @@ angular.module('tc').directive('login', function (irc, openExternal) {
         settings.identity.username = scope.m.username.trim()
         settings.identity.password = scope.m.password.trim()
       }
-      
+
       function trimPassword () {
         scope.m.password = scope.m.password.trim()
       }

@@ -129,5 +129,5 @@ angular.module('tc').directive('thumbnail', (irc, messages, openExternal) => {
     }
   }
 
-  return {restrict: 'E', template, link}
+  return {restrict: 'E', template, link, scope: {}}
 })

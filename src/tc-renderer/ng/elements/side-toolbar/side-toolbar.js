@@ -55,5 +55,5 @@ angular.module('tc').directive('sideToolbar',
       }
     }
 
-    return {restrict: 'E', template, link}
+    return {restrict: 'E', template, link, scope: {}}
   })

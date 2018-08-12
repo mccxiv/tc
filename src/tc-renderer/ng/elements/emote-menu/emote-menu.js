@@ -45,7 +45,7 @@ angular.module('tc').directive('emoteMenu', ($timeout, session) => {
     }
   }
 
-  return {restrict: 'E', template, link}
+  return {restrict: 'E', template, link, scope: {}}
 })
 
 function currChannel () {
