@@ -7,6 +7,7 @@ angular.module('tc').directive('chattersTabs', () => {
   return {
     restrict: 'E',
     template: template,
+    scope: {},
     link: (scope) => {
       scope.settings = settings
       scope.hideChatters = () => {} // TODO why?

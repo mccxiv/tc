@@ -134,5 +134,5 @@ angular.module('tc').directive('settingsPanel', (
     }
   }
 
-  return {restrict: 'E', template, link}
+  return {restrict: 'E', template, link, scope: {}}
 })

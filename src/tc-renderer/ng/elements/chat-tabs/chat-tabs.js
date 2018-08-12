@@ -155,5 +155,5 @@ angular.module('tc').directive('chatTabs', ($timeout, messages) => {
     }
   }
 
-  return {restrict: 'E', scope: {}, template, link}
+  return {restrict: 'E', template, link, scope: {}}
 })

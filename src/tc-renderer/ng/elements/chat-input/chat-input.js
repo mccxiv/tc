@@ -123,5 +123,5 @@ angular.module('tc').directive('chatInput',
       }
     }
 
-    return {restrict: 'E', template, link}
+    return {restrict: 'E', template, link, scope: {}}
   })
