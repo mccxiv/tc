@@ -8,6 +8,7 @@ import 'proxy-observe'
 
 const events = new EventEmitter()
 const settings = getValidatedSettings(loadSettings())
+const nonProxiedSettings = JSON.parse(JSON.stringify(settings))
 Object.deepObserve(settings, (...args) => {
   events.emit('change', ...args)
   saveSettings()
@@ -48,5 +49,7 @@ function safeApply () {
 }
 
 export default settings
+
+export {nonProxiedSettings as settings}
 
 export {events}
