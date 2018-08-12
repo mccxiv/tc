@@ -27,7 +27,7 @@
     "proxy-observe": "github:mccxiv/proxy-observe",
     "roboto-fontface": "0.4.5",
     "stringz": "^0.2.3",
-    "twitch-js": "github:mccxiv/twitch-js#180324-emit-all-notice",
+    "twitch-js": "github:mccxiv/twitch-js#180911-emit-all-notice-aug-11",
     "which": "^1.3.0"
   }
 }

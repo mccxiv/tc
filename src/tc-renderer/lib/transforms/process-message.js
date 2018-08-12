@@ -9,12 +9,15 @@ import addEmotesAsImages from './add-emotes-as-images'
 export default function processMessage (msgObject, channel, emotesFromTwitch) {
   const twitchE = emotesFromTwitch
   const original = msgObject.message
+  const isOutgoing = msgObject.user && !msgObject.user.id
   let msg = msgObject.message
   msg = escape(msg)
   msg = addLinks(msg)
   msg = addEmotesAsImages(msg, bttvEmotes(channel))
   msg = addEmotesAsImages(msg, ffzEmotes(channel))
-  msg = twitchE ? addEmotesAsImages(msg, twitchEmotes(original, twitchE)) : msg
+  msg = twitchE
+    ? addEmotesAsImages(msg, twitchEmotes(original, twitchE, isOutgoing))
+    : msg
   msg = msgObject.user && msgObject.user.bits ? addBitGifs(channel, msg) : msg
   return msg
 }
