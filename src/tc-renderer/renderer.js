@@ -5,7 +5,7 @@ import enableDevTools from './lib/startup/enable-dev-tools'
 import changeMacBackgroundColor from './lib/startup/change-mac-background-color'
 import enableMenuOnMac from './lib/startup/enable-menu-on-mac'
 import preventPageNavigation from './lib/startup/prevent-page-navigation'
-import makeTrayIconOnWindows from './lib/startup/tray-icon'
+import setupTrayIcon from './lib/startup/tray-icon'
 import watchZoomChanges from './lib/startup/app-zoom'
 import keepChannelsOnBacklog from './lib/startup/keep-channels-on-backlog'
 import joinChannelFromCommand from './lib/startup/commandline'
@@ -28,7 +28,7 @@ keepTitleUpdated()
 changeMacBackgroundColor()
 enableMenuOnMac()
 preventPageNavigation()
-makeTrayIconOnWindows()
+setupTrayIcon()
 watchZoomChanges()
 keepChannelsOnBacklog()
 joinChannelFromCommand()
