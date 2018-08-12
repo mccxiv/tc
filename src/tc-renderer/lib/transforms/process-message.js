@@ -7,7 +7,6 @@ import twitchEmotes from '../emotes/twitch'
 import addEmotesAsImages from './add-emotes-as-images'
 
 export default function processMessage (msgObject, channel, emotesFromTwitch) {
-  console.log('mo', msgObject)
   const twitchE = emotesFromTwitch
   const original = msgObject.message
   const isOutgoing = msgObject.user && !msgObject.user.id
