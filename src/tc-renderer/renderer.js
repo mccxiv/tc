@@ -18,10 +18,6 @@ import './lib/emotes/menu'
 import './app.css'
 import './themes/dark.css'
 
-import store from './store'
-
-console.log('root store', store)
-
 console.log('Welcome to the Developer Console!')
 console.log('Technical info and error messages will be displayed here.')
 console.log('Red 404 messages can be safely ignored.')

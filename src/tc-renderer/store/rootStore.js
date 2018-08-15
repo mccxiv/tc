@@ -1,5 +1,10 @@
 import {settingsStore} from './modules/settings'
+import {observable} from 'mobx'
 
-export default {
-  settings: settingsStore
+class RootStore {
+  @observable settings = settingsStore
 }
+
+const rootStore = new RootStore()
+
+export default rootStore

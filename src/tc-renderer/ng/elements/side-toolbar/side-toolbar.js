@@ -1,16 +1,15 @@
 import './side-toolbar.styl'
 import angular from 'angular'
 import template from './side-toolbar.pug'
-import settings from '../../../lib/settings/settings'
 import capitalize from '../../../lib/transforms/capitalize'
 import autoUpdater from '../../../lib/auto-updater'
 
 angular.module('tc').directive('sideToolbar',
-  (settingsGui, $mdDialog, irc, openExternal) => {
+  (settingsGui, $mdDialog, irc, openExternal, store) => {
     function link (scope, element) {
       scope.m = {hotkey: process.platform === 'darwin' ? '⌘' : 'ctrl'}
       scope.irc = irc
-      scope.settings = settings
+      scope.settings = store.settings.state
       scope.settingsGui = settingsGui
       element.attr('layout', 'row')
 
@@ -21,7 +20,9 @@ angular.module('tc').directive('sideToolbar',
 
       scope.capitalize = capitalize
 
-      scope.channel = () => settings.channels[settings.selectedTabIndex]
+      scope.channel = () => {
+        return scope.settings.channels[scope.settings.selectedTabIndex]
+      }
 
       scope.confirmLogout = (event) => {
         let confirm = $mdDialog.confirm()
@@ -32,11 +33,13 @@ angular.module('tc').directive('sideToolbar',
           .cancel('Cancel')
           .targetEvent(event)
         confirm._options.clickOutsideToClose = true
-        $mdDialog.show(confirm).then(() => settings.identity.password = '')
+        $mdDialog.show(confirm).then(() => {
+          scope.settings.identity.password = ''
+        })
       }
 
       scope.leave = () => {
-        settings.channels.splice(settings.selectedTabIndex, 1)
+        scope.settings.channels.splice(scope.settings.selectedTabIndex, 1)
       }
 
       scope.openChannel = () => {
@@ -46,12 +49,12 @@ angular.module('tc').directive('sideToolbar',
       scope.restart = () => autoUpdater.quitAndInstall()
 
       scope.toggleCollapsed = () => {
-        const flipped = !settings.appearance.sidebarCollapsed
-        settings.appearance.sidebarCollapsed = flipped
+        const flipped = !scope.settings.appearance.sidebarCollapsed
+        scope.settings.appearance.sidebarCollapsed = flipped
       }
 
       scope.showingThumbnailButton = () => {
-        return scope.channel() && !settings.appearance.thumbnail
+        return scope.channel() && !scope.settings.appearance.thumbnail
       }
     }
 
