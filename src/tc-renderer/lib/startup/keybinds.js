@@ -1,5 +1,7 @@
 import key from 'keymaster'
-import settings from '../settings/settings'
+import store from '../../store'
+
+const settings = store.settings.state
 
 key.filter = () => true
 

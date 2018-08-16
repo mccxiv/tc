@@ -3,15 +3,15 @@ import angular from 'angular'
 import axios from 'axios'
 import moment from 'moment'
 import electron from 'electron'
-import settings from '../../lib/settings/settings'
 import channels from '../../lib/channels'
 import processMessage from '../../lib/transforms/process-message'
 
 angular.module('tc').factory('messages', (
-  $rootScope, irc, highlights, session) => {
+  $rootScope, irc, highlights, session, store) => {
   // =====================================================
   // Variables
   // =====================================================
+  const settings = store.settings.state
   const ffzDonors = []
   const messageLimit = 125
   const messages = {}

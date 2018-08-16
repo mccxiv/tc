@@ -1,9 +1,9 @@
 import angular from 'angular'
 import notificationSound from '../../../assets/notification.ogg'
-import settings from '../../lib/settings/settings'
 import notificationIcon from '../../../assets/icon256.png'
 
-angular.module('tc').factory('notifications', (irc, highlights) => {
+angular.module('tc').factory('notifications', (irc, highlights, store) => {
+  const settings = store.settings.state
   const sound = new window.Audio(notificationSound)
 
   irc.on('disconnected', () => {

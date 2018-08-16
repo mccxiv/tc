@@ -3,13 +3,13 @@ import angular from 'angular'
 import template from './chat-input.pug'
 import replacePhrases from '../../../lib/transforms/replace-phrases'
 import {getChatterNames} from '../../../lib/chatters'
-import settings from '../../../lib/settings/settings'
 import emotesFfz from '../../../lib/emotes/ffz'
 import emotesBttv from '../../../lib/emotes/bttv'
 
 angular.module('tc').directive('chatInput',
-  (session, irc, messages, emotesTwitch) => {
+  (session, irc, messages, emotesTwitch, store) => {
     function link (scope, element) {
+      const settings = store.settings.state
       scope.m = {emoteMenu: false}
       scope.session = session
       scope.irc = irc

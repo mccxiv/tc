@@ -1,7 +1,6 @@
 import {Client} from 'twitch-js'
 import angular from 'angular'
 import {CLIENT_ID} from '../../lib/constants'
-import settings from '../../lib/settings/settings'
 import {EventEmitter} from 'events'
 
 /**
@@ -31,10 +30,11 @@ import {EventEmitter} from 'events'
  * @property {function} credentialsValid
  *   - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', $rootScope => {
+angular.module('tc').factory('irc', ($rootScope, store) => {
   // ===============================================================
   // Variables
   // ===============================================================
+  const settings = store.settings.state
   const ee = new EventEmitter()
   let client
 

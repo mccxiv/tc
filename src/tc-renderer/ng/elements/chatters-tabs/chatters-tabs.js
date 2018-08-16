@@ -1,20 +1,19 @@
 import './chatters-tabs.styl'
 import angular from 'angular'
 import template from './chatters-tabs.pug'
-import settings from '../../../lib/settings/settings'
 
-angular.module('tc').directive('chattersTabs', () => {
+angular.module('tc').directive('chattersTabs', (store) => {
   return {
     restrict: 'E',
     template: template,
     scope: {},
     link: (scope) => {
-      scope.settings = settings
+      scope.settings = store.settings.state
       scope.hideChatters = () => {} // TODO why?
       scope.toggleButtonClasses = () => {
         return {
-          'hide-button': settings.appearance.chatters,
-          collapsed: !settings.appearance.chatters
+          'hide-button': scope.settings.appearance.chatters,
+          collapsed: !scope.settings.appearance.chatters
         }
       }
     }

@@ -1,6 +1,8 @@
-import settings, {events} from './settings/settings'
+import store from '../store'
+import {events} from './settings/settings'
 import {EventEmitter} from 'events'
 
+const settings = store.settings.state
 const emitter = new EventEmitter()
 const channels = settings.channels
 let recentlyRemoved = null

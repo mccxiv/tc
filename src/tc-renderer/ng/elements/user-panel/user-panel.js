@@ -2,12 +2,12 @@ import './user-panel.styl'
 import angular from 'angular'
 import template from './user-panel.pug'
 import {user} from '../../../lib/api'
-import settings from '../../../lib/settings/settings'
 import capitalize from '../../../lib/transforms/capitalize'
 
 angular.module('tc').directive('userPanel',
-  ($document, session, irc, openExternal) => {
+  ($document, session, irc, openExternal, store) => {
     function link (scope) {
+      const settings = store.settings.state
       scope.m = {
         created: '',
         profilePicSrc: ''

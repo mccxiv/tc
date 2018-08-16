@@ -2,17 +2,18 @@ import './settings-panel.styl'
 import angular from 'angular'
 import electron from 'electron'
 import template from './settings-panel.pug'
-import settings from '../../../lib/settings/settings'
 import replacements from '../../../lib/data/replacements.json'
 import autoUpdater from '../../../lib/auto-updater'
 
 angular.module('tc').directive('settingsPanel', (
   highlights,
   notifications,
-  $mdToast
+  $mdToast,
+  store
 ) => {
   function link (scope, element) {
     element.attr('layout', 'row')
+    const settings = store.settings.state
     scope.settings = settings
     scope.m = {
       version: electron.remote.app.getVersion(),

@@ -50,6 +50,6 @@ function safeApply () {
 
 export default settings
 
-export {nonProxiedSettings as settings}
+export {nonProxiedSettings}
 
 export {events}

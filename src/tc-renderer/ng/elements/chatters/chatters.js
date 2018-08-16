@@ -2,11 +2,10 @@ import './chatters.styl'
 import angular from 'angular'
 import template from './chatters.pug'
 import {getChattersApi} from '../../../lib/chatters'
-import settings from '../../../lib/settings/settings'
 import channels from '../../../lib/channels'
 import prettyChatterNames from '../../../lib/transforms/pretty-chatter-names'
 
-angular.module('tc').directive('chatters', ($http, session) => {
+angular.module('tc').directive('chatters', ($http, session, store) => {
   function link (scope) {
     let forceShowViewers = false
     let timeout = null
@@ -53,6 +52,7 @@ angular.module('tc').directive('chatters', ($http, session) => {
     }
 
     function isChannelSelected () {
+      const settings = store.settings.state
       return settings.channels[settings.selectedTabIndex] === scope.channel
     }
 

@@ -1,5 +1,5 @@
 import getBacklog from '../backlog'
-import settings from '../settings/settings'
+import store from '../../store'
 
 export default function keepChannelsOnBacklog () {
   const twentyThreeHours = 8.28e+7
@@ -7,5 +7,5 @@ export default function keepChannelsOnBacklog () {
 }
 
 function grabAll () {
-  settings.channels.forEach(c => getBacklog(c))
+  store.settings.state.channels.forEach(c => getBacklog(c))
 }

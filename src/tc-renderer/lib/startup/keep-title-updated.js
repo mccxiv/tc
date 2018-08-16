@@ -1,5 +1,5 @@
 import channels from '../channels'
-import settings from '../settings/settings'
+import store from '../../store'
 import capitalize from '../transforms/capitalize'
 
 export default function keepTitleUpdated () {
@@ -7,6 +7,7 @@ export default function keepTitleUpdated () {
   channels.on('change', update)
 
   function update () {
+    const settings = store.settings.state
     let prefix
     const suffix = ' - Tc'
     let channel = settings.channels[settings.selectedTabIndex]

@@ -2,10 +2,9 @@ import './emote-menu.styl'
 import $ from 'jquery'
 import angular from 'angular'
 import template from './emote-menu.pug'
-import settings from '../../../lib/settings/settings'
 import {getAllCachedEmotes} from '../../../lib/emotes/menu'
 
-angular.module('tc').directive('emoteMenu', ($timeout, session) => {
+angular.module('tc').directive('emoteMenu', ($timeout, session, store) => {
   function link (scope, element) {
     scope.m = {
       visible: false,
@@ -32,6 +31,11 @@ angular.module('tc').directive('emoteMenu', ($timeout, session) => {
       })
     }
 
+    function currChannel () {
+      const settings = store.settings.state
+      return settings.channels[settings.selectedTabIndex]
+    }
+
     function showTooltip (el, content) {
       el.frosty({html: true, content})
       el.frosty('show')
@@ -47,7 +51,3 @@ angular.module('tc').directive('emoteMenu', ($timeout, session) => {
 
   return {restrict: 'E', template, link, scope: {}}
 })
-
-function currChannel () {
-  return settings.channels[settings.selectedTabIndex]
-}

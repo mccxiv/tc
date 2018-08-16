@@ -1,8 +1,8 @@
-import {settings} from '../../lib/settings/settings'
+import {nonProxiedSettings} from '../../lib/settings/settings'
 import {observable} from 'mobx'
 
 class SettingsStore {
-  @observable state = settings
+  @observable state = nonProxiedSettings
 }
 
 const settingsStore = new SettingsStore()

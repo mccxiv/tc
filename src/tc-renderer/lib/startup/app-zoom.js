@@ -1,15 +1,16 @@
 import electron from 'electron'
 import $ from 'jquery'
-import settings, {events} from '../../lib/settings/settings'
+import {events} from '../../lib/settings/settings'
+import store from '../../store'
 
 export default function watchZoomChanges () {
   updateZoom()
-  let zoomLevel = settings.appearance.zoom
+  let zoomLevel = store.settings.state.appearance.zoom
 
   events.on('change', () => {
-    if (zoomLevel !== settings.appearance.zoom) {
+    if (zoomLevel !== store.settings.state.appearance.zoom) {
       updateZoom()
-      zoomLevel = settings.appearance.zoom
+      zoomLevel = store.settings.state.appearance.zoom
     }
   })
 
@@ -29,17 +30,17 @@ export default function watchZoomChanges () {
 }
 
 function zoomIn () {
-  if (settings.appearance.zoom < 175) {
-    settings.appearance.zoom += 5
+  if (store.settings.state.appearance.zoom < 175) {
+    store.settings.state.appearance.zoom += 5
   }
 }
 
 function zoomOut () {
-  if (settings.appearance.zoom > 104) {
-    settings.appearance.zoom -= 5
+  if (store.settings.state.appearance.zoom > 104) {
+    store.settings.state.appearance.zoom -= 5
   }
 }
 
 function updateZoom () {
-  electron.webFrame.setZoomFactor(settings.appearance.zoom / 100)
+  electron.webFrame.setZoomFactor(store.settings.state.appearance.zoom / 100)
 }
