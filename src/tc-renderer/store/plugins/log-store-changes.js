@@ -1,9 +1,17 @@
-import {reaction} from 'mobx'
+import {autorun} from 'mobx'
 import store from '../index'
 
 export default function () {
-  reaction(
-    () => JSON.stringify(store.settings),
-    () => console.log('Settings change:', store.settings)
-  )
+  setTimeout(() => {
+    autorun(
+      () => {
+        console.info(
+          'STORE',
+          Object.values(store).map(val => {
+            return JSON.parse(JSON.stringify(val))
+          })
+        )
+      }
+    )
+  }, 1000)
 }
