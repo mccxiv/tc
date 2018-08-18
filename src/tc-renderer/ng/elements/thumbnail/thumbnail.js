@@ -7,9 +7,10 @@ import template from './thumbnail.pug'
 import * as api from '../../../lib/api'
 import channels from '../../../lib/channels'
 
-angular.module('tc').directive('thumbnail', (irc, messages, openExternal, store) => {
+angular.module('tc').directive('thumbnail', (
+  irc, messages, openExternal, settings
+) => {
   function link (scope, element) {
-    const settings = store.settings.state
     const loadThumbnailInterval = setInterval(loadThumbnail, 60000)
     const loadHostStatusInterval = setInterval(loadHostStatus, 60 * 5 * 1000)
     scope.m = {

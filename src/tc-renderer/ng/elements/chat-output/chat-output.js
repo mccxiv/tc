@@ -13,7 +13,7 @@ import {sleep} from '../../../lib/util'
 import {badges} from '../../../lib/api'
 
 angular.module('tc').directive('chatOutput',
-  ($sce, $timeout, messages, session, openExternal, store) => {
+  ($sce, $timeout, messages, session, openExternal, settings) => {
     function link (scope, element) {
       element = $(element[0]); scope.$on('$destroy', () => element.off())
 
@@ -21,7 +21,6 @@ angular.module('tc').directive('chatOutput',
       // Variables
       // ===============================================================
       const e = element[0]
-      const settings = store.settings.state
       let fetchingBacklog = false
       scope.settings = settings
       scope.badges = null

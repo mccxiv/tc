@@ -30,11 +30,10 @@ import {EventEmitter} from 'events'
  * @property {function} credentialsValid
  *   - Returns true if the credentials appear valid. Not verified server side
  */
-angular.module('tc').factory('irc', ($rootScope, store) => {
+angular.module('tc').factory('irc', ($rootScope, settings) => {
   // ===============================================================
   // Variables
   // ===============================================================
-  const settings = store.settings.state
   const ee = new EventEmitter()
   let client
 

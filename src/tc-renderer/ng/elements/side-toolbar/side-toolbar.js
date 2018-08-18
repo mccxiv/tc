@@ -6,12 +6,12 @@ import autoUpdater from '../../../lib/auto-updater'
 
 angular.module('tc').component('sideToolbar', {template, controller})
 
-function controller ($mdDialog, settingsGui, irc, openExternal, store) {
+function controller ($mdDialog, settingsGui, irc, openExternal, settings) {
   const vm = this
   vm.updateAvailable = false
   vm.hotkey = process.platform === 'darwin' ? '⌘' : 'ctrl'
   vm.irc = irc
-  vm.settings = store.settings.state
+  vm.settings = settings
   vm.settingsGui = settingsGui
   vm.capitalize = capitalize
 

@@ -4,7 +4,7 @@ import angular from 'angular'
 import template from './emote-menu.pug'
 import {getAllCachedEmotes} from '../../../lib/emotes/menu'
 
-angular.module('tc').directive('emoteMenu', ($timeout, session, store) => {
+angular.module('tc').directive('emoteMenu', ($timeout, session, settings) => {
   function link (scope, element) {
     scope.m = {
       visible: false,
@@ -32,7 +32,6 @@ angular.module('tc').directive('emoteMenu', ($timeout, session, store) => {
     }
 
     function currChannel () {
-      const settings = store.settings.state
       return settings.channels[settings.selectedTabIndex]
     }
 

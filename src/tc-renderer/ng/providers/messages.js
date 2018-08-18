@@ -7,11 +7,10 @@ import channels from '../../lib/channels'
 import processMessage from '../../lib/transforms/process-message'
 
 angular.module('tc').factory('messages', (
-  $rootScope, irc, highlights, session, store) => {
+  $rootScope, irc, highlights, session, settings) => {
   // =====================================================
   // Variables
   // =====================================================
-  const settings = store.settings.state
   const ffzDonors = []
   const messageLimit = 125
   const messages = {}

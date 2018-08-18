@@ -4,8 +4,7 @@ import template from './add-channel.pug'
 import {ipcRenderer as ipc} from 'electron'
 
 angular.module('tc').directive('addChannel', () => {
-  function controller ($scope, store) {
-    const settings = store.settings.state
+  function controller ($scope, settings) {
     $scope.value = ''
     $scope.keypress = (event) => {
       if (event.which === 13) {

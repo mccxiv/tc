@@ -5,9 +5,8 @@ import {user} from '../../../lib/api'
 import capitalize from '../../../lib/transforms/capitalize'
 
 angular.module('tc').directive('userPanel',
-  ($document, session, irc, openExternal, store) => {
+  ($document, session, irc, openExternal, settings) => {
     function link (scope) {
-      const settings = store.settings.state
       scope.m = {
         created: '',
         profilePicSrc: ''

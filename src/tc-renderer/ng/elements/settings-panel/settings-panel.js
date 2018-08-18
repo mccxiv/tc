@@ -9,11 +9,10 @@ angular.module('tc').directive('settingsPanel', (
   highlights,
   notifications,
   $mdToast,
-  store
+  settings
 ) => {
   function link (scope, element) {
     element.attr('layout', 'row')
-    const settings = store.settings.state
     scope.settings = settings
     scope.m = {
       version: electron.remote.app.getVersion(),

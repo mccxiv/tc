@@ -5,10 +5,9 @@ import template from './chat-tabs.pug'
 import channels from '../../../lib/channels'
 import * as api from '../../../lib/api'
 
-angular.module('tc').directive('chatTabs', ($timeout, messages, store) => {
+angular.module('tc').directive('chatTabs', ($timeout, messages, settings) => {
   function link (scope, element) {
     const getStreamsInterval = setInterval(getStreams, 60000)
-    const settings = store.settings.state
     element = $(element[0])
 
     scope.m = {

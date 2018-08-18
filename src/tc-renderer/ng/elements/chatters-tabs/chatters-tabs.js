@@ -4,9 +4,9 @@ import template from './chatters-tabs.pug'
 
 angular.module('tc').component('chattersTabs', {template, controller})
 
-function controller (store) {
+function controller (settings) {
   const vm = this
-  vm.settings = store.settings.state
+  vm.settings = settings
   vm.toggleButtonClasses = () => {
     return {
       'hide-button': vm.settings.appearance.chatters,

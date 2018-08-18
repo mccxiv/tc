@@ -10,7 +10,7 @@ angular.module('tc').component('chatters', {
   bindings: {channel: '<'}
 })
 
-function controller ($http, $scope, session, store) {
+function controller ($http, $scope, session, settings) {
   let forceShowViewers = false
   let timeout = null
   const vm = this
@@ -55,7 +55,6 @@ function controller ($http, $scope, session, store) {
   }
 
   function isChannelSelected () {
-    const settings = store.settings.state
     return settings.channels[settings.selectedTabIndex] === vm.channel
   }
 

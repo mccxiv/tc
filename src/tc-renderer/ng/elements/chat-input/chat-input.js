@@ -7,9 +7,8 @@ import emotesFfz from '../../../lib/emotes/ffz'
 import emotesBttv from '../../../lib/emotes/bttv'
 
 angular.module('tc').directive('chatInput',
-  (session, irc, messages, emotesTwitch, store) => {
+  (session, irc, messages, emotesTwitch, settings) => {
     function link (scope, element) {
-      const settings = store.settings.state
       scope.m = {emoteMenu: false}
       scope.session = session
       scope.irc = irc

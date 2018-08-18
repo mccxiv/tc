@@ -2,13 +2,12 @@ import './login.styl'
 import angular from 'angular'
 import template from './login.pug'
 
-angular.module('tc').directive('login', function (irc, openExternal, store) {
+angular.module('tc').directive('login', function (irc, openExternal, settings) {
   return {
     restrict: 'E',
     template: template,
     scope: {},
     link: function (scope) {
-      const settings = store.settings.state
       scope.m = {}
       scope.irc = irc
       scope.settings = settings

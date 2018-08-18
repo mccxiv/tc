@@ -1,7 +1,6 @@
 import angular from 'angular'
 
-angular.module('tc').factory('highlights', function (store) {
-  const settings = store.settings.state
+angular.module('tc').factory('highlights', function (settings) {
   return {
     /**
      * Test if a string matches any of the saved highlighted phrases.
