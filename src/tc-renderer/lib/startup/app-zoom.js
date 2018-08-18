@@ -1,23 +1,17 @@
 import electron from 'electron'
 import $ from 'jquery'
-import {events} from '../../lib/settings/settings'
 import store from '../../store'
+import {reaction} from 'mobx'
 
 export default function watchZoomChanges () {
   updateZoom()
-  let zoomLevel = store.settings.state.appearance.zoom
-
-  events.on('change', () => {
-    if (zoomLevel !== store.settings.state.appearance.zoom) {
-      updateZoom()
-      zoomLevel = store.settings.state.appearance.zoom
-    }
-  })
+  reaction(() => store.settings.state.appearance.zoom, updateZoom)
 
   $(document).on('keyup', (e) => {
     if (e.ctrlKey && !e.altKey) { // Check to avoid Alt Gr
       if (e.which === 107 || e.which === 187) zoomIn()
-      if (e.which === 109 || e.which === 189) zoomOut()
+      else if (e.which === 109 || e.which === 189) zoomOut()
+      else if (e.which === 48) zoomReset()
     }
   })
 
@@ -39,6 +33,10 @@ function zoomOut () {
   if (store.settings.state.appearance.zoom > 104) {
     store.settings.state.appearance.zoom -= 5
   }
+}
+
+function zoomReset () {
+  store.settings.state.appearance.zoom = 100
 }
 
 function updateZoom () {
