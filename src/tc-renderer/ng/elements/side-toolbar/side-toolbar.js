@@ -4,59 +4,56 @@ import template from './side-toolbar.pug'
 import capitalize from '../../../lib/transforms/capitalize'
 import autoUpdater from '../../../lib/auto-updater'
 
-angular.module('tc').directive('sideToolbar',
-  (settingsGui, $mdDialog, irc, openExternal, store) => {
-    function link (scope, element) {
-      scope.m = {hotkey: process.platform === 'darwin' ? '⌘' : 'ctrl'}
-      scope.irc = irc
-      scope.settings = store.settings.state
-      scope.settingsGui = settingsGui
-      element.attr('layout', 'row')
+angular.module('tc').component('sideToolbar', {template, controller})
 
-      autoUpdater.on('update-downloaded', () => {
-        scope.m.updateAvailable = true
-        scope.$apply()
-      })
+function controller ($mdDialog, settingsGui, irc, openExternal, store) {
+  const vm = this
+  vm.updateAvailable = false
+  vm.hotkey = process.platform === 'darwin' ? '⌘' : 'ctrl'
+  vm.irc = irc
+  vm.settings = store.settings.state
+  vm.settingsGui = settingsGui
+  vm.capitalize = capitalize
 
-      scope.capitalize = capitalize
-
-      scope.channel = () => {
-        return scope.settings.channels[scope.settings.selectedTabIndex]
-      }
-
-      scope.confirmLogout = (event) => {
-        let confirm = $mdDialog.confirm()
-          .parent(angular.element(document.body))
-          .content('Are you sure you want to log out? ' +
-          'You will need to re-enter your password.')
-          .ok('OK')
-          .cancel('Cancel')
-          .targetEvent(event)
-        confirm._options.clickOutsideToClose = true
-        $mdDialog.show(confirm).then(() => {
-          scope.settings.identity.password = ''
-        })
-      }
-
-      scope.leave = () => {
-        scope.settings.channels.splice(scope.settings.selectedTabIndex, 1)
-      }
-
-      scope.openChannel = () => {
-        openExternal('http://www.twitch.tv/' + scope.channel())
-      }
-
-      scope.restart = () => autoUpdater.quitAndInstall()
-
-      scope.toggleCollapsed = () => {
-        const flipped = !scope.settings.appearance.sidebarCollapsed
-        scope.settings.appearance.sidebarCollapsed = flipped
-      }
-
-      scope.showingThumbnailButton = () => {
-        return scope.channel() && !scope.settings.appearance.thumbnail
-      }
-    }
-
-    return {restrict: 'E', template, link, scope: {}}
+  autoUpdater.on('update-downloaded', () => {
+    vm.updateAvailable = true
+    vm.$digest()
   })
+
+  vm.channel = () => {
+    return vm.settings.channels[vm.settings.selectedTabIndex]
+  }
+
+  vm.confirmLogout = (event) => {
+    let confirm = $mdDialog.confirm()
+      .parent(angular.element(document.body))
+      .content('Are you sure you want to log out? ' +
+        'You will need to re-enter your password.')
+      .ok('OK')
+      .cancel('Cancel')
+      .targetEvent(event)
+    confirm._options.clickOutsideToClose = true
+    $mdDialog.show(confirm).then(() => {
+      vm.settings.identity.password = ''
+    })
+  }
+
+  vm.leave = () => {
+    vm.settings.channels.splice(vm.settings.selectedTabIndex, 1)
+  }
+
+  vm.openChannel = () => {
+    openExternal('http://www.twitch.tv/' + vm.channel())
+  }
+
+  vm.restart = () => autoUpdater.quitAndInstall()
+
+  vm.toggleCollapsed = () => {
+    const flipped = !vm.settings.appearance.sidebarCollapsed
+    vm.settings.appearance.sidebarCollapsed = flipped
+  }
+
+  vm.showingThumbnailButton = () => {
+    return vm.channel() && !vm.settings.appearance.thumbnail
+  }
+}
