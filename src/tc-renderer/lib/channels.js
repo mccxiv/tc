@@ -1,5 +1,6 @@
+import {reaction} from 'mobx'
+import * as R from 'ramda'
 import store from '../store'
-import {events} from './settings/settings'
 import {EventEmitter} from 'events'
 
 const settings = store.settings.state
@@ -14,10 +15,10 @@ emitter.current = () => channels[settings.selectedTabIndex]
 let oldSelectedTabIndex = settings.selectedTabIndex
 let oldChannels = copyAsArray(settings.channels)
 
-events.on('change', () => {
-  checkTabChange()
-  checkChannelsChange()
-})
+reaction(
+  () => [settings.selectedTabIndex, settings.channels],
+  R.pipe(checkTabChange, checkChannelsChange)
+)
 
 function checkTabChange () {
   if (settings.selectedTabIndex !== oldSelectedTabIndex) emitter.emit('change')
