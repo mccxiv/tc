@@ -50,6 +50,6 @@ const flattenObjToDotPath = obj => {
   return R.fromPairs(go(obj))
 }
 
-export const getValidatedSettings = (settings) => {
+export const getValidatedSettings = (settings = {}) => {
   return fromBlueprint(defaults, settings)
 }
