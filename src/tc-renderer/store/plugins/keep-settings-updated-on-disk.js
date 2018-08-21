@@ -1,8 +1,7 @@
-import path from 'path'
-import electron from 'electron'
+import store from '../'
 import jsonFile from 'jsonfile'
 import {reaction} from 'mobx'
-import store from '../'
+import {settingsFilePath} from '../modules/helpers/settings/settings-file-path'
 
 export default function () {
   reaction(
@@ -12,10 +11,5 @@ export default function () {
 }
 
 function saveSettings () {
-  jsonFile.writeFileSync(settingsFilePath(), store.settings.state, {spaces: 2})
-}
-
-function settingsFilePath () {
-  const userData = electron.remote.app.getPath('userData')
-  return path.resolve(userData, 'settings.json')
+  jsonFile.writeFileSync(settingsFilePath, store.settings.state, {spaces: 2})
 }

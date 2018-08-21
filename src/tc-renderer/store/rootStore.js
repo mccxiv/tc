@@ -1,4 +1,4 @@
-import {settingsStore} from './modules/settings'
+import {settingsStore} from './modules/helpers/settings/settings-store'
 import {observable} from 'mobx'
 
 class RootStore {

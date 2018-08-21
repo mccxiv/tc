@@ -1,4 +1,4 @@
-import {settings} from '../../lib/settings/settings'
+import {settings} from './load-settings-from-disk'
 import {observable} from 'mobx'
 
 class SettingsStore {
