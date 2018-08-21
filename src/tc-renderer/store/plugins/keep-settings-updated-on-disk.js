@@ -1,7 +1,7 @@
 import store from '../'
 import jsonFile from 'jsonfile'
 import {reaction} from 'mobx'
-import {settingsFilePath} from '../modules/helpers/settings/settings-file-path'
+import {settingsFilePath} from '../modules/settings/settings-file-path'
 
 export default function () {
   reaction(
