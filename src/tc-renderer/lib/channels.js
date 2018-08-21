@@ -1,5 +1,4 @@
-import {reaction} from 'mobx'
-import * as R from 'ramda'
+import {autorun} from 'mobx'
 import store from '../store'
 import {EventEmitter} from 'events'
 
@@ -13,12 +12,10 @@ emitter.channels = channels
 emitter.current = () => channels[settings.selectedTabIndex]
 
 let oldSelectedTabIndex = settings.selectedTabIndex
-let oldChannels = copyAsArray(settings.channels)
+let oldChannels = [...settings.channels]
 
-reaction(
-  () => [settings.selectedTabIndex, settings.channels],
-  R.pipe(checkTabChange, checkChannelsChange)
-)
+autorun(checkTabChange)
+autorun(checkChannelsChange)
 
 function checkTabChange () {
   if (settings.selectedTabIndex !== oldSelectedTabIndex) emitter.emit('change')
@@ -27,7 +24,7 @@ function checkTabChange () {
 
 function checkChannelsChange () {
   const changes = diff(oldChannels, settings.channels)
-  oldChannels = copyAsArray(settings.channels)
+  oldChannels = [...settings.channels]
   if (!changes.added.length && !changes.removed.length) return
 
   // Because some operations move channels around, they show up here as
@@ -59,11 +56,6 @@ function diff (oldArr, newArr) {
   const added = newArr.filter(n => !oldArr.includes(n))
   const removed = oldArr.filter(o => !newArr.includes(o))
   return {added, removed}
-}
-
-/** Because the settings objects are actually Proxies */
-function copyAsArray (enumerable) {
-  return Array.from(enumerable)
 }
 
 export default emitter
