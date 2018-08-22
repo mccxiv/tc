@@ -11,17 +11,24 @@ angular.module('tc').component('chatInput', {template, controller})
 // eslint-disable-next-line
 function controller ($scope, $element, session, irc, messages, emotesTwitch, settings) {
   const vm = this
-  vm.emoteMenu = false
-  vm.session = session
-  vm.irc = irc
-  vm.chatHistory = []
-  const input = $element.find('input')[0]
-  session.input = input // TODO make a better system
   let lastWhisperer
+  const input = $element.find('input')[0]
 
-  closeEmoteMenuOnEscape()
-  irc.on('whisper', listenToWhispers)
-  $scope.$on('$destroy', () => irc.removeListener('whisper', listenToWhispers))
+  vm.$onInit = () => {
+    vm.emoteMenu = false
+    vm.session = session
+    vm.irc = irc
+    vm.chatHistory = []
+    session.input = input // TODO make a better system
+
+    closeEmoteMenuOnEscape()
+    irc.on('whisper', listenToWhispers)
+  }
+
+  vm.$onDestroy = () => {
+    irc.removeListener('whisper', listenToWhispers)
+    window.removeEventListener('keyup', keyupHandlerCloseEmoteMenu)
+  }
 
   vm.getAutoCompleteStrings = () => {
     const channel = settings.channels[settings.selectedTabIndex]
@@ -112,16 +119,12 @@ function controller ($scope, $element, session, irc, messages, emotesTwitch, set
 
   function closeEmoteMenuOnEscape () {
     window.addEventListener('keyup', keyupHandlerCloseEmoteMenu)
+  }
 
-    $scope.$on('$destroy', () => {
-      window.removeEventListener('keyup', keyupHandlerCloseEmoteMenu)
-    })
-
-    function keyupHandlerCloseEmoteMenu (e) {
-      if (e.keyCode === 27 && vm.emoteMenu) {
-        vm.emoteMenu = false
-        $scope.$digest()
-      }
+  function keyupHandlerCloseEmoteMenu (e) {
+    if (e.keyCode === 27 && vm.emoteMenu) {
+      vm.emoteMenu = false
+      $scope.$digest()
     }
   }
 }
