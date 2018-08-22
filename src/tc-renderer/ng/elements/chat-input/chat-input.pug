@@ -1,20 +1,20 @@
 .overflow-container
-  form(ng-submit='input()')
-    md-input-container.input-container(ng-class='{disabled: !irc.ready}')
+  form(ng-submit='vm.input()')
+    md-input-container.input-container(ng-class='{disabled: !vm.irc.ready}')
       label
-        span(ng-if='irc.ready') Send a message
-        span(ng-if='!irc.ready') Disconnected from server
+        span(ng-if='vm.irc.ready') Send a message
+        span(ng-if='!vm.irc.ready') Disconnected from server
       input#main-input(
         spellcheck='true',
-        ng-disabled='!irc.ready',
-        ng-model='session.message',
+        ng-disabled='!vm.irc.ready',
+        ng-model='vm.session.message',
         ng-trim='false',
-        ng-focus='session.inputFocused = true',
-        ng-blur='session.inputFocused = false',
-        ng-change='change()',
-        ng-keyup='keyUp($event)',
+        ng-focus='vm.session.inputFocused = true',
+        ng-blur='vm.session.inputFocused = false',
+        ng-change='vm.change()',
+        ng-keyup='vm.keyUp($event)',
         tab-completion='',
-        tab-completion-fn='getAutoCompleteStrings()'
+        tab-completion-fn='vm.getAutoCompleteStrings()'
       )
-      i.zmdi.zmdi-mood.emote-menu-button(ng-click='toggleEmoteMenu()')
-emote-menu(ng-if='m.emoteMenu')
+      i.zmdi.zmdi-mood.emote-menu-button(ng-click='vm.toggleEmoteMenu()')
+emote-menu(ng-if='vm.emoteMenu')
