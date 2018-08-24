@@ -2,40 +2,35 @@ import './login.styl'
 import angular from 'angular'
 import template from './login.pug'
 
-angular.module('tc').directive('login', function (irc, openExternal, settings) {
-  return {
-    restrict: 'E',
-    template: template,
-    scope: {},
-    link: function (scope) {
-      scope.m = {}
-      scope.irc = irc
-      scope.settings = settings
-      // These values should NOT update the settings object or
-      // it will break the form's conditionals
-      scope.m.username = settings.identity.username
-      scope.m.password = settings.identity.password
-      scope.m.haveUsername = !!settings.identity.username.length
-      scope.m.haveNoPassword = !settings.identity.password.length
+angular.module('tc').component('login', {template, controller})
 
-      scope.login = login
-      scope.trimPassword = trimPassword
-      scope.generate = () => openExternal('http://gettc.xyz/password/')
-      scope.doesntLookLikeToken = doesntLookLikeToken
+function controller (scope, irc, openExternal, settings) {
+  const vm = this
 
-      function login () {
-        settings.identity.username = scope.m.username.trim()
-        settings.identity.password = scope.m.password.trim()
-      }
+  vm.$onInit = () => {
+    vm.irc = irc
+    vm.settings = settings
 
-      function trimPassword () {
-        scope.m.password = scope.m.password.trim()
-      }
+    // Do not bind username and password directly to the store or
+    // it will break the form's conditionals - according to past me
+    vm.username = settings.identity.username
+    vm.password = settings.identity.password
 
-      function doesntLookLikeToken () {
-        const password = scope.m.password
-        return !!(password && !password.startsWith('oauth'))
-      }
-    }
+    vm.haveUsername = !!settings.identity.username.length
+    vm.haveNoPassword = !settings.identity.password.length
+
+    vm.login = login
+    vm.trimPassword = () => vm.password = vm.password.trim()
+    vm.doesntLookLikeToken = doesntLookLikeToken
+    vm.generate = () => openExternal('http://gettc.xyz/password/')
   }
-})
+
+  function login () {
+    settings.identity.username = vm.username.trim()
+    settings.identity.password = vm.password.trim()
+  }
+
+  function doesntLookLikeToken () {
+    return !!(vm.password && !vm.password.startsWith('oauth'))
+  }
+}
