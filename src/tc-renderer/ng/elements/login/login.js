@@ -4,7 +4,7 @@ import template from './login.pug'
 
 angular.module('tc').component('login', {template, controller})
 
-function controller (scope, irc, openExternal, settings) {
+function controller (irc, openExternal, settings) {
   const vm = this
 
   vm.$onInit = () => {
