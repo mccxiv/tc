@@ -1,39 +1,39 @@
-.content.slide(ng-if='m.stream')
-  span.title(title='{{m.channel.status}}') {{m.channel.status}}
+.content.slide(mobx-autorun, ng-if='vm.m.stream')
+  span.title(title='{{vm.m.channel.status}}') {{vm.m.channel.status}}
   .footer
     span.game
       i.zmdi.zmdi-gamepad
-      | {{m.channel.game}}
+      | {{vm.m.channel.game}}
     br
-    span.host-button(ng-click='host()', ng-if='!m.hosting')
+    span.host-button(ng-click='vm.host()', ng-if='!vm.m.hosting')
       i.zmdi.zmdi-thumb-up
       | Host
-    span.host-button(ng-click='unhost()', ng-if='m.hosting') Unhost
+    span.host-button(ng-click='vm.unhost()', ng-if='vm.m.hosting') Unhost
     span.followers
       i.zmdi.zmdi-favorite
-      | {{m.channel.followers}}
+      | {{vm.m.channel.followers}}
     span.viewers
       i.zmdi.zmdi-account
-      | {{m.stream.viewers}}
+      | {{vm.m.stream.viewers}}
   .hover-content(layout='row', layout-align='center center')
     i.zmdi.zmdi-hearing.play(
-      ng-if='m.streamlink || m.livestreamer',
-      ng-click='playMediaplayer(true)'
+      ng-if='vm.m.streamlink || vm.m.livestreamer',
+      ng-click='vm.playMediaplayer(true)'
     )
       md-tooltip(md-autohide='') Audio Only
     i.zmdi.zmdi-play-circle-outline.play(
-      ng-if='m.streamlink || m.livestreamer',
-      ng-click='playMediaplayer()'
+      ng-if='vm.m.streamlink || vm.m.livestreamer',
+      ng-click='vm.playMediaplayer()'
     )
       md-tooltip(md-autohide='')
-        | {{m.streamlink ? 'Streamlink' : 'Livestreamer'}}
-    i.zmdi.zmdi-open-in-new.play(ng-click='playTwitch()')
+        | {{vm.m.streamlink ? 'Streamlink' : 'Livestreamer'}}
+    i.zmdi.zmdi-open-in-new.play(ng-click='vm.playTwitch()')
       md-tooltip(md-autohide='') Twitch
     md-button.hide-button(
-      ng-click='settings.appearance.thumbnail = false',
+      ng-click='vm.settings.appearance.thumbnail = false',
       aria-label='Hide thumbnail'
     )
       md-tooltip(md-autohide='') Hide thumbnail
       i.zmdi.zmdi-close
-  img.preview(ng-src='{{m.img}}')
-md-divider(ng-if='m.stream')
+  img.preview(ng-src='{{vm.m.img}}')
+md-divider(ng-if='vm.m.stream')

@@ -22,6 +22,7 @@
       ng-controller="main as vm"
       ng-class="{dark: store.settings.state.theme.dark}"
       ng-cloak
+      mobx-autorun
     >
       <section ng-if="!needLogin()" layout="row" flex class="main">
         <md-sidenav
