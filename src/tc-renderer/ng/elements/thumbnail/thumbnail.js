@@ -5,7 +5,6 @@ import {exec} from 'child_process'
 import angular from 'angular'
 import template from './thumbnail.pug'
 import * as api from '../../../lib/api'
-import channels from '../../../lib/channels'
 
 angular.module('tc').component('thumbnail', {template, controller})
 
@@ -20,8 +19,8 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
     vm.hosting = false
     vm.streamlink = false
     vm.livestreamer = false
-    vm.loadThumbnailInterval = setInterval(loadThumbnail, 60000)
-    vm.loadHostStatusInterval = setInterval(loadHostStatus, 60 * 5 * 1000)
+    vm.loadThumbnailInterval = setInterval(loadThumbnail, 60 * 1000)
+    vm.loadHostStatusInterval = setInterval(loadHostStatus, 60 * 1000 * 5)
 
     vm.host = host
     vm.unhost = unhost
@@ -35,14 +34,16 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
 
     $element.attr('layout', 'column')
 
-    // TODO memory leak
-    channels.on('change', () => {
-      vm.stream = null
-      vm.channel = null
-      vm.hosting = false
-      loadThumbnail()
-      loadHostStatus()
-    })
+    $scope.$watch(
+      getChannel,
+      () => {
+        vm.stream = null
+        vm.channel = null
+        vm.hosting = false
+        loadThumbnail()
+        loadHostStatus()
+      }
+    )
   }
 
   vm.$onDestroy = () => {
