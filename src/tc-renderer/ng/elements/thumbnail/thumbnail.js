@@ -13,17 +13,20 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
   const vm = this
 
   vm.$onInit = () => {
+    vm.settings = settings
+    vm.img = ''
+    vm.channel = null
+    vm.stream = null
+    vm.hosting = false
+    vm.streamlink = false
+    vm.livestreamer = false
     vm.loadThumbnailInterval = setInterval(loadThumbnail, 60000)
     vm.loadHostStatusInterval = setInterval(loadHostStatus, 60 * 5 * 1000)
-    vm.settings = settings
-    vm.m = {
-      img: '',
-      channel: null,
-      stream: null,
-      hosting: false,
-      streamlink: false,
-      livestreamer: false
-    }
+
+    vm.host = host
+    vm.unhost = unhost
+    vm.playTwitch = playTwitch
+    vm.playMediaplayer = playMediaplayer
 
     loadThumbnail()
     loadHostStatus()
@@ -34,9 +37,9 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
 
     // TODO memory leak
     channels.on('change', () => {
-      vm.m.stream = null
-      vm.m.channel = null
-      vm.m.hosting = false
+      vm.stream = null
+      vm.channel = null
+      vm.hosting = false
       loadThumbnail()
       loadHostStatus()
     })
@@ -47,22 +50,22 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
     clearInterval(vm.loadHostStatusInterval)
   }
 
-  vm.host = () => {
+  const host = () => {
     irc.say(`#${settings.identity.username}`, `.host ${getChannel()}`)
     messages.addNotification(getChannel(), 'Host command sent.')
     setTimeout(loadHostStatus, 1500)
     setTimeout(loadHostStatus, 4000)
   }
 
-  vm.unhost = () => {
+  const unhost = () => {
     irc.say(`#${settings.identity.username}`, '.unhost')
     messages.addNotification(getChannel(), 'Unhost command sent.')
     setTimeout(loadHostStatus, 1500)
     setTimeout(loadHostStatus, 4000)
   }
 
-  vm.playMediaplayer = audioOnly => {
-    const player = vm.m.streamlink ? 'streamlink' : 'livestreamer'
+  const playMediaplayer = audioOnly => {
+    const player = vm.streamlink ? 'streamlink' : 'livestreamer'
     const type = audioOnly ? 'audio_only' : ''
     const channel = 'twitch.tv/' + getChannel()
     stream(type)
@@ -82,34 +85,34 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
     }
   }
 
-  vm.playTwitch = () => {
+  const playTwitch = () => {
     openExternal(`http://www.twitch.tv/${getChannel()}/popout`)
   }
 
-  function checkStreamlinkInstallation () {
-    which('streamlink', err => vm.m.streamlink = !err)
+  const checkStreamlinkInstallation = () => {
+    which('streamlink', err => vm.streamlink = !err)
   }
 
-  function checkLivestreamerInstallation () {
-    which('livestreamer', err => vm.m.livestreamer = !err)
+  const checkLivestreamerInstallation = () => {
+    which('livestreamer', err => vm.livestreamer = !err)
   }
 
-  function getChannel () {
+  const getChannel = () => {
     return settings.channels[settings.selectedTabIndex]
   }
 
-  async function loadThumbnail () {
+  const loadThumbnail = async () => {
     const channel = getChannel()
-    vm.m.channel = await api.channel(channel)
-    vm.m.stream = (await api.stream(channel)).stream
-    if (!vm.m.stream) return
-    const url = vm.m.stream.preview.medium + '?' + new Date().getTime()
+    vm.channel = await api.channel(channel)
+    vm.stream = (await api.stream(channel)).stream
+    if (!vm.stream) return
+    const url = vm.stream.preview.medium + '?' + new Date().getTime()
     await preLoadImage(url)
-    vm.m.img = url
+    vm.img = url
     $scope.$digest()
   }
 
-  function loadHostStatus () {
+  const loadHostStatus = () => {
     // This task is lower priority than the others, let them run first.
     setTimeout(async () => {
       const user = (irc.getClient() || {}).globaluserstate
@@ -118,13 +121,13 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
       const opts = {params: {host: id, include_logins: 1}}
       const resp = await axios('https://tmi.twitch.tv/hosts', opts)
       if (resp.data && resp.data.hosts[0]) {
-        vm.m.hosting = resp.data.hosts[0].target_login === getChannel()
+        vm.hosting = resp.data.hosts[0].target_login === getChannel()
         $scope.$digest()
       }
     }, 600)
   }
 
-  async function preLoadImage (url) {
+  const preLoadImage = url => {
     return new Promise((resolve) => {
       const img = new window.Image()
       img.src = url

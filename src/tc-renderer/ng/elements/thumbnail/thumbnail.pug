@@ -1,32 +1,32 @@
-.content.slide(mobx-autorun, ng-if='vm.m.stream')
-  span.title(title='{{vm.m.channel.status}}') {{vm.m.channel.status}}
+.content.slide(mobx-autorun, ng-if='vm.stream')
+  span.title(title='{{vm.channel.status}}') {{vm.channel.status}}
   .footer
     span.game
       i.zmdi.zmdi-gamepad
-      | {{vm.m.channel.game}}
+      | {{vm.channel.game}}
     br
-    span.host-button(ng-click='vm.host()', ng-if='!vm.m.hosting')
+    span.host-button(ng-click='vm.host()', ng-if='!vm.hosting')
       i.zmdi.zmdi-thumb-up
       | Host
-    span.host-button(ng-click='vm.unhost()', ng-if='vm.m.hosting') Unhost
+    span.host-button(ng-click='vm.unhost()', ng-if='vm.hosting') Unhost
     span.followers
       i.zmdi.zmdi-favorite
-      | {{vm.m.channel.followers}}
+      | {{vm.channel.followers}}
     span.viewers
       i.zmdi.zmdi-account
-      | {{vm.m.stream.viewers}}
+      | {{vm.stream.viewers}}
   .hover-content(layout='row', layout-align='center center')
     i.zmdi.zmdi-hearing.play(
-      ng-if='vm.m.streamlink || vm.m.livestreamer',
+      ng-if='vm.streamlink || vm.livestreamer',
       ng-click='vm.playMediaplayer(true)'
     )
       md-tooltip(md-autohide='') Audio Only
     i.zmdi.zmdi-play-circle-outline.play(
-      ng-if='vm.m.streamlink || vm.m.livestreamer',
+      ng-if='vm.streamlink || vm.livestreamer',
       ng-click='vm.playMediaplayer()'
     )
       md-tooltip(md-autohide='')
-        | {{vm.m.streamlink ? 'Streamlink' : 'Livestreamer'}}
+        | {{vm.streamlink ? 'Streamlink' : 'Livestreamer'}}
     i.zmdi.zmdi-open-in-new.play(ng-click='vm.playTwitch()')
       md-tooltip(md-autohide='') Twitch
     md-button.hide-button(
@@ -35,5 +35,5 @@
     )
       md-tooltip(md-autohide='') Hide thumbnail
       i.zmdi.zmdi-close
-  img.preview(ng-src='{{vm.m.img}}')
-md-divider(ng-if='vm.m.stream')
+  img.preview(ng-src='{{vm.img}}')
+md-divider(ng-if='vm.stream')
