@@ -4,89 +4,95 @@ import template from './user-panel.pug'
 import {user} from '../../../lib/api'
 import capitalize from '../../../lib/transforms/capitalize'
 
-angular.module('tc').directive('userPanel',
-  ($document, session, irc, openExternal, settings) => {
-    function link (scope) {
-      scope.m = {
-        created: '',
-        profilePicSrc: ''
-      }
+angular.module('tc').component('userPanel', {template, controller})
 
-      // TODO doesn't work
-      $document.bind('keypress', (e) => {
-        if (!session.inputFocused && scope.shouldDisplay()) {
-          switch (String.fromCharCode(e.which)) {
-            case 'p': scope.purge(); break
-            case 't': scope.timeout(); break
-            case 'b': scope.ban(); break
-          }
-        }
-      })
+function controller ($scope, $document, session, irc, openExternal, settings) {
+  const vm = this
 
-      scope.$watch(
-        () => session.selectedUser,
-        () => { if (session.selectedUser) fetchUser() }
-      )
+  vm.$onInit = () => {
+    vm.created = ''
+    vm.profilePicSrc = ''
+    vm.amMod = amMod
+    vm.capitalize = capitalize
+    vm.shouldDisplay = shouldDisplay
+    vm.goToChannel = goToChannel
+    vm.sendMessage = sendMessage
+    vm.whisper = whisper
+    vm.ban = ban
+    vm.timeout = timeout
+    vm.purge = () => vm.timeout(3)
+    vm.close = close
 
-      scope.capitalize = capitalize
+    $document.on('keypress', handleBanHotkeys)
 
-      scope.amMod = () => {
-        const channel = settings.channels[settings.selectedTabIndex]
-        return irc.isMod('#' + channel, settings.identity.username)
-      }
+    $scope.$watch(
+      () => session.selectedUser,
+      () => { if (session.selectedUser) fetchUser() }
+    )
+  }
 
-      /**
-     * True when the user was selected in the currently active channel
-     * @returns {boolean}
-     */
-      scope.shouldDisplay = () => {
-        const selectedChannel = settings.channels[settings.selectedTabIndex]
-        const onThatChannel = session.selectedUserChannel === selectedChannel
-        return session.selectedUser && onThatChannel
-      }
+  vm.$onDestroy = () => $document.off('keypress', handleBanHotkeys)
 
-      scope.goToChannel = () => {
-        openExternal('http://www.twitch.tv/' + session.selectedUser)
-      }
+  const amMod = () => {
+    const channel = settings.channels[settings.selectedTabIndex]
+    return irc.isMod('#' + channel, settings.identity.username)
+  }
 
-      scope.sendMessage = () => {
-        const composeUrl = 'http://www.twitch.tv/message/compose?to='
-        openExternal(composeUrl + session.selectedUser)
-      }
+  /**
+ * True when the user was selected in the currently active channel
+ * @returns {boolean}
+ */
+  const shouldDisplay = () => {
+    const selectedChannel = settings.channels[settings.selectedTabIndex]
+    const onThatChannel = session.selectedUserChannel === selectedChannel
+    return session.selectedUser && onThatChannel
+  }
 
-      scope.whisper = () => {
-        session.message = `/w ${session.selectedUser} `
-        session.input.focus()
-      }
+  const goToChannel = () => {
+    openExternal('http://www.twitch.tv/' + session.selectedUser)
+  }
 
-      scope.timeout = (seconds) => {
-        const toMsg = `.timeout ${session.selectedUser} ${(seconds || 600)}`
-        irc.say(session.selectedUserChannel, toMsg)
-        scope.close()
-      }
+  const sendMessage = () => {
+    const composeUrl = 'http://www.twitch.tv/message/compose?to='
+    openExternal(composeUrl + session.selectedUser)
+  }
 
-      scope.purge = () => {
-        scope.timeout(3)
-      }
+  const whisper = () => {
+    session.message = `/w ${session.selectedUser} `
+    session.input.focus()
+  }
 
-      scope.ban = () => {
-        const banMsg = '.ban ' + session.selectedUser
-        irc.say(session.selectedUserChannel, banMsg)
-        scope.close()
-      }
+  const timeout = (seconds) => {
+    const toMsg = `.timeout ${session.selectedUser} ${(seconds || 600)}`
+    irc.say(session.selectedUserChannel, toMsg)
+    vm.close()
+  }
 
-      scope.close = () => {
-        session.selectedUser = null
-        session.selectedUserChannel = null
-      }
+  const ban = () => {
+    const banMsg = '.ban ' + session.selectedUser
+    irc.say(session.selectedUserChannel, banMsg)
+    vm.close()
+  }
 
-      async function fetchUser () {
-        const userData = await user(session.selectedUser)
-        scope.m.profilePicSrc = userData.logo ? userData.logo : ''
-        scope.m.created = userData.created_at
-        scope.$apply()
+  const close = () => {
+    session.selectedUser = null
+    session.selectedUserChannel = null
+  }
+
+  const fetchUser = async () => {
+    const userData = await user(session.selectedUser)
+    vm.profilePicSrc = userData.logo ? userData.logo : ''
+    vm.created = userData.created_at
+    $scope.$digest()
+  }
+
+  const handleBanHotkeys = (e) => {
+    if (!session.inputFocused && vm.shouldDisplay()) {
+      switch (String.fromCharCode(e.which)) {
+        case 'p': return vm.purge()
+        case 't': return vm.timeout()
+        case 'b': return vm.ban()
       }
     }
-
-    return {restrict: 'E', template, link, scope: {}}
-  })
+  }
+}
