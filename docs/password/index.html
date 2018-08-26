@@ -1,49 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Tc's Twitch Password Generator for TMI</title>
-        <link href='https://fonts.googleapis.com/css?family=Raleway:100,400' rel='stylesheet'>
-        <style>
-            body {
-                text-align: center;
-                font-family: 'Raleway', sans-serif;
-                color: #6f6f6f;
-                background-color: #F7F7F7;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                margin: 0;
-                justify-content: center;
-            }
-        </style>
-    </head>
-    <body>
+<head>
+  <meta charset="UTF-8">
+  <title>Tc's Twitch Password Generator for TMI</title>
+  <link href='https://fonts.googleapis.com/css?family=Raleway:100,400'
+        rel='stylesheet'>
+  <style>
+    body {
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+      color: #6f6f6f;
+      background-color: #F7F7F7;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      justify-content: center;
+    }
 
-        <div class="no-password">
-            <h1>Hello.</h1>
-            <p>This page will help you create a password for use with any Twitch chat clients.</p>
-            <a href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=7usu2ykk2ytlm5eaclumm4yorzeqcfh&redirect_uri=http://gettc.xyz/password/&scope=chat_login"><img src="../assets/img/twitch-auth.png"></a>
-        </div>
+    .password {
+      cursor: pointer;
+    }
 
-        <div class="have-password">
-            <h2>Sweet!</h2>
-            <p>Below is your chat password, copy & paste the whole thing.</p>
-            <br>
-            <code class="password"></code>
-        </div>
+    .copied {
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
 
-        <script src="../assets/bower_components/jquery/dist/jquery.min.js"></script>
-        <script>
-            var oauthHash = location.hash.substr(1);
-            var accessToken = oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1];
+<div class="no-password">
+  <h1>Hello.</h1>
+  <p>This page will help you create a password for use with any Twitch chat
+    clients.</p>
+  <a
+    href="https://api.twitch.tv/kraken/oauth2/authorize?response_type=token&client_id=7usu2ykk2ytlm5eaclumm4yorzeqcfh&redirect_uri=http://gettc.xyz/password/&scope=chat_login"><img
+    src="../assets/img/twitch-auth.png"></a>
+</div>
 
-            if (accessToken) {
-                $('.no-password').hide();
-                $('.password').text('oauth:' + accessToken);
-                window.location.hash = '';
-            }
-            else $('.have-password').hide();
-        </script>
-    </body>
+<div class="have-password">
+  <h2>Sweet!</h2>
+  <p>Below is your chat password, copy & paste the whole thing.</p>
+  <br>
+  <code class="password" title="Click to copy"></code>
+  <br>
+  <p class="copied">Copied to Clipboard!</p>
+</div>
+
+<script src="../assets/bower_components/jquery/dist/jquery.min.js"></script>
+<script>
+  var oauthHash = location.hash.substr(1)
+  var accessToken = oauthHash.substr(oauthHash.indexOf('access_token=')).split('&')[0].split('=')[1]
+
+  if (accessToken) {
+    var $pw = $('.password')
+    $('.no-password').hide()
+    $pw.text('oauth:' + accessToken)
+    window.location.hash = ''
+
+    $pw.on('click', function () {
+      copyToClip($pw.text())
+      $('.copied').fadeTo(200, 1)
+    })
+  }
+  else $('.have-password').hide()
+
+  var copyToClip = function (str) {
+    var textArea = document.createElement('textarea')
+    textArea.value = str
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    document.body.removeChild(textArea)
+  }
+</script>
+</body>
 </html>
