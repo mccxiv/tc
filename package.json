@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp launch",
-    "postinstall": "cd src && npm install",
+    "postinstall": "cd src && npm ci",
     "dev-watch-files": "gulp dev-watch-files",
     "dev-launch-electron": "gulp dev-launch-electron",
     "build": "gulp build",
