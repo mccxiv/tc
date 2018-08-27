@@ -1,11 +1,11 @@
-md-whiteframe.md-whiteframe-z4.container(ng-if='m.visible', mobx-autorun)
+md-whiteframe.md-whiteframe-z4.container(ng-if='vm.visible', mobx-autorun)
   .emote-list
-    .category(ng-repeat='category in m.categories')
+    .category(ng-repeat='category in vm.categories')
       .category-label(ng-if='category.emotes.length') {{category.label}}
       .emotes
         img.emoticon(
           ng-repeat='emote in category.emotes',
           src='{{emote.url}}',
           data-emote-name='{{emote.emote}}',
-          ng-click='choose(emote.emote)'
+          ng-click='vm.choose(emote.emote)'
         )
