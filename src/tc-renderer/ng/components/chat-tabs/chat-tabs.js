@@ -54,7 +54,6 @@ function controller ($scope, $timeout, messages, settings) {
   }
 
   function unloadInThreeSeconds (channel) {
-    console.log('unloading', channel)
     $timeout(() => {
       if (currChannel() !== channel) {
         vm.loaded = R.without(channel, vm.loaded)

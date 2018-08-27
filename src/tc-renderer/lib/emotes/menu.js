@@ -33,8 +33,6 @@ const emotes = [
   }
 ]
 
-// setInterval(() => console.log(emotes), 4000)
-
 removeExampleValues()
 
 export function getAllCachedEmotes (channel) {
