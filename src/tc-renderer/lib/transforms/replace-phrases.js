@@ -1,12 +1,12 @@
 import emojis from '../data/emojis'
 import replacements from '../data/replacements.json'
-import settings from '../settings/settings'
+import store from '../../store'
 
 const slashRegex = /\/[a-z0-9\-_]+$/i
 const colonRegex = /:[a-z0-9\-_]+:/ig
 
 export default function replacePhrases (string) {
-  const sources = [replacements, settings.shortcuts]
+  const sources = [replacements, store.settings.state.shortcuts]
   const phrasesAndEmojis = Object.assign({}, emojis, ...sources)
   const phrases = Object.assign({}, ...sources)
 

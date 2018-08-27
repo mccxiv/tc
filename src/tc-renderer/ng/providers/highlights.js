@@ -1,7 +1,6 @@
 import angular from 'angular'
-import settings from '../../lib/settings/settings'
 
-angular.module('tc').factory('highlights', function () {
+angular.module('tc').factory('highlights', function (settings) {
   return {
     /**
      * Test if a string matches any of the saved highlighted phrases.

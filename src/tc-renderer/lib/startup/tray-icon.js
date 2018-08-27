@@ -1,8 +1,9 @@
 import icon16 from '../../../assets/icon16.png'
-import settings from './../settings/settings'
+import store from './../../store'
 import electron from 'electron'
 
 let tray
+const settings = store.settings.state
 
 export default function makeTrayIconOnWindows () {
   if (process.platform !== 'win32') return null

@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "scripts": {
     "start": "gulp launch",
-    "postinstall": "cd src && npm install",
+    "postinstall": "cd src && npm ci",
     "dev-watch-files": "gulp dev-watch-files",
     "dev-launch-electron": "gulp dev-launch-electron",
     "build": "gulp build",
@@ -39,6 +39,7 @@
     }
   },
   "eslintConfig": {
+    "parser": "babel-eslint",
     "extends": "standard",
     "rules": {
       "no-return-assign": "off",
@@ -51,9 +52,12 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.56",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.56",
+    "@babel/plugin-proposal-decorators": "^7.0.0-rc.1",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.56",
     "@babel/preset-env": "^7.0.0-beta.56",
     "@babel/runtime": "^7.0.0-beta.56",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^8.0.0-beta.4",
     "css-loader": "^0.28.10",
     "electron": "^1.8.2",

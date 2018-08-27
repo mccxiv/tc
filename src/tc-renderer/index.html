@@ -19,28 +19,29 @@
       ng-app="tc"
       class="app"
       layout="column"
-      ng-controller="main"
-      ng-class="{dark: settings.theme.dark}"
+      ng-controller="main as vm"
+      ng-class="{dark: store.settings.state.theme.dark}"
       ng-cloak
+      mobx-autorun
     >
       <section ng-if="!needLogin()" layout="row" flex class="main">
         <md-sidenav
           layout="column"
           md-is-locked-open="true"
           class="side-bar md-sidenav-left md-whiteframe-z2"
-          ng-class="{collapsed: settings.appearance.sidebarCollapsed}"
+          ng-class="{collapsed: store.settings.state.appearance.sidebarCollapsed}"
         >
           <side-toolbar></side-toolbar>
           <md-divider></md-divider>
           <thumbnail
             ng-if="showingThumbnail()
-            && !settings.appearance.sidebarCollapsed
-            && settings.appearance.thumbnail"
+            && !store.settings.state.appearance.sidebarCollapsed
+            && store.settings.state.appearance.thumbnail"
           >
           </thumbnail>
           <user-panel ng-if="expanded()"></user-panel>
           <chatters-tabs
-            ng-class="{collapsed: !settings.appearance.chatters}"
+            ng-class="{collapsed: !store.settings.state.appearance.chatters}"
             flex ng-show="expanded()">
           </chatters-tabs>
         </md-sidenav>

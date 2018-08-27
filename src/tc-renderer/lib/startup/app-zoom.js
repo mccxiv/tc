@@ -1,22 +1,17 @@
 import electron from 'electron'
 import $ from 'jquery'
-import settings, {events} from '../../lib/settings/settings'
+import store from '../../store'
+import {reaction} from 'mobx'
 
 export default function watchZoomChanges () {
   updateZoom()
-  let zoomLevel = settings.appearance.zoom
-
-  events.on('change', () => {
-    if (zoomLevel !== settings.appearance.zoom) {
-      updateZoom()
-      zoomLevel = settings.appearance.zoom
-    }
-  })
+  reaction(() => store.settings.state.appearance.zoom, updateZoom)
 
   $(document).on('keyup', (e) => {
     if (e.ctrlKey && !e.altKey) { // Check to avoid Alt Gr
       if (e.which === 107 || e.which === 187) zoomIn()
-      if (e.which === 109 || e.which === 189) zoomOut()
+      else if (e.which === 109 || e.which === 189) zoomOut()
+      else if (e.which === 48) zoomReset()
     }
   })
 
@@ -29,17 +24,21 @@ export default function watchZoomChanges () {
 }
 
 function zoomIn () {
-  if (settings.appearance.zoom < 175) {
-    settings.appearance.zoom += 5
+  if (store.settings.state.appearance.zoom < 175) {
+    store.settings.state.appearance.zoom += 5
   }
 }
 
 function zoomOut () {
-  if (settings.appearance.zoom > 104) {
-    settings.appearance.zoom -= 5
+  if (store.settings.state.appearance.zoom > 104) {
+    store.settings.state.appearance.zoom -= 5
   }
 }
 
+function zoomReset () {
+  store.settings.state.appearance.zoom = 100
+}
+
 function updateZoom () {
-  electron.webFrame.setZoomFactor(settings.appearance.zoom / 100)
+  electron.webFrame.setZoomFactor(store.settings.state.appearance.zoom / 100)
 }

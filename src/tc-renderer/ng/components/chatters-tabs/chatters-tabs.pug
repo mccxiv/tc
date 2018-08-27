@@ -1,0 +1,23 @@
+.chatters-tabs(mobx-autorun)
+  md-tabs(
+    md-selected='vm.settings.selectedTabIndex',
+    md-no-bar='',
+    md-no-pagination='',
+    md-dynamic-height='',
+    ng-show='vm.settings.appearance.chatters'
+  )
+    md-tab(ng-repeat='channel in vm.settings.channels', label='...')
+      chatters(channel='channel')
+    md-tab(label='...')
+      |   
+  md-button.toggle-button(
+    aria-label='Viewer List',
+    md-no-ink='',
+    ng-click='vm.settings.appearance.chatters = !vm.settings.appearance.chatters',
+    ng-class='vm.toggleButtonClasses()'
+  )
+    md-tooltip(md-autohide='', ng-if='vm.settings.appearance.chatters')
+      | Hide list
+    md-tooltip(md-autohide='', ng-if='!vm.settings.appearance.chatters')
+      | Show viewer list
+    i.zmdi.zmdi-chevron-up

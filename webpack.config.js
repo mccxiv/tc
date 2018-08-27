@@ -1,7 +1,6 @@
 const path = require('path')
 
 const base = {
-  devtool: 'cheap-module-inline-source-map',
   node: {
     __filename: false,
     __dirname: false
@@ -29,7 +28,11 @@ const base = {
                   }
                 }]
               ],
-              plugins: ['@babel/plugin-transform-runtime']
+              plugins: [
+                '@babel/plugin-transform-runtime',
+                ['@babel/plugin-proposal-decorators', {legacy: true}],
+                ['@babel/plugin-proposal-class-properties', {loose: true}]
+              ]
             }
           }
         ],

@@ -1,0 +1,22 @@
+.chatters(mobx-autorun)
+  input(
+    ng-model='vm.searchText',
+    placeholder='Filter chatters - {{vm.api.chatter_count | number}}',
+    ng-show='vm.api.chatter_count > 50',
+    ng-model-options='{debounce: 300}'
+  )
+  div(ng-repeat='(key, value) in vm.api.chatters')
+    h3(ng-if='value.length') {{vm.prettyChatterNames(key)}}
+    .usernames
+      // Not DRY because this has better performance
+      div(ng-if='key !== "viewers"')
+        div(ng-repeat='username in value | filter:searchText')
+          span.chatter(ng-click='vm.selectUser(username)') {{username}}
+      div(ng-if='key === "viewers" && !vm.tooManyNotDoable()')
+        div(ng-repeat='username in value | limitTo: vm.showViewers() ? Infinity : 0 | filter:searchText')
+          span.chatter(ng-click='vm.selectUser(username)') {{username}}
+      div(ng-if='key === "viewers" && !vm.tooManyNotDoable() && !vm.showViewers()')
+        md-button.show-more-button(ng-click='vm.showViewers(true)')
+          | Too many, show all?
+          i.zmdi.zmdi-expand-more
+      div(ng-if='key === "viewers" && vm.tooManyNotDoable()') Too many, try filtering

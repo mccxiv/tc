@@ -1,0 +1,21 @@
+md-tabs.chat-tabs(
+  mobx-autorun,
+  md-selected='vm.settings.selectedTabIndex',
+  md-border-bottom=''
+)
+  md-tab(ng-repeat='channel in vm.settings.channels')
+    md-tab-label
+      i.zmdi.zmdi-chevron-left.move-left(ng-click='vm.moveLeft($event, channel)')
+      i.zmdi.zmdi-circle.live-indicator(ng-if='vm.live(channel) === "live"')
+      i.zmdi.zmdi-replay.rerun-indicator(ng-if='vm.live(channel) === "rerun"')
+      | {{channel}}
+      span.counter {{vm.unread(channel)}}
+      i.zmdi.zmdi-chevron-right.move-right(ng-click='vm.moveRight($event, channel)')
+    md-tab-body
+      chat-output(channel='channel', ng-if='vm.isLoaded(channel)')
+  md-tab
+    md-tab-label
+      i.zmdi.zmdi-plus.zmdi-lg
+      md-tooltip(md-direction='left') New ({{::vm.hotkey}} + n)
+    md-tab-body
+      add-channel(ng-if='vm.showingAddChannel()')
