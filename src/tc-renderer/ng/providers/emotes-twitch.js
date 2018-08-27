@@ -1,5 +1,4 @@
 import angular from 'angular'
-import {api} from '../../lib/api'
 import {addTwitchEmotesets} from '../../lib/emotes/menu'
 
 /**
@@ -17,39 +16,19 @@ import {addTwitchEmotesets} from '../../lib/emotes/menu'
 angular.module('tc').factory('emotesTwitch', function (irc) {
   const emotes = []
 
-  irc.once('emotesets', function (sets) {
-    addTwitchEmotesets(sets)
-    getEmotes()
+  irc.on('emotesets', function (setsString, setsObject) {
+    addTwitchEmotesets(setsObject)
 
-    async function getEmotes () {
-      try {
-        const images = await api('chat/emoticon_images?emotesets=' + sets)
-        onSuccess(images)
-      } catch (e) {
-        onFail()
-      }
-
-      function onSuccess (data) {
-        try {
-          Object.values(data.emoticon_sets).forEach(set => {
-            set.forEach(emoteObject => {
-              // Don't include regex based emote codes.
-              // Currently all regex emotes have a / in them
-              if (contains(emoteObject.code, '/')) return
-              emotes.push({emote: emoteObject.code, id: emoteObject.id})
-            })
-          })
-        } catch (e) {
-          console.error(e)
-          onFail()
-        }
-      }
-
-      function onFail () {
-        console.warn('Error grabbing twitch emotes. Retrying in 1m.')
-        setTimeout(getEmotes, 60000)
-      }
-    }
+    Object.values(setsObject).forEach(set => {
+      set.forEach(emoteObject => {
+        // Don't include regex based emote codes.
+        // Currently all regex emotes have a / in them
+        if (contains(emoteObject.code, '/')) return
+        // Don't add it if already in the list
+        if (emotes.some(({emote}) => emote === emoteObject.code)) return
+        emotes.push({emote: emoteObject.code, id: emoteObject.id})
+      })
+    })
   })
 
   function contains (string, contains) {

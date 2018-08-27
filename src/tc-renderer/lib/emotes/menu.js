@@ -60,39 +60,24 @@ export function addBttvChannelEmotes (channel, arrayOfEmoteObjects) {
   addChannelEmotes('bttv-channel', channel, arrayOfEmoteObjects)
 }
 
-export async function addTwitchEmotesets (newEmotesetsString) {
-  if (lastEmotesetsString === newEmotesetsString) return
-  lastEmotesetsString = newEmotesetsString
-  await fetchAndPopulateEmotesets(newEmotesetsString)
+export async function addTwitchEmotesets (newEmotesetsObject) {
+  const twitchEmotes = []
+  Object.values(newEmotesetsObject).forEach(set => {
+    set.forEach(emoteObject => {
+      // Don't add it if already in the list
+      if (emotes.some(({emote}) => emote === emoteObject.code)) return
+      twitchEmotes.push({
+        emote: emoteObject.code,
+        url: `http://static-cdn.jtvnw.net/emoticons/v1/${emoteObject.id}/1.0`
+      })
+    })
+  })
+  const category = emotes.find(category => category.type === 'twitch')
+  category.emotes = twitchEmotes
 }
 
 function removeExampleValues () {
   emotes[0].emotes = []
-}
-
-async function fetchAndPopulateEmotesets (emotesetsString) {
-  try {
-    const twitchEmotes = []
-    const url = `chat/emoticon_images?emotesets=${emotesetsString}`
-    const response = await api(url)
-    Object.keys(response.emoticon_sets).forEach(setKey => {
-      const set = response.emoticon_sets[setKey]
-      set.forEach(emoteObject => {
-        // Don't include regex based emote codes.
-        // Currently all regex emotes have a / in them
-        if (emoteObject.code.includes('/')) return
-        twitchEmotes.push({
-          emote: emoteObject.code,
-          url: `http://static-cdn.jtvnw.net/emoticons/v1/${emoteObject.id}/1.0`
-        })
-      })
-    })
-    const category = emotes.find(category => category.type === 'twitch')
-    category.emotes = twitchEmotes
-  } catch (e) {
-    console.error(e)
-    // TODO retry
-  }
 }
 
 function channelExist (type, channel) {
