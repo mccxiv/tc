@@ -1,4 +1,4 @@
-md-whiteframe.md-whiteframe-z4.container(ng-if='m.visible')
+md-whiteframe.md-whiteframe-z4.container(ng-if='m.visible', mobx-autorun)
   .emote-list
     .category(ng-repeat='category in m.categories')
       .category-label(ng-if='category.emotes.length') {{category.label}}

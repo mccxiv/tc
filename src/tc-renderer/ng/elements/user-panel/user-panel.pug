@@ -1,4 +1,4 @@
-.user-menu-container(layout='row', ng-if='vm.shouldDisplay()')
+.user-menu-container(mobx-autorun, layout='row', ng-if='vm.shouldDisplay()')
   .profile-picture-div
     img.profile-picture(
       ng-if='vm.profilePicSrc',
