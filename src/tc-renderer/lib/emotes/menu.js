@@ -1,6 +1,3 @@
-import {api} from '../api'
-
-let lastEmotesetsString = ''
 const emotes = [
   {
     type: 'bttv-channel',

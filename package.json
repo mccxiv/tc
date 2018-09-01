@@ -9,13 +9,18 @@
     "dev-watch-files": "gulp dev-watch-files",
     "dev-launch-electron": "gulp dev-launch-electron",
     "build": "gulp build",
-    "lint": "eslint src --fix",
+    "lint": "eslint src",
     "don't touch pack & dist, just run build instead": "",
     "pack": "build",
     "dist": "build",
     "dist:linux": "build -l",
     "dist:mac": "build -m",
     "dist:windows": "build -w"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
   },
   "build": {
     "appId": "zyx.gettc.tc",
@@ -72,6 +77,7 @@
     "file-loader": "^1.1.9",
     "gulp": "^3.9.1",
     "html-loader": "^0.5.5",
+    "husky": "^1.0.0-rc.13",
     "imports-loader": "^0.8.0",
     "json-loader": "^0.5.7",
     "ng-annotate-loader": "^0.6.1",
