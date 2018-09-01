@@ -10,6 +10,7 @@ import watchZoomChanges from './lib/startup/app-zoom'
 import keepChannelsOnBacklog from './lib/startup/keep-channels-on-backlog'
 import joinChannelFromCommand from './lib/startup/commandline'
 import setOnTop from './lib/startup/always-on-top'
+import disableDragDrop from './lib/startup/disable-drag-drop'
 
 import './lib/startup/angular-stuff'
 
@@ -33,3 +34,4 @@ watchZoomChanges()
 keepChannelsOnBacklog()
 joinChannelFromCommand()
 setOnTop()
+disableDragDrop()
