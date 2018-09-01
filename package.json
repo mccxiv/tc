@@ -9,7 +9,7 @@
     "dev-watch-files": "gulp dev-watch-files",
     "dev-launch-electron": "gulp dev-launch-electron",
     "build": "gulp build",
-    "lint": "eslint src --fix",
+    "lint": "eslint src",
     "don't touch pack & dist, just run build instead": "",
     "pack": "build",
     "dist": "build",
