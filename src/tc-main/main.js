@@ -91,11 +91,11 @@ function secondaryInstanceLaunched (argv) {
   if (!main.isVisible()) main.show()
   if (!main.isFocused()) main.focus()
 
-    argv.forEach(function (arg) {
-        if (argv.includes('--channel=')) {
-          main.webContents.send('join-channel', arg.slice(10))
-        }
-    })
+  argv.forEach(function (arg) {
+    if (argv.includes('--channel=')) {
+      main.webContents.send('join-channel', arg.slice(10))
+    }
+  })
 }
 
 function enableAutoStart () {
