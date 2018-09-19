@@ -138,7 +138,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, openExt
   }
 
   function isModableChat (m) {
-    return m.user &&
+    return settings.chat.modactions && m.user &&
       (!m.user.mod && m.user['user-id'] !== m.user['room-id'] &&
        m.type === 'chat')
   }

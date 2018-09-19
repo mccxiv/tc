@@ -3,7 +3,7 @@ md-sidenav.settings-sidebar.md-sidenav-left.md-whiteframe-z2.menu(
 )
   md-list
     md-subheader.md-no-sticky Settings
-    // TODO refactor this awful repetition 
+    // TODO refactor this awful repetition
     md-list-item.menu-item(
       ng-click='m.selected = "tc"',
       ng-class='{selected: m.selected === "tc"}'
@@ -157,6 +157,8 @@ md-sidenav.settings-sidebar.md-sidenav-left.md-whiteframe-z2.menu(
       | Use dark theme
     md-switch(ng-model='settings.chat.timestamps')
       | Show time stamps
+    md-switch(ng-model='settings.chat.modactions')
+      | Show inline moderator actions
     md-switch(ng-model='settings.appearance.split')
       | Split chat lines for more contrast
     md-switch(ng-model='settings.appearance.variableLineHeight')
