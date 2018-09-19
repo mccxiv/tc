@@ -19,7 +19,7 @@ angular.module('tc').component('chatOutput', {
 })
 
 // eslint-disable-next-line
-function controller ($scope, $element, $sce, $timeout, messages, session, openExternal, settings) {
+function controller($scope, $element, $sce, $timeout, messages, session, openExternal, settings, irc) {
   $element = $($element[0])
 
   const e = $element[0]
@@ -68,6 +68,11 @@ function controller ($scope, $element, $sce, $timeout, messages, session, openEx
   vm.messageClasses = messageClasses
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
+  vm.ban = ban
+  vm.timeout = timeout
+  vm.purge = purge
+  vm.amMod = amMod
+  vm.isModableChat = isModableChat
 
   // ===============================================================
   // Functions
@@ -111,6 +116,31 @@ function controller ($scope, $element, $sce, $timeout, messages, session, openEx
     const badge = getBadge(name, version)
     if (!badge) return undefined
     return badge.image_url_1x
+  }
+
+  function timeout (m, seconds) {
+    const toMsg = `.timeout ${m.user.username} ${(seconds || 600)}`
+    irc.say(m.channel, toMsg)
+  }
+
+  function purge (m) {
+    timeout(m, 3)
+  }
+
+  function ban (m) {
+    const banMsg = '.ban ' + m.user.username
+    irc.say(m.channel, banMsg)
+  }
+
+  function amMod () {
+    const channel = settings.channels[settings.selectedTabIndex]
+    return irc.isMod('#' + channel, settings.identity.username)
+  }
+
+  function isModableChat (m) {
+    return m.user &&
+      (!m.user.mod && m.user['user-id'] !== m.user['room-id'] &&
+       m.type === 'chat')
   }
 
   function getBadge (name, version) {
