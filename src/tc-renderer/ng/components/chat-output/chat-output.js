@@ -145,7 +145,6 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function isModableChat (m) {
-    console.log(m)
     return settings.chat.modactions && m.user &&
       (!m.user.mod && !isBroadcaster(m.user.username) &&
        (m.type === 'chat' || m.type === 'action'))
