@@ -24,7 +24,6 @@
     "material-design-iconic-font": "2.1.2",
     "mobx": "^5.0.3",
     "mobx-angularjs": "^1.6.0",
-    "moment": "^2.21.0",
     "nprogress": "0.2.0",
     "proxy-observe": "github:mccxiv/proxy-observe",
     "ramda": "^0.25.0",

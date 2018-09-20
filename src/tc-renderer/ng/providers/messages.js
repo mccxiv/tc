@@ -1,7 +1,6 @@
 import throttle from 'lodash.throttle'
 import angular from 'angular'
 import axios from 'axios'
-import moment from 'moment'
 import electron from 'electron'
 import channels from '../../lib/channels'
 import processMessage from '../../lib/transforms/process-message'
