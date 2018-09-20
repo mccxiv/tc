@@ -69,9 +69,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.messageClasses = messageClasses
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
-  vm.ban = ban
-  vm.timeout = timeout
-  vm.purge = purge
+  vm.shortTimeout = shortTimeout
   vm.amMod = amMod
   vm.isModableChat = isModableChat
 
@@ -119,23 +117,10 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     return badge.image_url_1x
   }
 
-  function timeout (m, seconds) {
+  function shortTimeout (m) {
     if (m.user) {
-      const toMsg = `.timeout ${m.user.username} ${(seconds || 600)}`
-      irc.say(m.channel, toMsg)
-      vm.messages.timeoutFromChat(m.channel, m.user.username)
-    }
-  }
-
-  function purge (m) {
-    timeout(m, 3)
-  }
-
-  function ban (m) {
-    if (m.user) {
-      const banMsg = '.ban ' + m.user.username
-      irc.say(m.channel, banMsg)
-      vm.messages.timeoutFromChat(m.channel, m.user.username)
+      const toMsg = `.timeout ${m.user.username} 60`
+      irc.say(`#${m.channel}`, toMsg)
     }
   }
 
