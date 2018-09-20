@@ -75,8 +75,6 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.amMod = amMod
   vm.isModableChat = isModableChat
 
-  vm.purged = {}
-
   // ===============================================================
   // Functions
   // ===============================================================
