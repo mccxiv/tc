@@ -4,7 +4,7 @@
 )
   .chat-line(
     ng-repeat='m in vm.messages',
-    ng-class='::vm.messageClasses(m)',
+    class='{{m.deleted ? "deleted" : ""}} {{::vm.messageClassesAsString(m)}}',
     ng-style='::vm.messageInlineStyles(m)'
   )
     span.timestamp.lighter(ng-if='::vm.settings.chat.timestamps')

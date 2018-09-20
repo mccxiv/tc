@@ -66,7 +66,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.badgeBg = badgeBg
   vm.badgeTitle = badgeTitle
   vm.isOdd = isOdd
-  vm.messageClasses = messageClasses
+  vm.messageClassesAsString = messageClassesAsString
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
   vm.shortTimeout = shortTimeout
@@ -330,16 +330,19 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     return color
   }
 
-  function messageClasses (m) {
-    return {
+  function messageClassesAsString (m) {
+    const classPresence = {
       'from-backlog': m.fromBacklog,
       highlighted: m.highlighted,
-      deleted: m.deleted,
       whisper: m.type === 'whisper',
       notification: m.type === 'notification',
       golden: m.golden,
       odd: m._isOdd
     }
+
+    return Object.keys(classPresence)
+      .filter(key => classPresence[key])
+      .join(' ')
   }
 
   function messageInlineStyles (m) {
