@@ -310,15 +310,8 @@ angular.module('tc').factory('messages', (
           addNotification(channel, msg)
         }
       },
-      timeout: (channel, username, reason, duration) => {
+      timeout: (channel, username) => {
         timeoutFromChat(channel, username)
-        if (!settings.appearance.hideTimeouts) {
-          duration = Number(duration)
-          const humanDur = moment.duration(duration, 'seconds').humanize()
-          const baseMsg = username + ` has been timed out for ${humanDur}.`
-          const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '')
-          addNotification(channel, msg)
-        }
       },
       clearchat: (channel) => {
         const msg = 'Chat cleared by a moderator. (Prevented by Tc)'
