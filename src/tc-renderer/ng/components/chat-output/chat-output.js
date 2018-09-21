@@ -119,15 +119,15 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
 
   function shortTimeout (m) {
     if (m.user) {
-      const toMsg = `.timeout ${m.user.username} 60`
+      const toMsg = `.timeout ${m.user.username} 30`
       irc.say(`#${m.channel}`, toMsg)
     }
   }
 
   function canModHere () {
     const channel = settings.channels[settings.selectedTabIndex]
-    return isBroadcaster(channel) ||
-      irc.isMod('#' + channel, settings.identity.username)
+    const myUsername = settings.identity.username
+    return isBroadcaster(myUsername) || irc.isMod(`#${channel}`, myUsername)
   }
 
   function isModableMessage (m) {

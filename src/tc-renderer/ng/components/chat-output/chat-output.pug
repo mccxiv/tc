@@ -11,7 +11,7 @@
       | {{::m.at | date: 'H:mm'}}  
     span.mod-actions(ng-if='::vm.canModHere() && vm.isModableMessage(m)')
       md-button(ng-click='vm.shortTimeout(m)', aria-label='Timeout')
-        md-tooltip(md-autohide='') Timeout (1m)
+        md-tooltip(md-autohide='') Purge (30s)
         i.zmdi.zmdi-time-restore
     span.badges(ng-if='::m.user')
       span.badge(
