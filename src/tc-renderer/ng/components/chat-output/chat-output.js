@@ -66,14 +66,12 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.badgeBg = badgeBg
   vm.badgeTitle = badgeTitle
   vm.isOdd = isOdd
-  vm.messageClasses = messageClasses
+  vm.messageClassesAsString = messageClassesAsString
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
-  vm.ban = ban
-  vm.timeout = timeout
-  vm.purge = purge
-  vm.amMod = amMod
-  vm.isModableChat = isModableChat
+  vm.shortTimeout = shortTimeout
+  vm.canModHere = canModHere
+  vm.isModableMessage = isModableMessage
 
   // ===============================================================
   // Functions
@@ -119,35 +117,25 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     return badge.image_url_1x
   }
 
-  function timeout (m, seconds) {
+  function shortTimeout (m) {
     if (m.user) {
-      const toMsg = `.timeout ${m.user.username} ${(seconds || 600)}`
-      irc.say(m.channel, toMsg)
-      vm.messages.timeoutFromChat(m.channel, m.user.username)
+      const toMsg = `.timeout ${m.user.username} 30`
+      irc.say(`#${m.channel}`, toMsg)
     }
   }
 
-  function purge (m) {
-    timeout(m, 3)
-  }
-
-  function ban (m) {
-    if (m.user) {
-      const banMsg = '.ban ' + m.user.username
-      irc.say(m.channel, banMsg)
-      vm.messages.timeoutFromChat(m.channel, m.user.username)
-    }
-  }
-
-  function amMod () {
+  function canModHere () {
     const channel = settings.channels[settings.selectedTabIndex]
-    return irc.isMod('#' + channel, settings.identity.username)
+    const myUsername = settings.identity.username
+    return isBroadcaster(myUsername) || irc.isMod(`#${channel}`, myUsername)
   }
 
-  function isModableChat (m) {
-    return settings.chat.modactions && m.user &&
-      (!m.user.mod && !isBroadcaster(m.user.username) &&
-       (m.type === 'chat' || m.type === 'action'))
+  function isModableMessage (m) {
+    return settings.chat.modactions &&
+      m.user &&
+      !m.user.mod &&
+      !isBroadcaster(m.user.username) &&
+      (m.type === 'chat' || m.type === 'action')
   }
 
   function getBadge (name, version) {
@@ -345,16 +333,19 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     return color
   }
 
-  function messageClasses (m) {
-    return {
+  function messageClassesAsString (m) {
+    const classPresence = {
       'from-backlog': m.fromBacklog,
       highlighted: m.highlighted,
-      deleted: m.deleted,
       whisper: m.type === 'whisper',
       notification: m.type === 'notification',
       golden: m.golden,
       odd: m._isOdd
     }
+
+    return Object.keys(classPresence)
+      .filter(key => classPresence[key])
+      .join(' ')
   }
 
   function messageInlineStyles (m) {

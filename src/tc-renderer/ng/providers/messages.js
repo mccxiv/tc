@@ -1,7 +1,6 @@
 import throttle from 'lodash.throttle'
 import angular from 'angular'
 import axios from 'axios'
-import moment from 'moment'
 import electron from 'electron'
 import channels from '../../lib/channels'
 import processMessage from '../../lib/transforms/process-message'
@@ -310,15 +309,8 @@ angular.module('tc').factory('messages', (
           addNotification(channel, msg)
         }
       },
-      timeout: (channel, username, reason, duration) => {
+      timeout: (channel, username) => {
         timeoutFromChat(channel, username)
-        if (!settings.appearance.hideTimeouts) {
-          duration = Number(duration)
-          const humanDur = moment.duration(duration, 'seconds').humanize()
-          const baseMsg = username + ` has been timed out for ${humanDur}.`
-          const msg = baseMsg + (reason ? ` Reason: ${reason}.` : '')
-          addNotification(channel, msg)
-        }
       },
       clearchat: (channel) => {
         const msg = 'Chat cleared by a moderator. (Prevented by Tc)'
@@ -361,10 +353,13 @@ angular.module('tc').factory('messages', (
         addNotification(channel, message, true)
       },
 
-      notice: (channel = '', msgId, message) => {
-        channel = channel.substr(1)
-        if (!channel || channel === '*') addGlobalNotification(message)
-        else addNotification(channel, message)
+      notice: (channel, msgId, message) => {
+        if (!channel || channel === '*' || channel === '#undefined') {
+          addGlobalNotification(message)
+        } else {
+          channel = channel.substr(1)
+          addNotification(channel, message)
+        }
       }
     }
   }
