@@ -5,6 +5,7 @@ export default {
   },
   chat: {
     timestamps: false,
+    modactions: true,
     ignored: []
   },
   notifications: {

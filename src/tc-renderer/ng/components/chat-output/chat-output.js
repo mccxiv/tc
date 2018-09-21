@@ -19,7 +19,7 @@ angular.module('tc').component('chatOutput', {
 })
 
 // eslint-disable-next-line
-function controller ($scope, $element, $sce, $timeout, messages, session, openExternal, settings) {
+function controller($scope, $element, $sce, $timeout, messages, session, irc, openExternal, settings) {
   $element = $($element[0])
 
   const e = $element[0]
@@ -57,6 +57,7 @@ function controller ($scope, $element, $sce, $timeout, messages, session, openEx
   // ===============================================================
   // Directive methods
   // ===============================================================
+  vm.irc = irc
   vm.selectUsername = selectUsername
   vm.isBroadcaster = isBroadcaster
   vm.trusted = html => $sce.trustAsHtml(html)
@@ -68,6 +69,11 @@ function controller ($scope, $element, $sce, $timeout, messages, session, openEx
   vm.messageClasses = messageClasses
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
+  vm.ban = ban
+  vm.timeout = timeout
+  vm.purge = purge
+  vm.amMod = amMod
+  vm.isModableChat = isModableChat
 
   // ===============================================================
   // Functions
@@ -111,6 +117,37 @@ function controller ($scope, $element, $sce, $timeout, messages, session, openEx
     const badge = getBadge(name, version)
     if (!badge) return undefined
     return badge.image_url_1x
+  }
+
+  function timeout (m, seconds) {
+    if (m.user) {
+      const toMsg = `.timeout ${m.user.username} ${(seconds || 600)}`
+      irc.say(m.channel, toMsg)
+      vm.messages.timeoutFromChat(m.channel, m.user.username)
+    }
+  }
+
+  function purge (m) {
+    timeout(m, 3)
+  }
+
+  function ban (m) {
+    if (m.user) {
+      const banMsg = '.ban ' + m.user.username
+      irc.say(m.channel, banMsg)
+      vm.messages.timeoutFromChat(m.channel, m.user.username)
+    }
+  }
+
+  function amMod () {
+    const channel = settings.channels[settings.selectedTabIndex]
+    return irc.isMod('#' + channel, settings.identity.username)
+  }
+
+  function isModableChat (m) {
+    return settings.chat.modactions && m.user &&
+      (!m.user.mod && !isBroadcaster(m.user.username) &&
+       (m.type === 'chat' || m.type === 'action'))
   }
 
   function getBadge (name, version) {

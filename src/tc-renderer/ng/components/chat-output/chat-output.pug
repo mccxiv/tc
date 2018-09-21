@@ -9,6 +9,16 @@
   )
     span.timestamp.lighter(ng-if='::vm.settings.chat.timestamps')
       | {{::m.at | date: 'H:mm'}}  
+    span.mod-actions(ng-class='{disabled: !vm.amMod()}', ng-if='::vm.isModableChat(m)')
+      md-button(ng-click='vm.purge(m)', aria-label='Purge')
+        md-tooltip(md-autohide='') Purge (3s)
+        i.zmdi.zmdi-replay-5
+      md-button(ng-click='vm.timeout(m)', aria-label='Timeout')
+        md-tooltip(md-autohide='') Timeout (10m)
+        i.zmdi.zmdi-time-restore
+      md-button(ng-click='vm.ban(m)', aria-label='Ban')
+        md-tooltip(md-autohide='') Ban
+        i.zmdi.zmdi-block
     span.badges(ng-if='::m.user')
       span.badge(
         ng-repeat='(name, version) in ::m.user.badges',
