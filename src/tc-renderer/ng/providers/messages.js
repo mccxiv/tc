@@ -353,10 +353,13 @@ angular.module('tc').factory('messages', (
         addNotification(channel, message, true)
       },
 
-      notice: (channel = '', msgId, message) => {
-        channel = channel.substr(1)
-        if (!channel || channel === '*') addGlobalNotification(message)
-        else addNotification(channel, message)
+      notice: (channel, msgId, message) => {
+        if (!channel || channel === '*' || channel === '#undefined') {
+          addGlobalNotification(message)
+        } else {
+          channel = channel.substr(1)
+          addNotification(channel, message)
+        }
       }
     }
   }

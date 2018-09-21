@@ -9,10 +9,7 @@
   )
     span.timestamp.lighter(ng-if='::vm.settings.chat.timestamps')
       | {{::m.at | date: 'H:mm'}}  
-    span.mod-actions(
-      ng-class='{disabled: !vm.amMod()}',
-      ng-if='::vm.isModableChat(m)'
-    )
+    span.mod-actions(ng-if='::vm.canModHere() && vm.isModableMessage(m)')
       md-button(ng-click='vm.shortTimeout(m)', aria-label='Timeout')
         md-tooltip(md-autohide='') Timeout (1m)
         i.zmdi.zmdi-time-restore

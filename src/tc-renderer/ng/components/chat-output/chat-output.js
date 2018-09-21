@@ -70,8 +70,8 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
   vm.shortTimeout = shortTimeout
-  vm.amMod = amMod
-  vm.isModableChat = isModableChat
+  vm.canModHere = canModHere
+  vm.isModableMessage = isModableMessage
 
   // ===============================================================
   // Functions
@@ -124,15 +124,18 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     }
   }
 
-  function amMod () {
+  function canModHere () {
     const channel = settings.channels[settings.selectedTabIndex]
-    return irc.isMod('#' + channel, settings.identity.username)
+    return isBroadcaster(channel) ||
+      irc.isMod('#' + channel, settings.identity.username)
   }
 
-  function isModableChat (m) {
-    return settings.chat.modactions && m.user &&
-      (!m.user.mod && !isBroadcaster(m.user.username) &&
-       (m.type === 'chat' || m.type === 'action'))
+  function isModableMessage (m) {
+    return settings.chat.modactions &&
+      m.user &&
+      !m.user.mod &&
+      !isBroadcaster(m.user.username) &&
+      (m.type === 'chat' || m.type === 'action')
   }
 
   function getBadge (name, version) {
