@@ -69,7 +69,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.messageClassesAsString = messageClassesAsString
   vm.messageInlineStyles = messageInlineStyles
   vm.displayNameIsDifferent = displayNameIsDifferent
-  vm.shortTimeout = shortTimeout
+  vm.timeout = timeout
   vm.canModHere = canModHere
   vm.isModableMessage = isModableMessage
 
@@ -117,11 +117,9 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     return badge.image_url_1x
   }
 
-  function shortTimeout (m) {
-    if (m.user) {
-      const toMsg = `.timeout ${m.user.username} 30`
-      irc.say(`#${m.channel}`, toMsg)
-    }
+  function timeout (m, seconds) {
+    if (!m.user) return
+    irc.say(`#${vm.channel}`, `.timeout ${m.user.username} ${seconds}`)
   }
 
   function canModHere () {
