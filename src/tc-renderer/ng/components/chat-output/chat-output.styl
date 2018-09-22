@@ -8,12 +8,17 @@ chat-output::-webkit-scrollbar-thumb
 chat-output
   height: 100%
   display: block
-  overflow: auto
-  will-change: transform
   font-size: 1.4rem
   user-select: text
   -webkit-user-select: text
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif
+  position relative
+
+  .chat-lines
+    padding-top: 10px
+    height 100%
+    overflow-y auto
+    will-change transform
 
   .timestamp
     font-size: 1rem
@@ -52,9 +57,6 @@ chat-output
 
   .username:hover
     text-decoration: underline
-
-  .chat-lines
-    padding-top: 10px
 
   .chat-line
     padding: 4px 0 4px 15px

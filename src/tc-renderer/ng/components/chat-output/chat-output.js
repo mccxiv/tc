@@ -20,9 +20,6 @@ angular.module('tc').component('chatOutput', {
 
 // eslint-disable-next-line
 function controller($scope, $element, $sce, $timeout, messages, session, irc, openExternal, settings) {
-  $element = $($element[0])
-
-  const e = $element[0]
   const vm = this
   let fetchingBacklog = false
 
@@ -32,8 +29,11 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.$onInit = () => {
     vm.settings = settings
     vm.badges = null
+    vm.messageLimit = -40
     vm.messages = messages(vm.channel)
     vm.autoScroll = () => session.autoScroll
+    vm.$chatLines = $($element[0]).find('.chat-lines')
+    vm.chatLines = $($element[0]).find('.chat-lines')[0]
     session.autoScroll = true
 
     watchUserScrolling()
@@ -47,10 +47,20 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     setupNprogress()
     window.requestAnimationFrame(scrollDown)
     delayedScroll() // Need to rescroll once emotes and badges are loaded
+
+    loadMoreLinesUntilAll()
+
+    function loadMoreLinesUntilAll () {
+      $timeout(() => {
+        vm.messageLimit -= 5
+        if (vm.messageLimit < -200) vm.messageLimit = undefined
+        else loadMoreLinesUntilAll()
+      }, 200)
+    }
   }
 
   vm.$onDestroy = () => {
-    $element.off()
+    vm.$chatLines.off()
     window.removeEventListener('resize', scrollIfEnabled)
   }
 
@@ -160,7 +170,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function handleEmoteHover () {
-    $element.on('mouseenter', '.emoticon', e => {
+    vm.$chatLines.on('mouseenter', '.emoticon', e => {
       const emoticon = $(e.target)
       let tooltip = emoticon.data('emote-name')
       const description = emoticon.data('emote-description')
@@ -171,7 +181,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function handleBadgeHover () {
-    $element.on('mouseenter', '.badge', e => {
+    vm.$chatLines.on('mouseenter', '.badge', e => {
       const badge = $(e.target)
       const title = badge.data('title')
       showTooltip(badge, title)
@@ -200,7 +210,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
  * shows all lines when scrolling up to the top (infinite scroll)
  */
   function watchUserScrolling () {
-    $element.on('wheel', handler)
+    vm.$chatLines.on('scroll', handler)
 
     function handler () {
       if (fetchingBacklog) return
@@ -231,7 +241,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
         NProgress.done()
         setTimeout(delayedScroll, 101)
         setTimeout(() => fetchingBacklog = false, 40) // Cooldown period
-        e.scrollTop += distanceFromBottom() - old
+        vm.chatLines.scrollTop += distanceFromBottom() - old
       })
     })
   }
@@ -242,8 +252,8 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
 
   function scrollDown () {
     session.autoScroll = true
-    e.scrollTop = e.scrollHeight
-    setTimeout(() => e.scrollTop = e.scrollHeight, 0)
+    vm.chatLines.scrollTop = vm.chatLines.scrollHeight
+    setTimeout(() => vm.chatLines.scrollTop = vm.chatLines.scrollHeight, 0)
   }
 
   function scrollWhenTogglingSidebar () {
@@ -285,16 +295,17 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function distanceFromTop () {
-    return Math.floor(e.scrollTop)
+    return Math.floor(vm.chatLines.scrollTop)
   }
 
   function distanceFromBottom () {
+    const e = vm.chatLines
     const distance = e.scrollHeight - e.scrollTop - e.offsetHeight
     return Math.floor(Math.abs(distance))
   }
 
   function handleAnchorClicks () {
-    $element.on('click', 'a', (event) => {
+    vm.$chatLines.on('click', 'a', (event) => {
       event.preventDefault()
       event.stopPropagation()
       openExternal(event.target.getAttribute('href'))
