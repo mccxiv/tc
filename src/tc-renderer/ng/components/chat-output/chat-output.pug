@@ -8,11 +8,13 @@
     ng-style='::vm.messageInlineStyles(m)'
   )
     span.timestamp.lighter(ng-if='::vm.settings.chat.timestamps')
-      | {{::m.at | date: 'H:mm'}}  
-    span.mod-actions(ng-if='::vm.canModHere() && vm.isModableMessage(m)')
-      md-button(ng-click='vm.shortTimeout(m)', aria-label='Timeout')
-        md-tooltip(md-autohide='') Purge (30s)
-        i.zmdi.zmdi-time-restore
+      | {{::m.at | date: 'H:mm'}}
+    //- Split the two conditions so that one can be a one-time binding
+    span(ng-if='vm.canModHere()')
+      span.mod-actions(ng-if='::vm.isModableMessage(m)')
+        md-button(ng-click='vm.shortTimeout(m)', aria-label='Timeout')
+          md-tooltip(md-autohide='') Purge (30s)
+          i.zmdi.zmdi-time-restore
     span.badges(ng-if='::m.user')
       span.badge(
         ng-repeat='(name, version) in ::m.user.badges',
