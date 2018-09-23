@@ -218,7 +218,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
       session.autoScroll = distanceFromBottom() === 0
       setTimeout(() => {
         session.autoScroll = distanceFromBottom() === 0
-        if (before !== session.autoScroll) $scope.$apply()
+        if (before !== session.autoScroll) $scope.$digest()
         if (!session.autoScroll && distanceFromTop() === 0) getMoreBacklog()
       }, 250) // Wait until the scroll has actually happened
     }
