@@ -4,7 +4,7 @@ const gulp = require('gulp')
 
 shell.config.throw = true // Throw on error
 
-gulp.task('dev-watch-files', function () {
+gulp.task('dev-watch-files', function (done) {
   shell.rm('-rf', '_build')
   shell.mkdir('_build')
   shell.cp('src/tc-renderer/index.html', '_build/index.html')
@@ -12,15 +12,17 @@ gulp.task('dev-watch-files', function () {
   shell.exec(path.normalize(
     './node_modules/.bin/webpack --mode development --watch'
   ))
+  done()
 })
 
-gulp.task('dev-launch-electron', function () {
+gulp.task('dev-launch-electron', function (done) {
   shell.exec(path.normalize(
     './node_modules/.bin/electron --enable-logging ./_build --dev-tools'
   ))
+  done()
 })
 
-gulp.task('build', function () {
+gulp.task('build', function (done) {
   shell.rm('-rf', '_dist')
   shell.mkdir('-p', '_dist')
   shell.rm('-rf', '_build')
@@ -49,6 +51,7 @@ gulp.task('build', function () {
       break
   }
   shell.rm('-rf', 'dist')
+  done()
 })
 
 function build (platform) {
