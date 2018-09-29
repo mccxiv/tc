@@ -55,7 +55,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
         vm.messageLimit -= 5
         if (vm.messageLimit < -200) vm.messageLimit = undefined
         else loadMoreLinesUntilAll()
-      }, 200)
+      }, 16)
     }
   }
 
@@ -210,7 +210,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
  * shows all lines when scrolling up to the top (infinite scroll)
  */
   function watchUserScrolling () {
-    vm.$chatLines.on('scroll', handler)
+    vm.$chatLines.on('wheel', handler)
 
     function handler () {
       if (fetchingBacklog) return
