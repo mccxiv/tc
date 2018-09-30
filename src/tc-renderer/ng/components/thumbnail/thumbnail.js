@@ -99,11 +99,14 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
   }
 
   const getChannel = () => {
-    return settings.channels[settings.selectedTabIndex]
+    return vm.settings.selectedTabIndex === vm.settings.channels.length
+      ? undefined
+      : vm.settings.channels[vm.settings.selectedTabIndex]
   }
 
   const loadThumbnail = async () => {
     const channel = getChannel()
+    if (!channel) return
     vm.channel = await api.channel(channel)
     vm.stream = (await api.stream(channel)).stream
     if (!vm.stream) return

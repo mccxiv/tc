@@ -1,4 +1,4 @@
-.chatters(mobx-autorun)
+.chatters(mobx-autorun, ng-if="vm.indexIsValid")
   input(
     ng-model='vm.searchText',
     placeholder='Filter chatters - {{vm.api.chatter_count | number}}',

@@ -20,6 +20,7 @@ function controller ($http, $scope, session, settings) {
   vm.showViewers = showViewers
   vm.tooManyNotDoable = tooManyNotDoable
   vm.selectUser = selectUser
+  vm.indexIsValid = () => settings.channels.length !== settings.selectedTabIndex
 
   fetchList(800)
   const reFetchInterval = setInterval(fetchList, 120000)
@@ -45,6 +46,7 @@ function controller ($http, $scope, session, settings) {
   }
 
   async function fetchList (attemptNumber) {
+    if (!vm.indexIsValid()) return
     if (!isChannelSelected()) return
     try { vm.api = await getChattersApi(vm.channel) } catch (e) {
       attemptNumber = attemptNumber || 1
@@ -55,7 +57,9 @@ function controller ($http, $scope, session, settings) {
   }
 
   function isChannelSelected () {
-    return settings.channels[settings.selectedTabIndex] === vm.channel
+    return vm.indexIsValid()
+      ? settings.channels[settings.selectedTabIndex] === vm.channel
+      : false
   }
 
   function timeoutFetch (duration) {

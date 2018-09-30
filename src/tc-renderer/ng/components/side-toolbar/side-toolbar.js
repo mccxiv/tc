@@ -21,7 +21,9 @@ function controller ($mdDialog, settingsGui, irc, openExternal, settings) {
   })
 
   vm.channel = () => {
-    return vm.settings.channels[vm.settings.selectedTabIndex]
+    return vm.settings.selectedTabIndex === vm.settings.channels.length
+      ? undefined
+      : vm.settings.channels[vm.settings.selectedTabIndex]
   }
 
   vm.confirmLogout = (event) => {
