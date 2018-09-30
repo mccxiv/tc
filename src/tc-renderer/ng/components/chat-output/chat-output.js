@@ -186,8 +186,9 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
       $(e.target).one('mouseleave', () => {
         setTimeout(() => {
           vm.hoveringModIcons--
+          scrollIfEnabled()
           $scope.$digest()
-        }, 200)
+        }, 600)
       })
     })
   }
