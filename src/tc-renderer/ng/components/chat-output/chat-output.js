@@ -29,7 +29,6 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.$onInit = () => {
     vm.settings = settings
     vm.badges = null
-    vm.messageLimit = -40
     vm.messages = messages(vm.channel)
     vm.autoScroll = () => session.autoScroll
     vm.$chatLines = $($element[0]).find('.chat-lines')
@@ -47,16 +46,6 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     setupNprogress()
     window.requestAnimationFrame(scrollDown)
     delayedScroll() // Need to rescroll once emotes and badges are loaded
-
-    loadMoreLinesUntilAll()
-
-    function loadMoreLinesUntilAll () {
-      $timeout(() => {
-        vm.messageLimit -= 5
-        if (vm.messageLimit < -200) vm.messageLimit = undefined
-        else loadMoreLinesUntilAll()
-      }, 16)
-    }
   }
 
   vm.$onDestroy = () => {

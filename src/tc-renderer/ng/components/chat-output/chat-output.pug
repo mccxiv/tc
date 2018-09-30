@@ -3,7 +3,7 @@
   ng-class='{"variable-line-height": vm.settings.appearance.variableLineHeight}'
 )
   .chat-line(
-    ng-repeat='m in vm.messages | limitTo:vm.messageLimit',
+    ng-repeat='m in vm.messages',
     class='{{m.deleted ? "deleted" : ""}} {{::vm.messageClassesAsString(m)}}',
     ng-style='::vm.messageInlineStyles(m)'
   )
