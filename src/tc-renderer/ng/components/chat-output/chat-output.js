@@ -124,9 +124,8 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function canModHere () {
-    const channel = settings.channels[settings.selectedTabIndex]
     const myUsername = settings.identity.username
-    return isBroadcaster(myUsername) || irc.isMod(`#${channel}`, myUsername)
+    return isBroadcaster(myUsername) || irc.isMod(`#${vm.channel}`, myUsername)
   }
 
   function isModableMessage (m) {

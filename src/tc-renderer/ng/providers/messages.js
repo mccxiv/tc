@@ -202,6 +202,7 @@ angular.module('tc').factory('messages', (
     // it makes this service UI aware and feels dirty, but it's
     // a massive performance boost to check and only $apply if
     // the message is for the currently selected channel
+    if (settings.channels.length === settings.selectedTabIndex) return
     if (channel === settings.channels[settings.selectedTabIndex]) {
       throttledApplyFast()
     } else if (messageObject.user) {

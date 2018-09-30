@@ -14,8 +14,4 @@ function controller (settings) {
       collapsed: !vm.settings.appearance.chatters
     }
   }
-
-  vm.indexIsValid = () => {
-    return settings.channels.length !== settings.selectedTabIndex
-  }
 }

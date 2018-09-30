@@ -38,11 +38,16 @@ function controller ($scope, $document, session, irc, openExternal, settings) {
     return irc.isMod('#' + channel, settings.identity.username)
   }
 
+  const indexIsInvalid = () => {
+    return settings.channels.length === settings.selectedTabIndex
+  }
+
   /**
  * True when the user was selected in the currently active channel
  * @returns {boolean}
  */
   const shouldDisplay = () => {
+    if (indexIsInvalid()) return false
     const selectedChannel = settings.channels[settings.selectedTabIndex]
     const onThatChannel = session.selectedUserChannel === selectedChannel
     return session.selectedUser && onThatChannel
