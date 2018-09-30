@@ -47,5 +47,8 @@
     ) : 
     span.separator(ng-if='::m.type === "action"')  
     span.message(ng-bind-html='::vm.trusted(m.message)')
-  .auto-scroll-notice(ng-if='!vm.autoScroll()', ng-click='vm.scrollDown()')
-    | More messages below
+.auto-scroll-notice(
+  ng-if='!vm.autoScroll()'
+  ng-click='vm.scrollDown()'
+)
+  | More messages below
