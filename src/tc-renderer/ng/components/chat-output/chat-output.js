@@ -188,7 +188,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
           vm.hoveringModIcons--
           scrollIfEnabled()
           $scope.$digest()
-        }, 600)
+        }, 300)
       })
     })
   }

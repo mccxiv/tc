@@ -109,6 +109,14 @@ chat-output
     cursor pointer
     outline none
 
+  .scroll-notice.ng-enter
+    opacity 0
+    // Interestingly, it cannot be 0ms
+    transition 1ms linear opacity 350ms
+
+  .scroll-notice.ng-enter.ng-enter-active
+    opacity 1
+
   .deleted .message
     text-decoration: line-through
     opacity: 0.2
