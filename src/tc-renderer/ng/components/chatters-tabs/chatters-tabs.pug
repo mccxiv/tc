@@ -1,4 +1,4 @@
-.chatters-tabs(mobx-autorun)
+.chatters-tabs(mobx-autorun, ng-if="vm.indexIsValid")
   md-tabs(
     md-selected='vm.settings.selectedTabIndex',
     md-no-bar='',

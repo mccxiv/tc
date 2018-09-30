@@ -105,7 +105,9 @@ function controller ($scope, $timeout, messages, settings) {
   }
 
   function currChannel () {
-    return settings.channels[settings.selectedTabIndex]
+    return isAddTabSelected()
+      ? 'add-new'
+      : settings.channels[settings.selectedTabIndex]
   }
 
   function arrayMove (arr, fromIndex, toIndex) {
