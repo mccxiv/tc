@@ -47,8 +47,9 @@
     ) : 
     span.separator(ng-if='::m.type === "action"')  
     span.message(ng-bind-html='::vm.trusted(m.message)')
-.auto-scroll-notice(
-  ng-if='!vm.autoScroll()'
+.scroll-notice(
+  ng-if='!vm.autoScroll() || vm.hoveringModIcons'
   ng-click='vm.scrollDown()'
 )
-  | More messages below
+  span(ng-if="vm.hoveringModIcons") Scrolling paused
+  span(ng-if="!vm.hoveringModIcons") More messages below

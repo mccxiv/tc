@@ -97,21 +97,29 @@ chat-output
     padding-left: 12px
     border-left: 3px solid #ffd767
 
-  .auto-scroll-notice
-    position: fixed
+  .scroll-notice
+    position fixed
     bottom: 0
-    width: calc(100% + 15px)
-    margin-left: -15px
-    padding: 5px
-    color: white
-    background-color: rgba(0, 0, 0, 0.3)
-    text-align: center
-    cursor: pointer
-    outline: none
+    width calc(100% + 15px)
+    margin-left -15px
+    padding 5px
+    color white
+    background-color rgba(19, 19, 19, 0.95)
+    text-align center
+    cursor pointer
+    outline none
+
+  .scroll-notice.ng-enter
+    opacity 0
+    // Interestingly, it cannot be 0ms
+    transition 1ms linear opacity 350ms
+
+  .scroll-notice.ng-enter.ng-enter-active
+    opacity 1
 
   .deleted .message
     text-decoration: line-through
-    opacity: 0.5
+    opacity: 0.2
 
   .chat-line.odd
     background-color: rgba(0, 0, 0, 0.05)

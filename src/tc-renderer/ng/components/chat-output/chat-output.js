@@ -29,6 +29,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   vm.$onInit = () => {
     vm.settings = settings
     vm.badges = null
+    vm.hoveringModIcons = 0 // Counter style boolean
     vm.messages = messages(vm.channel)
     vm.autoScroll = () => session.autoScroll
     vm.$chatLines = $($element[0]).find('.chat-lines')
@@ -42,6 +43,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     fetchBadges()
     handleAnchorClicks()
     handleEmoteHover()
+    handleModIconsHover()
     handleBadgeHover()
     setupNprogress()
     window.requestAnimationFrame(scrollDown)
@@ -177,6 +179,20 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     })
   }
 
+  function handleModIconsHover () {
+    vm.$chatLines.on('mouseenter', '.mod-actions', e => {
+      vm.hoveringModIcons++
+      $scope.$digest()
+      $(e.target).one('mouseleave', () => {
+        setTimeout(() => {
+          vm.hoveringModIcons--
+          scrollIfEnabled()
+          $scope.$digest()
+        }, 300)
+      })
+    })
+  }
+
   function showTooltip (el, content) {
     el.frosty({html: true, content})
     el.frosty('show')
@@ -236,7 +252,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function scrollIfEnabled () {
-    if (session.autoScroll) scrollDown()
+    if (session.autoScroll && !vm.hoveringModIcons) scrollDown()
   }
 
   function scrollDown () {
