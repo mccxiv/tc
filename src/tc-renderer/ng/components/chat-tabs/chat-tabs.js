@@ -46,8 +46,8 @@ function controller ($scope, $timeout, messages, settings) {
       R.without(currChannel()),
       R.map(
         R.pipe(
-          unloadInThreeSeconds,
-          countUnreadMessages
+          R.tap(unloadInThreeSeconds),
+          R.tap(countUnreadMessages)
         )
       )
     )(vm.loaded)
