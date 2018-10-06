@@ -1,7 +1,7 @@
 {
   "name": "Tc",
   "private": true,
-  "version": "14.0.0",
+  "version": "15.0.0",
   "main": "main.js",
   "node-remote": "http://localhost",
   "author": "Andrea Stella <adr.stella@gmail.com>",
