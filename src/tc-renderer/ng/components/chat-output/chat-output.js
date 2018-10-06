@@ -34,6 +34,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     vm.autoScroll = () => session.autoScroll
     vm.$chatLines = $($element[0]).find('.chat-lines')
     vm.chatLines = $($element[0]).find('.chat-lines')[0]
+    vm.channelWithOctothorpe = `#${vm.channel}`
     session.autoScroll = true
 
     watchUserScrolling()
@@ -125,7 +126,8 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
 
   function canModHere () {
     const myUsername = settings.identity.username
-    return isBroadcaster(myUsername) || irc.isMod(`#${vm.channel}`, myUsername)
+    return isBroadcaster(myUsername) ||
+      irc.isMod(vm.channelWithOctothorpe, myUsername)
   }
 
   function isModableMessage (m) {
