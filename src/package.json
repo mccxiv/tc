@@ -29,7 +29,7 @@
     "ramda": "^0.25.0",
     "roboto-fontface": "0.4.5",
     "stringz": "^0.2.3",
-    "twitch-js": "github:mccxiv/twitch-js#180911-emit-all-notice-aug-11",
+    "twitch-js": "github:mccxiv/twitch-js#181013-emit-all-notice-and-fix-ismod",
     "which": "^1.3.1"
   }
 }
