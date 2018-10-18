@@ -1,28 +1,23 @@
 import r from 'axios'
-import {sleep, mergeDeep} from './util'
+import {mergeDeep} from './util'
 import {CLIENT_ID} from './constants'
 
 const kraken = 'https://api.twitch.tv/kraken/'
 
 export async function badges (channel) {
-  try {
-    const userId = (await user(channel))._id
-    const base = 'https://badges.twitch.tv/v1/badges/'
-    const globalUrl = base + 'global/display?language=en'
-    const channelUrl = base + `channels/${userId}/display?language=en`
-    const globalBadges = (await r(globalUrl)).data
-    const channelBadges = (await r(channelUrl)).data
-    const globalBitBadges = (globalBadges.badge_sets || {}).bits
-    const channelBitBadges = (channelBadges.badge_sets || {}).bits
-    const mergedBitBadges = mergeDeep(globalBitBadges, channelBitBadges)
-    return {
-      ...globalBadges.badge_sets,
-      ...channelBadges.badge_sets,
-      ...{bits: mergedBitBadges}
-    }
-  } catch (e) {
-    await sleep(3000)
-    return badges(channel)
+  const userId = (await user(channel))._id
+  const base = 'https://badges.twitch.tv/v1/badges/'
+  const globalUrl = base + 'global/display?language=en'
+  const channelUrl = base + `channels/${userId}/display?language=en`
+  const globalBadges = (await r(globalUrl)).data
+  const channelBadges = (await r(channelUrl)).data
+  const globalBitBadges = (globalBadges.badge_sets || {}).bits
+  const channelBitBadges = (channelBadges.badge_sets || {}).bits
+  const mergedBitBadges = mergeDeep(globalBitBadges, channelBitBadges)
+  return {
+    ...globalBadges.badge_sets,
+    ...channelBadges.badge_sets,
+    ...{bits: mergedBitBadges}
   }
 }
 
