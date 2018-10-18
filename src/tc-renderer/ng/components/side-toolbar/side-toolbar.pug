@@ -38,7 +38,7 @@
   )
     md-tooltip(md-autohide='', md-direction='right') Go to Channel
     i.zmdi.zmdi-open-in-new
-  md-button(ng-click='leave()', aria-label='Leave channel', ng-if='vm.channel()')
+  md-button(ng-click='vm.leave()', aria-label='Leave channel', ng-if='vm.channel()')
     md-tooltip(md-autohide='', md-direction='right') Leave Channel
     i.zmdi.zmdi-close
   md-button.collapse-button(
