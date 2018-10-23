@@ -20,7 +20,8 @@ const fromBlueprint = (blueprint, untrustedObj) => {
       const blueprintType = R.type(value)
       return R.equals(untrustedType, blueprintType) ? untrustedValue : value
     }),
-    unflattenObj
+    unflattenObj,
+    addShortcutsFrom(untrustedObj)
   )(blueprint)
 }
 
@@ -48,6 +49,11 @@ const flattenObjToDotPath = obj => {
   }, R.toPairs(obj_))
 
   return R.fromPairs(go(obj))
+}
+
+const addShortcutsFrom = untrustedObj => trustedObject => {
+  trustedObject.shortcuts = untrustedObj.shortcuts || {}
+  return trustedObject
 }
 
 export const getValidatedSettings = (settings = {}) => {
