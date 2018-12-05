@@ -7,12 +7,13 @@ chatters-tabs
     opacity: 0
 
   &.collapsed
-    overflow: hidden
-    flex: none
-    height: 24px
+    .chatters-tabs
+      overflow: hidden
+      flex: none
+      height: 24px
 
-    & > *:not(.toggle-button)
-      opacity: 0
+      & > *:not(.toggle-button)
+        opacity: 0
 
   md-tabs-wrapper
     display: none !important
