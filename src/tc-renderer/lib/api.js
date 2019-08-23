@@ -2,15 +2,13 @@ import r from 'axios'
 import {mergeDeep} from './util'
 import {CLIENT_ID} from './constants'
 
-const kraken = 'https://api.twitch.tv/kraken/'
-
 export async function badges (channel) {
-  const userId = (await user(channel))._id
+  const userId = await usernameToId(channel)
   const base = 'https://badges.twitch.tv/v1/badges/'
   const globalUrl = base + 'global/display?language=en'
   const channelUrl = base + `channels/${userId}/display?language=en`
-  const globalBadges = (await r(globalUrl)).data
-  const channelBadges = (await r(channelUrl)).data
+  const globalBadges = await api(globalUrl)
+  const channelBadges = await api(channelUrl)
   const globalBitBadges = (globalBadges.badge_sets || {}).bits
   const channelBitBadges = (channelBadges.badge_sets || {}).bits
   const mergedBitBadges = mergeDeep(globalBitBadges, channelBitBadges)
@@ -38,25 +36,22 @@ export async function chatters (channel) {
 }
 
 export async function api (endpoint) {
-  const options = {headers: {'Client-ID': CLIENT_ID}}
-  return (await r(kraken + endpoint, options)).data
-}
-
-export async function usernameToId (username) {
-  try {
-    const response = await apiv5(`users?login=${username}`)
-    return response.users[0]._id
-  } catch (e) {
-    return null
-  }
-}
-
-export async function apiv5 (endpoint) {
   const options = {
     headers: {
       'Client-ID': CLIENT_ID,
       'Accept': 'application/vnd.twitchtv.v5+json'
     }
   }
-  return (await r(kraken + endpoint, options)).data
+  const absolute = endpoint.startsWith('https://')
+  const url = absolute ? endpoint : `https://api.twitch.tv/kraken/${endpoint}`
+  return (await r(url, options)).data
+}
+
+export async function usernameToId (username) {
+  try {
+    const response = await api(`users?login=${username}`)
+    return response.users[0]._id
+  } catch (e) {
+    return null
+  }
 }

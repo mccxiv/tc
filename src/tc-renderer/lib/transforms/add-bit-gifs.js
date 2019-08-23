@@ -1,4 +1,4 @@
-import {apiv5, usernameToId} from '../api'
+import {api, usernameToId} from '../api'
 import store from '../../store'
 import channels from '../channels'
 
@@ -29,7 +29,7 @@ channels.channels.forEach(fetchBitsConfig)
 async function fetchBitsConfig (channel) {
   if (!state.ids[channel]) state.ids[channel] = await usernameToId(channel)
   const channelArgs = channel ? `?channel_id=${state.ids[channel]}` : ''
-  const response = await apiv5(`bits/actions${channelArgs}`)
+  const response = await api(`bits/actions${channelArgs}`)
   if (channel) state.channels[channel] = response.actions
   else state.global = response.actions
 }
