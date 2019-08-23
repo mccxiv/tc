@@ -5,6 +5,7 @@ import {exec} from 'child_process'
 import angular from 'angular'
 import template from './thumbnail.pug'
 import * as api from '../../../lib/api'
+import { CLIENT_ID } from '../../../lib/constants'
 
 angular.module('tc').component('thumbnail', {template, controller})
 
@@ -72,8 +73,8 @@ function controller ($scope, $element, irc, messages, openExternal, settings) {
     stream(type)
 
     function stream (quality) {
-      const id = '1pr5dzvymq1unqa2xiavdkvslsn4ebe'
-      exec(`${player} --http-header Client-ID=${id} ${channel} ${quality}`,
+      const clientId = `Client-ID=${CLIENT_ID}`
+      exec(`${player} --http-header ${clientId} ${channel} ${quality}`,
         (err, stdout) => {
           if (!err && stdout) {
             const lastLine = stdout.trim().split('\n').pop()

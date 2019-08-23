@@ -321,7 +321,7 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
     })
   }
 
-  async function fetchBadges (attempt) {
+  async function fetchBadges (attempt = 0) {
     if (attempt) await sleep(2000)
     try {
       vm.badges = await badges(vm.channel)
