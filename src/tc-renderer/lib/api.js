@@ -1,6 +1,7 @@
-import r from 'axios'
+import axios from 'axios'
 import {mergeDeep} from './util'
 import {CLIENT_ID} from './constants'
+import { usernameToId } from './user-ids'
 
 export async function badges (channel) {
   const userId = await usernameToId(channel)
@@ -24,15 +25,15 @@ export async function user (channel) {
 }
 
 export async function channel (channel) {
-  return api('channels/' + channel)
+  return api('channels/' + (await usernameToId(channel)))
 }
 
 export async function stream (channel) {
-  return api('streams/' + channel)
+  return api('streams/' + (await usernameToId(channel)))
 }
 
 export async function chatters (channel) {
-  return (await r(`https://tmi.twitch.tv/group/user/${channel}/chatters`)).data
+  return api(`https://tmi.twitch.tv/group/user/${channel}/chatters`)
 }
 
 export async function api (endpoint) {
@@ -44,14 +45,5 @@ export async function api (endpoint) {
   }
   const absolute = endpoint.startsWith('https://')
   const url = absolute ? endpoint : `https://api.twitch.tv/kraken/${endpoint}`
-  return (await r(url, options)).data
-}
-
-export async function usernameToId (username) {
-  try {
-    const response = await api(`users?login=${username}`)
-    return response.users[0]._id
-  } catch (e) {
-    return null
-  }
+  return (await axios(url, options)).data
 }
