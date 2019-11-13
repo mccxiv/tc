@@ -16,7 +16,7 @@
     "electron-window-state": "^4.1.1",
     "emojilib": "^2.2.7",
     "frostyjs": "github:mccxiv/frostyjs",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "jsonfile": "2.3.0",
     "keymaster": "1.6.2",
     "lodash.escaperegexp": "4.1.1",
