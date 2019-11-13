@@ -2,6 +2,7 @@ import {Client} from 'twitch-js'
 import angular from 'angular'
 import {CLIENT_ID} from '../../lib/constants'
 import {EventEmitter} from 'events'
+import { isChatTokenValid } from '../../lib/authentication'
 
 /**
  * Server I/O
@@ -213,13 +214,15 @@ angular.module('tc').factory('irc', ($rootScope, settings) => {
    * This should cause the login form to display with an error.
    */
   function onBadLogin (cb) {
-    client.on('disconnected', (reason) => {
+    client.on('disconnected', async reason => {
+      const tokenIsValid = await isChatTokenValid(settings.identity.password)
+      if (!tokenIsValid) reason = 'Invalid token. Please generate a new one'
       const reasons = [
         'Error logging in.',
         'Login unsuccessful.',
         'Login authentication failed'
       ]
-      if (reasons.includes(reason)) {
+      if (!tokenIsValid || reasons.includes(reason)) {
         ee.ready = false
         ee.badLogin = reason
         settings.identity.password = ''
