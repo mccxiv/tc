@@ -76,3 +76,8 @@
   background-color: rgb(47, 47, 47);
   border-bottom: 1px solid #3C3C3C;
 }
+
+.dark login .form {
+  background-color: rgb(47, 47, 47);
+  border: none;
+}
