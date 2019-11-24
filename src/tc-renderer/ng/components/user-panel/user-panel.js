@@ -2,7 +2,7 @@ import './user-panel.styl'
 import angular from 'angular'
 import template from './user-panel.pug'
 import {user} from '../../../lib/api'
-import capitalize from '../../../lib/transforms/capitalize'
+import { usernameToId } from '../../../lib/user-ids'
 
 angular.module('tc').component('userPanel', {template, controller})
 
@@ -12,8 +12,8 @@ function controller ($scope, $document, session, irc, openExternal, settings) {
   vm.$onInit = () => {
     vm.created = ''
     vm.profilePicSrc = ''
+    vm.displayName = ''
     vm.amMod = amMod
-    vm.capitalize = capitalize
     vm.shouldDisplay = shouldDisplay
     vm.goToChannel = goToChannel
     vm.sendMessage = sendMessage
@@ -85,7 +85,9 @@ function controller ($scope, $document, session, irc, openExternal, settings) {
   }
 
   const fetchUser = async () => {
-    const userData = await user(session.selectedUser)
+    const userId = await usernameToId(session.selectedUser)
+    const userData = await user(userId)
+    vm.displayName = userData.display_name || userData.name
     vm.profilePicSrc = userData.logo ? userData.logo : ''
     vm.created = userData.created_at
     $scope.$digest()

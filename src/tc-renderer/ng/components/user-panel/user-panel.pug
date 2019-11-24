@@ -6,14 +6,14 @@
     )
   .buttons-container(flex='', layout='column')
     .row(layout='row')
-      span.username {{vm.capitalize(vm.session.selectedUser)}}
+      span.username {{vm.displayName}}
       span(flex='')
       md-button.close-button(ng-click='vm.close()', aria-label='Close')
         md-tooltip(md-autohide='') Close
         i.zmdi.zmdi-close
     .row.lighter.creation-date
       md-tooltip(md-autohide='') Registration date
-      | Since {{vm.created | date: 'MMM d, y'}}
+      | Created {{vm.created | date: 'MMM d, y'}}
     .toolbar(layout='row')
       md-button(ng-click='vm.goToChannel()', aria-label='Their channel')
         md-tooltip(md-autohide='') Their Channel
