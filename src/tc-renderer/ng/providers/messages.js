@@ -4,6 +4,7 @@ import axios from 'axios'
 import electron from 'electron'
 import channels from '../../lib/channels'
 import processMessage from '../../lib/transforms/process-message'
+import { escapeIrcV3 } from '../../lib/transforms/escape'
 
 angular.module('tc').factory('messages', (
   $rootScope, irc, highlights, session, settings) => {
@@ -331,25 +332,21 @@ angular.module('tc').factory('messages', (
 
       // Money!
       subscription: (channel, username, method, message, user) => {
-        const plan = planCodeToName(method.plan)
-        const msg = `${username} has subscribed with a ${plan} plan!`
+        const msg = escapeIrcV3(user['system-msg'])
         addNotification(channel, msg, true)
         if (message) {
           addUserMessage(channel, {type: 'chat', user, message, golden: true})
         }
       },
-      resub: (channel, username, months, message, user, {plan, planName}) => {
-        const planText = planCodeToName(plan)
-        const resub1 = `${username} resubscribed with a ${planText} sub`
-        const resub2 = `${months} months in a row!`
-        const msg = `${resub1} ${resub2}`
+      resub: (channel, username, months, message, user) => {
+        const msg = escapeIrcV3(user['system-msg'])
         addNotification(channel, msg, true)
         if (message) {
           addUserMessage(channel, {type: 'chat', user, message, golden: true})
         }
       },
-      subgift: (channel, username, recepient, {plan, planName}) => {
-        const planText = planCodeToName(plan)
+      subgift: (channel, username, recepient, more) => {
+        const planText = planCodeToName(more.plan)
         const message = `${username} gifted a ${planText} sub to ${recepient}!`
         addNotification(channel, message, true)
       },

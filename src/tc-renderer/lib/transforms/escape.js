@@ -6,3 +6,12 @@ export default function escape (html) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
 }
+
+export function escapeIrcV3 (string) {
+  return String(string)
+    .replace(/\\:/g, ';')
+    .replace(/\\s/g, ' ')
+    .replace(/\\\\/g, '\\')
+    .replace(/\\r/g, '')
+    .replace(/\\n/g, '')
+}
