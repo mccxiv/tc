@@ -4,6 +4,7 @@ import axios from 'axios'
 import electron from 'electron'
 import channels from '../../lib/channels'
 import processMessage from '../../lib/transforms/process-message'
+import { escapeIrcV3 } from '../../lib/transforms/escape'
 
 angular.module('tc').factory('messages', (
   $rootScope, irc, highlights, session, settings) => {
@@ -274,14 +275,6 @@ angular.module('tc').factory('messages', (
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
 
-  function planCodeToName (planCode) {
-    return {
-      '1000': 'Tier 1',
-      '2000': 'Tier 2',
-      '3000': 'Tier 3'
-    }[planCode] || planCode
-  }
-
   function getChatListeners () {
     return {
       // Users talking
@@ -331,27 +324,21 @@ angular.module('tc').factory('messages', (
 
       // Money!
       subscription: (channel, username, method, message, user) => {
-        const plan = planCodeToName(method.plan)
-        const msg = `${username} has subscribed with a ${plan} plan!`
+        const msg = escapeIrcV3(user['system-msg'])
         addNotification(channel, msg, true)
         if (message) {
           addUserMessage(channel, {type: 'chat', user, message, golden: true})
         }
       },
-      resub: (channel, username, months, message, user, {plan, planName}) => {
-        const planText = planCodeToName(plan)
-        const resub1 = `${username} resubscribed with a ${planText} sub`
-        const resub2 = `${months} months in a row!`
-        const msg = `${resub1} ${resub2}`
+      resub: (channel, username, months, message, user) => {
+        const msg = escapeIrcV3(user['system-msg'])
         addNotification(channel, msg, true)
         if (message) {
           addUserMessage(channel, {type: 'chat', user, message, golden: true})
         }
       },
-      subgift: (channel, username, recepient, {plan, planName}) => {
-        const planText = planCodeToName(plan)
-        const message = `${username} gifted a ${planText} sub to ${recepient}!`
-        addNotification(channel, message, true)
+      subgift: (channel, username, recepient, planStuff, user) => {
+        addNotification(channel, escapeIrcV3(user['system-msg']), true)
       },
 
       notice: (channel, msgId, message) => {

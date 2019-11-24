@@ -372,6 +372,9 @@ function controller($scope, $element, $sce, $timeout, messages, session, irc, op
   }
 
   function displayNameIsDifferent (m) {
+    // Some messages like resubs don't include username,
+    // Let's not return a false positive in this case
+    if (!m.user['username']) return false
     return m.user['display-name'].toLowerCase() !== m.user['username']
   }
 }
