@@ -12,7 +12,7 @@ const state = {
 const getters = {
   cheerPrefixes (channel) {
     const actions = getters.actions(channel)
-    return actions.map(a => a.prefix.toLowerCase())
+    return actions.map(a => a.prefix)
   },
 
   actions (channel) {
@@ -45,7 +45,9 @@ function makeImg (channel, cheer) {
   const actions = getters.actions(channel)
   const [, prefix, digit] = /(\D+)(\d+)/.exec(cheer)
   const amount = Number(digit)
-  const action = actions.find(a => a.prefix.toLowerCase() === prefix)
+  const action = actions.find(action => {
+    return action.prefix.toLowerCase() === prefix.toLowerCase()
+  })
   if (!action) return cheer
   action.tiers.forEach(t => { if (amount >= t.min_bits) tier = t })
   // TODO use the correct theme from settings
@@ -74,7 +76,9 @@ export default function addBitGifs (channel, message) {
   const converted = words.map(word => {
     const endsWithNumber = /\d+$/.test(word)
     if (!endsWithNumber) return word
-    const prefix = prefixes.find(prefix => word.startsWith(prefix))
+    const prefix = prefixes.find(prefix => {
+      return word.toLowerCase().startsWith(prefix.toLowerCase())
+    })
     if (!prefix) return word
     return makeImg(channel, word)
   })
