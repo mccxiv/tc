@@ -1,6 +1,7 @@
-import {api, usernameToId} from '../api'
+import {api} from '../api'
 import store from '../../store'
 import channels from '../channels'
+import { usernameToId } from '../user-ids'
 
 const state = {
   global: [],
