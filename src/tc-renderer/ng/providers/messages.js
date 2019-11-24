@@ -345,10 +345,8 @@ angular.module('tc').factory('messages', (
           addUserMessage(channel, {type: 'chat', user, message, golden: true})
         }
       },
-      subgift: (channel, username, recepient, more) => {
-        const planText = planCodeToName(more.plan)
-        const message = `${username} gifted a ${planText} sub to ${recepient}!`
-        addNotification(channel, message, true)
+      subgift: (channel, username, recepient, planStuff, user) => {
+        addNotification(channel, escapeIrcV3(user['system-msg']), true)
       },
 
       notice: (channel, msgId, message) => {
