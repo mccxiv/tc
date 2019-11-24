@@ -4,7 +4,7 @@ export async function isChatTokenValid (token) {
   try {
     await axios('https://id.twitch.tv/oauth2/validate', {
       headers: {
-        Authorization: `OAuth ${token}`
+        Authorization: `OAuth ${token.split('oauth:').pop()}`
       }
     })
     return true
