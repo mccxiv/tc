@@ -275,14 +275,6 @@ angular.module('tc').factory('messages', (
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
 
-  function planCodeToName (planCode) {
-    return {
-      '1000': 'Tier 1',
-      '2000': 'Tier 2',
-      '3000': 'Tier 3'
-    }[planCode] || planCode
-  }
-
   function getChatListeners () {
     return {
       // Users talking
