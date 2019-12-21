@@ -24,7 +24,7 @@ jobs:
         draft: true
         prerelease: false
     - name: Upload RELEASE
-      uses: svenstaro/upload-release-action@b1046bbcca3d1ffa61b449e4038b7be0c9d3013d
+      uses: svenstaro/upload-release-action@14569a2d348419d066e34e5dfa65071ecd30b64b
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: _dist/*
