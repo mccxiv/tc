@@ -1,0 +1,33 @@
+name: Release
+
+on: 
+  push:
+    tags: ['v*']
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@722adc63f1aa60a57ec37892e133b1d319cae598
+    - name: Install dependencies
+      run: npm ci
+    - name: Run the build
+      run: npm run dist:windows
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@77669bf751443994139ba3fb124c19364d82c3c7
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: true
+        prerelease: false
+    - name: Upload RELEASE
+      uses: svenstaro/upload-release-action@b1046bbcca3d1ffa61b449e4038b7be0c9d3013d
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: _dist/*
+        tag: ${{ github.ref }}
+        file_glob: true
+        
