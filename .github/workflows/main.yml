@@ -14,7 +14,7 @@ jobs:
     - name: Run the build
       run: npm run build
     - name: Upload RELEASE
-      uses: mccxiv/upload-release-action@58d6fd29823048208b44dd62e8eb144b550f46d7
+      uses: mccxiv/upload-release-action@3a5b278f3a9925180fe4c4bdbf98209021ed80a7
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: _dist/*
