@@ -13,21 +13,11 @@ jobs:
       run: npm ci
     - name: Run the build
       run: npm run build
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@77669bf751443994139ba3fb124c19364d82c3c7
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-        draft: true
-        prerelease: false
     - name: Upload RELEASE
-      uses: svenstaro/upload-release-action@14569a2d348419d066e34e5dfa65071ecd30b64b
+      uses: mccxiv/upload-release-action@e47ba41cb8324f54d059581734893b40f023f70e
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: _dist/*
         tag: ${{ github.ref }}
         file_glob: true
-
+        draft: true
