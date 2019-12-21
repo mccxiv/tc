@@ -1,6 +1,6 @@
 name: Release
 
-on: 
+on:
   push:
     tags: ['v*']
 
@@ -12,7 +12,7 @@ jobs:
     - name: Install dependencies
       run: npm ci
     - name: Run the build
-      run: npm run dist:windows
+      run: npm run build
     - name: Create Release
       id: create_release
       uses: actions/create-release@77669bf751443994139ba3fb124c19364d82c3c7
@@ -30,4 +30,4 @@ jobs:
         file: _dist/*
         tag: ${{ github.ref }}
         file_glob: true
-        
+
