@@ -20,7 +20,7 @@ async function autoRetryAsyncFn (asyncFunction, delay = 1000, attempt = 1) {
   try { await asyncFunction() } catch (e) {
     delay = (delay) * 2
     console.warn('BTTV: Couldn\'t grab emotes.', e)
-    if (attempt > 30) return // Give up until the next timed fetch
+    if (attempt > 18) return // Give up
     console.warn(`BTTV: Retrying in ${delay / 1000} seconds.`)
     autoRetryAsyncFn(asyncFunction, delay, attempt + 1)
   }
