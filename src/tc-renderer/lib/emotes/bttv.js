@@ -2,48 +2,67 @@ import channels from '../channels'
 import axios from 'axios'
 import {sleep} from '../util'
 import {addBttvChannelEmotes, addBttvGlobalEmotes} from './menu'
+import {usernameToId} from '../user-ids'
 
 const globalEmotes = []
 const channelEmotes = {}
 
 // TODO should retry for channel emotes too.
 
-getGlobal()
+tryGrabbingGlobal()
 channels.on('add', tryGrabbingChannel)
 channels.on('remove', (channel) => delete channelEmotes[channel])
 channels.channels.forEach(tryGrabbingChannel)
-setInterval(getGlobal, 1000 * 60 * 60 * 6) // Re-fetch every 12 hours
+setInterval(tryGrabbingGlobal, 1000 * 60 * 60 * 6) // Re-fetch every 12 hours
 
-async function getGlobal (delay = 0, attempt = 1) {
-  await sleep(delay)
-  try { await fetch() } catch (e) {
-    delay = (delay || 1000) * 2
-    console.warn('BTTV: Couldn\'t grab global emotes.', e)
+async function autoRetryAsyncFn (asyncFunction, delay = 1000, attempt = 1) {
+  if (attempt > 1) await sleep(delay)
+  try { await asyncFunction() } catch (e) {
+    delay = (delay) * 2
+    console.warn('BTTV: Couldn\'t grab emotes.', e)
     if (attempt > 30) return // Give up until the next timed fetch
     console.warn(`BTTV: Retrying in ${delay / 1000} seconds.`)
-    getGlobal(delay, attempt + 1)
+    autoRetryAsyncFn(asyncFunction, delay, attempt + 1)
   }
 }
 
-async function fetch (channel) {
-  const globalUrl = 'https://api.betterttv.net/2/emotes'
-  const channelUrl = 'https://api.betterttv.net/2/channels/' + channel
-  const emotes = (await axios(channel ? channelUrl : globalUrl)).data.emotes
-  if (channel) channelEmotes[channel] = []
-  if (!channel) globalEmotes.splice(0)
-  const emotesStorage = channel ? channelEmotes[channel] : globalEmotes
+async function fetchAndStoreGlobal () {
+  const url = 'https://api.betterttv.net/3/cached/emotes/global'
+  const emotes = (await axios(url)).data
+  if (!Array.isArray(emotes)) throw Error('Invalid emote response from BTTV')
+  globalEmotes.splice(0)
   emotes.forEach((emote) => {
-    emotesStorage.push({
+    globalEmotes.push({
       emote: emote.code,
       url: `http://cdn.betterttv.net/emote/${emote.id}/1x`
     })
   })
-  if (channel) addBttvChannelEmotes(channel, emotesStorage)
-  else addBttvGlobalEmotes(emotesStorage)
+  addBttvGlobalEmotes(globalEmotes)
 }
 
+async function fetchAndStoreChannel (channel) {
+  const channelId = await usernameToId(channel)
+  const url = `https://api.betterttv.net/3/cached/users/twitch/${channelId}`
+  const response = (await axios(url)).data
+  if (
+    !Array.isArray(response.channelEmotes) ||
+    !Array.isArray(response.sharedEmotes)
+  ) throw Error('Invalid emote response from BTTV')
+  const emotes = [...response.channelEmotes, ...response.sharedEmotes]
+  channelEmotes[channel] = []
+  emotes.forEach((emote) => {
+    channelEmotes[channel].push({
+      emote: emote.code,
+      url: `http://cdn.betterttv.net/emote/${emote.id}/1x`
+    })
+  })
+  addBttvChannelEmotes(channel, channelEmotes[channel])
+}
+
+function tryGrabbingGlobal () { autoRetryAsyncFn(fetchAndStoreGlobal) }
+
 async function tryGrabbingChannel (channel) {
-  try { await fetch(channel) } catch (e) {}
+  autoRetryAsyncFn(() => fetchAndStoreChannel(channel))
 }
 
 export default function getBttvEmotes (channel) {
