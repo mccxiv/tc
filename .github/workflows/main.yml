@@ -57,3 +57,4 @@ jobs:
           draft: true
           files: |
             _dist/*.zip
+            _dist/*.dmg
