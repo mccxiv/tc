@@ -14,15 +14,15 @@ jobs:
     - name: Run the build
       run: npm run build
     - name: Upload to a release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          draft: true
-          files: |
-            _dist/RELEASES
-            _dist/*.exe
-            _dist/*.nupkg
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        draft: true
+        files: |
+          _dist/RELEASES
+          _dist/*.exe
+          _dist/*.nupkg
   build_linux:
     runs-on: ubuntu-18.04
     steps:
