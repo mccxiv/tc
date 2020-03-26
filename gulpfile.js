@@ -37,17 +37,10 @@ gulp.task('build', function (done) {
     case 'linux':
       console.log('\nAttempting to build Linux version.')
       build('linux')
-      console.log('\nAttempting to build Windows version.')
-      console.log('This will fail without Wine installed!')
-      build('windows')
       break
     case 'darwin':
       console.log('\nAttempting to build Mac version.')
       build('mac')
-      console.log('\nAttempting to build Linux version.')
-      build('linux')
-      console.log('\nAttempting to build Windows version.')
-      build('windows')
       break
   }
   shell.rm('-rf', 'dist')

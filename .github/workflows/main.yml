@@ -5,19 +5,35 @@ on:
     tags: ['v*']
 
 jobs:
-  build:
-    runs-on: windows-latest
+#  build_windows:
+#    runs-on: windows-2019
+#    steps:
+#    - uses: actions/checkout@722adc63f1aa60a57ec37892e133b1d319cae598
+#    - name: Install dependencies
+#      run: npm ci
+#    - name: Run the build
+#      run: npm run build
+#    - name: Upload RELEASE
+#      uses: mccxiv/upload-release-action@3a5b278f3a9925180fe4c4bdbf98209021ed80a7
+#      with:
+#        repo_token: ${{ secrets.GITHUB_TOKEN }}
+#        file: _dist/*
+#        tag: ${{ github.ref }}
+#        file_glob: true
+#        draft: true
+  build_linux:
+    runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@722adc63f1aa60a57ec37892e133b1d319cae598
-    - name: Install dependencies
-      run: npm ci
-    - name: Run the build
-      run: npm run build
-    - name: Upload RELEASE
-      uses: mccxiv/upload-release-action@3a5b278f3a9925180fe4c4bdbf98209021ed80a7
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: _dist/*
-        tag: ${{ github.ref }}
-        file_glob: true
-        draft: true
+      - uses: actions/checkout@722adc63f1aa60a57ec37892e133b1d319cae598
+      - name: Install dependencies
+        run: npm ci
+      - name: Run the build
+        run: npm run build
+      - name: Upload RELEASE
+        uses: mccxiv/upload-release-action@3a5b278f3a9925180fe4c4bdbf98209021ed80a7
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: _dist/*
+          tag: ${{ github.ref }}
+          file_glob: true
+          draft: true
