@@ -11,11 +11,11 @@
     "build": "gulp build",
     "lint": "eslint src",
     "don't touch pack & dist, just run build instead": "",
-    "pack": "build",
-    "dist": "build",
-    "dist:linux": "build -l",
-    "dist:mac": "build -m",
-    "dist:windows": "build -w"
+    "pack": "electron-builder",
+    "dist": "electron-builder",
+    "dist:linux": "electron-builder -l",
+    "dist:mac": "electron-builder -m",
+    "dist:windows": "electron-builder -w"
   },
   "husky": {
     "hooks": {
@@ -67,6 +67,7 @@
     "css-loader": "^0.28.10",
     "electron": "^1.8.2",
     "electron-builder": "^21.2.0",
+    "electron-builder-lib": "^20.23.1",
     "electron-builder-squirrel-windows": "^20.2.0",
     "eslint": "^4.18.1",
     "eslint-config-standard": "^11.0.0",
