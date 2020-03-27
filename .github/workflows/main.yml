@@ -5,44 +5,27 @@ on:
     tags: ['v*']
 
 jobs:
-#  build_windows:
-#    runs-on: windows-2019
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: Install dependencies
-#      run: npm ci
-#    - name: Run the build
-#      run: npm run build
-#    - name: Upload to a release
-#      uses: softprops/action-gh-release@v1
-#      env:
-#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#      with:
-#        draft: true
-#        files: |
-#          _dist/RELEASES
-#          _dist/*.exe
-#          _dist/*.nupkg
-#
-#  build_linux:
-#    runs-on: ubuntu-18.04
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Install dependencies
-#        run: npm ci
-#      - name: Run the build
-#        run: npm run build
-#      - name: Upload to a release
-#        uses: softprops/action-gh-release@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          draft: true
-#          files: |
-#            _dist/*.AppImage
+  build_windows:
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm ci
+    - name: Run the build
+      run: npm run build
+    - name: Upload to a release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        draft: true
+        files: |
+          _dist/RELEASES
+          _dist/*.exe
+          _dist/*.nupkg
 
-  build_mac:
-    runs-on: macos-latest
+  build_linux:
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
@@ -56,5 +39,22 @@ jobs:
         with:
           draft: true
           files: |
-            _dist/*.zip
-            _dist/*.dmg
+            _dist/*.AppImage
+
+#  build_mac:
+#    runs-on: macos-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Install dependencies
+#        run: npm ci
+#      - name: Run the build
+#        run: npm run build
+#      - name: Upload to a release
+#        uses: softprops/action-gh-release@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#          draft: true
+#          files: |
+#            _dist/*.zip
+#            _dist/*.dmg
