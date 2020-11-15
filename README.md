@@ -18,6 +18,7 @@ Running Tc in dev mode *should* be simple. If the instructions below aren't
 working then please open an issue.
 
 - Clone the repo
+- `sudo npm install --global cross-env`
 - `npm i`
 - In terminal 1: `npm run dev-watch-files`
 - In terminal 2, once terminal 1 is done: `npm run dev-launch-electron`

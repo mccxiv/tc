@@ -1,0 +1,109 @@
+::-webkit-scrollbar {
+  width: 3px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 0px;
+}
+
+:hover::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, .5);
+}
+
+:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .3);
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../node_modules/roboto-fontface/fonts/Roboto-Light.woff2') format('woff2');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../node_modules/roboto-fontface/fonts/Roboto-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../node_modules/roboto-fontface/fonts/Roboto-Medium.woff2') format('woff2');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('../node_modules/roboto-fontface/fonts/Roboto-Bold.woff2') format('woff2');
+  font-weight: 700;
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  font-size: 10px;
+  height: 100vh;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+  font-size: 1.4em;
+  overflow: hidden;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: #008CD0;
+  outline: none;
+}
+
+md-sidenav {
+  background-color: transparent;
+  transition: margin-left 250ms ease-out;
+}
+
+md-sidenav.collapsed {
+  margin-left: -174px;
+}
+
+md-toast {
+  left: unset !important;
+  right: 8px !important;
+}
+
+.lighter {
+  color: #999999;
+}
+
+.app {
+  height: 100%;
+}
+
+.app > .main, .app > .login {
+  height: 100%;
+}
+
+.side-bar {
+  width: 190px !important;
+  min-width: 0 !important;
+}
+
+/* The starting CSS styles for the enter animation */
+.slide.ng-enter {
+  transition: 1000ms ease-out all;
+  opacity: 0;
+}
+
+/* The starting CSS styles for the enter animation */
+.slide.ng-enter.ng-enter-active {
+  opacity: 1;
+}

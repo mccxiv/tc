@@ -1,0 +1,44 @@
+.login-overlay(
+  mobx-autorun
+  layout-fill='',
+  layout='row',
+  layout-align='center center'
+)
+  .form.md-whiteframe-z2(layout-padding='')
+    .error(ng-if='vm.irc.badLogin')
+      div {{vm.irc.badLogin}}
+      md-divider
+    md-input-container
+      label Username
+      input(ng-if='!vm.haveUsername', ng-model='vm.username', auto-focus='')
+      |  
+      input(ng-if='vm.haveUsername', ng-model='vm.username')
+    form(ng-submit='vm.login()')
+      md-input-container
+        label Oauth token
+        input(
+          ng-if='vm.haveUsername',
+          ng-model='vm.password',
+          type='password',
+          ng-keyup='vm.trimPassword()',
+          auto-focus=''
+        )
+        |  
+        input(
+          ng-if='!vm.haveUsername',
+          ng-model='vm.password',
+          type='password',
+          ng-keyup='vm.trimPassword()'
+        )
+    p.password-warning(ng-if='vm.doesntLookLikeToken()')
+      | You must use a token, not your password.
+    p.password-notice
+      | This is not your regular account password,&nbsp;
+      | you need to generate a special "oauth token".
+    a.generate-link(ng-click='vm.generate()') Click here to generate your token
+    md-button.login-button.md-fab.md-primary(
+      aria-label='Log in',
+      ng-disabled='!vm.password || vm.doesntLookLikeToken()',
+      ng-click='vm.login()'
+    )
+      i.zmdi.zmdi-arrow-right.zmdi-hc-lg

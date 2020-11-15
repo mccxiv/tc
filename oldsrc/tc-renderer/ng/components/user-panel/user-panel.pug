@@ -1,0 +1,38 @@
+.user-menu-container(mobx-autorun, layout='row', ng-if='vm.shouldDisplay()')
+  .profile-picture-div
+    img.profile-picture(
+      ng-if='vm.profilePicSrc',
+      ng-src='{{vm.profilePicSrc}}'
+    )
+  .buttons-container(flex='', layout='column')
+    .row(layout='row')
+      span.username {{vm.displayName}}
+      span(flex='')
+      md-button.close-button(ng-click='vm.close()', aria-label='Close')
+        md-tooltip(md-autohide='') Close
+        i.zmdi.zmdi-close
+    .row.lighter.creation-date
+      md-tooltip(md-autohide='') Registration date
+      | Created {{vm.created | date: 'MMM d, y'}}
+    .toolbar(layout='row')
+      md-button(ng-click='vm.goToChannel()', aria-label='Their channel')
+        md-tooltip(md-autohide='') Their Channel
+        i.zmdi.zmdi-open-in-new
+      md-button(ng-click='vm.sendMessage()', aria-label='Message')
+        md-tooltip(md-autohide='') Message Via Website
+        i.zmdi.zmdi-email
+      md-button(ng-click='vm.whisper()', aria-label='Whisper')
+        md-tooltip(md-autohide='') Whisper
+        i.zmdi.zmdi-comment-more
+      span(flex='')
+      span(ng-class='{disabled: !vm.amMod()}')
+        md-button(ng-click='vm.purge()', aria-label='Purge')
+          md-tooltip(md-autohide='') Purge (3s)
+          i.zmdi.zmdi-replay-5
+        md-button(ng-click='vm.timeout()', aria-label='Timeout')
+          md-tooltip(md-autohide='') Timeout (10m)
+          i.zmdi.zmdi-time-restore
+        md-button(ng-click='vm.ban()', aria-label='Ban')
+          md-tooltip(md-autohide='') Ban
+          i.zmdi.zmdi-block
+md-divider(ng-if='vm.shouldDisplay()')

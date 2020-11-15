@@ -1,0 +1,59 @@
+.side-toolbar(mobx-autorun)
+  md-button.connection(
+    md-no-ink='',
+    aria-label='Connection status',
+    ng-class='{"not-ready": !vm.irc.ready, "ready": vm.irc.ready}'
+  )
+    md-tooltip(md-autohide='', md-direction='right')
+      | Status: {{vm.irc.ready? 'Connected' : 'Connecting'}}
+    i.zmdi.zmdi-swap-vertical
+  md-button(ng-click='vm.confirmLogout($event)', aria-label='Sign out')
+    md-tooltip(md-autohide='', md-direction='right')
+      | {{capitalize(vm.settings.identity.username)}}: Sign out
+    i.zmdi.zmdi-account
+  md-button(ng-click='vm.settingsGui.show($event)', aria-label='Settings')
+    md-tooltip(md-autohide='', md-direction='right') Settings
+    i.zmdi.zmdi-settings
+  md-divider.vertical
+  span(flex='')
+  md-button.update(
+    md-no-ink='',
+    aria-label='Update', ng-click='vm.restart()',
+    ng-if='vm.updateAvailable'
+  )
+    md-tooltip(md-autohide='', md-direction='right')
+      | Update is ready. Restart Tc to install it.
+    i.zmdi.zmdi-download
+  md-button(
+    ng-click='vm.settings.appearance.thumbnail = true',
+    aria-label='Show thumbnail',
+    ng-if='vm.showingThumbnailButton()'
+  )
+    md-tooltip(md-autohide='', md-direction='right') Show thumbnail
+    i.zmdi.zmdi-tv-play
+  md-button(
+    ng-click='vm.openChannel()',
+    aria-label='Go to channel',
+    ng-if='vm.channel()'
+  )
+    md-tooltip(md-autohide='', md-direction='right') Go to Channel
+    i.zmdi.zmdi-open-in-new
+  md-button(ng-click='vm.leave()', aria-label='Leave channel', ng-if='vm.channel()')
+    md-tooltip(md-autohide='', md-direction='right') Leave Channel
+    i.zmdi.zmdi-close
+  md-button.collapse-button(
+    ng-click='vm.toggleCollapsed()',
+    aria-label='Small sidebar',
+    ng-class='{collapsed: vm.settings.appearance.sidebarCollapsed}'
+  )
+    md-tooltip(
+      md-autohide='',
+      md-direction='right',
+      ng-if='!vm.settings.appearance.sidebarCollapsed'
+    ) Collapse sidebar ({{::vm.hotkey}} + s)
+    md-tooltip(
+      md-autohide='',
+      md-direction='right',
+      ng-if='vm.settings.appearance.sidebarCollapsed'
+    ) Expand sidebar ({{::vm.hotkey}} + s)
+    i.zmdi.zmdi-chevron-left

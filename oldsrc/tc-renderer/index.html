@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="utf-8">
+    <title>Tc</title>
+
+    <script>
+      // TODO Investigate why this is necessary
+      if (process.platform === 'darwin') {
+        document.querySelector('html').style.marginTop = '-1px';
+        document.querySelector('html').style.height = 'calc(100vh + 1px)';
+      }
+    </script>
+
+  </head>
+  <body>
+
+    <div
+      ng-app="tc"
+      class="app"
+      layout="column"
+      ng-controller="main as vm"
+      ng-class="{dark: store.settings.state.theme.dark}"
+      ng-cloak
+      mobx-autorun
+    >
+      <section ng-if="!needLogin()" layout="row" flex class="main">
+        <md-sidenav
+          layout="column"
+          md-is-locked-open="true"
+          class="side-bar md-sidenav-left md-whiteframe-z2"
+          ng-class="{collapsed: store.settings.state.appearance.sidebarCollapsed}"
+        >
+          <side-toolbar></side-toolbar>
+          <md-divider></md-divider>
+          <thumbnail
+            ng-if="showingThumbnail()
+            && !store.settings.state.appearance.sidebarCollapsed
+            && store.settings.state.appearance.thumbnail"
+          >
+          </thumbnail>
+          <user-panel ng-if="expanded()"></user-panel>
+          <chatters-tabs
+            ng-class="{collapsed: !store.settings.state.appearance.chatters}"
+            flex ng-show="expanded()">
+          </chatters-tabs>
+        </md-sidenav>
+
+        <section layout="column" flex>
+          <chat-tabs flex></chat-tabs>
+          <md-divider></md-divider>
+          <chat-input></chat-input>
+        </section>
+      </section>
+
+      <login ng-show="needLogin()" class="login"></login>
+    </div>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>

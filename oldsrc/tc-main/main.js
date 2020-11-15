@@ -1,5 +1,6 @@
 let path = require('path')
 let app = require('electron').app
+console.log(app)
 let ipc = require('electron').ipcMain
 let BrowserWindow = require('electron').BrowserWindow
 let squirrelStartup = require('./lib/squirrel-startup.js')
@@ -9,10 +10,10 @@ console.log('Tc: Starting :D')
 
 let main
 let quittingFromRightClick = false
-app.commandLine.appendSwitch('js-flags', '--harmony')
+//app.commandLine.appendSwitch('js-flags', '--harmony')
 
 if (squirrelStartup()) app.exit(0)
-if (isSecondInstance()) app.exit()
+//if (isSecondInstance()) app.exit()
 if (process.argv.indexOf('--dev-tools') > 0) setTimeout(devTools, 1500)
 
 app.on('ready', makeWindow)

@@ -1,0 +1,83 @@
+.dark, .dark md-dialog, .dark md-sidenav, .dark emote-menu .container {
+  background-color: rgb(30, 30, 30);
+  color: #D3D3D3;
+}
+
+.dark :hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.dark md-content {
+  color: inherit;
+  background-color: inherit;
+}
+
+.dark .md-input {
+  color: inherit !important;
+}
+
+.dark .md-subheader {
+  color: inherit;
+  background-color: inherit;
+}
+
+.dark md-list.md-default-theme md-list-item button {
+  background-color: inherit;
+}
+
+.dark md-input-container label {
+  color: rgba(255, 255, 255, 0.46) !important;
+}
+
+.dark md-tabs .md-tab {
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.dark md-tabs .md-tab.md-active {
+  color: hsl(203, 100%, 68%);
+}
+
+.dark md-tabs.md-default-theme md-ink-bar {
+  background: rgba(255, 64, 129, 0.45);
+}
+
+.dark md-input-container .md-input {
+/ / border-color: rgba(255, 255, 255, 0.30) !important;
+}
+
+.dark settings-panel {
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.dark chatters .chatter,
+.dark chatters input {
+  color: rgba(255, 255, 255, 0.54);
+}
+
+.dark chat-output .chat-line.odd {
+  background-color: rgba(0, 0, 0, 0.25);
+}
+
+.dark chat-input {
+  background-color: rgb(35, 35, 35);
+  border-right: 1px solid #252525;
+}
+
+.dark .side-bar {
+  background-color: rgb(35, 35, 35);
+}
+
+.dark side-toolbar {
+  border-bottom: 1px solid #3C3C3C;
+  background-color: rgb(47, 47, 47);
+}
+
+.dark chat-tabs md-tabs-wrapper {
+  background-color: rgb(47, 47, 47);
+  border-bottom: 1px solid #3C3C3C;
+}
+
+.dark login .form {
+  background-color: rgb(47, 47, 47);
+  border: none;
+}

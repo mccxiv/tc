@@ -1,0 +1,43 @@
+chat-input
+  display: block
+  position: relative
+
+  .overflow-container
+    overflow: hidden
+
+  md-input-container.disabled
+    background-color: rgba(0, 0, 0, .05)
+
+  .input-container
+    padding-bottom: 0
+    margin-top: -23px
+
+  .input-container label
+    padding-left: 20px !important
+    padding-top: 7px
+    margin-bottom: 4px
+    margin-top: -3px
+
+  .input-container .md-input
+    transition: border-color 300ms
+    border-color: transparent
+    padding-left: 20px
+    padding-right: 32px
+
+  .md-input-has-value label,
+  .md-input-focused label
+    opacity: 0
+
+  .emote-menu-button
+    bottom: 5px
+    right: 10px
+    opacity: 0.2
+    z-index: 6666
+    outline: none
+    cursor: pointer
+    font-size: 20px
+    position: absolute
+
+  .emote-menu-button:hover
+    opacity: 0.6
+

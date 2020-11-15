@@ -1,0 +1,49 @@
+emote-menu
+  width: 330px
+  height: 400px
+  position: absolute
+  bottom: 41px
+  right: 10px
+
+  .container
+    width: 100%
+    height: 100%
+    padding: 12px
+    display: block
+    overflow-y: auto
+    border-radius: 3px
+    background-color: white
+
+  .emote-list
+    text-align: center
+
+  .category-label
+    text-transform: uppercase
+    font-size: 11px
+    font-weight: bold
+    padding: 10px
+    margin-top: 10px
+
+  img
+    outline: none
+    margin: -3px 0
+    cursor: pointer
+    padding: 4px 4px
+    border-radius: 2px
+    object-fit: contain
+
+  img:hover
+    background-color: #d9d9d9
+
+  .container
+    will-change: opacity, transform
+
+  .container.ng-enter
+    opacity: 0
+    transform: translateY(20px)
+    transition: all 140ms cubic-bezier(.55, 0, .1, 1)
+
+  .container.ng-enter.ng-enter-active
+    opacity: 1
+    transform: translateY(0)
+
