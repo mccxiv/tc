@@ -6,11 +6,6 @@ Tc is a cross-platform desktop chat client for [Twitch.tv](http://www.twitch.tv/
 
 :warning: Hey there! While Tc is still working right now, the [development has stopped](https://github.com/mccxiv/tc/issues/519). If you've just stumbled upon this, you may want to try some other client instead.
 
-### Options for contacting me
-- Open an issue on GitHub
-- My [personal Twitter](https://twitter.com/k3nt0456)
-- Tc's [Twitter](https://twitter.com/tctwitch)
-
 ---
 
 ### For developers
